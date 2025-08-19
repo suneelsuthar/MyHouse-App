@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import {
   TextInput,
   View,
@@ -14,7 +14,6 @@ import { colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
-import { authService } from "../../../services/auth.service";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -22,7 +21,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { WithLocalSvg } from "react-native-svg/css";
 import Dropdown from "../../../Components/DropDown";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { UserContext } from "../../../context/UserContext";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { selectAuthLoading, selectAuthError } from "../../../store/selectors";
+import { loginUser } from "../../../store/thunks/authThunks";
+import Toast from "react-native-toast-message";
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 export function LoginScreen(props: LoginScreenProps) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -47,17 +49,51 @@ export function LoginScreen(props: LoginScreenProps) {
   const [email, password] = watch(["email", "password"]);
   const isFormValid = Boolean(email && password && isValid);
   const [keepLoggedIn, setKeeLoggedIn] = useState(false);
-  const { user, setUser } = useContext(UserContext);
+  const [selectedRole, setSelectedRole] = useState("tenant");
+  
+  // Redux hooks
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectAuthLoading);
+  const authError = useAppSelector(selectAuthError);
+
+  // Role options for dropdown
+  const roleOptions = [
+    { label: "Admin", value: "admin" },
+    { label: "Tenant", value: "tenant" },
+    { label: "Agent", value: "agent" },
+    { label: "Facility Manager", value: "facility_manager" },
+    { label: "Landlord", value: "landlord" },
+    { label: "Sub-Landlord", value: "sub_landlord" },
+    { label: "Security", value: "security" },
+  ];
   const login: SubmitHandler<ILogin> = async (formData: ILogin) => {
-    setLoading(true);
-
-    const user = {
-      email: email,
-      role: "test@gmali.com",
-      id: "1",
-    };
-
-    setUser(user);
+    try {
+      const result = await dispatch(loginUser({
+        email: formData.email,
+        password: formData.password,
+        role: selectedRole, // Pass selected role to login
+      }));
+      
+      if (loginUser.fulfilled.match(result)) {
+        Toast.show({
+          type: 'success',
+          text1: 'Login Successful',
+          text2: `Welcome back! Logged in as ${selectedRole}`,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Login Failed',
+          text2: authError || 'Please check your credentials',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Login Error',
+        text2: 'An unexpected error occurred',
+      });
+    }
     setLoading(false);
   };
 
@@ -93,7 +129,31 @@ export function LoginScreen(props: LoginScreenProps) {
           </Text>
 
           <View style={styles._dropdownview}>
-            <Dropdown />
+            <Text style={styles._roleLabel} weight="medium">
+              Select Role
+            </Text>
+            <View style={styles._roleDropdown}>
+              <Dropdown
+                style={styles._dropdownInner}
+                placeholderStyle={styles._placeholderStyle}
+                selectedTextStyle={styles._selectedTextStyle}
+                data={roleOptions}
+                labelField="label"
+                valueField="value"
+                placeholder="Choose your role"
+                value={selectedRole}
+                onChange={(item: any) => {
+                  setSelectedRole(item.value);
+                }}
+                renderRightIcon={() => (
+                  <MaterialCommunityIcons
+                    name="chevron-down"
+                    size={24}
+                    color={colors.primary}
+                  />
+                )}
+              />
+            </View>
           </View>
 
           <Controller
@@ -171,27 +231,22 @@ export function LoginScreen(props: LoginScreenProps) {
 
           <Button
             testID="login-button"
-            text="Login"
-            style={[!isFormValid && styles.disabledButton]}
             preset="reversed"
-            gradient={false}
+            disabled={!isFormValid || isLoading}
             onPress={handleSubmit(login)}
-            textStyle={{ color: colors.white, fontFamily: "bold" }}
-            disabled={!isFormValid || loading}
-            RightAccessory={() =>
-              loading ? (
-                <ActivityIndicator
-                  style={{ position: "absolute", right: 20 }}
-                  color={colors.white}
-                />
-              ) : null
-            }
+            text={isLoading ? "Logging in..." : "Login"}
+            style={[
+              !isFormValid && styles.disabledButton,
+              {
+                backgroundColor: isFormValid ? colors.primary : colors.border,
+              },
+            ]}
           />
 
-          <View style={styles._row}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
             <TouchableOpacity
-              activeOpacity={0.7}
               onPress={() => setKeeLoggedIn(!keepLoggedIn)}
+              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
             >
               {keepLoggedIn ? (
                 <MaterialCommunityIcons
@@ -210,35 +265,7 @@ export function LoginScreen(props: LoginScreenProps) {
 
             <Text text="Keep me logged in" />
           </View>
-          <View style={styles._orview}>
-            <Text
-              // weight="medium"
-              text="OR"
-              style={styles._ortext}
-            />
-          </View>
-          <Button
-            text="Continue with Google"
-            onPress={() => authService.signInWithGoogle()}
-            LeftAccessory={() => (
-              <Image source={Images.google} style={{ height: 23, width: 23 }} />
-            )}
-            style={styles.tapButton}
-            textStyle={styles._tabbttext}
-          />
-
-          <Button
-            text="Continue with Facebook"
-            onPress={() => authService.signInWithGoogle()}
-            LeftAccessory={() => (
-              <Image
-                source={Images.facebookicon}
-                style={{ height: 22, width: 11 }}
-              />
-            )}
-            style={[styles.tapButton, { marginBottom: 50 }]}
-            textStyle={styles._tabbttext}
-          />
+          <View style={{ marginBottom: 50 }} />
         </ScrollView>
       </Screen>
     </>
@@ -332,5 +359,29 @@ const styles = StyleSheet.create({
   },
   _dropdownview: {
     marginVertical: spacing.md,
+  },
+  _roleLabel: {
+    fontSize: 14,
+    color: colors.primary,
+    marginBottom: 8,
+  },
+  _roleDropdown: {
+    marginBottom: 10,
+  },
+  _dropdownInner: {
+    height: 55,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#F8F9FA",
+    borderWidth: 1,
+    borderColor: "#E1E5E9",
+  },
+  _placeholderStyle: {
+    fontSize: 14,
+    color: "#6C757D",
+  },
+  _selectedTextStyle: {
+    fontSize: 14,
+    color: colors.primary,
   },
 });

@@ -22,6 +22,10 @@ interface DropdownItem {
 interface DropdownComponentProps {
   data?: DropdownItem[];
   label?: string;
+  dropdownStyle?: StyleProp<ViewStyle>;
+  placeholderStyle?: StyleProp<TextStyle>;
+  selectedTextStyle?: StyleProp<TextStyle>;
+  placeholder?: string;
 }
 
 // Default data
@@ -36,6 +40,10 @@ const defaultData: DropdownItem[] = [
 export default function DropdownComponent({
   data = defaultData,
   label = "Dropdown label",
+  dropdownStyle,
+  placeholderStyle,
+  selectedTextStyle,
+  placeholder
 }: DropdownComponentProps) {
   const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
@@ -44,11 +52,11 @@ export default function DropdownComponent({
     <Dropdown
       style={[
         styles.dropdown,
-        isFocus,
         { backgroundColor: value ? colors.primary : "#292766A3" },
+        dropdownStyle,
       ]}
-      placeholderStyle={styles.placeholderStyle as StyleProp<TextStyle>}
-      selectedTextStyle={styles.selectedTextStyle as StyleProp<TextStyle>}
+      placeholderStyle={[styles.placeholderStyle, placeholderStyle] as StyleProp<TextStyle>}
+      selectedTextStyle={[styles.selectedTextStyle, selectedTextStyle] as StyleProp<TextStyle>}
       renderRightIcon={() => (
         <MaterialIcons
           name="keyboard-arrow-down"
@@ -59,10 +67,11 @@ export default function DropdownComponent({
       data={data}
       labelField="label"
       valueField="value"
-      placeholder={"Select Your Role"}
+      placeholder={placeholder ? placeholder: "Select Your Role"}
       searchPlaceholder="Search..."
       value={value}
       onFocus={() => setIsFocus(true)}
+      itemTextStyle={{fontFamily:typography.fonts.poppins.medium}}
       onBlur={() => setIsFocus(false)}
       onChange={(item: DropdownItem) => {
         setValue(item.value);

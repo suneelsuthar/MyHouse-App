@@ -7,6 +7,9 @@ export const timing = {
   quick: 300,
 };
 
+// Base screen width for responsive design (typically iPhone 6/7/8 width)
+const baseScreenWidth = 375;
+
 export const adjustSize = (size: number) => {
   // Get the device's screen width
   const screenWidth = Dimensions.get("window").width;

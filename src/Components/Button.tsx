@@ -7,7 +7,7 @@ import {
   TextStyle,
   ViewStyle,
 } from "react-native";
-import { colors, spacing, typography } from "../theme";
+import { adjustSize, colors, spacing, typography } from "../theme";
 import { Text, TextProps } from "./Text";
 import { LinearGradient } from "expo-linear-gradient";
 type Presets = keyof typeof $viewPresets;
@@ -101,7 +101,6 @@ export function Button(props: ButtonProps) {
     ];
 
     // If gradient is true, remove the backgroundColor as it will be handled by LinearGradient
- 
 
     return styles;
   }
@@ -185,7 +184,7 @@ export function Button(props: ButtonProps) {
 }
 
 const $baseViewStyle: ViewStyle = {
-  minHeight: 55,
+  minHeight: adjustSize(45),
   borderRadius: 10,
   justifyContent: "center",
   alignItems: "center",
@@ -197,9 +196,9 @@ const $baseViewStyle: ViewStyle = {
 };
 
 const $baseTextStyle: TextStyle = {
-  fontSize: 16,
+  fontSize: adjustSize(14),
   lineHeight: 20,
-  fontFamily: "semibold",
+  fontFamily: typography.fonts.poppins.medium,
   textAlign: "center",
   flexShrink: 1,
   flexGrow: 0,

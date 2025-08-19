@@ -19,4 +19,11 @@ export const Images = {
   car: require("./car.svg"),
   location: require("./location.svg"),
   wifi: require("./wifi.svg"),
+  // new assets
+  makepayment: require("./makepayment.svg"),
+  notofication: require("./notofication.svg"),
+  visitormanagement: require("./visitormanagement.svg"),
+  workrequests: require("./workrequests.svg"),
+  kyc: require("./kyc.svg"),
+  user: require("../dummyimages/user.svg"),
 };

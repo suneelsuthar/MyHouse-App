@@ -1,130 +1,112 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { IRoutes, AppStackParamList } from "../utils/interfaces";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors, spacing, typography } from "../theme";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 import { Text } from "../Components";
-import { UserContext } from "../context/UserContext";
+import { useAppSelector } from "../store/hooks";
+import { selectNavigationState } from "../store/selectors";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppStackParamList, AuthStackParamList } from "../utils/interfaces";
 
+// Import tab navigators
+import {
+  TenantTabNavigator,
+  AgentTabNavigator,
+  FacilityManagerTabNavigator,
+  LandlordTabNavigator,
+  SubLandlordTabNavigator,
+  SecurityTabNavigator,
+  AdminTabNavigator,
+} from "./TabNavigator";
+
+// Import all screens
 import {
   Splash,
   Intro,
   CreateAccount,
   LoginScreen,
-  Home,
-  Notification,
-  Favourities,
-  BookNow,
-  Chat,
+  // Global screens
+  GlobalScreen,
+  TermsConditionsScreen,
+  AboutUsScreen,
+  FAQScreen,
+  ContactUsScreen,
+  HelpScreen,
+  PropertyFiltersScreen,
 } from "../Screens";
-import { HistoryIcon, HomeIcon, ProfileIcon } from "../assets/svg";
-import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../assets/Images";
+
+// Create stack navigators
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const Stack = createNativeStackNavigator<AppStackParamList>();
-const Tab = createBottomTabNavigator<AppStackParamList>();
 
-const Tabs = () => {
+// Auth Stack Navigator
+const AuthNavigator = () => (
+  <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+    <AuthStack.Screen name="Splash" component={Splash} />
+    <AuthStack.Screen name="Intro" component={Intro} />
+    <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Screen name="CreateAccount" component={CreateAccount} />
+  </AuthStack.Navigator>
+);
+
+// Main App Navigation
+const AppNavigator = () => {
+  const { isAuthenticated, userRole } = useAppSelector(selectNavigationState);
+
+  if (!isAuthenticated) {
+    return <AuthNavigator />;
+  }
+
+  // Return appropriate tab navigator based on user role with global screens
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: { backgroundColor: colors.primary },
-        headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarLabelStyle: {
-          fontFamily: typography.fonts.poppins.normal,
-          fontSize: 12,
-          color: colors.white,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused, color }) => (
-            <View style={{ marginTop: 5 }}>
-              <WithLocalSvg asset={Images.homeIocn} />
-              {focused && <View style={styles._activebar} />}
-            </View>
-          ),
-        }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* Role-based main navigator */}
+      {userRole === "admin" && (
+        <Stack.Screen name="Main" component={AdminTabNavigator} />
+      )}
+      {userRole === "tenant" && (
+        <Stack.Screen name="Main" component={TenantTabNavigator} />
+      )}
+      {userRole === "agent" && (
+        <Stack.Screen name="Main" component={AgentTabNavigator} />
+      )}
+      {userRole === "facility_manager" && (
+        <Stack.Screen name="Main" component={FacilityManagerTabNavigator} />
+      )}
+      {userRole === "landlord" && (
+        <Stack.Screen name="Main" component={LandlordTabNavigator} />
+      )}
+      {userRole === "sub_landlord" && (
+        <Stack.Screen name="Main" component={SubLandlordTabNavigator} />
+      )}
+      {userRole === "security" && (
+        <Stack.Screen name="Main" component={SecurityTabNavigator} />
+      )}
+      {!userRole && <Stack.Screen name="Main" component={TenantTabNavigator} />}
 
-      <Tab.Screen
-        name="Favourities"
-        component={Favourities}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused, color }) => (
-            <View style={{ marginTop: 5 }}>
-              <WithLocalSvg asset={Images.favourite} />
-              {focused && <View style={styles._activebar} />}
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="BookNow"
-        component={BookNow}
-        options={{
-          title: "Book now",
-          headerShown: false,
-          tabBarIcon: ({ focused, color }) => (
-            <View style={{ marginTop: 5 }}>
-              <WithLocalSvg asset={Images.booknow} />
-              {focused && <View style={styles._activebar} />}
-            </View>
-          ),
-        }}
-      />
-
-      {/* Requests */}
-      <Tab.Screen
-        name="Notification"
-        component={Notification}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused, color }) => (
-            <View style={{ marginTop: 5 }}>
-              <WithLocalSvg asset={Images.notification} />
-              {focused && <View style={styles._activebar} />}
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Chat"
-        component={Chat}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused, color }) => (
-            <View style={{ marginTop: 5 }}>
-              <WithLocalSvg asset={Images.chat} />
-              {focused && <View style={styles._activebar} />}
-            </View>
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      {/* Global screens accessible from any role */}
+      <Stack.Screen name="Global" component={GlobalScreen} />
+      <Stack.Screen name="PropertyFilters" component={PropertyFiltersScreen} />
+      <Stack.Screen name="Help" component={HelpScreen} />
+      <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+      <Stack.Screen name="FAQ" component={FAQScreen} />
+      <Stack.Screen name="AboutUs" component={AboutUsScreen} />
+      <Stack.Screen name="TermsConditions" component={TermsConditionsScreen} />
+    </Stack.Navigator>
   );
 };
 
-const userRoutes: IRoutes[] = [
+const userRoutes: any[] = [
   {
     name: "Main",
-    component: Tabs,
+    component: AppNavigator,
     showHeader: false,
   },
 ];
 
-const authRoutes: IRoutes[] = [
+const authRoutes: any[] = [
   {
     name: "Splash",
     component: Splash,
@@ -154,12 +136,13 @@ const authRoutes: IRoutes[] = [
 
 export const Navigation = () => {
   const navigation = useNavigation();
-  const { user } = useContext(UserContext);
+  const { isAuthenticated, isFirstLaunch } = useAppSelector(
+    selectNavigationState
+  );
   const [initialRoute, setInitialRoute] =
     React.useState<keyof AppStackParamList>("Splash");
   const [isLoading, setIsLoading] = React.useState(true);
 
-  AsyncStorage.removeItem("hasLaunched");
   // Check if it's the first app launch
   React.useEffect(() => {
     const checkFirstLaunch = async () => {
@@ -167,7 +150,7 @@ export const Navigation = () => {
         const hasLaunched = await AsyncStorage.getItem("hasLaunched");
 
         if (hasLaunched === "true") {
-          setInitialRoute("GettingStart");
+          setInitialRoute("Splash");
         } else {
           setInitialRoute("Splash");
         }
@@ -182,7 +165,7 @@ export const Navigation = () => {
     checkFirstLaunch();
   }, []);
   // Determine which routes to use based on authentication state
-  const routes = user ? userRoutes : authRoutes;
+  const routes = isAuthenticated ? userRoutes : authRoutes;
   // Show loading indicator while checking first launch
   if (isLoading) {
     return null;

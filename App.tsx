@@ -17,7 +17,9 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { UserProvider } from "./src/context/UserContext";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/store";
 import Toast, { BaseToast, BaseToastProps } from "react-native-toast-message";
 import { colors } from "./src/theme";
 import { Feather } from "@expo/vector-icons";
@@ -123,36 +125,38 @@ const App = () => {
   }
 
   return (
-    <UserProvider>
-      <StatusBar
-        barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
-        backgroundColor="#FFFFFF"
-        translucent={false}
-      />
-      <SafeAreaProvider
-        initialMetrics={initialWindowMetrics}
-        style={{ flex: 1 }}
-      >
-        <ErrorBoundary catchErrors="dev">
-          <NavigationContainer
-            theme={{
-              dark: false,
-              colors: {
-                primary: colors.palette.primary,
-                background: colors.background,
-                card: colors.background,
-                text: colors.text,
-                border: colors.border,
-                notification: colors.palette.primary,
-              },
-            }}
-          >
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <Navigation />
-            </GestureHandlerRootView>
-          </NavigationContainer>
-        </ErrorBoundary>
-      </SafeAreaProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StatusBar
+          barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
+          backgroundColor="#FFFFFF"
+          translucent={false}
+        />
+        <SafeAreaProvider
+          initialMetrics={initialWindowMetrics}
+          style={{ flex: 1 }}
+        >
+          <ErrorBoundary catchErrors="dev">
+            <NavigationContainer
+              theme={{
+                dark: false,
+                colors: {
+                  primary: colors.palette.primary,
+                  background: colors.background,
+                  card: colors.background,
+                  text: colors.text,
+                  border: colors.border,
+                  notification: colors.palette.primary,
+                },
+              }}
+            >
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <Navigation />
+              </GestureHandlerRootView>
+            </NavigationContainer>
+          </ErrorBoundary>
+        </SafeAreaProvider>
+      </PersistGate>
       <Toast
         config={{
           success: (props) => {
@@ -183,7 +187,7 @@ const App = () => {
         autoHide={true}
         visibilityTime={4000}
       />
-    </UserProvider>
+    </Provider>
   );
 };
 
