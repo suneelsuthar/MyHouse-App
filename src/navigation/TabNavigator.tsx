@@ -1,8 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
+} from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../theme";
+import { adjustSize, colors, typography } from "../theme";
+import { StyleSheet } from "react-native";
 
 // Import all screens
 import {
@@ -112,6 +117,10 @@ import {
   SecurityStackParamList,
   AdminStackParamList,
 } from "../utils/interfaces";
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../assets/Images";
+import { View } from "react-native";
+import { CustomDrawerContent } from "../Components/CustomDrawer";
 
 // Create stack navigators for each role
 const TenantStack = createNativeStackNavigator<TenantStackParamList>();
@@ -123,6 +132,11 @@ const SubLandlordStack =
   createNativeStackNavigator<SubLandlordStackParamList>();
 const SecurityStack = createNativeStackNavigator<SecurityStackParamList>();
 const AdminStack = createNativeStackNavigator<AdminStackParamList>();
+const AdminHomeStack = createNativeStackNavigator<AdminStackParamList>();
+const AdminBookingStack = createNativeStackNavigator<AdminStackParamList>();
+const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
+const AdminWalletStack = createNativeStackNavigator<AdminStackParamList>();
+const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
 
 // Tenant Stack Navigator
 const TenantStackNavigator = () => (
@@ -356,45 +370,58 @@ const SecurityStackNavigator = () => (
   </SecurityStack.Navigator>
 );
 
-// Admin Stack Navigator
-const AdminStackNavigator = () => (
-  <AdminStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminStack.Screen name="Admin" component={Admin} />
-    <AdminStack.Screen name="AdminDashboard" component={AdminDashboard} />
-    <AdminStack.Screen
-      name="AdminUserManagement"
-      component={AdminUserManagement}
+// Admin Stacks per tab
+const AdminHomeStackNavigator = () => (
+  <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    {/* Add more Home-related admin screens here */}
+  </AdminHomeStack.Navigator>
+);
+
+const AdminBookingStackNavigator = () => (
+  <AdminBookingStack.Navigator screenOptions={{ headerShown: false }}>
+    {/* Placeholder mapping for Booking; replace with your actual booking screens */}
+    <AdminBookingStack.Screen
+      name="AdminAnalytics"
+      component={AdminAnalytics}
     />
-    <AdminStack.Screen
+  </AdminBookingStack.Navigator>
+);
+
+const AdminPropertiesStackNavigator = () => (
+  <AdminPropertiesStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminPropertiesStack.Screen
       name="AdminPropertyManagement"
       component={AdminPropertyManagement}
     />
-    <AdminStack.Screen
+  </AdminPropertiesStack.Navigator>
+);
+
+const AdminWalletStackNavigator = () => (
+  <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminWalletStack.Screen
       name="AdminFinancialReports"
       component={AdminFinancialReports}
     />
-    <AdminStack.Screen
-      name="AdminSystemSettings"
-      component={AdminSystemSettings}
-    />
-    <AdminStack.Screen name="AdminAnalytics" component={AdminAnalytics} />
-    <AdminStack.Screen name="AdminAuditLogs" component={AdminAuditLogs} />
-    <AdminStack.Screen
-      name="AdminBackupRestore"
-      component={AdminBackupRestore}
-    />
-    <AdminStack.Screen
+  </AdminWalletStack.Navigator>
+);
+
+const AdminChatStackNavigator = () => (
+  <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminChatStack.Screen
       name="AdminSupportTickets"
       component={AdminSupportTickets}
     />
-  </AdminStack.Navigator>
+  </AdminChatStack.Navigator>
 );
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
 
-// Tenant Tab Navigator
-export const TenantTabNavigator = () => (
+const Drawer = createDrawerNavigator();
+
+// Tenant Tab Navigator (internal tabs)
+const TenantTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -444,8 +471,92 @@ export const TenantTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Agent Tab Navigator
+// Drawer-wrapped navigators per role (exported)
+export const TenantTabNavigator = () => (
+  <Drawer.Navigator
+    id="TenantDrawer"
+    screenOptions={{ headerShown: false }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="Tenant" component={TenantTabs} />
+  </Drawer.Navigator>
+);
+
 export const AgentTabNavigator = () => (
+  <Drawer.Navigator
+    id="AgentDrawer"
+    screenOptions={{ headerShown: false }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="Agent" component={AgentTabs} />
+  </Drawer.Navigator>
+);
+
+export const FacilityManagerTabNavigator = () => (
+  <Drawer.Navigator
+    id="FacilityManagerDrawer"
+    screenOptions={{ headerShown: false }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="FacilityManager" component={FacilityManagerTabs} />
+  </Drawer.Navigator>
+);
+
+export const LandlordTabNavigator = () => (
+  <Drawer.Navigator
+    id="LandlordDrawer"
+    screenOptions={{ headerShown: false }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="Landlord" component={LandlordTabs} />
+  </Drawer.Navigator>
+);
+
+export const SubLandlordTabNavigator = () => (
+  <Drawer.Navigator
+    id="SubLandlordDrawer"
+    screenOptions={{ headerShown: false }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="SubLandlord" component={SubLandlordTabs} />
+  </Drawer.Navigator>
+);
+
+export const SecurityTabNavigator = () => (
+  <Drawer.Navigator
+    id="SecurityDrawer"
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="Security" component={SecurityTabs} />
+  </Drawer.Navigator>
+);
+
+export const AdminTabNavigator = () => (
+  <Drawer.Navigator
+    id="AdminDrawer"
+    screenOptions={{ headerShown: false, drawerType: "front" }}
+    drawerContent={(props: DrawerContentComponentProps) => (
+      <CustomDrawerContent {...props} />
+    )}
+  >
+    <Drawer.Screen name="Admin" component={AdminTabs} />
+  </Drawer.Navigator>
+);
+
+// Agent Tab Navigator (internal tabs)
+const AgentTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -486,8 +597,8 @@ export const AgentTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Facility Manager Tab Navigator
-export const FacilityManagerTabNavigator = () => (
+// Facility Manager Tab Navigator (internal tabs)
+const FacilityManagerTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -528,8 +639,8 @@ export const FacilityManagerTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Landlord Tab Navigator
-export const LandlordTabNavigator = () => (
+// Landlord Tab Navigator (internal tabs)
+const LandlordTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -570,8 +681,8 @@ export const LandlordTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Sub-Landlord Tab Navigator
-export const SubLandlordTabNavigator = () => (
+// Sub-Landlord Tab Navigator (internal tabs)
+const SubLandlordTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -612,8 +723,8 @@ export const SubLandlordTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Security Tab Navigator
-export const SecurityTabNavigator = () => (
+// Security Tab Navigator (internal tabs)
+const SecurityTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -654,44 +765,86 @@ export const SecurityTabNavigator = () => (
   </Tab.Navigator>
 );
 
-// Admin Tab Navigator
-export const AdminTabNavigator = () => (
+// Admin Tab Navigator (internal tabs)
+const AdminTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName: keyof typeof Ionicons.glyphMap;
-
-        switch (route.name) {
-          case "Dashboard":
-            iconName = focused ? "grid" : "grid-outline";
-            break;
-          case "Users":
-            iconName = focused ? "people" : "people-outline";
-            break;
-          case "Properties":
-            iconName = focused ? "business" : "business-outline";
-            break;
-          case "Analytics":
-            iconName = focused ? "analytics" : "analytics-outline";
-            break;
-          case "Settings":
-            iconName = focused ? "settings" : "settings-outline";
-            break;
-          default:
-            iconName = "grid-outline";
-        }
-
-        return <Ionicons name={iconName} size={size} color={color} />;
+      tabBarStyle: {
+        backgroundColor: "#292766",
       },
-      tabBarActiveTintColor: colors.primary,
-      tabBarInactiveTintColor: colors.textDim,
+      tabBarLabelStyle: {
+        fontFamily: typography.fonts.poppins.medium,
+      },
+      tabBarIcon: ({ focused, color, size }) => {
+        switch (route.name) {
+          case "Home":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.homeIocn} />;
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Booking":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.booknow} />;
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+
+          case "Properties":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.manageprop} />;
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Wallet":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.wallet} />;
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Chat":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.chat} />;
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          default:
+            return null;
+        }
+      },
+      tabBarActiveTintColor: colors.white,
+      tabBarInactiveTintColor: colors.white,
       headerShown: false,
     })}
   >
-    <Tab.Screen name="Dashboard" component={AdminStackNavigator} />
-    <Tab.Screen name="Users" component={AdminStackNavigator} />
-    <Tab.Screen name="Properties" component={AdminStackNavigator} />
-    <Tab.Screen name="Analytics" component={AdminStackNavigator} />
-    <Tab.Screen name="Settings" component={AdminStackNavigator} />
+    <Tab.Screen name="Home" component={AdminHomeStackNavigator} />
+    <Tab.Screen name="Booking" component={AdminBookingStackNavigator} />
+    <Tab.Screen
+      name="Properties"
+      options={{
+        title: "Properties",
+      }}
+      component={AdminPropertiesStackNavigator}
+    />
+    <Tab.Screen name="Wallet" component={AdminWalletStackNavigator} />
+    <Tab.Screen name="Chat" component={AdminChatStackNavigator} />
   </Tab.Navigator>
 );
+
+const styles = StyleSheet.create({
+  _indicator: {
+    width: adjustSize(20),
+    height: 3,
+    borderRadius: 4,
+    backgroundColor: colors.white,
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 1,
+    bottom: adjustSize(-22),
+  },
+});

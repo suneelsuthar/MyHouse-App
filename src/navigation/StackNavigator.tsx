@@ -53,7 +53,9 @@ const AuthNavigator = () => (
 
 // Main App Navigation
 const AppNavigator = () => {
-  const { isAuthenticated, userRole } = useAppSelector(selectNavigationState);
+  // const { isAuthenticated, userRole } = useAppSelector(selectNavigationState);
+  const { isAuthenticated } = useAppSelector(selectNavigationState);
+  let userRole = "admin";
 
   if (!isAuthenticated) {
     return <AuthNavigator />;

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { adjustSize, colors, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 import { Text, Screen, Button } from "../../../Components";
 import DropdownComponent from "../../../Components/DropDown";
@@ -18,6 +19,7 @@ import BookingsChart from "../../../Components/BookingChart";
 const width = Dimensions.get("screen").width;
 
 export const TenantHome = () => {
+  const navigation = useNavigation();
   const analyticsData = [
     { label: "Monthly", value: "monthly" },
     { label: "Weekly", value: "weekly" },
@@ -99,7 +101,14 @@ export const TenantHome = () => {
     >
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() =>
+            (navigation as any)
+              .getParent?.("TenantDrawer")
+              ?.dispatch(DrawerActions.openDrawer())
+          }
+        >
           <WithLocalSvg asset={Images.user} />
         </TouchableOpacity>
         <View style={styles.headerinfo}>
