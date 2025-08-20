@@ -1,4 +1,5 @@
 import { Images } from "../assets/Images";
+import { faker } from "@faker-js/faker";
 
 export type IForYou = {
   id: number;
@@ -146,4 +147,47 @@ const trendingList: ITrend[] = [
   },
 ];
 
-export { forYouList, topratedList, sepecialOfferList, trendingList };
+// Admin Manage Properties
+export type PropertyStatus = "Approved" | "Pending" | "Rejected";
+
+export type IRentalProperty = {
+  id: string;
+  name: string; // e.g., Brume Villa
+  group: string; // e.g., Brume Group
+  location: string; // City, Country
+  status: PropertyStatus;
+  tenantName?: string;
+  propertyId: string;
+  addedBy: string;
+  images: string[]; // generated via faker
+};
+
+const getRandomStatus = (): PropertyStatus =>
+  (["Approved", "Pending", "Rejected"][faker.number.int({ min: 0, max: 2 })] as PropertyStatus);
+
+export const rentalProperties: IRentalProperty[] = Array.from({ length: 8 }).map(
+  (_, idx) => {
+    const seedBase = faker.string.alphanumeric(8);
+    // Always 5 stable images per property, using Picsum seeds so URLs are valid
+    const images = Array.from({ length: 5 }).map((__, i) =>
+      `https://picsum.photos/seed/${encodeURIComponent(seedBase + "-house-" + i)}/640/420`
+    );
+
+    const name = `${faker.word.adjective()} ${faker.word.noun({ length: 5 })}`
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+    return {
+      id: faker.string.uuid(),
+      name: name || `Property ${idx + 1}`,
+      group: `${faker.company.name()} Group`,
+      location: `${faker.location.city()}, ${faker.location.country()}`,
+      status: getRandomStatus(),
+      tenantName: faker.person.fullName(),
+      propertyId: faker.number.int({ min: 100000, max: 999999 }).toString(),
+      addedBy: faker.number.int({ min: 1200, max: 1299 }).toString(),
+      images,
+    } as IRentalProperty;
+  }
+);
+
+export { forYouList, topratedList, sepecialOfferList, trendingList, rentalProperties, IRentalProperty };

@@ -45,5 +45,5 @@ export const Images = {
   communication: require("./communication.svg"),
   analysis: require("./analysis.svg"),
   managegroups: require("./managegroup.svg"),
-
+  addprop: require("./addprop.svg"),
 };
