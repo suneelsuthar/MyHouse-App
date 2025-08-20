@@ -46,4 +46,11 @@ export const Images = {
   analysis: require("./analysis.svg"),
   managegroups: require("./managegroup.svg"),
   addprop: require("./addprop.svg"),
+  gallery: require("./gallery.svg"),
+  // aliases for step1 dropdown icons
+  residentials: require("./home.svg"),
+  commercial: require("./manageprop.svg"),
+  residentialsIcon: require("./residentials.svg"),
+  commercialIcon: require("./commercial.svg"),
+  remove: require("./remove.svg"),
 };

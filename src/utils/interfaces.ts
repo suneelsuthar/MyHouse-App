@@ -29,6 +29,8 @@ export type AdminStackParamList = {
   AdminDashboard: undefined;
   AdminUserManagement: undefined;
   AdminPropertyManagement: undefined;
+  AdminPropertyDetails: { propertyId: string };
+  AdminAddProperty: undefined;
   AdminFinancialReports: undefined;
   AdminSystemSettings: undefined;
   AdminAnalytics: undefined;

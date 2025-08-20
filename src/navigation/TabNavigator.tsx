@@ -1,4 +1,5 @@
 import React from "react";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createDrawerNavigator,
@@ -106,6 +107,8 @@ import {
   AdminAuditLogs,
   AdminBackupRestore,
   AdminSupportTickets,
+  AdminPropertyDetails,
+  AdminAddProperty,
 } from "../Screens";
 
 import {
@@ -393,6 +396,14 @@ const AdminPropertiesStackNavigator = () => (
     <AdminPropertiesStack.Screen
       name="AdminPropertyManagement"
       component={AdminPropertyManagement}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminPropertyDetails"
+      component={AdminPropertyDetails}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminAddProperty"
+      component={AdminAddProperty}
     />
   </AdminPropertiesStack.Navigator>
 );
@@ -826,10 +837,26 @@ const AdminTabs = () => (
     <Tab.Screen name="Booking" component={AdminBookingStackNavigator} />
     <Tab.Screen
       name="Properties"
-      options={{
-        title: "Properties",
-      }}
       component={AdminPropertiesStackNavigator}
+      options={({ route }) => {
+        const routeName =
+          getFocusedRouteNameFromRoute(route) ?? "AdminPropertyManagement";
+        // Base tab bar style for Admin tabs
+        const baseTabBarStyle = {
+          backgroundColor: "#292766",
+        } as const;
+        // Hide tab bar on Add Property screen only
+        if (routeName === "AdminAddProperty") {
+          return {
+            title: "Properties",
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          };
+        }
+        return {
+          title: "Properties",
+          tabBarStyle: baseTabBarStyle,
+        };
+      }}
     />
     <Tab.Screen name="Wallet" component={AdminWalletStackNavigator} />
     <Tab.Screen name="Chat" component={AdminChatStackNavigator} />

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Button, Screen, Text, TextField } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-import { colors, spacing } from "../../../theme";
+import { adjustSize, colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
@@ -49,8 +49,8 @@ export function LoginScreen(props: LoginScreenProps) {
   const [email, password] = watch(["email", "password"]);
   const isFormValid = Boolean(email && password && isValid);
   const [keepLoggedIn, setKeeLoggedIn] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("tenant");
-  
+  const [selectedRole, setSelectedRole] = useState<string>("admin");
+
   // Redux hooks
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectAuthLoading);
@@ -68,30 +68,32 @@ export function LoginScreen(props: LoginScreenProps) {
   ];
   const login: SubmitHandler<ILogin> = async (formData: ILogin) => {
     try {
-      const result = await dispatch(loginUser({
-        email: formData.email,
-        password: formData.password,
-        role: selectedRole, // Pass selected role to login
-      }));
-      
+      const result = await dispatch(
+        loginUser({
+          email: formData.email,
+          password: formData.password,
+          role: selectedRole, // Pass selected role to login
+        })
+      );
+
       if (loginUser.fulfilled.match(result)) {
         Toast.show({
-          type: 'success',
-          text1: 'Login Successful',
-          text2: `Welcome back! Logged in as ${selectedRole}`,
+          type: "success",
+          text1: "Login Successful",
+          text2: `Welcome back! Logged in as ${result.payload.user.role}`,
         });
       } else {
         Toast.show({
-          type: 'error',
-          text1: 'Login Failed',
-          text2: authError || 'Please check your credentials',
+          type: "error",
+          text1: "Login Failed",
+          text2: authError || "Please check your credentials",
         });
       }
     } catch (error) {
       Toast.show({
-        type: 'error',
-        text1: 'Login Error',
-        text2: 'An unexpected error occurred',
+        type: "error",
+        text1: "Login Error",
+        text2: "An unexpected error occurred",
       });
     }
     setLoading(false);
@@ -134,24 +136,15 @@ export function LoginScreen(props: LoginScreenProps) {
             </Text>
             <View style={styles._roleDropdown}>
               <Dropdown
-                style={styles._dropdownInner}
+                dropdownStyle={styles._dropdownInner}
                 placeholderStyle={styles._placeholderStyle}
                 selectedTextStyle={styles._selectedTextStyle}
                 data={roleOptions}
-                labelField="label"
-                valueField="value"
                 placeholder="Choose your role"
                 value={selectedRole}
-                onChange={(item: any) => {
-                  setSelectedRole(item.value);
+                onChangeValue={(val: string) => {
+                  setSelectedRole(val);
                 }}
-                renderRightIcon={() => (
-                  <MaterialCommunityIcons
-                    name="chevron-down"
-                    size={24}
-                    color={colors.primary}
-                  />
-                )}
               />
             </View>
           </View>
@@ -243,7 +236,14 @@ export function LoginScreen(props: LoginScreenProps) {
             ]}
           />
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 20 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              marginVertical: 20,
+            }}
+          >
             <TouchableOpacity
               onPress={() => setKeeLoggedIn(!keepLoggedIn)}
               style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
@@ -369,19 +369,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   _dropdownInner: {
-    height: 55,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    backgroundColor: "#F8F9FA",
     borderWidth: 1,
-    borderColor: "#E1E5E9",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    backgroundColor: "#292766A3",
   },
   _placeholderStyle: {
-    fontSize: 14,
     color: "#6C757D",
   },
   _selectedTextStyle: {
-    fontSize: 14,
-    color: colors.primary,
+    fontSize: adjustSize(12),
+    color: colors.white,
   },
 });

@@ -93,6 +93,8 @@ import { AdminAnalytics } from "./admin/analytics";
 import { AdminAuditLogs } from "./admin/audit-logs";
 import { AdminBackupRestore } from "./admin/backup-restore";
 import { AdminSupportTickets } from "./admin/support-tickets";
+import { AdminPropertyDetails } from "./admin/property-details";
+import { AdminAddProperty } from "./admin/add-property";
 export {
   Splash,
   Intro,
@@ -174,4 +176,6 @@ export {
   AdminAuditLogs,
   AdminBackupRestore,
   AdminSupportTickets,
+  AdminPropertyDetails,
+  AdminAddProperty,
 };

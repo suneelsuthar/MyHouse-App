@@ -7,9 +7,22 @@ import type { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../assets/Images";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAppDispatch } from "../store/hooks";
+import { logoutUser } from "../store/thunks/authThunks";
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const [active, setactive] = useState(0);
   const [openId, setOpenId] = useState<number | null>(null); // which dropdown is open
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser());
+    } finally {
+      // Ensure drawer closes and navigate to Login screen
+      props.navigation.closeDrawer?.();
+      props.navigation.reset({ index: 0, routes: [{ name: "Login" as never }] });
+    }
+  };
 
   const propertiesItems = [
     {
@@ -359,7 +372,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           );
         })}
         <View style={styles._divider} />
-        <TouchableOpacity style={styles.logoutbtn}>
+        <TouchableOpacity style={styles.logoutbtn} onPress={handleLogout}>
           <WithLocalSvg asset={Images.logout} />
           <Text weight="semiBold" text="Logout" style={styles.menuText} />
         </TouchableOpacity>

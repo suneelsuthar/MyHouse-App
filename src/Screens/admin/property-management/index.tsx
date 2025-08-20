@@ -86,7 +86,13 @@ export function AdminPropertyManagement(props: AdminPropertyManagementProps) {
           />
         </View>
 
-        <TouchableOpacity activeOpacity={0.7} style={styles._addbtn}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles._addbtn}
+          onPress={() =>
+            (navigation as any).navigate("AdminAddProperty" as never)
+          }
+        >
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
       </View>
@@ -96,7 +102,24 @@ export function AdminPropertyManagement(props: AdminPropertyManagementProps) {
         data={rentalProperties}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => <RentalCard property={item} />}
+        renderItem={({ item }) => (
+          <RentalCard
+            property={item}
+            onAction={(action, property) => {
+              if (action === "View Details") {
+                (navigation as any).navigate(
+                  "AdminPropertyDetails" as never,
+                  { propertyId: property.propertyId } as never
+                );
+              } else if (action === "Edit") {
+                (navigation as any).navigate(
+                  "AdminAddProperty" as never,
+                  { propertyId: property.propertyId } as never
+                );
+              }
+            }}
+          />
+        )}
         style={styles.list}
       />
     </Screen>

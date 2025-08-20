@@ -12,33 +12,33 @@ interface SplashScreenProps extends AppStackScreenProps<"Splash"> {}
 export function Splash(props: SplashScreenProps) {
   const bounceAnim = useRef(new Animated.Value(0)).current;
 
-  // useEffect(() => {
-  //   const animateBounce = () => {
-  //     // One bounce cycle
-  //     return Animated.sequence([
-  //       Animated.timing(bounceAnim, {
-  //         toValue: -20, // Move up
-  //         duration: 600,
-  //         useNativeDriver: true,
-  //       }),
-  //       Animated.timing(bounceAnim, {
-  //         toValue: 0, // Move down
-  //         duration: 600,
-  //         useNativeDriver: true,
-  //       }),
-  //     ]);
-  //   };
+  useEffect(() => {
+    const animateBounce = () => {
+      // One bounce cycle
+      return Animated.sequence([
+        Animated.timing(bounceAnim, {
+          toValue: -20, // Move up
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bounceAnim, {
+          toValue: 0, // Move down
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ]);
+    };
 
-  //   // Repeat bounce 3 times
-  //   Animated.sequence([
-  //     animateBounce(),
-  //     animateBounce(),
-  //     animateBounce(),
-  //   ]).start(async () => {
-  //     await AsyncStorage.setItem("hasLaunched", "true");
-  //     props.navigation.replace("Login");
-  //   });
-  // }, [bounceAnim, props.navigation]);
+    // Repeat bounce 3 times
+    Animated.sequence([
+      animateBounce(),
+      animateBounce(),
+      animateBounce(),
+    ]).start(async () => {
+      await AsyncStorage.setItem("hasLaunched", "true");
+      props.navigation.replace("Login");
+    });
+  }, [bounceAnim, props.navigation]);
 
   useEffect(() => {
     props.navigation.navigate("Login");

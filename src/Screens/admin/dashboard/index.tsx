@@ -129,17 +129,17 @@ export const AdminDashboard = () => {
         {/* Quick Actions */}
         <View style={styles.section}>
           <View style={styles.quickActions}>
-            <TouchableOpacity style={styles._card}>
+            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
               <WithLocalSvg asset={Images.propreq} />
               <Text text="Property Requests" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles._card}>
+            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
               <WithLocalSvg asset={Images.managebooking} />
               <Text text="Manage Bookings" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles._card}>
+            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
               <WithLocalSvg asset={Images.manageins} />
               <Text text="Manage Inspections" style={styles._card_text} />
             </TouchableOpacity>
@@ -309,6 +309,8 @@ const styles = StyleSheet.create({
     height: adjustSize(40),
     borderRadius: adjustSize(100),
     backgroundColor: colors.primary,
+    width: adjustSize(125),
+    marginRight: adjustSize(20),
   },
   customPlaceholderStyle: {
     fontSize: adjustSize(12),

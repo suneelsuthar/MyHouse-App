@@ -94,6 +94,7 @@ export const RentalCard: React.FC<RentalCardProps> = ({
               onPress={() => {
                 setMenuVisible(false);
                 onAction?.(a, property);
+                
               }}
               style={styles.menuItem}
               activeOpacity={0.6}

@@ -16,7 +16,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { isRTL, translate } from "../i18n";
-import { colors, spacing, typography } from "../theme";
+import { adjustSize, colors, spacing, typography } from "../theme";
 import { Text, TextProps } from "./Text";
 
 export interface TextFieldAccessoryProps {
@@ -214,17 +214,17 @@ export const TextField = forwardRef(function TextField(
         onPress={focusInput}
         accessibilityState={{ disabled }}
       >
-        {/* {!!(label || labelTx) && (
-        <Text
-          preset="formLabel"
-          text={label}
-          tx={labelTx}
-          weight="medium"
-          txOptions={labelTxOptions}
-          {...LabelTextProps}
-          style={$labelStyles}
-        />
-      )} */}
+        {!!(label || labelTx) && (
+          <Text
+            preset="formLabel"
+            text={label}
+            tx={labelTx}
+            weight="normal"
+            txOptions={labelTxOptions}
+            {...LabelTextProps}
+            style={$labelStyles}
+          />
+        )}
 
         <View style={$inputWrapperStyles as any}>
           {!!LeftAccessory && renderLeftAccessory}
@@ -234,7 +234,7 @@ export const TextField = forwardRef(function TextField(
             underlineColorAndroid={colors.transparent}
             textAlignVertical="top"
             placeholder={placeholderContent}
-            placeholderTextColor={"#292766"}
+            placeholderTextColor={colors.grey}
             {...TextInputProps}
             editable={!disabled}
             style={[$inputStyles]}
@@ -269,6 +269,8 @@ export const TextField = forwardRef(function TextField(
 
 const $labelStyle: TextStyle = {
   marginBottom: spacing.xxs,
+  fontSize: adjustSize(12),
+  color: colors.primary,
   // fontSize:14
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,9 +9,8 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { colors, typography } from "../theme";
+import { adjustSize, colors, typography } from "../theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
 // Define the type for a dropdown item
 interface DropdownItem {
   label: string;
@@ -26,6 +25,10 @@ interface DropdownComponentProps {
   placeholderStyle?: StyleProp<TextStyle>;
   selectedTextStyle?: StyleProp<TextStyle>;
   placeholder?: string;
+  rightIconColor?: string; // optional color override for chevron
+  rightIconStyle?: StyleProp<ViewStyle>; // optional style override for chevron container/icon
+  value?: string | null; // controlled selected value
+  onChangeValue?: (value: string) => void; // notify parent when selection changes
 }
 
 // Default data
@@ -43,38 +46,60 @@ export default function DropdownComponent({
   dropdownStyle,
   placeholderStyle,
   selectedTextStyle,
-  placeholder
+  placeholder,
+  rightIconColor,
+  rightIconStyle,
+  value: controlledValue,
+  onChangeValue,
 }: DropdownComponentProps) {
-  const [value, setValue] = useState<string | null>(null);
+  const [uncontrolledValue, setUncontrolledValue] = useState<string | null>(
+    controlledValue ?? null
+  );
   const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  // keep internal state in sync if used in controlled mode
+  useEffect(() => {
+    if (controlledValue !== undefined) {
+      setUncontrolledValue(controlledValue);
+    }
+  }, [controlledValue]);
 
   return (
     <Dropdown
       style={[
         styles.dropdown,
-        { backgroundColor: value ? colors.primary : "#292766A3" },
+        { backgroundColor: (controlledValue ?? uncontrolledValue) ? colors.primary : "#292766A3" },
         dropdownStyle,
       ]}
-      placeholderStyle={[styles.placeholderStyle, placeholderStyle] as StyleProp<TextStyle>}
-      selectedTextStyle={[styles.selectedTextStyle, selectedTextStyle] as StyleProp<TextStyle>}
+      placeholderStyle={
+        [styles.placeholderStyle, placeholderStyle] as StyleProp<TextStyle>
+      }
+      selectedTextStyle={
+        [styles.selectedTextStyle, selectedTextStyle] as StyleProp<TextStyle>
+      }
       renderRightIcon={() => (
         <MaterialIcons
           name="keyboard-arrow-down"
           size={24}
-          color={colors.white}
+          color={rightIconColor ?? colors.white}
+          style={[styles.icon, rightIconStyle]}
         />
       )}
       data={data}
       labelField="label"
       valueField="value"
-      placeholder={placeholder ? placeholder: "Select Your Role"}
+      placeholder={placeholder ? placeholder : "Select Your Role"}
       searchPlaceholder="Search..."
-      value={value}
+      value={controlledValue ?? uncontrolledValue}
       onFocus={() => setIsFocus(true)}
-      itemTextStyle={{fontFamily:typography.fonts.poppins.medium}}
+      itemTextStyle={{ fontFamily: typography.fonts.poppins.medium }}
       onBlur={() => setIsFocus(false)}
       onChange={(item: DropdownItem) => {
-        setValue(item.value);
+        if (onChangeValue) {
+          onChangeValue(item.value);
+        } else {
+          setUncontrolledValue(item.value);
+        }
         setIsFocus(false);
       }}
     />
@@ -83,7 +108,7 @@ export default function DropdownComponent({
 
 const styles = StyleSheet.create({
   dropdown: {
-    height: 55,
+    height: adjustSize(55),
     borderRadius: 10,
     paddingHorizontal: 8,
     backgroundColor: "#292766A3",
