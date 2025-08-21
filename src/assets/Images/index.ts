@@ -53,4 +53,8 @@ export const Images = {
   residentialsIcon: require("./residentials.svg"),
   commercialIcon: require("./commercial.svg"),
   remove: require("./remove.svg"),
+  clock: require("./clock.svg"),
+  addmore: require("./addmore.svg"),
+  upload: require("./upload.svg"),
+  calendar: require("./calendar.svg"),
 };

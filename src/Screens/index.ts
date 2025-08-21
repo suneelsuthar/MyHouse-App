@@ -95,6 +95,10 @@ import { AdminBackupRestore } from "./admin/backup-restore";
 import { AdminSupportTickets } from "./admin/support-tickets";
 import { AdminPropertyDetails } from "./admin/property-details";
 import { AdminAddProperty } from "./admin/add-property";
+import { AdminManageCalendar } from "./admin/manage-calendar";
+import { AdminAssignProperties } from "./admin/assign-properties";
+import { AdminGenerateWorkRequests } from "./admin/generate-work-requests";
+import { AdminCreateVisitorRequests } from "./admin/create-visitor-requests";
 export {
   Splash,
   Intro,
@@ -178,4 +182,8 @@ export {
   AdminSupportTickets,
   AdminPropertyDetails,
   AdminAddProperty,
+  AdminManageCalendar,
+  AdminAssignProperties,
+  AdminGenerateWorkRequests,
+  AdminCreateVisitorRequests,
 };

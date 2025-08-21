@@ -109,6 +109,10 @@ import {
   AdminSupportTickets,
   AdminPropertyDetails,
   AdminAddProperty,
+  AdminManageCalendar,
+  AdminAssignProperties,
+  AdminGenerateWorkRequests,
+  AdminCreateVisitorRequests,
 } from "../Screens";
 
 import {
@@ -404,6 +408,22 @@ const AdminPropertiesStackNavigator = () => (
     <AdminPropertiesStack.Screen
       name="AdminAddProperty"
       component={AdminAddProperty}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminManageCalendar"
+      component={AdminManageCalendar}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminAssignProperties"
+      component={AdminAssignProperties}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminGenerateWorkRequests"
+      component={AdminGenerateWorkRequests}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminCreateVisitorRequests"
+      component={AdminCreateVisitorRequests}
     />
   </AdminPropertiesStack.Navigator>
 );
@@ -845,8 +865,14 @@ const AdminTabs = () => (
         const baseTabBarStyle = {
           backgroundColor: "#292766",
         } as const;
-        // Hide tab bar on Add Property screen only
-        if (routeName === "AdminAddProperty") {
+        // Hide tab bar on Add Property and other full-screen property flows
+        if (
+          routeName === "AdminAddProperty" ||
+          routeName === "AdminManageCalendar" ||
+          routeName === "AdminAssignProperties" ||
+          routeName === "AdminGenerateWorkRequests" ||
+          routeName === "AdminCreateVisitorRequests"
+        ) {
           return {
             title: "Properties",
             tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],

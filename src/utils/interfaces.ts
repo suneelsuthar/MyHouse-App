@@ -31,6 +31,14 @@ export type AdminStackParamList = {
   AdminPropertyManagement: undefined;
   AdminPropertyDetails: { propertyId: string };
   AdminAddProperty: undefined;
+  AdminManageCalendar: { propertyId: string };
+  AdminAssignProperties: {
+    propertyId: string;
+    type: "agent" | "tenant" | "fm";
+    title?: string;
+  };
+  AdminGenerateWorkRequests: { propertyId: string };
+  AdminCreateVisitorRequests: { propertyId: string };
   AdminFinancialReports: undefined;
   AdminSystemSettings: undefined;
   AdminAnalytics: undefined;

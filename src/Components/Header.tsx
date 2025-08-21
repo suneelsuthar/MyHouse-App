@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle } from "react-native";
 import { colors, spacing, typography, adjustSize } from "../theme";
 import { Text } from "./Text";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ export interface HeaderProps {
   rightAccessory?: React.ReactNode;
   centerAccessory?: React.ReactNode;
   showBackOnNoLeft?: boolean;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   rightAccessory,
   centerAccessory,
   showBackOnNoLeft = true,
+  titleStyle,
 }) => {
   const navigation = useNavigation();
 
@@ -42,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Show the title on the left only when no centerAccessory is provided */}
         {!centerAccessory && !!title && (
-          <Text style={styles.leftTitle} weight="semiBold" numberOfLines={1}>
+          <Text style={[styles.leftTitle,titleStyle]} weight="semiBold" numberOfLines={1}>
             {title}
           </Text>
         )}
@@ -91,9 +93,10 @@ const styles = StyleSheet.create({
     minWidth: SIDE_WIDTH,
   },
   leftSlot: {
-    width: SIDE_WIDTH,
+    // width: SIDE_WIDTH,
     alignItems: "flex-start",
     justifyContent: "center",
+    paddingRight: 10,
   },
   right: {
     alignItems: "flex-end",

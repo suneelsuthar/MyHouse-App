@@ -6,19 +6,22 @@ import { AppStackScreenProps } from "../../../utils/interfaces";
 import Step1 from "./components/step1";
 import Step2 from "./components/step2";
 import Step3 from "./components/step3";
-
+import Step4 from "./components/step4";
+import Step5 from "./components/step5";
+import Step6 from "./components/step6";
+import { Ionicons } from "@expo/vector-icons";
 interface AdminAddPropertyProps
   extends AppStackScreenProps<"AdminAddProperty"> {}
 
 export function AdminAddProperty(props: AdminAddPropertyProps) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = [
-    { id: 0, title: "What Category is your listing?" },
-    { id: 1, title: "Where is the property located?" },
-    { id: 2, title: "Bed, Bathrooms, and Toilets" },
-    { id: 3, title: "Location" },
-    { id: 4, title: "Pricing" },
-    { id: 5, title: "What about Services?" },
+    { id: 0, title: "Your Details" },
+    { id: 1, title: "Listing Details" },
+    { id: 2, title: "Features" },
+    { id: 3, title: "Property Inspection" },
+    { id: 4, title: "Reservations" },
+    { id: 5, title: "Media and Documents" },
     // { id: 6, title: "Add Media" },
     // { id: 7, title: "Add Property" },
     // { id: 8, title: "When are you available for property inspections?" },
@@ -33,7 +36,10 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
   const goNext = () => {
     if (!isLast) setCurrentStep((s) => s + 1);
   };
+
   const onSave = () => {
+    props.navigation.goBack();
+    alert("Saved");
     // TODO: wire up final save/submit
   };
   return (
@@ -42,7 +48,18 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
       preset="fixed"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title="Your Details" />
+      <Header
+        title={steps[currentStep].title}
+        leftAccessory={
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => (isFirst ? props.navigation.goBack() : goPrev())}
+            style={{ paddingVertical: adjustSize(4) }}
+          >
+            <Ionicons name="arrow-back" size={22} color={colors.primary} />
+          </TouchableOpacity>
+        }
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles._stepper}>
@@ -73,6 +90,9 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             {currentStep === 0 && <Step1 mode="add" />}
             {currentStep === 1 && <Step2 mode="add" />}
             {currentStep === 2 && <Step3 mode="add" />}
+            {currentStep === 3 && <Step4 mode="add" />}
+            {currentStep === 4 && <Step5 mode="add" />}
+            {currentStep === 5 && <Step6 mode="add" />}
           </View>
 
           {/* Footer nav */}
@@ -123,7 +143,7 @@ const styles = StyleSheet.create({
     gap: adjustSize(10),
     marginTop: adjustSize(12),
     marginBottom: adjustSize(5),
-    marginHorizontal:adjustSize(5)
+    marginHorizontal: adjustSize(5),
   },
   footerBtnLeft: { flex: 1 },
   footerBtnRight: { flex: 1 },
@@ -182,9 +202,7 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // create a modal component in the component folder, title, body and button text will be passed as params, if props availble then show other wise no need to show the button etc,
-
 
 // i added above 3 iamges actually its one modal will open when press on "do you have other charges to add" toogle,
 // so ad click on it then modal will open with name,amount, rate field as press on save then filed, fileds will hide and will show the and another charges when press on it then will show the fileds same as before
