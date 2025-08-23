@@ -36,6 +36,12 @@ export function AdminGenerateWorkRequests({ navigation }: Props) {
   // date modal
   const [pickerVisible, setPickerVisible] = useState(false);
   const [tempDate, setTempDate] = useState<Date>(new Date());
+  // compute start of today once per render
+  const todayStart = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
 
   const categoryOptions = useMemo(
     () => [
@@ -87,13 +93,18 @@ export function AdminGenerateWorkRequests({ navigation }: Props) {
   };
 
   const openIssuePicker = () => {
-    setTempDate(issueDate ?? new Date());
+    const base = issueDate ?? new Date();
+    // ensure not earlier than today
+    const clamped = base < todayStart ? todayStart : base;
+    setTempDate(clamped);
     setPickerVisible(true);
   };
 
   const cancelPicker = () => setPickerVisible(false);
   const confirmPicker = () => {
-    setIssueDate(tempDate);
+    // clamp to today if somehow earlier
+    const finalDate = tempDate < todayStart ? todayStart : tempDate;
+    setIssueDate(finalDate);
     setPickerVisible(false);
   };
 
@@ -177,6 +188,9 @@ export function AdminGenerateWorkRequests({ navigation }: Props) {
           </View>
 
           {/* Title */}
+          <Text style={styles.label} weight="semiBold">
+          Title
+          </Text>
           <TextField
             placeholder="Title"
             value={title}
@@ -295,7 +309,7 @@ export function AdminGenerateWorkRequests({ navigation }: Props) {
       <Modal
         visible={pickerVisible}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={cancelPicker}
       >
         <View style={styles.modalBackdrop}>
@@ -308,6 +322,7 @@ export function AdminGenerateWorkRequests({ navigation }: Props) {
                 value={tempDate}
                 mode="date"
                 display={Platform.OS === "ios" ? "spinner" : "default"}
+                minimumDate={todayStart}
                 onChange={(_, d) => d && setTempDate(d)}
               />
             </View>

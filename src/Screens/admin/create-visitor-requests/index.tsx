@@ -28,6 +28,7 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
     preselectId ?? null
   );
   const [group, setGroup] = useState<string | null>(null);
+  const [visitorsCount, setVisitorsCount] = useState<number>(1);
 
   const propertyOptions = useMemo(
     () => rentalProperties.map((p) => ({ label: p.name, value: p.propertyId })),
@@ -43,15 +44,16 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
   );
   const typeOptions = useMemo(
     () => [
-      { label: "Guest", value: "guest" },
-      { label: "Contractor", value: "contractor" },
-      { label: "Delivery", value: "delivery" },
-      { label: "Other", value: "other" },
+      { label: "One-Time", value: "One-Time" },
+      { label: "Permanent", value: "Permanent" },
+      { label: "Event", value: "Event" },
     ],
     []
   );
 
   const fmt = (d: Date | null) => (d ? d.toLocaleDateString() : "Select Date");
+  const fmtTime = (d: Date | null) =>
+    d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "--:-- --";
 
   const canSubmit =
     name.trim().length > 0 &&
@@ -60,7 +62,8 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
     !!fromDate &&
     !!toDate &&
     !!propertyId &&
-    !!group;
+    !!group &&
+    (type !== "Event" || visitorsCount > 0);
 
   const onGenerate = () => {
     // TODO: Wire API call here
@@ -73,15 +76,15 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
       toDate,
       propertyId,
       group,
+      visitorsCount,
     });
     navigation.goBack();
   };
 
-  const openPicker = (target: "from" | "to") => {
+  const openPicker = (target: "from" | "to", step: "date" | "time" = "date") => {
     setActiveTarget(target);
-    setPickerStep("date");
-    const base =
-      target === "from" ? fromDate ?? new Date() : toDate ?? new Date();
+    setPickerStep(step);
+    const base = target === "from" ? fromDate ?? new Date() : toDate ?? new Date();
     setTempDate(base);
     setPickerVisible(true);
   };
@@ -107,10 +110,11 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
       <View style={styles.container}>
         {/* Name */}
         <Text weight="semiBold" style={styles.label}>
-          Name<Text style={styles.required}>*</Text>
+          {type === "Event" ? "Event Name" : "Name"}
+          <Text style={styles.required}>*</Text>
         </Text>
         <TextField
-          placeholder="Enter name"
+          placeholder={type === "Event" ? "Enter Event Name" : "Enter name"}
           value={name}
           onChangeText={setName}
           inputWrapperStyle={styles.inputWrapper}
@@ -147,45 +151,158 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
           placeholderTextColor={colors.primaryLight}
         />
 
-        {/* From/To */}
-        <View style={styles.row}>
-          <View style={{ flex: 1 }}>
-            <Text weight="semiBold" style={styles.label}>
-              From<Text style={styles.required}>*</Text>
-            </Text>
-            <Pressable
-              onPress={() => openPicker("from")}
-              style={styles.dtButton}
-            >
-              <Text
-                style={[
-                  styles.dtText,
-                  { color: fromDate ? colors.primary : colors.primaryLight },
-                ]}
-              >
-                {fmt(fromDate)}
+        {/* Date/Time layout */}
+        {type === "Permanent" ? (
+          <>
+            {/* Row 1: From (Date) + Time */}
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Text weight="semiBold" style={styles.label}>
+                  From<Text style={styles.required}>*</Text>
+                </Text>
+                <Pressable onPress={() => openPicker("from", "date")} style={styles.dtButton}>
+                  <Text
+                    style={[
+                      styles.dtText,
+                      { color: fromDate ? colors.primary : colors.primaryLight },
+                    ]}
+                  >
+                    {fmt(fromDate)}
+                  </Text>
+                  <WithLocalSvg asset={Images.calendar} />
+                </Pressable>
+              </View>
+              <View style={{ width: spacing.md }} />
+              <View style={{ flex: 1 }}>
+                <Text weight="semiBold" style={styles.label}>
+                  Time<Text style={styles.required}>*</Text>
+                </Text>
+                <Pressable onPress={() => openPicker("from", "time")} style={styles.dtButton}>
+                  <Text
+                    style={[
+                      styles.dtText,
+                      { color: fromDate ? colors.primary : colors.primaryLight },
+                    ]}
+                  >
+                    {fmtTime(fromDate)}
+                  </Text>
+                  <WithLocalSvg asset={Images.clock} />
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Row 2: To (Date) + Time */}
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Text weight="semiBold" style={styles.label}>
+                  To<Text style={styles.required}>*</Text>
+                </Text>
+                <Pressable onPress={() => openPicker("to", "date")} style={styles.dtButton}>
+                  <Text
+                    style={[
+                      styles.dtText,
+                      { color: toDate ? colors.primary : colors.primaryLight },
+                    ]}
+                  >
+                    {fmt(toDate)}
+                  </Text>
+                  <WithLocalSvg asset={Images.calendar} />
+                </Pressable>
+              </View>
+              <View style={{ width: spacing.md }} />
+              <View style={{ flex: 1 }}>
+                <Text weight="semiBold" style={styles.label}>
+                  Time<Text style={styles.required}>*</Text>
+                </Text>
+                <Pressable onPress={() => openPicker("to", "time")} style={styles.dtButton}>
+                  <Text
+                    style={[
+                      styles.dtText,
+                      { color: toDate ? colors.primary : colors.primaryLight },
+                    ]}
+                  >
+                    {fmtTime(toDate)}
+                  </Text>
+                  <WithLocalSvg asset={Images.clock} />
+                </Pressable>
+              </View>
+            </View>
+          </>
+        ) : type === "Event" ? (
+          // Event: single row with From/To time only
+          <View style={styles.row}>
+            <View style={{ flex: 1 }}>
+              <Text weight="semiBold" style={styles.label}>
+                From<Text style={styles.required}>*</Text>
               </Text>
-              <WithLocalSvg asset={Images.calendar} />
-            </Pressable>
-          </View>
-          <View style={{ width: spacing.md }} />
-          <View style={{ flex: 1 }}>
-            <Text weight="semiBold" style={styles.label}>
-              To<Text style={styles.required}>*</Text>
-            </Text>
-            <Pressable onPress={() => openPicker("to")} style={styles.dtButton}>
-              <Text
-                style={[
-                  styles.dtText,
-                  { color: toDate ? colors.primary : colors.primaryLight },
-                ]}
-              >
-                {fmt(toDate)}
+              <Pressable onPress={() => openPicker("from", "time")} style={styles.dtButton}>
+                <Text
+                  style={[
+                    styles.dtText,
+                    { color: fromDate ? colors.primary : colors.primaryLight },
+                  ]}
+                >
+                  {fmtTime(fromDate)}
+                </Text>
+                <WithLocalSvg asset={Images.clock} />
+              </Pressable>
+            </View>
+            <View style={{ width: spacing.md }} />
+            <View style={{ flex: 1 }}>
+              <Text weight="semiBold" style={styles.label}>
+                To<Text style={styles.required}>*</Text>
               </Text>
-              <WithLocalSvg asset={Images.calendar} />
-            </Pressable>
+              <Pressable onPress={() => openPicker("to", "time")} style={styles.dtButton}>
+                <Text
+                  style={[
+                    styles.dtText,
+                    { color: toDate ? colors.primary : colors.primaryLight },
+                  ]}
+                >
+                  {fmtTime(toDate)}
+                </Text>
+                <WithLocalSvg asset={Images.clock} />
+              </Pressable>
+            </View>
           </View>
-        </View>
+        ) : (
+          // Non-permanent: single row with From/To dates only
+          <View style={styles.row}>
+            <View style={{ flex: 1 }}>
+              <Text weight="semiBold" style={styles.label}>
+                From<Text style={styles.required}>*</Text>
+              </Text>
+              <Pressable onPress={() => openPicker("from", "date")} style={styles.dtButton}>
+                <Text
+                  style={[
+                    styles.dtText,
+                    { color: fromDate ? colors.primary : colors.primaryLight },
+                  ]}
+                >
+                  {fmt(fromDate)}
+                </Text>
+                <WithLocalSvg asset={Images.calendar} />
+              </Pressable>
+            </View>
+            <View style={{ width: spacing.md }} />
+            <View style={{ flex: 1 }}>
+              <Text weight="semiBold" style={styles.label}>
+                To<Text style={styles.required}>*</Text>
+              </Text>
+              <Pressable onPress={() => openPicker("to", "date")} style={styles.dtButton}>
+                <Text
+                  style={[
+                    styles.dtText,
+                    { color: toDate ? colors.primary : colors.primaryLight },
+                  ]}
+                >
+                  {fmt(toDate)}
+                </Text>
+                <WithLocalSvg asset={Images.calendar} />
+              </Pressable>
+            </View>
+          </View>
+        )}
 
         {/* Property */}
         <Text weight="semiBold" style={styles.label}>
@@ -219,6 +336,34 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
           rightIconColor={colors.primary}
         />
 
+        {/* Number of Visitors - only for Event */}
+        {type === "Event" && (
+          <>
+            <Text weight="semiBold" style={styles.label}>
+              Number of Visitors<Text style={styles.required}>*</Text>
+            </Text>
+            <View style={[styles.row, { alignItems: "center" }]}>
+              <Pressable
+                onPress={() => setVisitorsCount((v) => Math.max(0, v - 1))}
+                style={[styles.dtButton, { width: 60, justifyContent: "center" }]}
+              >
+                <Text style={styles.dtText}>-</Text>
+              </Pressable>
+              <View style={{ width: spacing.md }} />
+              <View style={[styles.dtButton, { flex: 1, justifyContent: "center" }]}> 
+                <Text style={[styles.dtText, { color: colors.primary }]}>{visitorsCount}</Text>
+              </View>
+              <View style={{ width: spacing.md }} />
+              <Pressable
+                onPress={() => setVisitorsCount((v) => v + 1)}
+                style={[styles.dtButton, { width: 60, justifyContent: "center" }]}
+              >
+                <Text style={styles.dtText}>+</Text>
+              </Pressable>
+            </View>
+          </>
+        )}
+
         <View style={{ height: spacing.xl }} />
         <Button
           text="Generate"
@@ -234,7 +379,7 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
       <Modal
         visible={pickerVisible}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={cancelPicker}
       >
         <View style={styles.modalBackdrop}>
@@ -287,7 +432,7 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
 
 const styles = StyleSheet.create({
   screenContentContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: colors.fill,
   },
   container: {

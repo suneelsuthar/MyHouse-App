@@ -21,10 +21,9 @@ type Step6Props = {
 };
 
 const DOC_TYPES = [
-  { label: "Lease", value: "lease" },
-  { label: "Property ID", value: "id" },
-  { label: "Ownership Proof", value: "ownership" },
-  { label: "Other", value: "other" },
+  { label: "Document or Power of Attorney", value: "Document or Power of Attorney" },
+  { label: "Tenancy Agreement", value: "Tenancy Agreement" },
+  { label: "Certificate of Occupancy", value: "Certificate of Occupancy" },
 ];
 
 const MAX_IMAGES = 16;

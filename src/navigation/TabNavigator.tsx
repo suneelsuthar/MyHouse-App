@@ -113,6 +113,9 @@ import {
   AdminAssignProperties,
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
+  AdminManageBookings,
+  AdminFacilityManagement,
+  AdminVisitorManagement,
 } from "../Screens";
 
 import {
@@ -381,16 +384,27 @@ const SecurityStackNavigator = () => (
 const AdminHomeStackNavigator = () => (
   <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
-    {/* Add more Home-related admin screens here */}
+    {/* Register cross-section Admin screens here for global access */}
+    <AdminHomeStack.Screen
+      name="AdminManageBookings"
+      component={AdminManageBookings}
+    />
+    <AdminHomeStack.Screen
+      name="AdminFacilityManagement"
+      component={AdminFacilityManagement}
+    />
+    <AdminHomeStack.Screen
+      name="AdminVisitorManagement"
+      component={AdminVisitorManagement}
+    />
   </AdminHomeStack.Navigator>
 );
 
 const AdminBookingStackNavigator = () => (
   <AdminBookingStack.Navigator screenOptions={{ headerShown: false }}>
-    {/* Placeholder mapping for Booking; replace with your actual booking screens */}
     <AdminBookingStack.Screen
-      name="AdminAnalytics"
-      component={AdminAnalytics}
+      name="AdminManageBookings"
+      component={AdminManageBookings}
     />
   </AdminBookingStack.Navigator>
 );

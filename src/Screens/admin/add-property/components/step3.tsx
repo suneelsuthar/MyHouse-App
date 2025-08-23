@@ -11,7 +11,7 @@ import {
 import { Text } from "../../../../Components";
 import DropdownComponent from "../../../../Components/DropDown";
 import { adjustSize, colors, typography } from "../../../../theme";
-
+import { useNavigation } from "@react-navigation/native";
 type Step3Props = {
   // Back/Next handled by parent; nothing needed here
   initialServices?: string[];
@@ -61,6 +61,7 @@ const Step3: React.FC<Step3Props> = ({
     new Set(["No Smoking", "No Parties"]) // as per screenshots demo
   );
 
+  const navigation: any = useNavigation();
   const toggleRestriction = (r: string) => {
     setSelectedRestrictions((prev) => {
       const next = new Set(prev);
@@ -188,6 +189,13 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAssignPrimaryAgent}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          onChange={() =>
+            !assignPrimaryAgent &&
+            navigation.navigate("AdminAssignProperties", {
+              type: "agent",
+              title: "Assign Agent",
+            } as never)
+          }
         />
       </View>
       <View style={styles.toggleRow}>
@@ -199,6 +207,11 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAllowPrimaryAgentRequest}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          onChange={() => {
+            if (!allowPrimaryAgentRequest) {
+              setAssignPrimaryAgent(false);
+            }
+          }}
         />
       </View>
 
@@ -215,6 +228,13 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAllowFacilityManagerRequest}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          onChange={() =>
+            !allowFacilityManagerRequest &&
+            navigation.navigate("AdminAssignProperties", {
+              type: "fm",
+              title: "Assign Facility Manager",
+            } as never)
+          }
         />
       </View>
       <View style={styles.toggleRow}>
@@ -226,6 +246,11 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAssignFacilityManager}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          onChange={() => {
+            if (!assignFacilityManager) {
+              setAllowFacilityManagerRequest(false);
+            }
+          }}
         />
       </View>
 

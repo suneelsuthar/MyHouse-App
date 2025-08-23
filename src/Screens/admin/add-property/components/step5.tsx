@@ -11,8 +11,9 @@ import { Text, Button } from "../../../../Components";
 import { adjustSize, colors, typography } from "../../../../theme";
 import TimeInlinePicker from "../../../../Components/TimeInlinePicker";
 import { AntDesign } from "@expo/vector-icons";
-import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../../../../assets/Images";
+
+
+
 
 type Slot = { start: Date; end: Date };
 type SlotsByDate = Record<string, Slot[]>;

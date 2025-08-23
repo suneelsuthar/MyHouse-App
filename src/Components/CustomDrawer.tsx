@@ -14,6 +14,16 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const [openId, setOpenId] = useState<number | null>(null); // which dropdown is open
   const dispatch = useAppDispatch();
 
+  // Close any open nested menu and the drawer, then navigate
+  const closeMenusAndNavigate = (
+    routeName: any,
+    params?: any
+  ) => {
+    setOpenId(null);
+    props.navigation.closeDrawer?.();
+    (props.navigation as any).navigate(routeName as never, params as never);
+  };
+
   const handleLogout = async () => {
     try {
       await dispatch(logoutUser());
@@ -80,7 +90,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Manage Bookings",
       type: "item",
       icon: Images.managebooking,
-      onPress: () => console.log(""),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Booking",
+          params: { screen: "AdminManageBookings" },
+        }),
     },
     {
       id: 3,
@@ -91,17 +105,38 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Work Requests",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "work_requests" },
+              },
+            }),
         },
         {
           id: 1,
           title: "Work Orders",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "work_orders" },
+              },
+            }),
         },
         {
           id: 2,
           title: "Completed",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "completed" },
+              },
+            }),
         },
       ],
     },
@@ -114,27 +149,62 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Visitor Requests",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminVisitorManagement",
+                params: { view: "visitor_requests" },
+              },
+            }),
         },
         {
           id: 1,
           title: "Visitors List",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminVisitorManagement",
+                params: { view: "visitors_list" },
+              },
+            }),
         },
         {
           id: 2,
           title: "Revoked Invitations",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminVisitorManagement",
+                params: { view: "revoked" },
+              },
+            }),
         },
         {
           id: 3,
           title: "Access Alerts",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminVisitorManagement",
+                params: { view: "access_alerts" },
+              },
+            }),
         },
         {
           id: 4,
           title: "Panic Alerts",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminVisitorManagement",
+                params: { view: "panic_alerts" },
+              },
+            }),
         },
       ],
     },
@@ -316,7 +386,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
                 if (val.type === "dropdown") {
                   setOpenId((prev) => (prev === val.id ? null : val.id));
                 } else {
-                  props.navigation.navigate("Home");
+                  // Invoke item's onPress if provided, else fallback
+                  if (typeof (val as any).onPress === "function") {
+                    (val as any).onPress();
+                  } else {
+                    props.navigation.navigate("Home");
+                  }
                 }
               }}
             >
@@ -353,6 +428,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
                             activeOpacity={0.7}
                             key={nested.id ?? index}
                             style={styles._nested_items}
+                            onPress={() => {
+                              if (typeof nested.onPress === "function") {
+                                nested.onPress();
+                              }
+                            }}
                           >
                             <Text
                               weight="semiBold"

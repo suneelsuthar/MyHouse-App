@@ -39,6 +39,24 @@ export type AdminStackParamList = {
   };
   AdminGenerateWorkRequests: { propertyId: string };
   AdminCreateVisitorRequests: { propertyId: string };
+  AdminManageBookings: undefined;
+  AdminFacilityManagement: {
+    status: "work_requests" | "work_orders" | "completed";
+  };
+  AdminVisitorManagement: {
+    view:
+      | "visitor_requests"
+      | "visitors_list"
+      | "revoked"
+      | "access_alerts"
+      | "panic_alerts";
+  };
+  // Separate Visitor Management pages
+  AdminVisitorRequests: undefined;
+  AdminVisitorsList: undefined;
+  AdminRevokedInvitations: undefined;
+  AdminAccessAlerts: undefined;
+  AdminPanicAlerts: undefined;
   AdminFinancialReports: undefined;
   AdminSystemSettings: undefined;
   AdminAnalytics: undefined;

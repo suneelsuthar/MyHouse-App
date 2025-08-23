@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<MainTabParamList>;
   Splash: undefined;
-};\n
+};
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;

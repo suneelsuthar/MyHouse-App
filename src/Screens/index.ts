@@ -99,6 +99,9 @@ import { AdminManageCalendar } from "./admin/manage-calendar";
 import { AdminAssignProperties } from "./admin/assign-properties";
 import { AdminGenerateWorkRequests } from "./admin/generate-work-requests";
 import { AdminCreateVisitorRequests } from "./admin/create-visitor-requests";
+import { AdminManageBookings } from "./admin/manage-bookings";
+import { AdminFacilityManagement } from "./admin/facility-management";
+import { AdminVisitorManagement } from "./admin/visitor-management";
 export {
   Splash,
   Intro,
@@ -186,4 +189,7 @@ export {
   AdminAssignProperties,
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
+  AdminManageBookings,
+  AdminFacilityManagement,
+  AdminVisitorManagement,
 };
