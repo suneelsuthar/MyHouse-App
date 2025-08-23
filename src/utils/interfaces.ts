@@ -40,6 +40,7 @@ export type AdminStackParamList = {
   AdminGenerateWorkRequests: { propertyId: string };
   AdminCreateVisitorRequests: { propertyId: string };
   AdminManageBookings: undefined;
+  AdminBookingDetails: { bookingId: string };
   AdminFacilityManagement: {
     status: "work_requests" | "work_orders" | "completed";
   };
@@ -51,6 +52,8 @@ export type AdminStackParamList = {
       | "access_alerts"
       | "panic_alerts";
   };
+  AdminTenants: undefined;
+  AdminCommunityArea: { tab: "amenities" | "reservations" };
   // Separate Visitor Management pages
   AdminVisitorRequests: undefined;
   AdminVisitorsList: undefined;

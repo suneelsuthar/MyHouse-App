@@ -1,8 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Screen } from "../../../Components/Screen";
-import { Text } from "../../../Components/Text";
-import { spacing } from "../../../Styles/baseStyles";
+import { Screen, Text } from "../../../Components";
+import { spacing } from "../../../theme";
 
 export const AdminVisitorsList: React.FC = () => {
   return (

@@ -114,8 +114,16 @@ import {
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
   AdminManageBookings,
+  AdminBookingDetails,
   AdminFacilityManagement,
   AdminVisitorManagement,
+  AdminTenants,
+  AdminCommunityArea,
+  AdminVisitorRequests,
+  AdminVisitorsList,
+  AdminRevokedInvitations,
+  AdminAccessAlerts,
+  AdminPanicAlerts,
 } from "../Screens";
 
 import {
@@ -397,6 +405,32 @@ const AdminHomeStackNavigator = () => (
       name="AdminVisitorManagement"
       component={AdminVisitorManagement}
     />
+    <AdminHomeStack.Screen name="AdminTenants" component={AdminTenants} />
+    <AdminHomeStack.Screen
+      name="AdminCommunityArea"
+      component={AdminCommunityArea}
+    />
+    {/* Separate Visitor Management pages */}
+    <AdminHomeStack.Screen
+      name="AdminVisitorRequests"
+      component={AdminVisitorRequests}
+    />
+    <AdminHomeStack.Screen
+      name="AdminVisitorsList"
+      component={AdminVisitorsList}
+    />
+    <AdminHomeStack.Screen
+      name="AdminRevokedInvitations"
+      component={AdminRevokedInvitations}
+    />
+    <AdminHomeStack.Screen
+      name="AdminAccessAlerts"
+      component={AdminAccessAlerts}
+    />
+    <AdminHomeStack.Screen
+      name="AdminPanicAlerts"
+      component={AdminPanicAlerts}
+    />
   </AdminHomeStack.Navigator>
 );
 
@@ -405,6 +439,10 @@ const AdminBookingStackNavigator = () => (
     <AdminBookingStack.Screen
       name="AdminManageBookings"
       component={AdminManageBookings}
+    />
+    <AdminBookingStack.Screen
+      name="AdminBookingDetails"
+      component={AdminBookingDetails}
     />
   </AdminBookingStack.Navigator>
 );
@@ -868,7 +906,27 @@ const AdminTabs = () => (
     })}
   >
     <Tab.Screen name="Home" component={AdminHomeStackNavigator} />
-    <Tab.Screen name="Booking" component={AdminBookingStackNavigator} />
+    <Tab.Screen
+      name="Booking"
+      component={AdminBookingStackNavigator}
+      options={({ route }) => {
+        const routeName =
+          getFocusedRouteNameFromRoute(route) ?? "AdminManageBookings";
+        const baseTabBarStyle = {
+          backgroundColor: "#292766",
+        } as const;
+        if (routeName === "AdminBookingDetails") {
+          return {
+            title: "Booking",
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          };
+        }
+        return {
+          title: "Booking",
+          tabBarStyle: baseTabBarStyle,
+        };
+      }}
+    />
     <Tab.Screen
       name="Properties"
       component={AdminPropertiesStackNavigator}

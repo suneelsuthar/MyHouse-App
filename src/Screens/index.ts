@@ -101,7 +101,15 @@ import { AdminGenerateWorkRequests } from "./admin/generate-work-requests";
 import { AdminCreateVisitorRequests } from "./admin/create-visitor-requests";
 import { AdminManageBookings } from "./admin/manage-bookings";
 import { AdminFacilityManagement } from "./admin/facility-management";
+import { AdminBookingDetails } from "./admin/manage-bookings/details";
 import { AdminVisitorManagement } from "./admin/visitor-management";
+import { AdminTenants } from "./admin/tenants";
+import { AdminCommunityArea } from "./admin/community-area";
+import { AdminVisitorRequests } from "./admin/visitor-management/visitor-requests";
+import { AdminVisitorsList } from "./admin/visitor-management/visitors-list";
+import { AdminRevokedInvitations } from "./admin/visitor-management/revoked-invitations";
+import { AdminAccessAlerts } from "./admin/visitor-management/access-alerts";
+import { AdminPanicAlerts } from "./admin/visitor-management/panic-alerts";
 export {
   Splash,
   Intro,
@@ -190,6 +198,14 @@ export {
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
   AdminManageBookings,
+  AdminBookingDetails,
   AdminFacilityManagement,
   AdminVisitorManagement,
+  AdminTenants,
+  AdminCommunityArea,
+  AdminVisitorRequests,
+  AdminVisitorsList,
+  AdminRevokedInvitations,
+  AdminAccessAlerts,
+  AdminPanicAlerts,
 };

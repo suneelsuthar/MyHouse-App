@@ -152,10 +152,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: {
-                screen: "AdminVisitorManagement",
-                params: { view: "visitor_requests" },
-              },
+              params: { screen: "AdminVisitorRequests" },
             }),
         },
         {
@@ -164,10 +161,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: {
-                screen: "AdminVisitorManagement",
-                params: { view: "visitors_list" },
-              },
+              params: { screen: "AdminVisitorsList" },
             }),
         },
         {
@@ -176,10 +170,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: {
-                screen: "AdminVisitorManagement",
-                params: { view: "revoked" },
-              },
+              params: { screen: "AdminRevokedInvitations" },
             }),
         },
         {
@@ -188,10 +179,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: {
-                screen: "AdminVisitorManagement",
-                params: { view: "access_alerts" },
-              },
+              params: { screen: "AdminAccessAlerts" },
             }),
         },
         {
@@ -200,10 +188,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: {
-                screen: "AdminVisitorManagement",
-                params: { view: "panic_alerts" },
-              },
+              params: { screen: "AdminPanicAlerts" },
             }),
         },
       ],
@@ -213,7 +198,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Tenants",
       type: "item",
       icon: Images.tenants,
-      onPress: () => console.log(""),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminTenants" },
+        }),
     },
     {
       id: 6,
@@ -224,12 +213,20 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Amenities",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "AdminCommunityArea", params: { tab: "amenities" } },
+            }),
         },
         {
           id: 1,
           title: "Reservations",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "AdminCommunityArea", params: { tab: "reservations" } },
+            }),
         },
       ],
     },
