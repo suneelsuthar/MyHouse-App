@@ -1,0 +1,161 @@
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { adjustSize, colors, typography } from "../theme";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+// Define the type for a dropdown item
+interface DropdownItem {
+  label: string;
+  value: string;
+}
+
+// Props type (if you want to pass data or label dynamically)
+interface DropdownComponentProps {
+  data?: DropdownItem[];
+  label?: string;
+  dropdownStyle?: StyleProp<ViewStyle>;
+  placeholderStyle?: StyleProp<TextStyle>;
+  selectedTextStyle?: StyleProp<TextStyle>;
+  placeholder?: string;
+  rightIconColor?: string; // optional color override for chevron
+  rightIconStyle?: StyleProp<ViewStyle>; // optional style override for chevron container/icon
+  value?: string | null; // controlled selected value
+  onChangeValue?: (value: string) => void; // notify parent when selection changes
+}
+
+// Default data
+const defaultData: DropdownItem[] = [
+  { label: "Landlord", value: "Landlord" },
+  { label: "Agent", value: "Agent" },
+  { label: "Facility Manager", value: "Facility Manager" },
+  { label: "Customer", value: "Customer" },
+  { label: "Tenant", value: "Tenant" },
+];
+
+export default function SearchDropdown({
+  data = defaultData,
+  label = "Dropdown label",
+  dropdownStyle,
+  placeholderStyle,
+  selectedTextStyle,
+  placeholder,
+  rightIconColor,
+  rightIconStyle,
+  value: controlledValue,
+  onChangeValue,
+}: DropdownComponentProps) {
+  const [uncontrolledValue, setUncontrolledValue] = useState<string | null>(
+    controlledValue ?? null
+  );
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  // keep internal state in sync if used in controlled mode
+  useEffect(() => {
+    if (controlledValue !== undefined) {
+      setUncontrolledValue(controlledValue);
+    }
+  }, [controlledValue]);
+
+  return (
+    <Dropdown
+      style={[
+        styles.dropdown,
+        {
+          backgroundColor: "#F2F3FF",
+          marginHorizontal: adjustSize(10),
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3,
+          marginTop: adjustSize(20),
+        },
+        dropdownStyle,
+      ]}
+      placeholderStyle={
+        [styles.placeholderStyle, placeholderStyle] as StyleProp<TextStyle>
+      }
+      selectedTextStyle={
+        [styles.selectedTextStyle, selectedTextStyle] as StyleProp<TextStyle>
+      }
+      renderRightIcon={() => (
+        <MaterialIcons
+          name="keyboard-arrow-down"
+          size={24}
+          color={rightIconColor ?? colors.primary}
+          style={[styles.icon, rightIconStyle]}
+        />
+      )}
+      data={data}
+      labelField="label"
+      valueField="value"
+      placeholder={placeholder ? placeholder : "Search"}
+      searchPlaceholder="Search..."
+      value={controlledValue ?? uncontrolledValue}
+      onFocus={() => setIsFocus(true)}
+      itemTextStyle={{ fontFamily: typography.fonts.poppins.medium }}
+      onBlur={() => setIsFocus(false)}
+      onChange={(item: DropdownItem) => {
+        if (onChangeValue) {
+          onChangeValue(item.value);
+        } else {
+          setUncontrolledValue(item.value);
+        }
+        setIsFocus(false);
+      }}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  dropdown: {
+    height: adjustSize(55),
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    backgroundColor: "#292766A3",
+    paddingLeft: 15,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: "absolute",
+    // backgroundColor: "white",
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: adjustSize(12),
+  },
+  placeholderStyle: {
+    color: "rgba(41, 39, 102, 0.5)",
+    fontFamily: typography.fonts.poppins.normal,
+    fontSize: adjustSize(12),
+  },
+  selectedTextStyle: {
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.normal,
+    fontSize: adjustSize(12),
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    color: colors.white,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
+  },
+});

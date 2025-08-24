@@ -178,92 +178,141 @@ export type IRentalProperty = {
   quantity: number;
   rating: number;
   reviewsCount: number;
-  agents: { id: string; name: string; avatar: string; code: string; role: "Primary agent" | "Agent" }[];
-  facilityManagers: { id: string; name: string; avatar: string; code: string; role: "Facility Manager" }[];
+  agents: {
+    id: string;
+    name: string;
+    avatar: string;
+    code: string;
+    role: "Primary agent" | "Agent";
+  }[];
+  facilityManagers: {
+    id: string;
+    name: string;
+    avatar: string;
+    code: string;
+    role: "Facility Manager";
+  }[];
   inspectionNotes: string;
 };
 
 const getRandomStatus = (): PropertyStatus =>
-  (["Approved", "Pending", "Rejected"][faker.number.int({ min: 0, max: 2 })] as PropertyStatus);
+  ["Approved", "Pending", "Rejected"][
+    faker.number.int({ min: 0, max: 2 })
+  ] as PropertyStatus;
 
-export const rentalProperties: IRentalProperty[] = Array.from({ length: 8 }).map(
-  (_, idx) => {
-    const seedBase = faker.string.alphanumeric(8);
-    // Always 5 stable images per property, using Picsum seeds so URLs are valid
-    const images = Array.from({ length: 5 }).map((__, i) =>
-      `https://picsum.photos/seed/${encodeURIComponent(seedBase + "-house-" + i)}/640/420`
-    );
+export const rentalProperties: IRentalProperty[] = Array.from({
+  length: 8,
+}).map((_, idx) => {
+  const seedBase = faker.string.alphanumeric(8);
+  // Always 5 stable images per property, using Picsum seeds so URLs are valid
+  const images = Array.from({ length: 5 }).map(
+    (__, i) =>
+      `https://picsum.photos/seed/${encodeURIComponent(
+        seedBase + "-house-" + i
+      )}/640/420`
+  );
 
-    const name = `${faker.word.adjective()} ${faker.word.noun({ length: 5 })}`
-      .replace(/\b\w/g, (c) => c.toUpperCase());
+  const name = `${faker.word.adjective()} ${faker.word.noun({
+    length: 5,
+  })}`.replace(/\b\w/g, (c) => c.toUpperCase());
 
-    const city = faker.location.city();
-    const country = faker.location.country();
-    const rating = faker.number.float({ min: 3.5, max: 5, fractionDigits: 1 });
-    const reviews = faker.number.int({ min: 3, max: 120 });
+  const city = faker.location.city();
+  const country = faker.location.country();
+  const rating = faker.number.float({ min: 3.5, max: 5, fractionDigits: 1 });
+  const reviews = faker.number.int({ min: 3, max: 120 });
 
-    const agents = Array.from({ length: faker.number.int({ min: 3, max: 6 }) }).map((__, i) => ({
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      avatar: `https://i.pravatar.cc/150?img=${faker.number.int({ min: 1, max: 70 })}`,
-      code: faker.number.int({ min: 10000, max: 99999 }).toString(),
-      role: i === 0 ? ("Primary agent" as const) : ("Agent" as const),
-    }));
+  const agents = Array.from({
+    length: faker.number.int({ min: 3, max: 6 }),
+  }).map((__, i) => ({
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    avatar: `https://i.pravatar.cc/150?img=${faker.number.int({
+      min: 1,
+      max: 70,
+    })}`,
+    code: faker.number.int({ min: 10000, max: 99999 }).toString(),
+    role: i === 0 ? ("Primary agent" as const) : ("Agent" as const),
+  }));
 
-    const facilityManagers = Array.from({ length: faker.number.int({ min: 3, max: 6 }) }).map(() => ({
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      avatar: `https://i.pravatar.cc/150?img=${faker.number.int({ min: 1, max: 70 })}`,
-      code: faker.number.int({ min: 10000, max: 99999 }).toString(),
-      role: "Facility Manager" as const,
-    }));
+  const facilityManagers = Array.from({
+    length: faker.number.int({ min: 3, max: 6 }),
+  }).map(() => ({
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    avatar: `https://i.pravatar.cc/150?img=${faker.number.int({
+      min: 1,
+      max: 70,
+    })}`,
+    code: faker.number.int({ min: 10000, max: 99999 }).toString(),
+    role: "Facility Manager" as const,
+  }));
 
-    return {
-      id: faker.string.uuid(),
-      name: name || `Property ${idx + 1}`,
-      group: `${faker.company.name()} Group`,
-      location: `${city}, ${country}`,
-      status: getRandomStatus(),
-      tenantName: faker.person.fullName(),
-      propertyId: faker.number.int({ min: 100000, max: 999999 }).toString(),
-      addedBy: faker.number.int({ min: 1200, max: 1299 }).toString(),
-      images,
-      mandate: faker.helpers.arrayElement(["Exclusive", "Non-exclusive", "Joint"]),
-      category: faker.helpers.arrayElement(["Shortlet", "Apartment", "Villa", "Maisonette"]),
-      address: faker.location.streetAddress(),
-      city,
-      state: faker.location.state(),
-      country,
-      pricePerNight: faker.number.int({ min: 80, max: 800 }),
-      cautionDeposit: faker.number.int({ min: 100, max: 1000 }),
-      serviceChargeFlat: faker.number.int({ min: 10, max: 200 }),
-      otherFeesFlat: faker.number.int({ min: 0, max: 150 }),
-      description: faker.lorem.paragraphs({ min: 1, max: 2 }),
-      virtualTourUrl: faker.internet.url(),
-      features: faker.helpers.arrayElements([
-        "Pool",
-        "Gym",
-        "WiFi",
-        "Air Conditioning",
-        "Parking",
-        "Kitchen",
-      ], 4),
-      amenities: faker.helpers.arrayElements([
-        "Towels",
-        "Toiletries",
-        "Smart TV",
-        "Washer",
-        "Dryer",
-        "Workspace",
-      ], 4),
-      quantity: faker.number.int({ min: 1, max: 10 }),
-      rating,
-      reviewsCount: reviews,
-      agents,
-      facilityManagers,
-      inspectionNotes: faker.lorem.sentences({ min: 2, max: 4 }),
-    } as IRentalProperty;
-  }
-);
-
-export { forYouList, topratedList, sepecialOfferList, trendingList, rentalProperties, IRentalProperty };
+  return {
+    id: faker.string.uuid(),
+    name: name || `Property ${idx + 1}`,
+    group: `${faker.company.name()} Group`,
+    location: `${city}, ${country}`,
+    status: getRandomStatus(),
+    tenantName: faker.person.fullName(),
+    propertyId: faker.number.int({ min: 100000, max: 999999 }).toString(),
+    addedBy: faker.number.int({ min: 1200, max: 1299 }).toString(),
+    images,
+    mandate: faker.helpers.arrayElement([
+      "Exclusive",
+      "Non-exclusive",
+      "Joint",
+    ]),
+    category: faker.helpers.arrayElement([
+      "Shortlet",
+      "Apartment",
+      "Villa",
+      "Maisonette",
+    ]),
+    address: faker.location.streetAddress(),
+    city,
+    state: faker.location.state(),
+    country,
+    pricePerNight: faker.number.int({ min: 80, max: 800 }),
+    cautionDeposit: faker.number.int({ min: 100, max: 1000 }),
+    serviceChargeFlat: faker.number.int({ min: 10, max: 200 }),
+    otherFeesFlat: faker.number.int({ min: 0, max: 150 }),
+    description: faker.lorem.paragraphs({ min: 1, max: 2 }),
+    virtualTourUrl: faker.internet.url(),
+    features: faker.helpers.arrayElements(
+      ["Pool", "Gym", "WiFi", "Air Conditioning", "Parking", "Kitchen"],
+      4
+    ),
+    amenities: faker.helpers.arrayElements(
+      ["Towels", "Toiletries", "Smart TV", "Washer", "Dryer", "Workspace"],
+      4
+    ),
+    quantity: faker.number.int({ min: 1, max: 10 }),
+    rating,
+    reviewsCount: reviews,
+    agents,
+    facilityManagers,
+    inspectionNotes: faker.lorem.sentences({ min: 2, max: 4 }),
+  } as IRentalProperty;
+});
+export interface IFacilityManagement {
+  id: string;
+  images: string[];
+  requestedBy: string;
+  status: "Work Requests" | "Orders" | "Completed";
+  title: string;
+  text: string;
+  workReqNo: string;
+  category: string;
+  priority: string;
+  issueDate: string;
+  dueDate: string;
+}
+export {
+  forYouList,
+  topratedList,
+  sepecialOfferList,
+  trendingList,
+  rentalProperties,
+  IRentalProperty,
+  IFacilityManagement,
+};

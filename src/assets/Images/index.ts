@@ -57,4 +57,5 @@ export const Images = {
   addmore: require("./addmore.svg"),
   upload: require("./upload.svg"),
   calendar: require("./calendar.svg"),
+  tabsBgImage: require("./tabs-bg-image.png"),
 };
