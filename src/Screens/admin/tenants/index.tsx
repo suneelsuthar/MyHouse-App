@@ -1,8 +1,7 @@
-import React from "react";
-import { StyleSheet, View, FlatList ,TouchableOpacity} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import { Screen, Text, Header2 } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
-import Dropdown from "../../../Components/DropDown";
 import SearchDropdown from "../../../Components/SearchDropdown";
 import DropdownComponent from "../../../Components/DropDown";
 import moment from "moment";
@@ -111,6 +110,8 @@ export const data = [
 ];
 
 export function AdminTenants() {
+  const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
+
   return (
     <Screen
       preset="fixed"
@@ -139,44 +140,105 @@ export function AdminTenants() {
             />
           </View>
         </View>
-        {/* ÷÷ */}
       </View>
+
       <FlatList
         data={data}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View
-            style={[
-              styles.card,
-              { backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent" },
-            ]}
-          >
-            <View>
-              <Text>{item.name.slice(0, 1)}</Text>
+        renderItem={({ item, index }) => {
+          const isMenuVisible = visibleMenuIndex === index;
+
+          return (
+            <View
+              style={[
+                styles.card,
+                {
+                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
+                },
+              ]}
+            >
+              <View style={styles.profileMain}>
+                <Text style={styles.profileName}>{item.name.slice(0, 1)}</Text>
+              </View>
+
+              <View style={styles.data}>
+                <Text style={styles.name} numberOfLines={1}>
+                  {item.name}
+                </Text>
+                <Text style={styles.property} numberOfLines={1}>
+                  Property:{" "}
+                  <Text
+                    style={[
+                      styles.property,
+                      { fontFamily: typography.fonts.poppins.normal },
+                    ]}
+                  >
+                    {item.property}
+                  </Text>
+                </Text>
+                <Text style={styles.date} numberOfLines={1}>
+                  Date Added:{" "}
+                  <Text
+                    style={[
+                      styles.date,
+                      {
+                        fontFamily: typography.fonts.poppins.normal,
+                        color: "#4CAF50",
+                      },
+                    ]}
+                  >
+                    {moment(item.dateAdded).format("DD MMM, YYYY")}
+                  </Text>
+                </Text>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() =>
+                    setVisibleMenuIndex(
+                      isMenuVisible ? null : index // toggle
+                    )
+                  }
+                >
+                  <Entypo
+                    name="dots-three-vertical"
+                    size={16}
+                    color={colors.primary}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {isMenuVisible && (
+                <>
+                  {/* Transparent overlay */}
+                  <TouchableOpacity
+                    style={styles.overlay}
+                    activeOpacity={1}
+                    onPress={() => setVisibleMenuIndex(null)}
+                  />
+
+                  {/* Menu box */}
+                  <View style={styles.menuBox}>
+                    {["View"].map((a) => (
+                      <TouchableOpacity
+                        key={a}
+                        onPress={() => {
+                          setVisibleMenuIndex(null);
+                          // onAction?.(a, item);
+                        }}
+                        style={styles.menuItem}
+                        activeOpacity={0.6}
+                      >
+                        <Text style={styles.menuText}>{a}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </>
+              )}
             </View>
-            <View>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.property}>{item.property}</Text>
-              <Text style={styles.date}>
-                {item.dateAdded}
-                {moment().format("MMMM Do YYYY, h:mm:ss a")}
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={styles._morebutton}
-                onPress={() => setMenuVisible((v) => !v)}
-              >
-                <Entypo
-                  name="dots-three-vertical"
-                  size={16}
-                  color={colors.primary}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
+          );
+        }}
       />
     </Screen>
   );
@@ -224,5 +286,72 @@ const styles = StyleSheet.create({
   card: {
     paddingVertical: adjustSize(15),
     paddingHorizontal: adjustSize(10),
+    flexDirection: "row",
+    position: "relative",
+  },
+  profileMain: {
+    backgroundColor: colors.white,
+    height: adjustSize(40),
+    width: adjustSize(40),
+    borderRadius: 100,
+    elevation: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  profileName: {
+    color: colors.black,
+    fontSize: adjustSize(26),
+    fontFamily: typography.fonts.poppins.semiBold,
+    lineHeight: adjustSize(36),
+  },
+  data: {
+    flex: 1,
+    marginHorizontal: adjustSize(15),
+  },
+  name: {
+    color: colors.primaryLight,
+    fontSize: adjustSize(15),
+    fontFamily: typography.fonts.poppins.semiBold,
+    marginTop: adjustSize(5),
+  },
+  property: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.semiBold,
+    marginTop: adjustSize(7),
+  },
+  date: {
+    color: colors.primary,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "transparent", // invisible but catch taps
+    zIndex: 5,
+  },
+  menuBox: {
+    position: "absolute",
+    right: adjustSize(10),
+    top: adjustSize(36),
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(10),
+    elevation: 4,
+    width: adjustSize(100),
+    paddingVertical: adjustSize(6),
+    zIndex: 10,
+  },
+  menuItem: {
+    paddingVertical: adjustSize(5),
+    paddingHorizontal: adjustSize(12),
+  },
+  menuText: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
   },
 });
