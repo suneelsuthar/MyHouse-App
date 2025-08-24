@@ -6,6 +6,7 @@ import SearchDropdown from "../../../Components/SearchDropdown";
 import DropdownComponent from "../../../Components/DropDown";
 import moment from "moment";
 import Entypo from "@expo/vector-icons/Entypo";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 export const data = [
   {
     name: "Ethan Baker",
@@ -110,6 +111,7 @@ export const data = [
 ];
 
 export function AdminTenants() {
+  const navigation = useNavigation();
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
 
   return (
@@ -225,8 +227,10 @@ export function AdminTenants() {
                         key={a}
                         onPress={() => {
                           setVisibleMenuIndex(null);
+                          (navigation as any).navigate("AdminTenantDetails");
                           // onAction?.(a, item);
                         }}
+                        // AdminTenantDetails
                         style={styles.menuItem}
                         activeOpacity={0.6}
                       >

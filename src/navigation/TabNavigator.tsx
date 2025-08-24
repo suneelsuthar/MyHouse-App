@@ -124,6 +124,7 @@ import {
   AdminRevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
+  AdminTenantDetails
 } from "../Screens";
 
 import {
@@ -472,6 +473,10 @@ const AdminPropertiesStackNavigator = () => (
     <AdminPropertiesStack.Screen
       name="AdminGenerateWorkRequests"
       component={AdminGenerateWorkRequests}
+    />
+     <AdminPropertiesStack.Screen
+      name="AdminTenantDetails"
+      component={AdminTenantDetails}
     />
     <AdminPropertiesStack.Screen
       name="AdminCreateVisitorRequests"

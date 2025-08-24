@@ -1,23 +1,385 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Screen, Text } from "../../../Components";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import {
+  Screen,
+  Text,
+  Header2,
+  CustomTabs,
+  SearchBar,
+  FacilityManagementCard,
+} from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-
+import { useNavigation } from "@react-navigation/native";
+import {
+  WorkRequestsIcon,
+  OrdersIcon,
+  CompletedIcon,
+  AmenitiesIcon,
+  ReservationsIcon,
+} from "../../../assets/svg";
+import DropdownComponent from "../../../Components/DropDown";
 type Props = AppStackScreenProps<"AdminCommunityArea">;
 
 export function AdminCommunityArea({ route }: Props) {
-  const tab = route?.params?.tab ?? "amenities";
+  // const tab = route?.params?.tab ?? "amenities";
 
-  const title = tab === "reservations" ? "Reservations" : "Amenities";
+  // const title = tab === "reservations" ? "Reservations" : "Amenities";
+  const navigation = useNavigation();
+  const status = route?.params?.tab ?? "work_requests";
+  const titleMap: Record<string, string> = {
+    amenities: "Amenities",
+    reservations: "Reservations",
+  };
+  const [activeTab, setActiveTab] = useState(titleMap[status]); // 🔹 string state
+  const [search, setSearch] = useState<string>("");
+  useEffect(() => {
+    setActiveTab(titleMap[status]);
+  }, [status]);
+  const data = [
+    {
+      id: "1",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Work requests",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "2",
+      images: [
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Orders",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "3",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+      ],
+      requestedBy: "Completed",
+      status: "Completed",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "4",
+      images: [
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Work requests",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "5",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Orders",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "6",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+      ],
+      requestedBy: "Completed",
+      status: "Orders",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "7",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Work requests",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "8",
+      images: [
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Completed",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "9",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+      ],
+      requestedBy: "Completed",
+      status: "Completed",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "10",
+      images: [
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Work requests",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "11",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      requestedBy: "Brume Djbah",
+      status: "Orders",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+    {
+      id: "12",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+      ],
+      requestedBy: "Completed",
+      status: "Orders",
+      title: "The oak Court",
+      text: "Leaking toilet in master drawing room",
+      workReqNo: "WR12345",
+      category: "Plumbing",
+      priority: "High",
+      issueDate: "15, Sep 2024",
+      dueDate: "15, Sep 2024",
+    },
+  ];
+
+  const filteredData = data?.filter(
+    (item) => item?.status?.toLowerCase() === activeTab?.toLowerCase()
+  );
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={styles.container}>
-      <Text weight="semiBold" style={styles.title}>Community Area — {title}</Text>
-      <View style={styles.card}>
-        <Text style={styles.muted}>Active tab: {tab}</Text>
-        <Text style={styles.muted}>Render community area UI based on the tab prop.</Text>
-      </View>
+    <Screen
+      preset="fixed"
+      safeAreaEdges={["top"]}
+      contentContainerStyle={styles.container}
+    >
+      <Header2 title="Community Area" onNotificationPress={() => {}} />
+      <CustomTabs
+        tabs={[
+          {
+            label: "Amenities",
+            activeIcon: <AmenitiesIcon color={colors.primary} />,
+            inactiveIcon: <AmenitiesIcon color={colors.white} />,
+          },
+          {
+            label: "Reservations",
+            activeIcon: <ReservationsIcon color={colors.primary} />,
+            inactiveIcon: <ReservationsIcon color={colors.white} />,
+          },
+        ]}
+        activeTab={activeTab}
+        onTabChange={(label) => setActiveTab(label)}
+      >
+        <SearchBar
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Search"
+          hideBtn={activeTab === "Completed" ? true : false}
+          onAddPress={() =>
+            (navigation as any).navigate("AdminAddProperty" as never)
+          }
+        />
+        <View style={styles.section}>
+          <View style={styles._seciton_row}>
+            <Text weight="semiBold" style={styles.sectionTitle}>
+              {activeTab === "Completed"
+                ? "Manage Work Orders"
+                : activeTab === "Orders"
+                ? "Work Orders"
+                : "Work Requests"}
+            </Text>
+            {activeTab === "Work Requests" && (
+              <View style={styles.dropdownContainer}>
+                <DropdownComponent
+                  data={[
+                    { label: "A", value: "A" },
+                    { label: "B", value: "B" },
+                    { label: "C", value: "C" },
+                  ]}
+                  label="Select Period"
+                  placeholder="Last 7 days"
+                  dropdownStyle={styles.customDropdownStyle}
+                  placeholderStyle={styles.customPlaceholderStyle}
+                  selectedTextStyle={styles.customSelectedTextStyle}
+                />
+              </View>
+            )}
+          </View>
+          {/* ÷÷ */}
+        </View>
+
+        {/* List */}
+        <FlatList
+          data={filteredData}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item, index }) => (
+            <FacilityManagementCard
+              property={item}
+              activeTab={activeTab}
+              onAction={(action, property) => {
+                if (action === "View Details") {
+                  (navigation as any).navigate(
+                    "AdminPropertyDetails" as never,
+                    { propertyId: property.propertyId } as never
+                  );
+                } else if (action === "Edit") {
+                  (navigation as any).navigate(
+                    "AdminAddProperty" as never,
+                    { propertyId: property.propertyId } as never
+                  );
+                } else if (action === "Manage Calendar") {
+                  (navigation as any).navigate(
+                    "AdminManageCalendar" as never,
+                    { propertyId: property.propertyId } as never
+                  );
+                } else if (action === "Assign to agent") {
+                  (navigation as any).navigate(
+                    "AdminAssignProperties" as never,
+                    {
+                      propertyId: property.propertyId,
+                      type: "agent",
+                      title: "Assign Agent",
+                    } as never
+                  );
+                } else if (action === "Assign to FM") {
+                  (navigation as any).navigate(
+                    "AdminAssignProperties" as never,
+                    {
+                      propertyId: property.propertyId,
+                      type: "fm",
+                      title: "Assign Facility Manager",
+                    } as never
+                  );
+                } else if (action === "Register Tenant") {
+                  (navigation as any).navigate(
+                    "AdminAssignProperties" as never,
+                    {
+                      propertyId: property.propertyId,
+                      type: "tenant",
+                      title: "Register Tenant",
+                    } as never
+                  );
+                } else if (action === "Generate work request") {
+                  (navigation as any).navigate(
+                    "AdminGenerateWorkRequests" as never,
+                    { propertyId: property.propertyId } as never
+                  );
+                } else if (action === "Create Visitor request") {
+                  (navigation as any).navigate(
+                    "AdminCreateVisitorRequests" as never,
+                    { propertyId: property.propertyId } as never
+                  );
+                }
+              }}
+              style={{
+                backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
+              }}
+            />
+          )}
+          //  style={styles.list}
+        />
+      </CustomTabs>
     </Screen>
   );
 }
@@ -25,21 +387,42 @@ export function AdminCommunityArea({ route }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: spacing.lg,
     backgroundColor: colors.fill,
   },
-  title: {
+  section: {
+    marginHorizontal: adjustSize(10),
+  },
+  sectionTitle: {
+    fontSize: adjustSize(15),
     color: colors.primary,
-    fontFamily: typography.fonts.poppins.semiBold,
-    fontSize: adjustSize(16),
-    marginBottom: spacing.md,
   },
-  card: {
-    backgroundColor: colors.white,
-    padding: spacing.lg,
-    borderRadius: adjustSize(12),
+  _seciton_row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: adjustSize(10),
+    marginBottom: adjustSize(20),
   },
-  muted: {
-    color: colors.primaryLight,
+  dropdownContainer: {
+    width: adjustSize(120),
+  },
+  customDropdownStyle: {
+    height: adjustSize(33),
+    borderRadius: adjustSize(100),
+    backgroundColor: "#6369A4",
+  },
+  customPlaceholderStyle: {
+    fontSize: adjustSize(12),
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  customSelectedTextStyle: {
+    fontSize: adjustSize(12),
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  listContent: {
+    // paddingHorizontal: adjustSize(10),
+    paddingBottom: adjustSize(20),
   },
 });

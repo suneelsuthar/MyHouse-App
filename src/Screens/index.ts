@@ -110,6 +110,7 @@ import { AdminVisitorsList } from "./admin/visitor-management/visitors-list";
 import { AdminRevokedInvitations } from "./admin/visitor-management/revoked-invitations";
 import { AdminAccessAlerts } from "./admin/visitor-management/access-alerts";
 import { AdminPanicAlerts } from "./admin/visitor-management/panic-alerts";
+import { AdminTenantDetails } from "./admin/tenant-details";
 export {
   Splash,
   Intro,
@@ -208,4 +209,5 @@ export {
   AdminRevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
+  AdminTenantDetails
 };
