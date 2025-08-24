@@ -46,49 +46,68 @@ export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.title} numberOfLines={1}>
-          Swimming pool{property?.swimmingPool}
-        </Text>
-
-        <View style={[styles.row]}>
-          <Text style={[styles.cardTitle]} numberOfLines={1}>
-            Property Group name:
-          </Text>
-          <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-            {property?.propertyGroupName}
-          </Text>
-        </View>
-        <View style={[styles.row]}>
-          <Text style={[styles.cardTitle]} numberOfLines={1}>
-            Amenity:
-          </Text>
-          <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-            {property?.amenity}
-          </Text>
-        </View>
-        <View style={[styles.row]}>
-          <Text style={[styles.cardTitle]} numberOfLines={1}>
-            Capacity:
-          </Text>
-          <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-            {property?.capacity}
-          </Text>
-        </View>
-        <View style={[styles.row]}>
-          <Text style={[styles.cardTitle]} numberOfLines={1}>
-            Date Added:
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: adjustSize(5),
+          }}
+        >
+          <Text style={styles.swimmingPool} numberOfLines={1}>
+            Swimming pool
           </Text>
           <Text
-            style={[
-              styles.cardTitleVal,
-              {
-                color: "#D51E1E",
-              },
-            ]}
-            numberOfLines={1}
+            style={{
+              fontSize: adjustSize(12),
+              color: "#7E7E7E",
+              fontFamily: typography.fonts.poppins.normal,
+              paddingLeft: adjustSize(10),
+            }}
           >
-            {property?.dateAdded}
+            {property?.swimmingPool}
           </Text>
+        </View>
+        <View style={styles.rowMain}>
+          <View style={[styles.row]}>
+            <Text style={[styles.cardTitle]} numberOfLines={1}>
+              Reservation ID:
+            </Text>
+            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
+              {property?.reservationID}
+            </Text>
+          </View>
+          <View style={[styles.row]}>
+            <Text style={[styles.cardTitle]} numberOfLines={1}>
+              Reservation date:
+            </Text>
+            <Text
+              style={[styles.cardTitleVal, { color: "#4CAF50" }]}
+              numberOfLines={1}
+            >
+              {property?.reservationDate}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.rowMain}>
+          <View style={[styles.row]}>
+            <Text style={[styles.cardTitle]} numberOfLines={1}>
+              Amenity:
+            </Text>
+            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
+              {property?.amenity}
+            </Text>
+          </View>
+          <View style={[styles.row]}>
+            <Text style={[styles.cardTitle]} numberOfLines={1}>
+              Date Created:
+            </Text>
+            <Text
+              style={[styles.cardTitleVal, { color: "#D51E1E" }]}
+              numberOfLines={1}
+            >
+              {property?.dateCreated}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -103,13 +122,7 @@ export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
 
           {/* Menu box */}
           <View style={styles.menuBox}>
-            {[
-              "View",
-              "Edit",
-              "Make reservations",
-              "Manage Calendar",
-              "Delete",
-            ].map((a) => (
+            {["View", "Confirm", "Reject", "Delete"].map((a) => (
               <TouchableOpacity
                 key={a}
                 onPress={() => {
@@ -159,11 +172,10 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
 
-  title: {
+  swimmingPool: {
     color: colors.primary,
     fontSize: adjustSize(12),
     fontFamily: typography.fonts.poppins.semiBold,
-    marginTop: adjustSize(5),
   },
 
   nameBox: {
@@ -199,7 +211,7 @@ const styles = StyleSheet.create({
     color: "#7E7E7E",
     fontSize: adjustSize(10),
     fontFamily: typography.fonts.poppins.medium,
-    marginLeft: 2,
+    marginLeft: 5,
   },
   overlay: {
     position: "absolute",
@@ -220,5 +232,10 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(10),
     fontFamily: typography.fonts.poppins.normal,
     marginLeft: adjustSize(10),
+  },
+  rowMain: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

@@ -134,7 +134,7 @@ export function AdminFacilityManagement({ route }: Props) {
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
-        {
+    {
       id: "7",
       images: [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
@@ -320,53 +320,6 @@ export function AdminFacilityManagement({ route }: Props) {
                 if (action === "View Details") {
                   (navigation as any).navigate(
                     "AdminPropertyDetails" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Edit") {
-                  (navigation as any).navigate(
-                    "AdminAddProperty" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Manage Calendar") {
-                  (navigation as any).navigate(
-                    "AdminManageCalendar" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Assign to agent") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "agent",
-                      title: "Assign Agent",
-                    } as never
-                  );
-                } else if (action === "Assign to FM") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "fm",
-                      title: "Assign Facility Manager",
-                    } as never
-                  );
-                } else if (action === "Register Tenant") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "tenant",
-                      title: "Register Tenant",
-                    } as never
-                  );
-                } else if (action === "Generate work request") {
-                  (navigation as any).navigate(
-                    "AdminGenerateWorkRequests" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Create Visitor request") {
-                  (navigation as any).navigate(
-                    "AdminCreateVisitorRequests" as never,
                     { propertyId: property.propertyId } as never
                   );
                 }

@@ -18,7 +18,6 @@ import GroupDropdown from "../../../Components/GroupDropdwon";
 import { AmenitiesCard } from "./components/AmenitiesCard";
 import { ReservationsCard } from "./components/ReservationsCard";
 type Props = AppStackScreenProps<"AdminCommunityArea">;
-
 export function AdminCommunityArea({ route }: Props) {
   const navigation = useNavigation();
   const status = route?.params?.tab;

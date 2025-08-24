@@ -58,4 +58,6 @@ export const Images = {
   upload: require("./upload.svg"),
   calendar: require("./calendar.svg"),
   tabsBgImage: require("./tabs-bg-image.png"),
+  closeIcon: require("./close-icon.svg"),
+
 };

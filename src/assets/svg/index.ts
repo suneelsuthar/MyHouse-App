@@ -7,6 +7,8 @@ import OrdersIcon from "./OrdersIcon";
 import CompletedIcon from "./CompletedIcon";
 import AmenitiesIcon from "./AmenitiesIcon";
 import ReservationsIcon from "./ReservationsIcon";
+import MyAccountIcon from "./MyAccountIcon";
+import TransactionHistoryIcon from "./TransactionHistoryIcon";
 export {
   HistoryIcon,
   HomeIcon,
@@ -16,4 +18,6 @@ export {
   CompletedIcon,
   AmenitiesIcon,
   ReservationsIcon,
+  MyAccountIcon,
+  TransactionHistoryIcon,
 };
