@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import {
   Screen,
   Text,
   Header2,
   CustomTabs,
-  SearchBar,
-  FacilityManagementCard,
+  TextField,
 } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
-import {
-  WorkRequestsIcon,
-  OrdersIcon,
-  CompletedIcon,
-  AmenitiesIcon,
-  ReservationsIcon,
-} from "../../../assets/svg";
+import { AmenitiesIcon, ReservationsIcon } from "../../../assets/svg";
+import { WithLocalSvg } from "react-native-svg/css";
 import DropdownComponent from "../../../Components/DropDown";
+import { Images } from "../../../assets/Images";
+import GroupDropdown from "../../../Components/GroupDropdwon";
+import { AmenitiesCard } from "./components/AmenitiesCard";
+import { ReservationsCard } from "./components/ReservationsCard";
 type Props = AppStackScreenProps<"AdminCommunityArea">;
 
 export function AdminCommunityArea({ route }: Props) {
-  // const tab = route?.params?.tab ?? "amenities";
-
-  // const title = tab === "reservations" ? "Reservations" : "Amenities";
   const navigation = useNavigation();
-  const status = route?.params?.tab ?? "work_requests";
+  const status = route?.params?.tab;
   const titleMap: Record<string, string> = {
     amenities: "Amenities",
     reservations: "Reservations",
@@ -44,209 +39,84 @@ export function AdminCommunityArea({ route }: Props) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
-      requestedBy: "Brume Djbah",
-      status: "Work requests",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
+      title: "Swimming pool",
+      groupId: "WR12345",
+      propertyGroupName: "Brume Villa",
+      amenity: "lorem ipsum",
+      capacity: "Apartment",
+      dateAdded: "15, Sep 2024",
     },
     {
       id: "2",
       images: [
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
-      requestedBy: "Brume Djbah",
-      status: "Orders",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
+      title: "Swimming pool",
+      groupId: "WR12345",
+      propertyGroupName: "Brume Villa",
+      amenity: "lorem ipsum",
+      capacity: "Apartment",
+      dateAdded: "15, Sep 2024",
     },
     {
       id: "3",
       images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-      ],
-      requestedBy: "Completed",
-      status: "Completed",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "4",
-      images: [
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-      ],
-      requestedBy: "Brume Djbah",
-      status: "Work requests",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "5",
-      images: [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
-      requestedBy: "Brume Djbah",
-      status: "Orders",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "6",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-      ],
-      requestedBy: "Completed",
-      status: "Orders",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "7",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-      ],
-      requestedBy: "Brume Djbah",
-      status: "Work requests",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "8",
-      images: [
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-      ],
-      requestedBy: "Brume Djbah",
-      status: "Completed",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "9",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-      ],
-      requestedBy: "Completed",
-      status: "Completed",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "10",
-      images: [
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-      ],
-      requestedBy: "Brume Djbah",
-      status: "Work requests",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "11",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-      ],
-      requestedBy: "Brume Djbah",
-      status: "Orders",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
-    },
-    {
-      id: "12",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
-        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
-      ],
-      requestedBy: "Completed",
-      status: "Orders",
-      title: "The oak Court",
-      text: "Leaking toilet in master drawing room",
-      workReqNo: "WR12345",
-      category: "Plumbing",
-      priority: "High",
-      issueDate: "15, Sep 2024",
-      dueDate: "15, Sep 2024",
+      title: "Swimming pool",
+      groupId: "WR12345",
+      propertyGroupName: "Brume Villa",
+      amenity: "lorem ipsum",
+      capacity: "Apartment",
+      dateAdded: "15, Sep 2024",
     },
   ];
-
-  const filteredData = data?.filter(
-    (item) => item?.status?.toLowerCase() === activeTab?.toLowerCase()
-  );
-
+  const ReservationsCardData = [
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+    },
+  ];
   return (
     <Screen
       preset="fixed"
@@ -270,113 +140,105 @@ export function AdminCommunityArea({ route }: Props) {
         activeTab={activeTab}
         onTabChange={(label) => setActiveTab(label)}
       >
-        <SearchBar
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Search"
-          hideBtn={activeTab === "Completed" ? true : false}
-          onAddPress={() =>
-            (navigation as any).navigate("AdminAddProperty" as never)
-          }
-        />
+        <View style={[styles._searchrow, { marginTop: adjustSize(15) }]}>
+          <View style={styles._inputview}>
+            {activeTab === "Amenities" ? (
+              <GroupDropdown />
+            ) : (
+              <TextField
+                placeholderTextColor={colors.primaryLight}
+                inputWrapperStyle={{ backgroundColor: colors.fill }}
+                placeholder="Search"
+                style={styles._input}
+              />
+            )}
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles._addbtn}
+            onPress={() =>
+              (navigation as any).navigate("AdminAddProperty" as never)
+            }
+          >
+            <WithLocalSvg asset={Images.addprop} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-              {activeTab === "Completed"
-                ? "Manage Work Orders"
-                : activeTab === "Orders"
-                ? "Work Orders"
-                : "Work Requests"}
+              {activeTab === "Amenities" ? "Manage Amenities" : "Reservations"}
             </Text>
-            {activeTab === "Work Requests" && (
-              <View style={styles.dropdownContainer}>
-                <DropdownComponent
-                  data={[
-                    { label: "A", value: "A" },
-                    { label: "B", value: "B" },
-                    { label: "C", value: "C" },
-                  ]}
-                  label="Select Period"
-                  placeholder="Last 7 days"
-                  dropdownStyle={styles.customDropdownStyle}
-                  placeholderStyle={styles.customPlaceholderStyle}
-                  selectedTextStyle={styles.customSelectedTextStyle}
-                />
-              </View>
-            )}
+            <View style={styles.dropdownContainer}>
+              <DropdownComponent
+                data={[
+                  { label: "A", value: "A" },
+                  { label: "B", value: "B" },
+                  { label: "C", value: "C" },
+                ]}
+                label="Select Period"
+                placeholder="Sort by"
+                dropdownStyle={styles.customDropdownStyle}
+                placeholderStyle={styles.customPlaceholderStyle}
+                selectedTextStyle={styles.customSelectedTextStyle}
+              />
+            </View>
           </View>
           {/* ÷÷ */}
         </View>
 
+        {activeTab === "Amenities" && (
+          <View style={styles._searchrow}>
+            <View style={styles._inputview}>
+              <TextField
+                placeholderTextColor={colors.primaryLight}
+                inputWrapperStyle={{ backgroundColor: colors.white }}
+                placeholder="Search"
+                style={styles._input}
+              />
+            </View>
+          </View>
+        )}
         {/* List */}
         <FlatList
-          data={filteredData}
+          data={activeTab === "Amenities" ? data : ReservationsCardData}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
-          renderItem={({ item, index }) => (
-            <FacilityManagementCard
-              property={item}
-              activeTab={activeTab}
-              onAction={(action, property) => {
-                if (action === "View Details") {
-                  (navigation as any).navigate(
-                    "AdminPropertyDetails" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Edit") {
-                  (navigation as any).navigate(
-                    "AdminAddProperty" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Manage Calendar") {
-                  (navigation as any).navigate(
-                    "AdminManageCalendar" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Assign to agent") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "agent",
-                      title: "Assign Agent",
-                    } as never
-                  );
-                } else if (action === "Assign to FM") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "fm",
-                      title: "Assign Facility Manager",
-                    } as never
-                  );
-                } else if (action === "Register Tenant") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "tenant",
-                      title: "Register Tenant",
-                    } as never
-                  );
-                } else if (action === "Generate work request") {
-                  (navigation as any).navigate(
-                    "AdminGenerateWorkRequests" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                } else if (action === "Create Visitor request") {
-                  (navigation as any).navigate(
-                    "AdminCreateVisitorRequests" as never,
-                    { propertyId: property.propertyId } as never
-                  );
-                }
-              }}
-              style={{
-                backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
-              }}
-            />
-          )}
+          renderItem={({ item, index }) =>
+            activeTab === "Amenities" ? (
+              <AmenitiesCard
+                property={item}
+                activeTab={activeTab}
+                onAction={(action, property) => {
+                  if (action === "View Details") {
+                    (navigation as any).navigate(
+                      "AdminPropertyDetails" as never,
+                      { propertyId: property.propertyId } as never
+                    );
+                  }
+                }}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
+                }}
+              />
+            ) : (
+              <ReservationsCard
+                property={item}
+                activeTab={activeTab}
+                onAction={(action, property) => {
+                  if (action === "View Details") {
+                    (navigation as any).navigate(
+                      "AdminPropertyDetails" as never,
+                      { propertyId: property.propertyId } as never
+                    );
+                  }
+                }}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
+                }}
+              />
+            )
+          }
           //  style={styles.list}
         />
       </CustomTabs>
@@ -391,6 +253,8 @@ const styles = StyleSheet.create({
   },
   section: {
     marginHorizontal: adjustSize(10),
+    marginTop: adjustSize(10),
+    marginBottom: adjustSize(15),
   },
   sectionTitle: {
     fontSize: adjustSize(15),
@@ -401,7 +265,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: adjustSize(10),
-    marginBottom: adjustSize(20),
   },
   dropdownContainer: {
     width: adjustSize(120),
@@ -424,5 +287,29 @@ const styles = StyleSheet.create({
   listContent: {
     // paddingHorizontal: adjustSize(10),
     paddingBottom: adjustSize(20),
+  },
+  _searchrow: {
+    flexDirection: "row",
+    gap: adjustSize(10),
+    marginHorizontal: adjustSize(10),
+    // marginTop: adjustSize(15),
+  },
+  _addbtn: {
+    backgroundColor: colors.primary,
+    height: adjustSize(47),
+    width: adjustSize(50),
+    borderRadius: adjustSize(10),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  _input: {
+    margin: 0,
+    fontFamily: typography.fonts.poppins.normal,
+    fontSize: adjustSize(14),
+  },
+  _inputview: {
+    flex: 1,
+    padding: 0,
   },
 });
