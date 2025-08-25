@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AdminStackParamList } from "../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
+import { Header } from "../../../Components";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 type BookingStatus = "approved" | "pending" | "rejected";
 
@@ -153,33 +155,7 @@ export function AdminManageBookings() {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      {/* Header */}
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          accessibilityRole="button"
-          onPress={() => navigation.goBack()}
-          style={styles.backBtn}
-        >
-          <Ionicons
-            name="arrow-back-outline"
-            size={adjustSize(22)}
-            color={colors.primary}
-          />
-        </TouchableOpacity>
-        <Text weight="semiBold" style={styles.title}>
-          Bookings
-        </Text>
-        <TouchableOpacity style={styles.pill} activeOpacity={0.8}>
-          <Text weight="medium" style={styles.pillText}>
-            Last 7 days
-          </Text>
-          <Ionicons
-            name="chevron-down"
-            size={adjustSize(16)}
-            color={colors.white}
-          />
-        </TouchableOpacity>
-      </View>
+      <Header title="View Property Details" />
 
       {/* Tabs */}
       <View style={styles.tabsContainer}>
@@ -187,10 +163,10 @@ export function AdminManageBookings() {
           style={[styles.tabItem, activeTab === "all" && styles.tabItemActive]}
           onPress={() => setActiveTab("all")}
         >
-          <Ionicons
-            name="grid-outline"
-            size={adjustSize(18)}
-            color={activeTab === "all" ? colors.primary : colors.primaryLight}
+          <MaterialIcons
+            name="dashboard"
+            size={adjustSize(22)}
+            color={activeTab === "all" ? colors.primary : colors.white}
           />
           <Text
             style={[
@@ -210,10 +186,8 @@ export function AdminManageBookings() {
         >
           <Ionicons
             name="checkmark-circle-outline"
-            size={adjustSize(18)}
-            color={
-              activeTab === "approved" ? colors.primary : colors.primaryLight
-            }
+            size={adjustSize(22)}
+            color={activeTab === "approved" ? colors.primary : colors.white}
           />
           <Text
             style={[
@@ -233,10 +207,8 @@ export function AdminManageBookings() {
         >
           <Ionicons
             name="pause-circle-outline"
-            size={adjustSize(18)}
-            color={
-              activeTab === "pending" ? colors.primary : colors.primaryLight
-            }
+            size={adjustSize(22)}
+            color={activeTab === "pending" ? colors.primary : colors.white}
           />
           <Text
             style={[
@@ -256,10 +228,8 @@ export function AdminManageBookings() {
         >
           <Ionicons
             name="close-circle-outline"
-            size={adjustSize(18)}
-            color={
-              activeTab === "rejected" ? colors.primary : colors.primaryLight
-            }
+            size={adjustSize(22)}
+            color={activeTab === "rejected" ? colors.primary : colors.white}
           />
           <Text
             style={[
@@ -277,7 +247,7 @@ export function AdminManageBookings() {
         data={filtered}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        contentContainerStyle={{ paddingVertical: spacing.md }}
+        // contentContainerStyle={{ paddingVertical: spacing.md }}
         ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
         showsVerticalScrollIndicator={false}
       />
@@ -288,7 +258,6 @@ export function AdminManageBookings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: spacing.lg,
     backgroundColor: colors.fill,
   },
   headerRow: {
@@ -328,23 +297,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.primaryLight + "22",
-    borderRadius: adjustSize(10),
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.sm,
+    backgroundColor: colors.primaryLight,
+    padding: spacing.sm,
+    // paddingHorizontal: spacing.sm,
+    height: adjustSize(83),
+    
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: spacing.sm,
+    // paddingVertical: spacing.sm,
     borderRadius: adjustSize(8),
   },
   tabItemActive: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
   },
   tabLabel: {
     marginTop: spacing.xs,
-    color: colors.primaryLight,
+    color: colors.white,
     fontSize: adjustSize(12),
   },
   tabLabelActive: {

@@ -110,7 +110,7 @@ import { AdminVisitorsList } from "./admin/visitor-management/visitors-list";
 import { AdminRevokedInvitations } from "./admin/visitor-management/revoked-invitations";
 import { AdminAccessAlerts } from "./admin/visitor-management/access-alerts";
 import { AdminPanicAlerts } from "./admin/visitor-management/panic-alerts";
-import { AdminTenantDetails } from "./admin/tenant-details";
+import { AdminTenantDetails } from "./admin/tenants/tenant-details";
 import { AdminFMViewDetails } from "./admin/facility-management/view-details";
 import { AdminFMEdit } from "./admin/facility-management/edit";
 import { AdminFMGenerateWorkOrder } from "./admin/facility-management/generate-work-order";

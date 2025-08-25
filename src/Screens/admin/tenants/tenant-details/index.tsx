@@ -8,11 +8,11 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Screen, Text, Button, TextField } from "../../../Components";
-import { Header } from "../../../Components/Header";
-import { adjustSize, colors, spacing, typography } from "../../../theme";
-type Props = AppStackScreenProps<"AdminTenantDetails">;
-export function AdminTenantDetails({ navigation }: Props) {
+import { Screen, Text, Button, TextField } from "../../../../Components";
+import { Header } from "../../../../Components/Header";
+import { adjustSize, colors, spacing, typography } from "../../../../theme";
+
+export function AdminTenantDetails({ navigation }: any) {
   return (
     <Screen
       preset="auto"
@@ -97,13 +97,13 @@ const styles = StyleSheet.create({
     color: colors.primaryLight,
     fontFamily: typography.fonts.poppins.normal,
     fontSize: adjustSize(12),
-    marginBottom:adjustSize(30)
+    marginBottom: adjustSize(30),
   },
   list: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop:adjustSize(5)
+    marginTop: adjustSize(5),
   },
   listTitle: {
     color: colors.primary,
