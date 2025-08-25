@@ -85,7 +85,7 @@ export function AdminFinancialReports(props: AdminFinancialReportsProps) {
         </ScrollView>
       </CustomTabs>
       <View style={styles.footerRow}>
-        <TouchableOpacity activeOpacity={0.7} style={styles.addMoneyBtn}>
+        <TouchableOpacity activeOpacity={0.7} style={[styles.addMoneyBtn]}>
           <Text style={styles.addMoneyBtnText}>Add Money</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.7} style={styles.sendMoneyBtn}>

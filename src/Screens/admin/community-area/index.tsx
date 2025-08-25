@@ -17,6 +17,7 @@ import { Images } from "../../../assets/Images";
 import GroupDropdown from "../../../Components/GroupDropdwon";
 import { AmenitiesCard } from "./components/AmenitiesCard";
 import { ReservationsCard } from "./components/ReservationsCard";
+import SmallCustomModal from "../../../Components/SmallCustomModal";
 type Props = AppStackScreenProps<"AdminCommunityArea">;
 export function AdminCommunityArea({ route }: Props) {
   const navigation = useNavigation();
@@ -27,6 +28,10 @@ export function AdminCommunityArea({ route }: Props) {
   };
   const [activeTab, setActiveTab] = useState(titleMap[status]); // 🔹 string state
   const [search, setSearch] = useState<string>("");
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [amenityDeleteModal, setAmenityDeleteModal] = useState(false);
   useEffect(() => {
     setActiveTab(titleMap[status]);
   }, [status]);
@@ -209,11 +214,8 @@ export function AdminCommunityArea({ route }: Props) {
                 property={item}
                 activeTab={activeTab}
                 onAction={(action, property) => {
-                  if (action === "View Details") {
-                    (navigation as any).navigate(
-                      "AdminPropertyDetails" as never,
-                      { propertyId: property.propertyId } as never
-                    );
+                  if (action === "Delete") {
+                    setAmenityDeleteModal(true);
                   }
                 }}
                 style={{
@@ -225,11 +227,12 @@ export function AdminCommunityArea({ route }: Props) {
                 property={item}
                 activeTab={activeTab}
                 onAction={(action, property) => {
-                  if (action === "View Details") {
-                    (navigation as any).navigate(
-                      "AdminPropertyDetails" as never,
-                      { propertyId: property.propertyId } as never
-                    );
+                  if (action === "Confirm") {
+                    setConfirmModal(true);
+                  } else if (action === "Reject") {
+                    setRejectModal(true);
+                  } else if (action === "Delete") {
+                    setDeleteModal(true);
                   }
                 }}
                 style={{
@@ -241,6 +244,45 @@ export function AdminCommunityArea({ route }: Props) {
           //  style={styles.list}
         />
       </CustomTabs>
+
+      {/* Amenities Modal */}
+      <SmallCustomModal
+        visible={amenityDeleteModal}
+        heading="Are you Sure?"
+        text={`Are you sure You want to delete this \ Amenity?`}
+        modalType={1}
+        onClose={() => setAmenityDeleteModal(false)}
+        leftOnPress={() => setAmenityDeleteModal(false)}
+        rightOnPress={() => setAmenityDeleteModal(false)}
+      />
+      {/* Reservations Modal */}
+      <SmallCustomModal
+        visible={confirmModal}
+        heading="Are you Sure?"
+        text="Are you sure you want to Confirm this Reservation?"
+        modalType={1}
+        onClose={() => setConfirmModal(false)}
+        leftOnPress={() => setConfirmModal(false)}
+        rightOnPress={() => setConfirmModal(false)}
+      />
+      <SmallCustomModal
+        visible={rejectModal}
+        heading="Are you Sure?"
+        text="Are you sure you want to Reject this Reservation?"
+        modalType={2}
+        onClose={() => setRejectModal(false)}
+        leftOnPress={() => setRejectModal(false)}
+        rightOnPress={() => setRejectModal(false)}
+      />
+      <SmallCustomModal
+        visible={deleteModal}
+        heading="Are you Sure?"
+        text="Are you sure you want to Delete this Reservation?"
+        modalType={2}
+        onClose={() => setDeleteModal(false)}
+        leftOnPress={() => setDeleteModal(false)}
+        rightOnPress={() => setDeleteModal(false)}
+      />
     </Screen>
   );
 }
