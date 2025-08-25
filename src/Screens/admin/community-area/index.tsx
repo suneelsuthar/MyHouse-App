@@ -216,6 +216,14 @@ export function AdminCommunityArea({ route }: Props) {
                 onAction={(action, property) => {
                   if (action === "Delete") {
                     setAmenityDeleteModal(true);
+                  } else if (action === "View") {
+                    (navigation as any).navigate("AdminAmenityView");
+                  } else if (action === "Edit") {
+                    (navigation as any).navigate("AdminAmenityEdit");
+                  } else if (action === "Make reservations") {
+                    (navigation as any).navigate("AdminAmenityMakeReservation");
+                  } else if (action === "Manage Calendar") {
+                    (navigation as any).navigate("AdminAmenityManageCalendar");
                   }
                 }}
                 style={{
@@ -227,7 +235,9 @@ export function AdminCommunityArea({ route }: Props) {
                 property={item}
                 activeTab={activeTab}
                 onAction={(action, property) => {
-                  if (action === "Confirm") {
+                  if (action === "View") {
+                    (navigation as any).navigate("AdminReservationView");
+                  } else if (action === "Confirm") {
                     setConfirmModal(true);
                   } else if (action === "Reject") {
                     setRejectModal(true);

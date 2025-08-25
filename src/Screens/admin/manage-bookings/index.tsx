@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { Screen, Text } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -89,13 +84,12 @@ const MOCK_DATA: BookingItem[] = [
 ];
 
 export function AdminManageBookings() {
-  const navigation = useNavigation<
-    NativeStackNavigationProp<AdminStackParamList>
-  >();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AdminStackParamList>>();
 
-  const [activeTab, setActiveTab] = React.useState<
-    "all" | BookingStatus
-  >("all");
+  const [activeTab, setActiveTab] = React.useState<"all" | BookingStatus>(
+    "all"
+  );
 
   const filtered = React.useMemo(() => {
     if (activeTab === "all") return MOCK_DATA;
@@ -125,7 +119,10 @@ export function AdminManageBookings() {
         <Text weight="semiBold" style={styles.cardTitle}>
           {item.title}
         </Text>
-        <Text weight="medium" style={[styles.statusText, statusLabelColor(item.status)]}>
+        <Text
+          weight="medium"
+          style={[styles.statusText, statusLabelColor(item.status)]}
+        >
           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
         </Text>
       </View>
@@ -136,11 +133,15 @@ export function AdminManageBookings() {
       <View style={styles.rowBetween}>
         <View>
           <Text style={styles.label}>Check In: {item.checkIn}</Text>
-          <Text style={[styles.label, { marginTop: spacing.xs }]}>Check Out: {item.checkOut}</Text>
+          <Text style={[styles.label, { marginTop: spacing.xs }]}>
+            Check Out: {item.checkOut}
+          </Text>
         </View>
         <View>
           <Text style={styles.label}>List Price: {item.listPrice}</Text>
-          <Text style={[styles.label, { marginTop: spacing.xs }]}>Booked price: {item.bookedPrice}</Text>
+          <Text style={[styles.label, { marginTop: spacing.xs }]}>
+            Booked price: {item.bookedPrice}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -159,12 +160,24 @@ export function AdminManageBookings() {
           onPress={() => navigation.goBack()}
           style={styles.backBtn}
         >
-          <Ionicons name="arrow-back-outline" size={adjustSize(22)} color={colors.primary} />
+          <Ionicons
+            name="arrow-back-outline"
+            size={adjustSize(22)}
+            color={colors.primary}
+          />
         </TouchableOpacity>
-        <Text weight="semiBold" style={styles.title}>Bookings</Text>
+        <Text weight="semiBold" style={styles.title}>
+          Bookings
+        </Text>
         <TouchableOpacity style={styles.pill} activeOpacity={0.8}>
-          <Text weight="medium" style={styles.pillText}>Last 7 days</Text>
-          <Ionicons name="chevron-down" size={adjustSize(16)} color={colors.white} />
+          <Text weight="medium" style={styles.pillText}>
+            Last 7 days
+          </Text>
+          <Ionicons
+            name="chevron-down"
+            size={adjustSize(16)}
+            color={colors.white}
+          />
         </TouchableOpacity>
       </View>
 
@@ -174,29 +187,88 @@ export function AdminManageBookings() {
           style={[styles.tabItem, activeTab === "all" && styles.tabItemActive]}
           onPress={() => setActiveTab("all")}
         >
-          <Ionicons name="grid-outline" size={adjustSize(18)} color={activeTab === "all" ? colors.primary : colors.primaryLight} />
-          <Text style={[styles.tabLabel, activeTab === "all" && styles.tabLabelActive]}>All</Text>
+          <Ionicons
+            name="grid-outline"
+            size={adjustSize(18)}
+            color={activeTab === "all" ? colors.primary : colors.primaryLight}
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "all" && styles.tabLabelActive,
+            ]}
+          >
+            All
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tabItem, activeTab === "approved" && styles.tabItemActive]}
+          style={[
+            styles.tabItem,
+            activeTab === "approved" && styles.tabItemActive,
+          ]}
           onPress={() => setActiveTab("approved")}
         >
-          <Ionicons name="checkmark-circle-outline" size={adjustSize(18)} color={activeTab === "approved" ? colors.primary : colors.primaryLight} />
-          <Text style={[styles.tabLabel, activeTab === "approved" && styles.tabLabelActive]}>Approved</Text>
+          <Ionicons
+            name="checkmark-circle-outline"
+            size={adjustSize(18)}
+            color={
+              activeTab === "approved" ? colors.primary : colors.primaryLight
+            }
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "approved" && styles.tabLabelActive,
+            ]}
+          >
+            Approved
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tabItem, activeTab === "pending" && styles.tabItemActive]}
+          style={[
+            styles.tabItem,
+            activeTab === "pending" && styles.tabItemActive,
+          ]}
           onPress={() => setActiveTab("pending")}
         >
-          <Ionicons name="pause-circle-outline" size={adjustSize(18)} color={activeTab === "pending" ? colors.primary : colors.primaryLight} />
-          <Text style={[styles.tabLabel, activeTab === "pending" && styles.tabLabelActive]}>Pending</Text>
+          <Ionicons
+            name="pause-circle-outline"
+            size={adjustSize(18)}
+            color={
+              activeTab === "pending" ? colors.primary : colors.primaryLight
+            }
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "pending" && styles.tabLabelActive,
+            ]}
+          >
+            Pending
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tabItem, activeTab === "rejected" && styles.tabItemActive]}
+          style={[
+            styles.tabItem,
+            activeTab === "rejected" && styles.tabItemActive,
+          ]}
           onPress={() => setActiveTab("rejected")}
         >
-          <Ionicons name="close-circle-outline" size={adjustSize(18)} color={activeTab === "rejected" ? colors.primary : colors.primaryLight} />
-          <Text style={[styles.tabLabel, activeTab === "rejected" && styles.tabLabelActive]}>Rejected</Text>
+          <Ionicons
+            name="close-circle-outline"
+            size={adjustSize(18)}
+            color={
+              activeTab === "rejected" ? colors.primary : colors.primaryLight
+            }
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "rejected" && styles.tabLabelActive,
+            ]}
+          >
+            Rejected
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -279,14 +351,13 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   card: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.fill,
     padding: spacing.lg,
     borderRadius: adjustSize(12),
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
+    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
     elevation: 2,
+    marginHorizontal: adjustSize(2),
   },
   cardHeaderRow: {
     flexDirection: "row",

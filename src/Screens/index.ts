@@ -111,6 +111,18 @@ import { AdminRevokedInvitations } from "./admin/visitor-management/revoked-invi
 import { AdminAccessAlerts } from "./admin/visitor-management/access-alerts";
 import { AdminPanicAlerts } from "./admin/visitor-management/panic-alerts";
 import { AdminTenantDetails } from "./admin/tenant-details";
+import { AdminFMViewDetails } from "./admin/facility-management/view-details";
+import { AdminFMEdit } from "./admin/facility-management/edit";
+import { AdminFMGenerateWorkOrder } from "./admin/facility-management/generate-work-order";
+import { AdminFMViewWorkOrder } from "./admin/facility-management/view-work-order";
+import { AdminFMOrderView } from "./admin/facility-management/order-view";
+import { AdminFMOrderUpdate } from "./admin/facility-management/order-update";
+import { AdminFMOrderExport } from "./admin/facility-management/order-export";
+import { AdminAmenityView } from "./admin/community-area/amenity-view";
+import { AdminAmenityEdit } from "./admin/community-area/amenity-edit";
+import { AdminAmenityMakeReservation } from "./admin/community-area/amenity-make-reservation";
+import { AdminAmenityManageCalendar } from "./admin/community-area/amenity-manage-calendar";
+import { AdminReservationView } from "./admin/community-area/reservation-view";
 export {
   Splash,
   Intro,
@@ -209,5 +221,18 @@ export {
   AdminRevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
-  AdminTenantDetails
+  AdminTenantDetails,
+  AdminFMViewDetails,
+  AdminFMEdit,
+  AdminFMGenerateWorkOrder,
+  AdminFMViewWorkOrder,
+  AdminFMOrderView,
+  AdminFMOrderUpdate,
+  AdminFMOrderExport
+  ,
+  AdminAmenityView,
+  AdminAmenityEdit,
+  AdminAmenityMakeReservation,
+  AdminAmenityManageCalendar,
+  AdminReservationView
 };

@@ -124,7 +124,19 @@ import {
   AdminRevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
-  AdminTenantDetails
+  AdminTenantDetails,
+  AdminFMViewDetails,
+  AdminFMEdit,
+  AdminFMGenerateWorkOrder,
+  AdminFMViewWorkOrder,
+  AdminFMOrderView,
+  AdminFMOrderUpdate,
+  AdminFMOrderExport,
+  AdminAmenityView,
+  AdminAmenityEdit,
+  AdminAmenityMakeReservation,
+  AdminAmenityManageCalendar,
+  AdminReservationView
 } from "../Screens";
 
 import {
@@ -431,6 +443,54 @@ const AdminHomeStackNavigator = () => (
     <AdminHomeStack.Screen
       name="AdminPanicAlerts"
       component={AdminPanicAlerts}
+    />
+    {/* Facility Management action pages */}
+    <AdminHomeStack.Screen
+      name="AdminFMViewDetails"
+      component={AdminFMViewDetails}
+    />
+    <AdminHomeStack.Screen name="AdminFMEdit" component={AdminFMEdit} />
+    <AdminHomeStack.Screen
+      name="AdminFMGenerateWorkOrder"
+      component={AdminFMGenerateWorkOrder}
+    />
+    <AdminHomeStack.Screen
+      name="AdminFMViewWorkOrder"
+      component={AdminFMViewWorkOrder}
+    />
+    {/* Facility Management Order action pages */}
+    <AdminHomeStack.Screen
+      name="AdminFMOrderView"
+      component={AdminFMOrderView}
+    />
+    <AdminHomeStack.Screen
+      name="AdminFMOrderUpdate"
+      component={AdminFMOrderUpdate}
+    />
+    <AdminHomeStack.Screen
+      name="AdminFMOrderExport"
+      component={AdminFMOrderExport}
+    />
+    {/* Community Area action pages */}
+    <AdminHomeStack.Screen
+      name="AdminAmenityView"
+      component={AdminAmenityView}
+    />
+    <AdminHomeStack.Screen
+      name="AdminAmenityEdit"
+      component={AdminAmenityEdit}
+    />
+    <AdminHomeStack.Screen
+      name="AdminAmenityMakeReservation"
+      component={AdminAmenityMakeReservation}
+    />
+    <AdminHomeStack.Screen
+      name="AdminAmenityManageCalendar"
+      component={AdminAmenityManageCalendar}
+    />
+    <AdminHomeStack.Screen
+      name="AdminReservationView"
+      component={AdminReservationView}
     />
   </AdminHomeStack.Navigator>
 );
@@ -948,6 +1008,7 @@ const AdminTabs = () => (
           routeName === "AdminManageCalendar" ||
           routeName === "AdminAssignProperties" ||
           routeName === "AdminGenerateWorkRequests" ||
+          routeName === "AdminTenantDetails" ||
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {

@@ -317,10 +317,35 @@ export function AdminFacilityManagement({ route }: Props) {
               property={item}
               activeTab={activeTab}
               onAction={(action, property) => {
+                // Navigate to corresponding dummy pages for Work Requests actions
                 if (action === "View Details") {
+                  (navigation as any).navigate("AdminFMViewDetails" as never);
+                } else if (action === "Edit") {
+                  (navigation as any).navigate("AdminFMEdit" as never);
+                } else if (action === "Generate work order") {
                   (navigation as any).navigate(
-                    "AdminPropertyDetails" as never,
-                    { propertyId: property.propertyId } as never
+                    "AdminFMGenerateWorkOrder" as never
+                  );
+                } else if (action === "View work order") {
+                  (navigation as any).navigate("AdminFMViewWorkOrder" as never);
+                } else if (action === "View") {
+                  // Orders tab: View
+                  (navigation as any).navigate("AdminFMOrderView" as never);
+                } else if (action === "Update") {
+                  // Orders tab: Update
+                  (navigation as any).navigate("AdminFMOrderUpdate" as never);
+                } else if (action === "Export") {
+                  // Orders tab: Export
+                  (navigation as any).navigate("AdminFMOrderExport" as never);
+                } else if (action === "Chat") {
+                  // Orders/Completed tab: go to Chat bottom tab and pass context
+                  (navigation as any).navigate(
+                    "Chat" as never,
+                    {
+                      from: "AdminFacilityManagementOrders",
+                      user: property?.requestedBy,
+                      workReqNo: property?.workReqNo,
+                    } as never
                   );
                 }
               }}

@@ -54,6 +54,12 @@ export type AdminStackParamList = {
   };
   AdminTenants: undefined;
   AdminCommunityArea: { tab: "amenities" | "reservations" };
+  // Admin Community Area action pages
+  AdminAmenityView: undefined;
+  AdminAmenityEdit: undefined;
+  AdminAmenityMakeReservation: undefined;
+  AdminAmenityManageCalendar: undefined;
+  AdminReservationView: undefined;
   // Separate Visitor Management pages
   AdminVisitorRequests: undefined;
   AdminVisitorsList: undefined;
@@ -66,6 +72,16 @@ export type AdminStackParamList = {
   AdminAuditLogs: undefined;
   AdminBackupRestore: undefined;
   AdminSupportTickets: undefined;
+  // Admin Facility Management action screens
+  AdminFMViewDetails: undefined;
+  AdminFMEdit: undefined;
+  AdminFMGenerateWorkOrder: undefined;
+  AdminFMViewWorkOrder: undefined;
+  AdminTenantDetails: undefined;
+  // Admin Facility Management Order action screens
+  AdminFMOrderView: undefined;
+  AdminFMOrderUpdate: undefined;
+  AdminFMOrderExport: undefined;
 };
 
 // Screens specific to Agent
