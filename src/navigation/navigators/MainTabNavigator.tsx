@@ -32,6 +32,7 @@ export const MainTabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+         tabBarHideOnKeyboard:true,
         tabBarStyle: {
           backgroundColor: colors.background,
           borderTopWidth: 0,

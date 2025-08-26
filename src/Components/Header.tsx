@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  StyleProp,
+  TextStyle,
+} from "react-native";
 import { colors, spacing, typography, adjustSize } from "../theme";
 import { Text } from "./Text";
 import { useNavigation } from "@react-navigation/native";
@@ -44,7 +50,11 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Show the title on the left only when no centerAccessory is provided */}
         {!centerAccessory && !!title && (
-          <Text style={[styles.leftTitle,titleStyle]} weight="semiBold" numberOfLines={1}>
+          <Text
+            style={[styles.leftTitle, titleStyle]}
+            weight="semiBold"
+            numberOfLines={1}
+          >
             {title}
           </Text>
         )}
@@ -80,7 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: adjustSize(10),
     backgroundColor: colors.fill,
     borderBottomWidth: 0.4,
     borderColor: colors.primary,
