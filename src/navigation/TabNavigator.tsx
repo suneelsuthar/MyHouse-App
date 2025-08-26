@@ -977,7 +977,36 @@ const AdminTabs = () => (
        tabBarHideOnKeyboard:true
     })}
   >
-    <Tab.Screen name="Home" component={AdminHomeStackNavigator} />
+    <Tab.Screen
+      name="Home"
+      component={AdminHomeStackNavigator}
+      options={({ route }) => {
+        const routeName =
+          getFocusedRouteNameFromRoute(route) ?? "AdminDashboard";
+        const baseTabBarStyle = {
+          backgroundColor: "#292766",
+        } as const;
+
+        // Hide on Facility-Management detail screens (keep visible on AdminFacilityManagement index)
+        const hideOnFacilityScreens = [
+          "AdminFMViewDetails",
+          "AdminFMEdit",
+          "AdminFMGenerateWorkOrder",
+          "AdminFMViewWorkOrder",
+          "AdminFMOrderView",
+          "AdminFMOrderUpdate",
+          "AdminFMOrderExport",
+        ];
+
+        if (hideOnFacilityScreens.includes(routeName)) {
+          return {
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          } as const;
+        }
+
+        return { tabBarStyle: baseTabBarStyle } as const;
+      }}
+    />
     <Tab.Screen
       name="Booking"
       component={AdminBookingStackNavigator}

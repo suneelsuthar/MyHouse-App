@@ -62,4 +62,6 @@ export const Images = {
   downIcon: require("./down.svg"),
   clockWhiteIcon: require("./clock-white.svg"),
   arrowRightIcon: require("./steparrow.png"),
+  ordersummary: require("./ordersummary.png"),
+  updates: require("./updates.png"),
 };
