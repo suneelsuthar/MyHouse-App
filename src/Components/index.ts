@@ -11,6 +11,7 @@ export * from "./Header-2";
 export * from "./CustomTabs";
 export * from "./SearchBar";
 export * from "./FacilityManagementCard";
+export * from "./CustomGallery";
 export { default as CustomModal } from "./CustomModal";
 export { default as AdditionalChargesModal } from "./AdditionalChargesModal";
 export { default as OfferDiscountModal } from "./OfferDiscountModal";

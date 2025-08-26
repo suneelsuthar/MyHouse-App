@@ -611,6 +611,7 @@ const TenantTabs = () => (
         width: 50,
       },
       headerShown: false,
+      tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Home" component={TenantHome} />
@@ -735,6 +736,7 @@ const AgentTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Dashboard" component={AgentStackNavigator} />
@@ -777,6 +779,7 @@ const FacilityManagerTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Dashboard" component={FacilityManagerStackNavigator} />
@@ -819,6 +822,7 @@ const LandlordTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Dashboard" component={LandlordStackNavigator} />
@@ -861,6 +865,7 @@ const SubLandlordTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Dashboard" component={SubLandlordStackNavigator} />
@@ -903,6 +908,7 @@ const SecurityTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Dashboard" component={SecurityStackNavigator} />
@@ -968,6 +974,7 @@ const AdminTabs = () => (
       tabBarActiveTintColor: colors.white,
       tabBarInactiveTintColor: colors.white,
       headerShown: false,
+       tabBarHideOnKeyboard:true
     })}
   >
     <Tab.Screen name="Home" component={AdminHomeStackNavigator} />
@@ -994,6 +1001,7 @@ const AdminTabs = () => (
     />
     <Tab.Screen
       name="Properties"
+      
       component={AdminPropertiesStackNavigator}
       options={({ route }) => {
         const routeName =

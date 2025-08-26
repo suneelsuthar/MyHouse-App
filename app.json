@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Bullwise",
-    "slug": "bullwise",
+    "name": "My Homes",
+    "slug": "myhomes",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.suneel.bullwise",
+      "bundleIdentifier": "com.suneel.myhomes",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera."
       }
@@ -56,7 +56,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "d485d2e1-06e8-46af-85ab-769f720bdcb4"
+        "projectId": "fc5efe05-55c4-4f47-ac09-b81875afd5a5"
       }
     }
   }

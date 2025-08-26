@@ -65,9 +65,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Role-based main navigator */}
-      {userRole === "admin" && (
+      {
+      userRole === "admin" && (
         <Stack.Screen name="Main" component={AdminTabNavigator} />
-      )}
+      )
+      }
       {userRole === "tenant" && (
         <Stack.Screen name="Main" component={TenantTabNavigator} />
       )}
