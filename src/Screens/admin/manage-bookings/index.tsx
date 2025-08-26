@@ -8,6 +8,7 @@ import type { AdminStackParamList } from "../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
 import { Header } from "../../../Components";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import DropdownComponent from "../../../Components/DropDown";
 
 type BookingStatus = "approved" | "pending" | "rejected";
 
@@ -172,7 +173,28 @@ export function AdminManageBookings() {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header title="View Property Details" />
+      <Header
+        title="Booking"
+        rightAccessory={
+          <DropdownComponent
+            data={[
+              { label: "All", value: "all" },
+              {
+                label: "Last 7 days",
+                value: "last_7_days",
+              },
+              {
+                label: "Last 14 days",
+                value: "last_14_days",
+              },
+            ]}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={{ fontSize: 14 }}
+            selectedTextStyle={{ fontSize: 14 }}
+            placeholder="Select"
+          />
+        }
+      />
 
       {/* Tabs */}
       <View style={styles.tabsContainer}>
@@ -378,5 +400,11 @@ const styles = StyleSheet.create({
   labelValue: {
     color: colors.primaryLight,
     // fontSize: adjustSize(12),
+  },
+  dropdown: {
+    minWidth: adjustSize(120),
+    height: adjustSize(33),
+    borderRadius: 100,
+    backgroundColor: colors.primaryLight,
   },
 });
