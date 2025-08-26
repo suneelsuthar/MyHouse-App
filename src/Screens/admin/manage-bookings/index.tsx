@@ -118,9 +118,18 @@ export function AdminManageBookings() {
       }
     >
       <View style={styles.cardHeaderRow}>
-        <Text weight="semiBold" style={styles.cardTitle}>
-          {item.title}
-        </Text>
+        <View style={styles.cardHeaderRow}>
+          <Text weight="semiBold" style={styles.cardTitle}>
+            {item.title}
+          </Text>
+
+          {item.subtitle ? (
+            <Text style={styles.subtitle}>
+              {"  "}({item.subtitle})
+            </Text>
+          ) : null}
+        </View>
+
         <Text
           weight="medium"
           style={[styles.statusText, statusLabelColor(item.status)]}
@@ -128,21 +137,29 @@ export function AdminManageBookings() {
           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
         </Text>
       </View>
-      {item.subtitle ? (
-        <Text style={styles.subtitle}>({item.subtitle})</Text>
-      ) : null}
-
       <View style={styles.rowBetween}>
         <View>
-          <Text style={styles.label}>Check In: {item.checkIn}</Text>
-          <Text style={[styles.label, { marginTop: spacing.xs }]}>
-            Check Out: {item.checkOut}
+          <Text weight="medium" style={styles.label}>
+            Check In:
+            <Text style={styles.labelValue}>
+              {"  "}
+              {item.checkIn}
+            </Text>
+          </Text>
+          <Text weight="medium" style={[styles.label]}>
+            Check Out:
+            {"  "}
+            <Text style={styles.labelValue}>{item.checkOut}</Text>
           </Text>
         </View>
         <View>
-          <Text style={styles.label}>List Price: {item.listPrice}</Text>
-          <Text style={[styles.label, { marginTop: spacing.xs }]}>
-            Booked price: {item.bookedPrice}
+          <Text weight="medium" style={styles.label}>
+            List Price:
+            <Text style={styles.labelValue}> {item.listPrice}</Text>
+          </Text>
+          <Text weight="medium" style={[styles.label]}>
+            Booked price
+            <Text style={styles.labelValue}> {item.bookedPrice}</Text>
           </Text>
         </View>
       </View>
@@ -247,7 +264,10 @@ export function AdminManageBookings() {
         data={filtered}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        // contentContainerStyle={{ paddingVertical: spacing.md }}
+        contentContainerStyle={{
+          paddingVertical: spacing.md,
+          paddingHorizontal: adjustSize(5),
+        }}
         ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
         showsVerticalScrollIndicator={false}
       />
@@ -301,7 +321,6 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     // paddingHorizontal: spacing.sm,
     height: adjustSize(83),
-    
   },
   tabItem: {
     flex: 1,
@@ -322,12 +341,13 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.fill,
-    padding: spacing.lg,
-    borderRadius: adjustSize(12),
+    padding: adjustSize(10),
+    borderRadius: adjustSize(7),
     shadowColor: "#000",
     boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
     elevation: 2,
     marginHorizontal: adjustSize(2),
+    minHeight: adjustSize(96),
   },
   cardHeaderRow: {
     flexDirection: "row",
@@ -339,11 +359,12 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   subtitle: {
-    color: colors.primaryLight,
-    marginBottom: spacing.sm,
+    color: colors.grey,
+    // marginBottom: spacing.sm,
   },
   statusText: {
     fontFamily: typography.fonts.poppins.medium,
+    fontSize: adjustSize(10),
   },
   label: {
     color: colors.primary,
@@ -353,5 +374,9 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     marginTop: spacing.sm,
+  },
+  labelValue: {
+    color: colors.primaryLight,
+    // fontSize: adjustSize(12),
   },
 });
