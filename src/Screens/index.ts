@@ -123,6 +123,7 @@ import { AdminAmenityEdit } from "./admin/community-area/amenity-edit";
 import { AdminAmenityMakeReservation } from "./admin/community-area/amenity-make-reservation";
 import { AdminAmenityManageCalendar } from "./admin/community-area/amenity-manage-calendar";
 import { AdminReservationView } from "./admin/community-area/reservation-view";
+import { AdminAddNewAmenity } from "./admin/community-area/add-new-amenity";
 export {
   Splash,
   Intro,
@@ -234,5 +235,6 @@ export {
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
   AdminAmenityManageCalendar,
-  AdminReservationView
+  AdminReservationView,
+  AdminAddNewAmenity
 };

@@ -136,7 +136,8 @@ import {
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
   AdminAmenityManageCalendar,
-  AdminReservationView
+  AdminReservationView,
+  AdminAddNewAmenity,
 } from "../Screens";
 
 import {
@@ -489,6 +490,10 @@ const AdminHomeStackNavigator = () => (
       component={AdminAmenityManageCalendar}
     />
     <AdminHomeStack.Screen
+      name="AdminAddNewAmenity"
+      component={AdminAddNewAmenity}
+    />
+    <AdminHomeStack.Screen
       name="AdminReservationView"
       component={AdminReservationView}
     />
@@ -534,7 +539,7 @@ const AdminPropertiesStackNavigator = () => (
       name="AdminGenerateWorkRequests"
       component={AdminGenerateWorkRequests}
     />
-     <AdminPropertiesStack.Screen
+    <AdminPropertiesStack.Screen
       name="AdminTenantDetails"
       component={AdminTenantDetails}
     />
@@ -611,7 +616,7 @@ const TenantTabs = () => (
         width: 50,
       },
       headerShown: false,
-      tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Home" component={TenantHome} />
@@ -736,7 +741,7 @@ const AgentTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Dashboard" component={AgentStackNavigator} />
@@ -779,7 +784,7 @@ const FacilityManagerTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Dashboard" component={FacilityManagerStackNavigator} />
@@ -822,7 +827,7 @@ const LandlordTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Dashboard" component={LandlordStackNavigator} />
@@ -865,7 +870,7 @@ const SubLandlordTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Dashboard" component={SubLandlordStackNavigator} />
@@ -908,7 +913,7 @@ const SecurityTabs = () => (
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: colors.textDim,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Dashboard" component={SecurityStackNavigator} />
@@ -974,7 +979,7 @@ const AdminTabs = () => (
       tabBarActiveTintColor: colors.white,
       tabBarInactiveTintColor: colors.white,
       headerShown: false,
-       tabBarHideOnKeyboard:true
+      tabBarHideOnKeyboard: true,
     })}
   >
     <Tab.Screen name="Home" component={AdminHomeStackNavigator} />
@@ -1001,7 +1006,6 @@ const AdminTabs = () => (
     />
     <Tab.Screen
       name="Properties"
-      
       component={AdminPropertiesStackNavigator}
       options={({ route }) => {
         const routeName =

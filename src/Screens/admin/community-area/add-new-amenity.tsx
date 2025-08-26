@@ -28,22 +28,18 @@ const formatTime = (date: Date) => {
   return `${hours}:${minStr} ${ampm}`;
 };
 
-export function AdminAmenityEdit({ route, navigation }: any) {
+export function AdminAddNewAmenity({ route, navigation }: any) {
   // 🔹 State variables with types
-  const data = route?.params?.data;
-  console.log("data---------", data);
-  const [propertyGroup, setPropertyGroup] = useState<string>(
-    data?.propertyGroupName
-  );
-  const [amenityName, setAmenityName] = useState<string>(data?.amenity);
-  const [capacity, setCapacity] = useState<string>(data?.capacity);
+  const [propertyGroup, setPropertyGroup] = useState<string>("");
+  const [amenityName, setAmenityName] = useState<string>("");
+  const [capacity, setCapacity] = useState<string>("");
   const [durationPerSlot, setDurationPerSlot] = useState<string>("");
   const [maxDuration, setMaxDuration] = useState<string>("");
   const [selectedDay, setSelectedDay] = useState<DayOption | undefined>();
   const [selectedTime, setSelectedTime] = useState<TimeOption | undefined>();
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
-  const [images, setImages] = useState<string[]>(data?.images); // array of image paths/urls
+  const [images, setImages] = useState<string[]>([]); // array of image paths/urls
   const [showPicker, setShowPicker] = useState(false);
   const [pickerMode, setPickerMode] = useState<"start" | "end">("start");
   const [tempDate, setTempDate] = useState<Date>(new Date());
@@ -158,7 +154,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title={"Edit Amenity"} />
+      <Header title={"Add new Amenity"} />
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={{ paddingBottom: adjustSize(0) }}
@@ -283,7 +279,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
                   </View>
                 </View>
               )}
-
+          
               {selectedTime === "Different time for each day" && (
                 <View>
                   {selectedDays.map((val, index) => {
@@ -365,7 +361,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             </View>
           )}
           <Button
-            text={loading ? "Updating ..." : "Update Amenity"}
+            text={loading ? "Adding ..." : "Add Amenity"}
             preset="reversed"
             style={[styles.btn, !isFormValid && { opacity: 0.7 }]}
             disabled={!isFormValid}

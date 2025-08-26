@@ -10,7 +10,7 @@ import { Screen, Text, CustomGallery } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-
+import { useNavigation } from "@react-navigation/native";
 type DayCell = {
   date: Date;
   inMonth: boolean;
@@ -19,6 +19,7 @@ type DayCell = {
 export function AdminAmenityView({
   route,
 }: AppStackScreenProps<"AdminAmenityView">) {
+  const navigation = useNavigation();
   const data = route?.params?.data;
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -251,10 +252,22 @@ export function AdminAmenityView({
           </Text>
         </View>
         <View style={styles.footerRow}>
-          <TouchableOpacity activeOpacity={0.7} style={[styles.addMoneyBtn]}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={[styles.addMoneyBtn]}
+            onPress={() =>
+              (navigation as any).navigate("AdminAmenityMakeReservation")
+            }
+          >
             <Text style={styles.addMoneyBtnText}>New Reservation</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.sendMoneyBtn}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.sendMoneyBtn}
+            onPress={() =>
+              (navigation as any).navigate("AdminAmenityManageCalendar")
+            }
+          >
             <Text style={styles.sendMoneyBtnText}>Manage Calendar</Text>
           </TouchableOpacity>
         </View>

@@ -211,7 +211,7 @@ export function AdminCommunityArea({ route }: Props) {
             activeOpacity={0.7}
             style={styles._addbtn}
             onPress={() =>
-              (navigation as any).navigate("AdminAddProperty" as never)
+               (navigation as any).navigate("AdminAddNewAmenity")
             }
           >
             <WithLocalSvg asset={Images.addprop} />
@@ -270,7 +270,9 @@ export function AdminCommunityArea({ route }: Props) {
                       data: item,
                     });
                   } else if (action === "Edit") {
-                    (navigation as any).navigate("AdminAmenityEdit");
+                    (navigation as any).navigate("AdminAmenityEdit", {
+                      data: item,
+                    });
                   } else if (action === "Make reservations") {
                     (navigation as any).navigate("AdminAmenityMakeReservation");
                   } else if (action === "Manage Calendar") {

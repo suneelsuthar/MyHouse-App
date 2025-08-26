@@ -68,7 +68,10 @@ export default function DropdownComponent({
     <Dropdown
       style={[
         styles.dropdown,
-        { backgroundColor: (controlledValue ?? uncontrolledValue) ? colors.primary : "#292766A3" },
+        {
+          backgroundColor:
+            controlledValue ?? uncontrolledValue ? colors.primary : "#292766A3",
+        },
         dropdownStyle,
       ]}
       placeholderStyle={
@@ -92,7 +95,10 @@ export default function DropdownComponent({
       searchPlaceholder="Search..."
       value={controlledValue ?? uncontrolledValue}
       onFocus={() => setIsFocus(true)}
-      itemTextStyle={{ fontFamily: typography.fonts.poppins.medium }}
+      itemTextStyle={{
+        fontFamily: typography.fonts.poppins.normal,
+        fontSize: adjustSize(14),
+      }}
       onBlur={() => setIsFocus(false)}
       onChange={(item: DropdownItem) => {
         if (onChangeValue) {

@@ -59,6 +59,7 @@ export type AdminStackParamList = {
   AdminAmenityEdit: undefined;
   AdminAmenityMakeReservation: undefined;
   AdminAmenityManageCalendar: undefined;
+  AdminAddNewAmenity: undefined;
   AdminReservationView: undefined;
   // Separate Visitor Management pages
   AdminVisitorRequests: undefined;
@@ -165,14 +166,14 @@ export type GlobalStackParamList = {
 };
 
 // Main app param list that combines all stacks
-export type AppStackParamList = AuthStackParamList & 
-  TenantStackParamList & 
-  AdminStackParamList & 
-  AgentStackParamList & 
-  FacilityManagerStackParamList & 
-  LandlordStackParamList & 
-  SubLandlordStackParamList & 
-  SecurityStackParamList & 
+export type AppStackParamList = AuthStackParamList &
+  TenantStackParamList &
+  AdminStackParamList &
+  AgentStackParamList &
+  FacilityManagerStackParamList &
+  LandlordStackParamList &
+  SubLandlordStackParamList &
+  SecurityStackParamList &
   GlobalStackParamList & {
     Main: undefined;
     Home: undefined;
@@ -206,7 +207,7 @@ export interface IUser {
   last_login?: string;
   is_trial_active?: boolean;
   trial_ends_at?: string;
-  subscription_status?: 'active' | 'inactive' | 'trial' | 'cancelled';
+  subscription_status?: "active" | "inactive" | "trial" | "cancelled";
 }
 
 export interface AuthResponse {
