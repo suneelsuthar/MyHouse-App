@@ -40,7 +40,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Dashboard",
       type: "item",
       icon: Images.dashborad,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminDashboard" },
+      }),
     },
     {
       id: 1,
@@ -279,7 +282,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Dashboard",
       type: "item",
       icon: Images.dashborad,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminDashboard" },
+      }),
     },
     {
       id: 1,
