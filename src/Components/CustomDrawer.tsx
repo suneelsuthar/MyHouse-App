@@ -286,49 +286,70 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Sim Data Management",
       type: "item",
       icon: Images.simdata,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminSimDataManagement" },
+      }),
     },
     {
       id: 2,
       title: "Manage Meters",
       type: "item",
       icon: Images.meters,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminManageMeters" },
+      }),
     },
     {
       id: 3,
       title: "Manage Transactions",
       type: "item",
       icon: Images.managetrans,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminManageTransactions" },
+      }),
     },
     {
       id: 4,
       title: "Manage property group",
       type: "item",
       icon: Images.managegroups,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminManagePropertyGroup" },
+      }),
     },
     {
       id: 5,
       title: "Manage Vending History",
       type: "item",
       icon: Images.managehistory,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminManageVendingHistory" },
+      }),
     },
     {
       id: 6,
       title: "Analysis",
       type: "item",
       icon: Images.analysis,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminAnalysis" },
+      }),
     },
     {
       id: 7,
       title: "Settings",
       type: "item",
       icon: Images.settings,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminUtilitiesSettings" },
+      }),
     },
   ];
 

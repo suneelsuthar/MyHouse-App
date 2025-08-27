@@ -93,6 +93,15 @@ export type AdminStackParamList = {
   AdminEditProfile: undefined;
   AdminProfileSettings: undefined;
   AdminPanicEmergency: undefined;
+  AdminPropertyRequests: undefined;
+  AdminManageInspections: undefined;
+  AdminSimDataManagement: undefined;
+  AdminManageMeters: undefined;
+  AdminManageTransactions: undefined;
+  AdminManagePropertyGroup: undefined;
+  AdminManageVendingHistory: undefined;
+  AdminAnalysis: undefined;
+  AdminUtilitiesSettings: undefined;
 };
 
 // Screens specific to Agent

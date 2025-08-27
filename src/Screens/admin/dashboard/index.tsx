@@ -129,17 +129,29 @@ export const AdminDashboard = () => {
         {/* Quick Actions */}
         <View style={styles.section}>
           <View style={styles.quickActions}>
-            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
+            <TouchableOpacity 
+              style={styles._card} 
+              activeOpacity={0.7}
+              onPress={() => (navigation as any).navigate("AdminPropertyRequests")}
+            >
               <WithLocalSvg asset={Images.propreq} />
               <Text text="Property Requests" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
+            <TouchableOpacity 
+              style={styles._card} 
+              activeOpacity={0.7}
+              onPress={() => (navigation as any).navigate("AdminManageBookings")}
+            >
               <WithLocalSvg asset={Images.managebooking} />
               <Text text="Manage Bookings" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles._card} activeOpacity={0.7}>
+            <TouchableOpacity 
+              style={styles._card} 
+              activeOpacity={0.7}
+              onPress={() => (navigation as any).navigate("AdminManageInspections")}
+            >
               <WithLocalSvg asset={Images.manageins} />
               <Text text="Manage Inspections" style={styles._card_text} />
             </TouchableOpacity>

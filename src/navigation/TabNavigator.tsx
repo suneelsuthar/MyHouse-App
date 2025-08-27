@@ -145,6 +145,15 @@ import {
   AdminEditProfile,
   AdminProfileSettings,
   AdminPanicEmergency,
+  AdminPropertyRequests,
+  AdminManageInspections,
+  AdminSimDataManagement,
+  AdminManageMeters,
+  AdminManageTransactions,
+  AdminManagePropertyGroup,
+  AdminManageVendingHistory,
+  AdminAnalysis,
+  AdminUtilitiesSettings,
 } from "../Screens";
 
 import {
@@ -522,6 +531,42 @@ const AdminHomeStackNavigator = () => (
     <AdminHomeStack.Screen
       name="AdminGenerateVisitorRequest"
       component={AdminGenerateVisitorRequest}
+    />
+    <AdminHomeStack.Screen
+      name="AdminPropertyRequests"
+      component={AdminPropertyRequests}
+    />
+    <AdminHomeStack.Screen
+      name="AdminManageInspections"
+      component={AdminManageInspections}
+    />
+    <AdminHomeStack.Screen
+      name="AdminSimDataManagement"
+      component={AdminSimDataManagement}
+    />
+    <AdminHomeStack.Screen
+      name="AdminManageMeters"
+      component={AdminManageMeters}
+    />
+    <AdminHomeStack.Screen
+      name="AdminManageTransactions"
+      component={AdminManageTransactions}
+    />
+    <AdminHomeStack.Screen
+      name="AdminManagePropertyGroup"
+      component={AdminManagePropertyGroup}
+    />
+    <AdminHomeStack.Screen
+      name="AdminManageVendingHistory"
+      component={AdminManageVendingHistory}
+    />
+    <AdminHomeStack.Screen
+      name="AdminAnalysis"
+      component={AdminAnalysis}
+    />
+    <AdminHomeStack.Screen
+      name="AdminUtilitiesSettings"
+      component={AdminUtilitiesSettings}
     />
   </AdminHomeStack.Navigator>
 );
@@ -1032,7 +1077,16 @@ const AdminTabs = () => (
           "AdminProfile",
           "AdminEditProfile",
           "AdminProfileSettings",
-          "AdminPanicEmergency"
+          "AdminPanicEmergency",
+          "AdminPropertyRequests",
+          "AdminManageInspections",
+          "AdminSimDataManagement",
+          "AdminManageMeters",
+          "AdminManageTransactions",
+          "AdminManagePropertyGroup",
+          "AdminManageVendingHistory",
+          "AdminAnalysis",
+          "AdminUtilitiesSettings"
         ];
 
         if (hideOnFacilityScreens.includes(routeName)) {

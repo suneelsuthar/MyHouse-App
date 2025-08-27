@@ -131,6 +131,15 @@ import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate
 import { AdminEditProfile } from "./admin/profile/edit-profile";
 import { AdminProfileSettings } from "./admin/profile/profile-settings";
 import { AdminPanicEmergency } from "./admin/emergency/panic";
+import { AdminPropertyRequests } from "./admin/property-requests";
+import { AdminManageInspections } from "./admin/manage-inspections";
+import { AdminSimDataManagement } from "./admin/utilities/sim-data-management";
+import { AdminManageMeters } from "./admin/utilities/manage-meters";
+import { AdminManageTransactions } from "./admin/utilities/manage-transactions";
+import { AdminManagePropertyGroup } from "./admin/utilities/manage-property-group";
+import { AdminManageVendingHistory } from "./admin/utilities/manage-vending-history";
+import { AdminAnalysis } from "./admin/utilities/analysis";
+import { AdminUtilitiesSettings } from "./admin/utilities/settings";
 export {
   Splash,
   Intro,
@@ -249,5 +258,14 @@ export {
   AdminGenerateVisitorRequest,
   AdminEditProfile,
   AdminProfileSettings,
-  AdminPanicEmergency
+  AdminPanicEmergency,
+  AdminPropertyRequests,
+  AdminManageInspections,
+  AdminSimDataManagement,
+  AdminManageMeters,
+  AdminManageTransactions,
+  AdminManagePropertyGroup,
+  AdminManageVendingHistory,
+  AdminAnalysis,
+  AdminUtilitiesSettings
 };
