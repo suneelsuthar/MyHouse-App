@@ -15,10 +15,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const dispatch = useAppDispatch();
 
   // Close any open nested menu and the drawer, then navigate
-  const closeMenusAndNavigate = (
-    routeName: any,
-    params?: any
-  ) => {
+  const closeMenusAndNavigate = (routeName: any, params?: any) => {
     setOpenId(null);
     props.navigation.closeDrawer?.();
     (props.navigation as any).navigate(routeName as never, params as never);
@@ -30,7 +27,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     } finally {
       // Ensure drawer closes and navigate to Login screen
       props.navigation.closeDrawer?.();
-      props.navigation.reset({ index: 0, routes: [{ name: "Login" as never }] });
+      props.navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" as never }],
+      });
     }
   };
 
@@ -40,10 +40,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Dashboard",
       type: "item",
       icon: Images.dashborad,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminDashboard" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminDashboard" },
+        }),
     },
     {
       id: 1,
@@ -54,37 +55,79 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Rental Properties",
-          onPress: () => console.log(""),
+          // onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { screen: "AdminPropertyManagement" },
+            }),
         },
         {
           id: 1,
           title: "Managed Properties",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyManagement",
+                params: { propertyType: "managed" },
+              },
+            }),
         },
         {
           id: 2,
           title: "Property Requests",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminPropertyRequests",
+              },
+            }),
         },
         {
           id: 3,
           title: "Services",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { 
+                screen: "AdminPropertyServices"
+              },
+            }),
         },
         {
           id: 4,
           title: "Features",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { 
+                screen: "AdminPropertyFeatures"
+              },
+            }),
         },
         {
           id: 5,
           title: "Restrictions",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { 
+                screen: "AdminPropertyRestriction"
+              },
+            }),
         },
         {
           id: 6,
           title: "Manage Inspections",
-          onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { 
+                screen: "AdminManageInspections"
+              },
+            }),
         },
       ],
     },
@@ -95,7 +138,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       icon: Images.managebooking,
       onPress: () =>
         closeMenusAndNavigate("Admin", {
-          screen: "Booking",
+          screen: "Properties",
           params: { screen: "AdminManageBookings" },
         }),
     },
@@ -219,7 +262,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: { screen: "AdminCommunityArea", params: { tab: "amenities" } },
+              params: {
+                screen: "AdminCommunityArea",
+                params: { tab: "amenities" },
+              },
             }),
         },
         {
@@ -228,7 +274,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Home",
-              params: { screen: "AdminCommunityArea", params: { tab: "reservations" } },
+              params: {
+                screen: "AdminCommunityArea",
+                params: { tab: "reservations" },
+              },
             }),
         },
       ],
@@ -250,9 +299,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Wallet",
       type: "item",
       icon: Images.wallet,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Wallet",
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Wallet",
+        }),
     },
 
     {
@@ -260,19 +310,21 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Emergency",
       type: "item",
       icon: Images.emergency,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminEmergency" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminEmergency" },
+        }),
     },
     {
       id: 10,
       title: "Chat",
       type: "item",
       icon: Images.chat,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Chat",
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
     },
   ];
 
@@ -282,80 +334,88 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Dashboard",
       type: "item",
       icon: Images.dashborad,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminDashboard" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminDashboard" },
+        }),
     },
     {
       id: 1,
       title: "Sim Data Management",
       type: "item",
       icon: Images.simdata,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminSimDataManagement" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminSimDataManagement" },
+        }),
     },
     {
       id: 2,
       title: "Manage Meters",
       type: "item",
       icon: Images.meters,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminManageMeters" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageMeters" },
+        }),
     },
     {
       id: 3,
       title: "Manage Transactions",
       type: "item",
       icon: Images.managetrans,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminManageTransactions" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageTransactions" },
+        }),
     },
     {
       id: 4,
       title: "Manage property group",
       type: "item",
       icon: Images.managegroups,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminManagePropertyGroup" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManagePropertyGroup" },
+        }),
     },
     {
       id: 5,
       title: "Manage Vending History",
       type: "item",
       icon: Images.managehistory,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminManageVendingHistory" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageVendingHistory" },
+        }),
     },
     {
       id: 6,
       title: "Analysis",
       type: "item",
       icon: Images.analysis,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminAnalysis" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminAnalysis" },
+        }),
     },
     {
       id: 7,
       title: "Settings",
       type: "item",
       icon: Images.settings,
-      onPress: () => closeMenusAndNavigate("Admin", {
-        screen: "Home",
-        params: { screen: "AdminUtilitiesSettings" },
-      }),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminUtilitiesSettings" },
+        }),
     },
   ];
 
@@ -368,12 +428,14 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     >
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => closeMenusAndNavigate("Admin", {
-              screen: "Home",
-              params: { screen: "AdminProfile" },
-            })}
+            onPress={() =>
+              closeMenusAndNavigate("Admin", {
+                screen: "Home",
+                params: { screen: "AdminProfile" },
+              })
+            }
           >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>

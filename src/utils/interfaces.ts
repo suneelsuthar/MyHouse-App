@@ -28,8 +28,11 @@ export type AdminStackParamList = {
   Admin: undefined;
   AdminDashboard: undefined;
   AdminUserManagement: undefined;
-  AdminPropertyManagement: undefined;
+  AdminPropertyManagement: { propertyType?: 'rental' | 'managed' };
   AdminPropertyDetails: { propertyId: string };
+  AdminPropertyServices: undefined;
+  AdminPropertyFeatures: undefined;
+  AdminPropertyRestriction: undefined;
   AdminAddProperty: undefined;
   AdminManageCalendar: { propertyId: string };
   AdminAssignProperties: {

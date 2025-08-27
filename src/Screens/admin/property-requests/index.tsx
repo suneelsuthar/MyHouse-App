@@ -104,6 +104,15 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { rentalProperties } from "../../../utils/data";
 import { RentalCard } from "../../../Components/RentalCard";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../navigation/types";
+import { TextInput } from "react-native";
+import { Modal as RNModal } from "react-native";
+
+type PropertyRequestsScreenNavigationProp = NativeStackNavigationProp<
+  AdminStackParamList,
+  "AdminPropertyDetails"
+>;
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
@@ -177,14 +186,89 @@ const propertyRequestsData = [
   },
 ];
 
+interface ActionModalProps {
+  visible: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string | React.ReactNode;
+  confirmText?: string;
+  confirmColor?: string;
+  children?: React.ReactNode;
+  setRejectModalVisible: (visible: boolean) => void;
+  setApproveModalVisible: (visible: boolean) => void;
+}
+
+const ActionModal: React.FC<ActionModalProps> = ({
+  visible,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText,
+  confirmColor = colors.primary,
+  children,
+  setRejectModalVisible,
+  setApproveModalVisible,
+}) => (
+  <RNModal
+    visible={visible}
+    transparent
+    animationType="fade"
+    onRequestClose={onClose}
+  >
+    <View style={styles.modalOverlay}>
+      <View style={styles.modalContent}>
+        <TouchableOpacity 
+          style={styles._closebtn}
+          onPress={() => {
+            setRejectModalVisible(false);
+            setApproveModalVisible(false);
+          }}
+        >
+          <Ionicons name="close" color={colors.error} size={16} />
+        </TouchableOpacity>
+        <Text weight="semiBold" style={styles.modalTitle}>
+          {title}
+        </Text>
+        {typeof message === "string" ? (
+          <Text style={styles.modalMessage}>{message}</Text>
+        ) : (
+          message
+        )}
+        {children}
+        <View style={styles.modalButtons}>
+          <TouchableOpacity
+            style={[styles.modalButton, styles.cancelButton]}
+            onPress={onClose}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.modalButton, { backgroundColor: confirmColor }]}
+            onPress={onConfirm}
+          >
+            <Text style={styles.confirmButtonText}>{confirmText}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  </RNModal>
+);
+
 export const AdminPropertyRequests: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("Active");
-  const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [propertyRequests, setPropertyRequests] =
     useState(propertyRequestsData);
-  const navigation = useNavigation();
+  const [selectedRequest, setSelectedRequest] = useState<{
+    id: string;
+    propertyId: string;
+  } | null>(null);
+  const [approveModalVisible, setApproveModalVisible] = useState(false);
+  const [rejectModalVisible, setRejectModalVisible] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
+  const navigation = useNavigation<PropertyRequestsScreenNavigationProp>();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -199,17 +283,52 @@ export const AdminPropertyRequests: React.FC = () => {
     }
   };
 
+  const handleApprove = () => {
+    if (selectedRequest) {
+      // Update the status of the selected request
+      setPropertyRequests((prev) =>
+        prev.map((req) =>
+          req.id === selectedRequest.id
+            ? { ...req, status: "approved" as const }
+            : req
+        )
+      );
+      setApproveModalVisible(false);
+      setDropdownVisible(null);
+    }
+  };
+
+  const handleReject = () => {
+    if (selectedRequest && rejectionReason.trim()) {
+      // Update the status and add rejection reason
+      setPropertyRequests((prev) =>
+        prev.map((req) =>
+          req.id === selectedRequest.id
+            ? {
+                ...req,
+                status: "rejected" as const,
+                rejectionReason: rejectionReason.trim(),
+              }
+            : req
+        )
+      );
+      setRejectModalVisible(false);
+      setDropdownVisible(null);
+      setRejectionReason("");
+    }
+  };
+
   const renderPropertyRequestCard = ({ item }: { item: any }) => (
     <View style={{ position: "relative" }}>
       <View style={styles.propertyCard}>
-        <Image source={{ uri: item.image }} style={styles.propertyImage} />
+        <Image source={{ uri: item.images[0] }} style={styles.propertyImage} />
         <View style={styles.propertyContent}>
           <View style={styles.propertyHeader}>
             <View style={styles.propertyInfo}>
               <Text style={styles.propertyTitle}>
-                {item.title}
+                {item.name}
                 <Text style={styles.propertyId}>
-                  {` `}({item.id})
+                  {` `}({item.agents[0].code})
                 </Text>
               </Text>
               <Text style={styles.propertyLocation}>{item.location}</Text>
@@ -231,7 +350,7 @@ export const AdminPropertyRequests: React.FC = () => {
                     {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                   </Text>
                 </View>
-                <Text style={styles.propertyPrice}>{item.price}</Text>
+                <Text style={styles.propertyPrice}>$30000</Text>
               </View>
             </View>
             <View style={styles.propertyActions}>
@@ -260,8 +379,10 @@ export const AdminPropertyRequests: React.FC = () => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
+              navigation.navigate("AdminPropertyDetails", {
+                propertyId: item.propertyId,
+              });
               setDropdownVisible(null);
-              // Handle View action
             }}
           >
             <Text style={styles.menuText}>View</Text>
@@ -269,20 +390,21 @@ export const AdminPropertyRequests: React.FC = () => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
-              setDropdownVisible(null);
-              // Handle Mark as approved action
+              setDropdownVisible(null)
+              setSelectedRequest(item);
+              setApproveModalVisible(true);
             }}
           >
-            <Text style={styles.menuText}>Mark as approved</Text>
+            <Text style={[styles.menuText]}>Mark as approved</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
-              setDropdownVisible(null);
-              // Handle Reject action
+              setSelectedRequest(item);
+              setRejectModalVisible(true);
             }}
           >
-            <Text style={styles.menuText}>Reject</Text>
+            <Text style={[styles.menuText]}>Reject</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -350,13 +472,45 @@ export const AdminPropertyRequests: React.FC = () => {
       >
         {/* Property Requests List */}
         <FlatList
-          data={propertyRequests}
+          data={rentalProperties}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           renderItem={renderPropertyRequestCard}
           showsVerticalScrollIndicator={false}
         />
       </ScrollView>
+
+      <ActionModal
+        visible={approveModalVisible}
+        onClose={() => setApproveModalVisible(false)}
+        onConfirm={handleApprove}
+        title="Are you Sure?"
+        message="Are you sure you want to Approve this Property Request?"
+        confirmText="Yes"
+        confirmColor="#292766"
+        setRejectModalVisible={setRejectModalVisible}
+        setApproveModalVisible={setApproveModalVisible}
+      />
+
+      <ActionModal
+        visible={rejectModalVisible}
+        onClose={() => setRejectModalVisible(false)}
+        onConfirm={handleReject}
+        title="Reject Property Request"
+        message="Please provide a reason for rejecting this property request:"
+        confirmText="Reject"
+        setRejectModalVisible={setRejectModalVisible}
+        setApproveModalVisible={setApproveModalVisible}
+      >
+        <Text weight="semiBold" text="Reason of Rejection" />
+        <TextInput
+          style={styles.reasonInput}
+          value={rejectionReason}
+          onChangeText={setRejectionReason}
+          placeholder="Describe Reason of Rejection"
+          multiline
+        />
+      </ActionModal>
     </Screen>
   );
 };
@@ -400,15 +554,12 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: "row",
     backgroundColor: "#dedfef",
-
-    // padding: spacing.xs,
   },
   tab: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: spacing.sm,
-    // gap: spacing.xs,
   },
   activeTab: {
     shadowColor: "#000",
@@ -494,7 +645,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    // paddingHorizontal: spacing.lg,
   },
   visitorItem: {
     flexDirection: "row",
@@ -577,8 +727,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.fill,
     padding: adjustSize(10),
     borderRadius: adjustSize(7),
-    // shadowColor: "#000",
-    // boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
     elevation: 2,
     marginHorizontal: adjustSize(10),
     minHeight: adjustSize(96),
@@ -611,9 +759,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.grey,
     fontSize: adjustSize(10),
-    // marginBottom: spacing.sm,
   },
-
   label: {
     color: colors.primary,
     fontSize: adjustSize(10),
@@ -686,7 +832,7 @@ const styles = StyleSheet.create({
   },
   propertyCard: {
     flexDirection: "row",
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     alignItems: "center",
     borderRadius: adjustSize(12),
     marginVertical: adjustSize(6),
@@ -703,6 +849,9 @@ const styles = StyleSheet.create({
     minHeight: adjustSize(85),
     borderWidth: 0.4,
     borderColor: colors.grey,
+    overflow: "visible",
+    position: "relative",
+    zIndex: 1,
   },
   propertyImage: {
     width: adjustSize(85),
@@ -752,9 +901,9 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   propertyActions: {
-    alignItems: "flex-end",
-    position: "absolute",
-    right: 0,
+    marginLeft: "auto",
+    padding: spacing.xs,
+    zIndex: 2,
   },
   propertyPrice: {
     fontSize: adjustSize(15),
@@ -762,33 +911,106 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.bold,
   },
   menuButton: {
-    // position: "absolute",
-    // right: adjustSize(10),
-    // top: adjustSize(10),
     padding: adjustSize(4),
   },
   menuBox: {
     position: "absolute",
-    right: adjustSize(10),
-    top: adjustSize(36),
+    right: 10,
+    top: 40,
     backgroundColor: colors.white,
-    borderRadius: adjustSize(10),
+    borderRadius: 8,
+    padding: spacing.xs,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
-    zIndex: 10,
-    width: adjustSize(190),
-    paddingVertical: adjustSize(6),
-    paddingBottom: adjustSize(15),
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1000,
+    minWidth: 180,
   },
   menuItem: {
-    paddingVertical: adjustSize(5),
-    paddingHorizontal: adjustSize(12),
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderBottomColor: colors.border,
+  },
+  menuItemLast: {
+    borderBottomWidth: 0,
   },
   menuText: {
-    fontSize: adjustSize(12),
-    color: colors.primary,
+    fontSize: 14,
+    color: colors.text,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+  modalContent: {
+    backgroundColor: colors.fill,
+    borderRadius: adjustSize(15),
+    padding: 24,
+    width: "90%",
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: adjustSize(18),
+    marginBottom: 16,
+    color: colors.text,
+    textAlign: "center",
+    marginTop: adjustSize(50),
+  },
+  modalMessage: {
+    fontSize: adjustSize(14),
+    marginBottom: adjustSize(22),
+    color: "#292766",
+    textAlign: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 16,
+    gap: 8,
+  },
+  modalButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    minWidth: 100,
+    alignItems: "center",
+    flex: 1,
+  },
+  cancelButton: {
+    // backgroundColor: colors.#D51E1E,
+    borderWidth: 1,
+    borderColor: "#D51E1E",
+  },
+  cancelButtonText: {
+    color: "#D51E1E",
+  },
+  confirmButtonText: {
+    color: colors.white,
+  },
+  reasonInput: {
+    borderWidth: 1,
+    borderColor: colors.grey,
+    borderRadius: 8,
+    padding: adjustSize(12),
+    minHeight: adjustSize(100),
+    textAlignVertical: "top",
+    marginVertical: adjustSize(5),
+  },
+  _closebtn: {
+    height: adjustSize(20),
+    width: adjustSize(20),
+    borderRadius: 100,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: colors.error,
+    position: "absolute",
+    right: adjustSize(15),
+    top: adjustSize(15),
   },
 });

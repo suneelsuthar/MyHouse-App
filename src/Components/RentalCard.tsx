@@ -14,9 +14,10 @@ interface RentalCardProps {
   property: IRentalProperty;
   onPress?: () => void;
   onAction?: (action: string, property: IRentalProperty) => void;
+  type: string;
 }
 
-const ACTIONS = [
+const RENTAL_ACTIONS = [
   "View Details",
   "Edit",
   "Manage Calendar",
@@ -27,13 +28,18 @@ const ACTIONS = [
   "Create Visitor request",
 ];
 
+const ACTIONS_MANAGE = ["View", "Register Tenant", "Generate work request"];
+
 export const RentalCard: React.FC<RentalCardProps> = ({
   property,
   onPress,
   onAction,
+  type,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const thumb = property.images?.[0];
+  const ACTIONS = type === "rental" ? RENTAL_ACTIONS : ACTIONS_MANAGE;
+
   return (
     <View style={{ position: "relative" }}>
       <View style={styles.container}>
@@ -94,7 +100,6 @@ export const RentalCard: React.FC<RentalCardProps> = ({
               onPress={() => {
                 setMenuVisible(false);
                 onAction?.(a, property);
-                
               }}
               style={styles.menuItem}
               activeOpacity={0.6}

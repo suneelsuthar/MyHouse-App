@@ -17,12 +17,33 @@ import { AppStackScreenProps } from "../../../utils/interfaces";
 import { RentalCard } from "../../../Components/RentalCard";
 import { rentalProperties } from "../../../utils/data";
 const width = Dimensions.get("screen").width;
+
+// Import all property management screens
+import AdminPropertyServices from './services';
+import AdminPropertyFeatures from './features';
+import AdminPropertyRestriction from './restriction';
+import AdminManageInspections from './manage-inspections';
+
+// Re-export all property management screens
+export { 
+  AdminPropertyServices,
+  AdminPropertyFeatures,
+  AdminPropertyRestriction,
+  AdminManageInspections 
+};
 interface AdminPropertyManagementProps
   extends AppStackScreenProps<"AdminPropertyManagement"> {}
-export function AdminPropertyManagement(props: AdminPropertyManagementProps) {
+export function AdminPropertyManagement({
+  route,
+}: AdminPropertyManagementProps) {
   const navigation = useNavigation();
   const [search, setsearch] = useState();
+  const { propertyType = "rental" } = route.params || {};
 
+  // Determine the title and data based on property type
+  const screenTitle =
+    propertyType === "rental" ? "Rental Properties" : "Managed Properties";
+  console.log("=====+>", propertyType);
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -105,8 +126,9 @@ export function AdminPropertyManagement(props: AdminPropertyManagementProps) {
         renderItem={({ item }) => (
           <RentalCard
             property={item}
+            type={propertyType}
             onAction={(action, property) => {
-              if (action === "View Details") {
+              if (action === "View Details" || action === "View") {
                 (navigation as any).navigate(
                   "AdminPropertyDetails" as never,
                   { propertyId: property.propertyId } as never
@@ -212,11 +234,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(10),
     lineHeight: adjustSize(12),
   },
-  username: {
-    fontSize: adjustSize(15),
-    color: colors.primary,
-    lineHeight: adjustSize(20),
-  },
+
 
   _seciton_row: {
     flexDirection: "row",

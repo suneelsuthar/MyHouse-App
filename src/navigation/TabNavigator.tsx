@@ -96,25 +96,19 @@ import {
   SecurityPatrolLogs,
   SecuritySettings,
 
-  // Admin screens
+  // Import admin screens from the admin directory
   Admin,
   AdminDashboard,
-  AdminUserManagement,
   AdminPropertyManagement,
-  AdminFinancialReports,
-  AdminSystemSettings,
-  AdminAnalytics,
-  AdminAuditLogs,
-  AdminBackupRestore,
-  AdminSupportTickets,
   AdminPropertyDetails,
   AdminAddProperty,
   AdminManageCalendar,
   AdminAssignProperties,
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
-  AdminManageBookings,
   AdminBookingDetails,
+  // Property management screens are imported directly from their files
+  // Other admin screens
   AdminFacilityManagement,
   AdminVisitorManagement,
   AdminTenants,
@@ -124,7 +118,6 @@ import {
   AdminRevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
-  AdminTenantDetails,
   AdminFMViewDetails,
   AdminFMEdit,
   AdminFMGenerateWorkOrder,
@@ -146,7 +139,6 @@ import {
   AdminProfileSettings,
   AdminPanicEmergency,
   AdminPropertyRequests,
-  AdminManageInspections,
   AdminSimDataManagement,
   AdminManageMeters,
   AdminManageTransactions,
@@ -155,6 +147,12 @@ import {
   AdminAnalysis,
   AdminUtilitiesSettings,
 } from "../Screens";
+
+// Import property management screens from their respective files
+import AdminPropertyServices from "../Screens/admin/property-management/services";
+import AdminPropertyFeatures from "../Screens/admin/property-management/features";
+import AdminPropertyRestriction from "../Screens/admin/property-management/restriction";
+import AdminManageInspections from "../Screens/admin/property-management/manage-inspections";
 
 import {
   TenantStackParamList,
@@ -423,9 +421,10 @@ const AdminHomeStackNavigator = () => (
   <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
     {/* Register cross-section Admin screens here for global access */}
+
     <AdminHomeStack.Screen
-      name="AdminManageBookings"
-      component={AdminManageBookings}
+      name="AdminPropertyDetails"
+      component={AdminPropertyDetails}
     />
     <AdminHomeStack.Screen
       name="AdminFacilityManagement"
@@ -514,7 +513,10 @@ const AdminHomeStackNavigator = () => (
       component={AdminReservationView}
     />
     <AdminHomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
-    <AdminHomeStack.Screen name="AdminPanicEmergency" component={AdminPanicEmergency} />
+    <AdminHomeStack.Screen
+      name="AdminPanicEmergency"
+      component={AdminPanicEmergency}
+    />
     <AdminHomeStack.Screen name="AdminProfile" component={AdminProfile} />
     <AdminHomeStack.Screen
       name="AdminEditProfile"
@@ -560,10 +562,7 @@ const AdminHomeStackNavigator = () => (
       name="AdminManageVendingHistory"
       component={AdminManageVendingHistory}
     />
-    <AdminHomeStack.Screen
-      name="AdminAnalysis"
-      component={AdminAnalysis}
-    />
+    <AdminHomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
     <AdminHomeStack.Screen
       name="AdminUtilitiesSettings"
       component={AdminUtilitiesSettings}
@@ -573,10 +572,6 @@ const AdminHomeStackNavigator = () => (
 
 const AdminBookingStackNavigator = () => (
   <AdminBookingStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminBookingStack.Screen
-      name="AdminManageBookings"
-      component={AdminManageBookings}
-    />
     <AdminBookingStack.Screen
       name="AdminBookingDetails"
       component={AdminBookingDetails}
@@ -595,6 +590,22 @@ const AdminPropertiesStackNavigator = () => (
       component={AdminPropertyDetails}
     />
     <AdminPropertiesStack.Screen
+      name="AdminPropertyServices"
+      component={AdminPropertyServices}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminPropertyFeatures"
+      component={AdminPropertyFeatures}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminPropertyRestriction"
+      component={AdminPropertyRestriction}
+    />
+    <AdminPropertiesStack.Screen
+      name="AdminManageInspections"
+      component={AdminManageInspections}
+    />
+    <AdminPropertiesStack.Screen
       name="AdminAddProperty"
       component={AdminAddProperty}
     />
@@ -611,10 +622,6 @@ const AdminPropertiesStackNavigator = () => (
       component={AdminGenerateWorkRequests}
     />
     <AdminPropertiesStack.Screen
-      name="AdminTenantDetails"
-      component={AdminTenantDetails}
-    />
-    <AdminPropertiesStack.Screen
       name="AdminCreateVisitorRequests"
       component={AdminCreateVisitorRequests}
     />
@@ -623,19 +630,13 @@ const AdminPropertiesStackNavigator = () => (
 
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminWalletStack.Screen
-      name="AdminFinancialReports"
-      component={AdminFinancialReports}
-    />
+    <AdminWalletStack.Screen name="AdminDashboard" component={AdminDashboard} />
   </AdminWalletStack.Navigator>
 );
 
 const AdminChatStackNavigator = () => (
   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminChatStack.Screen
-      name="AdminSupportTickets"
-      component={AdminSupportTickets}
-    />
+    <AdminChatStack.Screen name="AdminDashboard" component={AdminDashboard} />
   </AdminChatStack.Navigator>
 );
 
@@ -1086,7 +1087,7 @@ const AdminTabs = () => (
           "AdminManagePropertyGroup",
           "AdminManageVendingHistory",
           "AdminAnalysis",
-          "AdminUtilitiesSettings"
+          "AdminUtilitiesSettings",
         ];
 
         if (hideOnFacilityScreens.includes(routeName)) {

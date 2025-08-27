@@ -227,11 +227,12 @@ export function AdminTenants() {
                         key={a}
                         onPress={() => {
                           setVisibleMenuIndex(null);
-                          // Navigate to the Properties tab, then to AdminTenantDetails within its stack
-                          (navigation as any).navigate(
-                            "Properties",
-                            { screen: "AdminTenantDetails" }
-                          );
+                          // Navigate to AdminTenantDetails screen
+                          (navigation as any).navigate("AdminTenantDetails", { 
+                            tenantId: index.toString(),
+                            tenantName: item.name,
+                            property: item.property
+                          });
                         }}
                         style={styles.menuItem}
                         activeOpacity={0.6}

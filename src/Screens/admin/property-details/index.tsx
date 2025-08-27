@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -10,15 +12,26 @@ import { Screen, Text, Header } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { IRentalProperty, rentalProperties } from "../../../utils/data";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../navigation/types";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import Feather from "@expo/vector-icons/Feather";
+
+type PropertyDetailsScreenRouteProp = RouteProp<
+  AdminStackParamList,
+  "AdminPropertyDetails"
+>;
 
 interface AdminPropertyDetailsProps
   extends AppStackScreenProps<"AdminPropertyDetails"> {}
 
 export function AdminPropertyDetails(props: AdminPropertyDetailsProps) {
-  const { propertyId } = props.route.params || { propertyId: "" };
+  const route = useRoute<PropertyDetailsScreenRouteProp>();
+  const { propertyId } = route.params;
+  const [approveModalVisible, setApproveModalVisible] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
   const [tab, setTab] = useState<
     "details" | "inspection" | "agents" | "fm" | "media"
   >("details");
@@ -28,6 +41,8 @@ export function AdminPropertyDetails(props: AdminPropertyDetailsProps) {
     () => rentalProperties.find((p) => p.propertyId === propertyId),
     [propertyId]
   );
+
+  console.log("=======>", rentalProperties[0].propertyId);
 
   useEffect(() => {
     // reset gallery selection when property changes
@@ -319,19 +334,143 @@ export function AdminPropertyDetails(props: AdminPropertyDetailsProps) {
           </>
         )}
         <View style={styles.footerRow}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.rejectBtn}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.rejectBtn}
+            onPress={() => {
+              setRejectionReason("");
+              setApproveModalVisible(true);
+            }}
+          >
             <Text style={styles.rejectText}>Reject</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.approveBtn}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.approveBtn}
+            onPress={() => setApproveModalVisible(true)}
+          >
             <Text style={styles.approveText}>Approve</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Approval Confirmation Modal */}
+      <Modal
+        visible={approveModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setApproveModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => setApproveModalVisible(false)}
+            >
+              <Feather name="x" size={20} color={colors.error} />
+            </TouchableOpacity>
+            <Text weight="semiBold" style={styles.modalTitle}>
+              Are you sure?
+            </Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to approve this property listing?
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.cancelButton]}
+                onPress={() => setApproveModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.modalButton,
+                  { backgroundColor: colors.primary },
+                ]}
+                onPress={() => {
+                  // Handle approval logic here
+                  setApproveModalVisible(false);
+                  // Add your approval logic
+                }}
+              >
+                <Text style={styles.modalButtonText}>Approve</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    padding: 24,
+    width: "90%",
+    maxWidth: 400,
+  },
+  closeBtn: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    height: adjustSize(25),
+    width: adjustSize(25),
+    borderRadius: 100,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: colors.error,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 16,
+    color: colors.text,
+    textAlign: "center",
+    marginTop: adjustSize(40),
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: colors.text,
+    textAlign: "center",
+    marginBottom: 24,
+    lineHeight: 24,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 4,
+  },
+  cancelButton: {
+    borderWidth: 1,
+    borderColor: "#D51E1E",
+  },
+  cancelButtonText: {
+    color: "#D51E1E",
+    fontWeight: "500",
+  },
+  modalButtonText: {
+    color: colors.white,
+    fontWeight: "500",
+  },
   screenContentContainer: {
     flex: 1,
   },

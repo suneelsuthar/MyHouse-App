@@ -74,4 +74,9 @@ export const Images = {
   callIcon: require("./call-icon.svg"),
   addressIcon: require("./address-icon.svg"),
   call2Icon: require("./call-2-icon.svg"),
+  pool: require("./pool.svg"),
+  tennis: require("./tennis.svg"),
+  gym: require("./gym.svg"),
+  basketball: require("./basketball.svg"),
+  playground: require("./playground.svg"),
 };

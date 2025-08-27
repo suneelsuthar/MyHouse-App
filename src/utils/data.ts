@@ -247,14 +247,17 @@ export const rentalProperties: IRentalProperty[] = Array.from({
     role: "Facility Manager" as const,
   }));
 
+  // Use sequential IDs starting from 1
+  const propertyId = (idx + 1).toString().padStart(6, '0');
+  
   return {
-    id: faker.string.uuid(),
+    id: propertyId, // Using the same ID for both id and propertyId for consistency
     name: name || `Property ${idx + 1}`,
     group: `${faker.company.name()} Group`,
     location: `${city}, ${country}`,
     status: getRandomStatus(),
     tenantName: faker.person.fullName(),
-    propertyId: faker.number.int({ min: 100000, max: 999999 }).toString(),
+    propertyId: `PROP${propertyId}`,
     addedBy: faker.number.int({ min: 1200, max: 1299 }).toString(),
     images,
     mandate: faker.helpers.arrayElement([

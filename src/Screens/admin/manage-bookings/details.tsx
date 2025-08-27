@@ -21,7 +21,7 @@ export type AdminBookingDetailsProps = NativeStackScreenProps<
 >;
 
 export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
-  const { bookingId } = route.params;
+  // const { bookingId } = route?.params;
   const navigation = useNavigation();
 
   const [agree, setAgree] = React.useState(false);
@@ -154,7 +154,7 @@ export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
           </View>
           <View style={styles.kvRow}>
             <Text style={styles.kvKey}>Booking ID:</Text>
-            <Text style={styles.kvVal}>{bookingId}</Text>
+            <Text style={styles.kvVal}>10029</Text>
           </View>
           <View style={styles.kvRow}>
             <Text style={styles.kvKey}>Booked by:</Text>
@@ -595,6 +595,12 @@ const styles = StyleSheet.create({
   },
   dangerBtn: {
     height: adjustSize(46),
+    borderWidth:2,
+    borderColor:"#E15241",
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:adjustSize(10),
+    marginHorizontal:adjustSize(15)
   },
   // Inline Modal
   modalOverlay: {
