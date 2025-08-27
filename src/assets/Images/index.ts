@@ -64,6 +64,7 @@ export const Images = {
   arrowRightIcon: require("./steparrow.png"),
   ordersummary: require("./ordersummary.png"),
   updates: require("./updates.png"),
-  activevisit:require('./activevisit.png'),
-  visithistory:require('./visithistory.png')
+  activevisit: require("./activevisit.png"),
+  visithistory: require("./visithistory.png"),
+  visitorcode: require("./visitorcode.svg"),
 };

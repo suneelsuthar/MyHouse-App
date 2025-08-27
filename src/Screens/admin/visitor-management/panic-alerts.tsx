@@ -263,12 +263,12 @@ export const AdminPanicAlerts: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {visitorList.map((item, index) => (
-          <TouchableOpacity 
-            key={index} 
+          <TouchableOpacity
+            key={index}
             style={[
               styles.card,
-              dropdownVisible === item.id && styles.cardWithDropdown
-            ]} 
+              dropdownVisible === item.id && styles.cardWithDropdown,
+            ]}
             activeOpacity={0.8}
           >
             <View style={styles.cardHeaderRow}>
@@ -284,9 +284,13 @@ export const AdminPanicAlerts: React.FC = () => {
                 ) : null}
               </View>
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => setDropdownVisible(dropdownVisible === item.id ? null : item.id)}
+                onPress={() =>
+                  setDropdownVisible(
+                    dropdownVisible === item.id ? null : item.id
+                  )
+                }
               >
                 <Entypo
                   name="dots-three-vertical"
@@ -294,62 +298,86 @@ export const AdminPanicAlerts: React.FC = () => {
                   color="black"
                 />
               </TouchableOpacity>
-              
+
               {dropdownVisible === item.id && (
                 <View style={styles.dropdownMenu}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.dropdownItem}
                     onPress={() => {
-                      const updatedList = visitorList.map(visitor => 
-                        visitor.id === item.id ? { ...visitor, status: 'acknowledged' } : visitor
+                      const updatedList = visitorList.map((visitor) =>
+                        visitor.id === item.id
+                          ? { ...visitor, status: "acknowledged" }
+                          : visitor
                       );
                       setVisitorList(updatedList);
                       setDropdownVisible(null);
                     }}
                   >
-                    <MaterialIcons name="check-circle" size={adjustSize(16)} color="#4CAF50" />
+                    <MaterialIcons
+                      name="check-circle"
+                      size={adjustSize(16)}
+                      color="#4CAF50"
+                    />
                     <Text style={styles.dropdownText}>Acknowledge</Text>
                   </TouchableOpacity>
-                  
-                  <TouchableOpacity 
+
+                  <TouchableOpacity
                     style={styles.dropdownItem}
                     onPress={() => {
-                      const updatedList = visitorList.map(visitor => 
-                        visitor.id === item.id ? { ...visitor, status: 'responding' } : visitor
+                      const updatedList = visitorList.map((visitor) =>
+                        visitor.id === item.id
+                          ? { ...visitor, status: "responding" }
+                          : visitor
                       );
                       setVisitorList(updatedList);
                       setDropdownVisible(null);
                     }}
                   >
-                    <MaterialIcons name="autorenew" size={adjustSize(16)} color="#FF9800" />
+                    <MaterialIcons
+                      name="autorenew"
+                      size={adjustSize(16)}
+                      color="#FF9800"
+                    />
                     <Text style={styles.dropdownText}>Responding</Text>
                   </TouchableOpacity>
-                  
-                  <TouchableOpacity 
+
+                  <TouchableOpacity
                     style={styles.dropdownItem}
                     onPress={() => {
-                      const updatedList = visitorList.map(visitor => 
-                        visitor.id === item.id ? { ...visitor, status: 'resolved' } : visitor
+                      const updatedList = visitorList.map((visitor) =>
+                        visitor.id === item.id
+                          ? { ...visitor, status: "resolved" }
+                          : visitor
                       );
                       setVisitorList(updatedList);
                       setDropdownVisible(null);
                     }}
                   >
-                    <MaterialIcons name="assignment-turned-in" size={adjustSize(16)} color="#2196F3" />
+                    <MaterialIcons
+                      name="assignment-turned-in"
+                      size={adjustSize(16)}
+                      color="#2196F3"
+                    />
                     <Text style={styles.dropdownText}>Mark as Resolved</Text>
                   </TouchableOpacity>
-                  
-                  <TouchableOpacity 
+
+                  <TouchableOpacity
                     style={styles.dropdownItem}
                     onPress={() => {
-                      const updatedList = visitorList.map(visitor => 
-                        visitor.id === item.id ? { ...visitor, status: 'resolved' } : visitor
+                      const updatedList = visitorList.map((visitor) =>
+                        visitor.id === item.id
+                          ? { ...visitor, status: "resolved" }
+                          : visitor
                       );
                       setVisitorList(updatedList);
                       setDropdownVisible(null);
                     }}
                   >
-                    <Ionicons name="checkmark-done" size={adjustSize(16)} color="#4CAF50" />
+                    <Ionicons
+                      name="checkmark-done"
+                      size={adjustSize(16)}
+                      color="#4CAF50"
+                    />
                     <Text style={styles.dropdownText}>Resolve</Text>
                   </TouchableOpacity>
                 </View>
@@ -622,16 +650,25 @@ const styles = StyleSheet.create({
     backgroundColor: colors.fill,
     padding: adjustSize(10),
     borderRadius: adjustSize(7),
-    shadowColor: "#000",
-    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
+    // shadowColor: "#000",
+    // boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
     elevation: 2,
     marginHorizontal: adjustSize(10),
     minHeight: adjustSize(96),
     marginVertical: adjustSize(8),
+    zIndex: 1,
+    shadowColor: "#000",
+    borderWidth:0.4,
+    borderColor:colors.grey,
+
   },
   cardWithDropdown: {
-    zIndex: 10000,
-    elevation: 15,
+    zIndex: 9999,
+    elevation: 0,
+    shadowOpacity: 0,
+    shadowColor: "transparent",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 0,
   },
   cardHeaderRow: {
     flexDirection: "row",
@@ -654,16 +691,19 @@ const styles = StyleSheet.create({
   label: {
     color: colors.primary,
     fontSize: adjustSize(10),
+    zIndex: -1,
   },
   rowBetween: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
+    zIndex: -1,
     // marginTop: spacing.sm,
   },
   labelValue: {
     color: colors.primary,
     fontSize: adjustSize(10),
+    zIndex: -1,
   },
   dropdown: {
     minWidth: adjustSize(120),
@@ -674,18 +714,19 @@ const styles = StyleSheet.create({
   dropdownMenu: {
     position: "absolute",
     top: adjustSize(25),
+    shadowColor: "transparent",
+
     right: 0,
     backgroundColor: colors.white,
     borderRadius: adjustSize(8),
-    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 20,
-    zIndex: 10001,
+    elevation: 30,
+    zIndex: 10000,
     minWidth: adjustSize(160),
   },
   dropdownItem: {

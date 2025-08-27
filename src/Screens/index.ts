@@ -126,6 +126,8 @@ import { AdminReservationView } from "./admin/community-area/reservation-view";
 import { AdminAddNewAmenity } from "./admin/community-area/add-new-amenity";
 import { AdminEmergency } from "./admin/emergency";
 import { AdminProfile } from "./admin/profile";
+import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details";
+import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
 export {
   Splash,
   Intro,
@@ -240,5 +242,7 @@ export {
   AdminReservationView,
   AdminAddNewAmenity,
   AdminEmergency,
-  AdminProfile
+  AdminProfile,
+  AdminVisitorDetails,
+  AdminGenerateVisitorRequest
 };

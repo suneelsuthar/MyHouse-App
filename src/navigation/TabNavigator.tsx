@@ -140,6 +140,8 @@ import {
   AdminAddNewAmenity,
   AdminEmergency,
   AdminProfile,
+  AdminVisitorDetails,
+  AdminGenerateVisitorRequest,
 } from "../Screens";
 
 import {
@@ -506,6 +508,14 @@ const AdminHomeStackNavigator = () => (
     <AdminHomeStack.Screen
       name="AdminProfile"
       component={AdminProfile}
+    />
+    <AdminHomeStack.Screen
+      name="AdminVisitorDetails"
+      component={AdminVisitorDetails}
+    />
+    <AdminHomeStack.Screen
+      name="AdminGenerateVisitorRequest"
+      component={AdminGenerateVisitorRequest}
     />
   </AdminHomeStack.Navigator>
 );
@@ -1011,6 +1021,9 @@ const AdminTabs = () => (
           "AdminFMOrderView",
           "AdminFMOrderUpdate",
           "AdminFMOrderExport",
+          "AdminVisitorDetails",
+          "AdminEmergency",
+          "AdminProfile",
         ];
 
         if (hideOnFacilityScreens.includes(routeName)) {

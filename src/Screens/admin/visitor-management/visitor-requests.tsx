@@ -11,6 +11,11 @@ import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../utils/interfaces";
+
+type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
@@ -85,10 +90,21 @@ const visitorData = [
 ];
 
 export const AdminVisitorRequests: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleVisitorPress = (visitorId: number) => {
+    navigation.navigate("AdminVisitorDetails", {
+      visitorId: visitorId.toString(),
+    });
+  };
+
+  const handleGenerateRequest = () => {
+    navigation.navigate("AdminGenerateVisitorRequest");
+  };
 
   return (
     <Screen
@@ -111,9 +127,11 @@ export const AdminVisitorRequests: React.FC = () => {
           </Text>
         }
         rightAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
-            <WithLocalSvg asset={Images.notofication} />
-          </TouchableOpacity>
+          <View style={styles.headerRightContainer}>
+            <TouchableOpacity activeOpacity={0.5}>
+              <WithLocalSvg asset={Images.notofication} />
+            </TouchableOpacity>
+          </View>
         }
       />
 
@@ -185,7 +203,12 @@ export const AdminVisitorRequests: React.FC = () => {
           />
         </View>
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            navigation.navigate("AdminGenerateVisitorRequest");
+          }}
+        >
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
       </View>
@@ -232,6 +255,7 @@ export const AdminVisitorRequests: React.FC = () => {
                 backgroundColor: index % 2 === 0 ? "#cacae0" : colors.fill,
               },
             ]}
+            onPress={() => handleVisitorPress(visitor.id)}
           >
             <View
               style={[
@@ -470,5 +494,21 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     marginRight: 16,
+  },
+  headerRightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
+  generateButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: adjustSize(6),
+  },
+  generateButtonText: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
   },
 });
