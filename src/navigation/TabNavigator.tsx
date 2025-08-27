@@ -142,6 +142,9 @@ import {
   AdminProfile,
   AdminVisitorDetails,
   AdminGenerateVisitorRequest,
+  AdminEditProfile,
+  AdminProfileSettings,
+  AdminPanicEmergency,
 } from "../Screens";
 
 import {
@@ -501,13 +504,16 @@ const AdminHomeStackNavigator = () => (
       name="AdminReservationView"
       component={AdminReservationView}
     />
+    <AdminHomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
+    <AdminHomeStack.Screen name="AdminPanicEmergency" component={AdminPanicEmergency} />
+    <AdminHomeStack.Screen name="AdminProfile" component={AdminProfile} />
     <AdminHomeStack.Screen
-      name="AdminEmergency"
-      component={AdminEmergency}
+      name="AdminEditProfile"
+      component={AdminEditProfile}
     />
     <AdminHomeStack.Screen
-      name="AdminProfile"
-      component={AdminProfile}
+      name="AdminProfileSettings"
+      component={AdminProfileSettings}
     />
     <AdminHomeStack.Screen
       name="AdminVisitorDetails"
@@ -1024,6 +1030,9 @@ const AdminTabs = () => (
           "AdminVisitorDetails",
           "AdminEmergency",
           "AdminProfile",
+          "AdminEditProfile",
+          "AdminProfileSettings",
+          "AdminPanicEmergency"
         ];
 
         if (hideOnFacilityScreens.includes(routeName)) {

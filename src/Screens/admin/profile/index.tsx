@@ -1,19 +1,8 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from "react-native";
-import { Screen, Text, Header, TextField } from "../../../Components";
-import { colors, spacing, typography, adjustSize } from "../../../theme";
-import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../../../assets/Images";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Screen, Text, Header2 } from "../../../Components";
+import { colors, typography, adjustSize } from "../../../theme";
+import { useNavigation } from "@react-navigation/native";
 const profileData = {
   name: "Brume Djbah",
   email: "brume.djbah@example.com",
@@ -24,93 +13,40 @@ const profileData = {
   employeeId: "EMP001",
   address: "123 Main Street, City, State 12345",
 };
-
-const menuItems = [
-  {
-    id: 1,
-    title: "Edit Profile",
-    icon: "edit",
-    onPress: () => console.log("Edit Profile"),
-  },
-  {
-    id: 2,
-    title: "Change Password",
-    icon: "lock",
-    onPress: () => console.log("Change Password"),
-  },
-  {
-    id: 3,
-    title: "Notification Settings",
-    icon: "notifications",
-    onPress: () => console.log("Notification Settings"),
-  },
-  {
-    id: 4,
-    title: "Privacy Settings",
-    icon: "privacy-tip",
-    onPress: () => console.log("Privacy Settings"),
-  },
-  {
-    id: 5,
-    title: "Help & Support",
-    icon: "help",
-    onPress: () => console.log("Help & Support"),
-  },
-  {
-    id: 6,
-    title: "About",
-    icon: "info",
-    onPress: () => console.log("About"),
-  },
-];
-
 export const AdminProfile: React.FC = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [profileInfo, setProfileInfo] = useState(profileData);
-
-  const handleSave = () => {
-    setIsEditing(false);
-    Alert.alert("Success", "Profile updated successfully!");
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setProfileInfo(profileData);
-  };
-
+  const navigation = useNavigation();
   return (
     <Screen
       preset="fixed"
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header
-        leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
-            <WithLocalSvg asset={Images.user} />
-          </TouchableOpacity>
-        }
-        centerAccessory={
-          <Text
-            weight="semiBold"
-            style={{ fontSize: adjustSize(15), color: colors.primary }}
-          >
-            Profile
-          </Text>
-        }
-        rightAccessory={
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => setIsEditing(!isEditing)}
-          >
-            <MaterialIcons
-              name={isEditing ? "close" : "edit"}
-              size={adjustSize(20)}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
-        }
-      />
+      <Header2 title="Profile" onNotificationPress={() => {}} />
+      <View style={styles.box}>
+        <TouchableOpacity
+          style={styles.btn}
+          activeOpacity={0.8}
+          onPress={() =>
+            (navigation as any).navigate("AdminEditProfile", {
+              data: profileData,
+            })
+          }
+        >
+          <Text style={styles.btnTxt}>Profile </Text>
+        </TouchableOpacity>
+        <View style={styles.line} />
+        <TouchableOpacity
+          style={styles.btn}
+          activeOpacity={0.8}
+          onPress={() =>
+            (navigation as any).navigate("AdminProfileSettings", {
+              data: profileData,
+            })
+          }
+        >
+          <Text style={styles.btnTxt}>Settings </Text>
+        </TouchableOpacity>
+      </View>
     </Screen>
   );
 };
@@ -120,29 +56,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.fill,
   },
-  scrollView: {
-    flex: 1,
-  },
-  profileHeader: {
-    alignItems: "center",
-    paddingVertical: spacing.xl,
+  box: {
     backgroundColor: colors.white,
-    marginBottom: spacing.md,
+    marginHorizontal: adjustSize(10),
+    borderRadius: adjustSize(10),
+    marginTop: adjustSize(20),
   },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: spacing.md,
+  line: {
+    height: adjustSize(0.5),
+    backgroundColor: colors.fill,
   },
-  avatar: {
-    width: adjustSize(100),
-    height: adjustSize(100),
-    borderRadius: adjustSize(50),
-    backgroundColor: colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
+  btn: {
+    padding: adjustSize(20),
   },
-  avatarText: {
-    fontSize: adjustSize(36),
-    color: colors.white,
+  btnTxt: {
+    color: "#7E7E7E",
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.light,
   },
 });

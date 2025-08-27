@@ -90,6 +90,9 @@ export type AdminStackParamList = {
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
   AdminGenerateVisitorRequest: undefined;
+  AdminEditProfile: undefined;
+  AdminProfileSettings: undefined;
+  AdminPanicEmergency: undefined;
 };
 
 // Screens specific to Agent

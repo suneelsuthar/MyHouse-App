@@ -128,6 +128,9 @@ import { AdminEmergency } from "./admin/emergency";
 import { AdminProfile } from "./admin/profile";
 import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details";
 import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
+import { AdminEditProfile } from "./admin/profile/edit-profile";
+import { AdminProfileSettings } from "./admin/profile/profile-settings";
+import { AdminPanicEmergency } from "./admin/emergency/panic";
 export {
   Splash,
   Intro,
@@ -233,8 +236,7 @@ export {
   AdminFMViewWorkOrder,
   AdminFMOrderView,
   AdminFMOrderUpdate,
-  AdminFMOrderExport
-  ,
+  AdminFMOrderExport,
   AdminAmenityView,
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
@@ -244,5 +246,8 @@ export {
   AdminEmergency,
   AdminProfile,
   AdminVisitorDetails,
-  AdminGenerateVisitorRequest
+  AdminGenerateVisitorRequest,
+  AdminEditProfile,
+  AdminProfileSettings,
+  AdminPanicEmergency
 };

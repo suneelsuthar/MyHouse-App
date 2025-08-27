@@ -1,107 +1,26 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import { Screen, Text, Header } from "../../../Components";
-import { colors, spacing, typography, adjustSize } from "../../../theme";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Screen, Text, Button, Header2 } from "../../../Components";
+import { colors, typography, adjustSize } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
-const emergencyContacts = [
-  {
-    id: 1,
-    name: "Police Department",
-    number: "911",
-    type: "police",
-    icon: "local-police",
-    color: "#2196F3",
-  },
-  {
-    id: 2,
-    name: "Fire Department",
-    number: "911",
-    type: "fire",
-    icon: "local-fire-department",
-    color: "#F44336",
-  },
-  {
-    id: 3,
-    name: "Medical Emergency",
-    number: "911",
-    type: "medical",
-    icon: "local-hospital",
-    color: "#4CAF50",
-  },
-  {
-    id: 4,
-    name: "Security Office",
-    number: "+1 (555) 123-4567",
-    type: "security",
-    icon: "security",
-    color: "#FF9800",
-  },
-  {
-    id: 5,
-    name: "Property Management",
-    number: "+1 (555) 987-6543",
-    type: "management",
-    icon: "business",
-    color: "#9C27B0",
-  },
-];
-
+import { useNavigation } from "@react-navigation/native";
 export const AdminEmergency: React.FC = () => {
-  const [activeAlert, setActiveAlert] = useState<string | null>(null);
-
-  const handleEmergencyCall = (contact: (typeof emergencyContacts)[0]) => {
-    Alert.alert(
-      "Emergency Call",
-      `Are you sure you want to call ${contact.name} at ${contact.number}?`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Call",
-          style: "destructive",
-          onPress: () => {
-            // Here you would implement actual calling functionality
-            console.log(`Calling ${contact.number}`);
-          },
-        },
-      ]
-    );
-  };
-
-  const handlePanicAlert = () => {
-    Alert.alert(
-      "Panic Alert",
-      "This will send an emergency alert to all security personnel and management. Continue?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Send Alert",
-          style: "destructive",
-          onPress: () => {
-            setActiveAlert("panic");
-            // Here you would implement panic alert functionality
-            console.log("Panic alert sent");
-            setTimeout(() => setActiveAlert(null), 3000);
-          },
-        },
-      ]
-    );
-  };
+  const navigation = useNavigation();
+  const list = [
+    {
+      name: "Ambulance",
+      num: "# 112",
+    },
+    {
+      name: "Fire Brigade",
+      num: "# 767",
+    },
+    {
+      name: "Police",
+      num: "# 119",
+    },
+  ];
 
   return (
     <Screen
@@ -109,26 +28,34 @@ export const AdminEmergency: React.FC = () => {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header
-        leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
-            <WithLocalSvg asset={Images.user} />
-          </TouchableOpacity>
-        }
-        centerAccessory={
-          <Text
-            weight="semiBold"
-            style={{ fontSize: adjustSize(15), color: colors.primary }}
-          >
-            Emergency
+      <Header2 title="Emergency" onNotificationPress={() => {}} />
+      <View style={styles.containeInner}>
+        <View>
+          <Text style={styles.text}>
+            Contact these Help Lines In case of any Emergency
           </Text>
-        }
-        rightAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
-            <WithLocalSvg asset={Images.notofication} />
-          </TouchableOpacity>
-        }
-      />
+          {list.map((val, index) => {
+            return (
+              <View key={index} style={styles.list}>
+                <View>
+                  <Text style={styles.name}>{val.name}</Text>
+                  <Text style={styles.num}>{val.num}</Text>
+                </View>
+                <TouchableOpacity activeOpacity={0.8}>
+                  <WithLocalSvg asset={Images.call2Icon} />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </View>
+        <Button
+          text={"Panic"}
+          preset="reversed"
+          style={styles.btn}
+          textStyle={styles.btnTxt}
+          onPress={() => (navigation as any).navigate("AdminPanicEmergency")}
+        />
+      </View>
     </Screen>
   );
 };
@@ -138,8 +65,43 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.fill,
   },
-  scrollView: {
+  containeInner: {
     flex: 1,
-    paddingHorizontal: spacing.lg,
+    justifyContent: "space-between",
+    paddingHorizontal: adjustSize(10),
+  },
+  text: {
+    color: colors.primary,
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.normal,
+    marginTop: adjustSize(20),
+    marginBottom: adjustSize(10),
+  },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: adjustSize(15),
+  },
+  name: {
+    color: colors.primary,
+    fontSize: adjustSize(15),
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  num: {
+    color: colors.primary,
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  btn: {
+    height: adjustSize(49),
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: adjustSize(30),
+    backgroundColor: "#D51E1E",
+  },
+  btnTxt: {
+    fontSize: adjustSize(15),
+    fontFamily: typography.fonts.poppins.semiBold,
   },
 });

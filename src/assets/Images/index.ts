@@ -67,4 +67,11 @@ export const Images = {
   activevisit: require("./activevisit.png"),
   visithistory: require("./visithistory.png"),
   visitorcode: require("./visitorcode.svg"),
+  messageIcon: require("./message-icon.svg"),
+  plusIcon: require("./plus-icon.svg"),
+  cameraIcon: require("./camera-icon.svg"),
+  userIcon: require("./user-icon.svg"),
+  callIcon: require("./call-icon.svg"),
+  addressIcon: require("./address-icon.svg"),
+  call2Icon: require("./call-2-icon.svg"),
 };
