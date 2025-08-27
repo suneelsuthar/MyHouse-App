@@ -138,6 +138,8 @@ import {
   AdminAmenityManageCalendar,
   AdminReservationView,
   AdminAddNewAmenity,
+  AdminEmergency,
+  AdminProfile,
 } from "../Screens";
 
 import {
@@ -496,6 +498,14 @@ const AdminHomeStackNavigator = () => (
     <AdminHomeStack.Screen
       name="AdminReservationView"
       component={AdminReservationView}
+    />
+    <AdminHomeStack.Screen
+      name="AdminEmergency"
+      component={AdminEmergency}
+    />
+    <AdminHomeStack.Screen
+      name="AdminProfile"
+      component={AdminProfile}
     />
   </AdminHomeStack.Navigator>
 );

@@ -236,7 +236,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Communications",
       type: "item",
       icon: Images.communication,
-      onPress: () => console.log(""),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
     },
 
     {
@@ -244,7 +247,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Wallet",
       type: "item",
       icon: Images.wallet,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Wallet",
+      }),
     },
 
     {
@@ -252,14 +257,19 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Emergency",
       type: "item",
       icon: Images.emergency,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Home",
+        params: { screen: "AdminEmergency" },
+      }),
     },
     {
       id: 10,
       title: "Chat",
       type: "item",
       icon: Images.chat,
-      onPress: () => console.log(""),
+      onPress: () => closeMenusAndNavigate("Admin", {
+        screen: "Chat",
+      }),
     },
   ];
 
@@ -331,7 +341,13 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     >
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity 
+            activeOpacity={0.5}
+            onPress={() => closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "AdminProfile" },
+            })}
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
           <View style={styles.headerinfo}>

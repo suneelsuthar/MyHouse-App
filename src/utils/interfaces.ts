@@ -83,6 +83,9 @@ export type AdminStackParamList = {
   AdminFMOrderView: undefined;
   AdminFMOrderUpdate: undefined;
   AdminFMOrderExport: undefined;
+  // Admin Emergency and Profile screens
+  AdminEmergency: undefined;
+  AdminProfile: undefined;
 };
 
 // Screens specific to Agent
