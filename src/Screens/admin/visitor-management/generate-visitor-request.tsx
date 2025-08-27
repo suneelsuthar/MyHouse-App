@@ -15,6 +15,8 @@ import { Header, Screen, TextField } from "../../../Components";
 import DropdownComponent from "../../../Components/DropDown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons } from "@expo/vector-icons";
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../../../assets/Images";
 
 type Props = NativeStackScreenProps<
   AdminStackParamList,
@@ -63,11 +65,11 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
     propertyGroup: "",
   });
 
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [fromDate, setFromDate] = useState<Date | null>(null);
+  const [toDate, setToDate] = useState<Date | null>(null);
   const [showFromPicker, setShowFromPicker] = useState(false);
   const [showToPicker, setShowToPicker] = useState(false);
-  const [pickerStep, setPickerStep] = useState<'date' | 'time'>('date');
+  const [pickerStep, setPickerStep] = useState<"date" | "time">("date");
   const [tempDate, setTempDate] = useState(new Date());
 
   const handleInputChange = (field: string, value: string) => {
@@ -81,7 +83,7 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
   };
 
   const handleDateNext = () => {
-    setPickerStep('time');
+    setPickerStep("time");
   };
 
   const handleTimeConfirm = () => {
@@ -92,24 +94,24 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
       setToDate(tempDate);
       setShowToPicker(false);
     }
-    setPickerStep('date');
+    setPickerStep("date");
   };
 
   const handleModalCancel = () => {
     setShowFromPicker(false);
     setShowToPicker(false);
-    setPickerStep('date');
+    setPickerStep("date");
   };
 
   const openDatePicker = (isFrom: boolean) => {
     if (isFrom) {
-      setTempDate(fromDate);
+      setTempDate(fromDate || new Date());
       setShowFromPicker(true);
     } else {
-      setTempDate(toDate);
+      setTempDate(toDate || new Date());
       setShowToPicker(true);
     }
-    setPickerStep('date');
+    setPickerStep("date");
   };
 
   const formatDate = (date: Date) => {
@@ -206,6 +208,7 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
 
@@ -220,6 +223,7 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
 
@@ -231,12 +235,12 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
               style={styles.dateButton}
               onPress={() => openDatePicker(true)}
             >
-              <Text style={styles.dateText}>{`${formatDateTime(fromDate)}`}</Text>
-              <Ionicons
-                name="calendar-outline"
-                size={20}
-                color={colors.textDim}
-              />
+              <Text
+                style={[styles.dateText, !fromDate && styles.placeholderText]}
+              >
+                {fromDate ? formatDate(fromDate) : "Select D & T"}
+              </Text>
+              <WithLocalSvg asset={Images.calendar} />
             </TouchableOpacity>
           </View>
 
@@ -246,12 +250,12 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
               style={styles.dateButton}
               onPress={() => openDatePicker(false)}
             >
-              <Text style={styles.dateText}>{`${formatDateTime(toDate)}`}</Text>
-              <Ionicons
-                name="calendar-outline"
-                size={20}
-                color={colors.textDim}
-              />
+              <Text
+                style={[styles.dateText, !toDate && styles.placeholderText]}
+              >
+                {toDate ? formatDate(toDate) : "Select D & T"}
+              </Text>
+              <WithLocalSvg asset={Images.calendar} />
             </TouchableOpacity>
           </View>
         </View>
@@ -267,6 +271,7 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
 
@@ -281,6 +286,7 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
 
@@ -307,16 +313,21 @@ export const AdminGenerateVisitorRequest: React.FC<Props> = ({
                 <Text style={styles.modalCancelText}>Cancel</Text>
               </TouchableOpacity>
               <Text style={styles.modalTitle}>
-                {pickerStep === 'date' 
-                  ? (showFromPicker ? "Select From Date" : "Select To Date")
-                  : (showFromPicker ? "Select From Time" : "Select To Time")
-                }
+                {pickerStep === "date"
+                  ? showFromPicker
+                    ? "Select From Date"
+                    : "Select To Date"
+                  : showFromPicker
+                  ? "Select From Time"
+                  : "Select To Time"}
               </Text>
-              <TouchableOpacity 
-                onPress={pickerStep === 'date' ? handleDateNext : handleTimeConfirm}
+              <TouchableOpacity
+                onPress={
+                  pickerStep === "date" ? handleDateNext : handleTimeConfirm
+                }
               >
                 <Text style={styles.modalDoneText}>
-                  {pickerStep === 'date' ? 'Next' : 'Done'}
+                  {pickerStep === "date" ? "Next" : "Done"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -349,13 +360,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   label: {
-    fontSize: adjustSize(14),
+    fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
     marginBottom: spacing.sm,
   },
   textInput: {
-    backgroundColor: colors.white,
     borderRadius: adjustSize(12),
     borderWidth: 1,
     borderColor: colors.border,
@@ -363,16 +373,18 @@ const styles = StyleSheet.create({
     height: adjustSize(50),
   },
   dropdown: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.fill,
     borderRadius: adjustSize(12),
     borderWidth: 1,
     borderColor: colors.border,
     paddingHorizontal: spacing.md,
     height: adjustSize(50),
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    elevation: 2,
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(14),
-    color: colors.textDim,
+    color: colors.grey,
     fontFamily: typography.fonts.poppins.normal,
   },
   dropdownSelected: {
@@ -390,7 +402,7 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.xs,
   },
   dateButton: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.fill,
     borderRadius: adjustSize(12),
     borderWidth: 1,
     borderColor: colors.border,
@@ -399,11 +411,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    elevation: 2,
   },
   dateText: {
     fontSize: adjustSize(14),
-    color: colors.textDim,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
+  },
+  placeholderText: {
+    color: colors.textDim,
+    opacity: 0.6,
   },
   generateButton: {
     backgroundColor: colors.primary,
