@@ -11,6 +11,8 @@ import MyAccountIcon from "./MyAccountIcon";
 import TransactionHistoryIcon from "./TransactionHistoryIcon";
 import NewMessageIcon from "./NewMessageIcon";
 import HistoryIcon2 from "./HistoryIcon2";
+import VendingHistoryIcon from "./VendingHistoryIcon";
+import PowerConsumptionIcon from "./PowerConsumptionIcon";
 export {
   HistoryIcon,
   HomeIcon,
@@ -23,5 +25,7 @@ export {
   MyAccountIcon,
   TransactionHistoryIcon,
   NewMessageIcon,
-  HistoryIcon2
+  HistoryIcon2,
+  VendingHistoryIcon,
+  PowerConsumptionIcon,
 };
