@@ -153,6 +153,7 @@ import AdminPropertyServices from "../Screens/admin/property-management/services
 import AdminPropertyFeatures from "../Screens/admin/property-management/features";
 import AdminPropertyRestriction from "../Screens/admin/property-management/restriction";
 import AdminManageInspections from "../Screens/admin/property-management/manage-inspections";
+import InspectionDetails from "../Screens/admin/property-management/inspection-details";
 
 import {
   TenantStackParamList,
@@ -624,6 +625,10 @@ const AdminPropertiesStackNavigator = () => (
     <AdminPropertiesStack.Screen
       name="AdminCreateVisitorRequests"
       component={AdminCreateVisitorRequests}
+    />
+    <AdminPropertiesStack.Screen
+      name="InspectionDetails"
+      component={InspectionDetails}
     />
   </AdminPropertiesStack.Navigator>
 );

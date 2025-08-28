@@ -5,10 +5,9 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  TextInput,
   Image,
 } from "react-native";
-import { Screen, Text, Header, TextField } from "../../../Components";
+import { Screen, Text, TextField } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
@@ -16,108 +15,40 @@ import { Images } from "../../../assets/Images";
 import { adjustSize, colors, typography } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import * as ImagePicker from "expo-image-picker";
+
 interface AdminPropertyServicesProps
   extends AppStackScreenProps<"AdminPropertyServices"> {}
 
 const SERVICE_MOCK_DATA = [
-  {
-    id: 0,
-    title: "Swimming pool",
-    image: Images.pool,
-  },
-  {
-    id: 1,
-    title: "Tennis Court",
-    image: Images.tennis,
-  },
-  {
-    id: 2,
-    title: "Gym",
-    image: Images.gym,
-  },
-  {
-    id: 3,
-    title: "Playground",
-    image: Images.playground,
-  },
-  {
-    id: 4,
-    title: "Basketball Court",
-    image: Images.basketball,
-  },
-  {
-    id: 5,
-    title: "Swimming pool",
-    image: Images.pool,
-  },
-  {
-    id: 6,
-    title: "Tennis Court",
-    image: Images.tennis,
-  },
-  {
-    id: 7,
-    title: "Gym",
-    image: Images.gym,
-  },
-  {
-    id: 8,
-    title: "Playground",
-    image: Images.playground,
-  },
-  {
-    id: 9,
-    title: "Basketball Court",
-    image: Images.basketball,
-  },
-  {
-    id: 10,
-    title: "Swimming pool",
-    image: Images.pool,
-  },
-  {
-    id: 11,
-    title: "Tennis Court",
-    image: Images.tennis,
-  },
-  {
-    id: 12,
-    title: "Gym",
-    image: Images.gym,
-  },
-  {
-    id: 13,
-    title: "Playground",
-    image: Images.playground,
-  },
-  {
-    id: 14,
-    title: "Basketball Court",
-    image: Images.basketball,
-  },
-  {
-    id: 15,
-    title: "Swimming pool",
-    image: Images.pool,
-  },
-  {
-    id: 16,
-    title: "Tennis Court",
-    image: Images.tennis,
-  },
-  {
-    id: 17,
-    title: "Gym",
-    image: Images.gym,
-  },
+  { id: 0, title: "Swimming pool", image: Images.pool },
+  { id: 1, title: "Tennis Court", image: Images.tennis },
+  { id: 2, title: "Gym", image: Images.gym },
+  { id: 3, title: "Playground", image: Images.playground },
+  { id: 4, title: "Basketball Court", image: Images.basketball },
+  { id: 5, title: "Swimming pool", image: Images.pool },
+  { id: 6, title: "Tennis Court", image: Images.tennis },
+  { id: 7, title: "Gym", image: Images.gym },
+  { id: 8, title: "Playground", image: Images.playground },
+  { id: 9, title: "Basketball Court", image: Images.basketball },
+  { id: 10, title: "Swimming pool", image: Images.pool },
+  { id: 11, title: "Tennis Court", image: Images.tennis },
+  { id: 12, title: "Gym", image: Images.gym },
+  { id: 13, title: "Playground", image: Images.playground },
+  { id: 14, title: "Basketball Court", image: Images.basketball },
 ];
 
 export default function AdminPropertyServices() {
   const navigation = useNavigation();
+
+  // state
+  const [services, setServices] = useState(SERVICE_MOCK_DATA);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [serviceName, setServiceName] = useState("");
-  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
   const [images, setImages] = useState<string>("");
+  const [editingService, setEditingService] = useState<any>(null);
+
+  // pick image
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -128,16 +59,64 @@ export default function AdminPropertyServices() {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: false, // ✅ allow multiple images
+      allowsMultipleSelection: false,
       quality: 1,
     });
 
     if (!result.canceled) {
-      // Add all selected images
       const selectedUris = result.assets.map((asset) => asset.uri);
       setImages(selectedUris[0]);
+      setSelectedIcon(selectedUris[0]);
     }
   };
+
+  // open modal for add
+  const openAddModal = () => {
+    setEditingService(null);
+    setServiceName("");
+    setSelectedIcon(null);
+    setImages("");
+    setIsModalVisible(true);
+  };
+
+  // open modal for edit
+  const openEditModal = (item: any) => {
+    setEditingService(item);
+    setServiceName(item.title);
+    setSelectedIcon(item.image);
+    setImages(item.image);
+    setIsModalVisible(true);
+  };
+
+  // save handler
+  const handleSave = () => {
+    if (editingService) {
+      // update service
+      setServices((prev) =>
+        prev.map((s) =>
+          s.id === editingService.id
+            ? { ...s, title: serviceName, image: images || s.image }
+            : s
+        )
+      );
+    } else {
+      // add new
+      const newService = {
+        id: services.length ? services[services.length - 1].id + 1 : 0,
+        title: serviceName,
+        image: images || Images.pool,
+      };
+      setServices((prev) => [...prev, newService]);
+    }
+
+    // reset
+    setIsModalVisible(false);
+    setServiceName("");
+    setSelectedIcon(null);
+    setImages("");
+    setEditingService(null);
+  };
+
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -165,7 +144,8 @@ export default function AdminPropertyServices() {
           <WithLocalSvg asset={Images.notofication} />
         </TouchableOpacity>
       </View>
-      {/* Recent Notifications */}
+
+      {/* Section */}
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
@@ -186,10 +166,9 @@ export default function AdminPropertyServices() {
             />
           </View>
         </View>
-        {/* ÷÷ */}
       </View>
 
-      {/* Search Bar */}
+      {/* Search & Add */}
       <View style={styles._searchrow}>
         <View style={styles._inputview}>
           <TextField
@@ -203,25 +182,38 @@ export default function AdminPropertyServices() {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles._addbtn}
-          onPress={() => setIsModalVisible(true)}
+          onPress={openAddModal}
         >
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
       </View>
+
+      {/* List */}
       <FlatList
-        data={SERVICE_MOCK_DATA}
+        data={services}
         numColumns={3}
         keyExtractor={(item: any) => item.id.toString()}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <TouchableOpacity activeOpacity={0.7} style={styles.listItem}>
-            <WithLocalSvg asset={item.image} />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.listItem}
+            onLongPress={() => openEditModal(item)}
+          >
+            {typeof item.image === "string" ? (
+              <Image
+                source={{ uri: item.image }}
+                style={{ width: 40, height: 40, resizeMode: "contain" }}
+              />
+            ) : (
+              <WithLocalSvg asset={item.image} />
+            )}
             <Text text={item.title} style={styles._title} />
           </TouchableOpacity>
         )}
       />
 
-      {/* Add Service Modal */}
+      {/* Modal */}
       <Modal
         visible={isModalVisible}
         animationType="fade"
@@ -230,15 +222,17 @@ export default function AdminPropertyServices() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            {/* Header */}
             <View style={styles.modalHeader}>
               <Text weight="semiBold" style={styles.modalTitle}>
-                Add Service
+                {editingService ? "Edit Service" : "Add Service"}
               </Text>
               <TouchableOpacity onPress={() => setIsModalVisible(false)}>
                 <WithLocalSvg asset={Images.closeIcon} width={24} height={24} />
               </TouchableOpacity>
             </View>
 
+            {/* Body */}
             <View style={styles.modalBody}>
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Name*</Text>
@@ -261,71 +255,57 @@ export default function AdminPropertyServices() {
                 <TouchableOpacity
                   activeOpacity={0.5}
                   style={styles.uploadContainer}
-                  onPress={() => {
-                    pickImage();
-                  }}
+                  onPress={pickImage}
                 >
                   {selectedIcon ? (
-                    <View style={styles.iconPreview}>
-                      <Image
-                        source={{ uri: selectedIcon }}
-                        style={styles.iconImage}
-                        resizeMode="contain"
-                      />
+                    <View style={styles.uploadButton}>
+                      <Text style={styles.uploadText}>
+                        {images ? "Image Selected" : "No File Chosen"}
+                      </Text>
+                      <View style={{ position: "absolute", right: 10 }}>
+                        <WithLocalSvg asset={Images.upload} />
+                      </View>
                     </View>
                   ) : (
                     <View style={styles.uploadButton}>
                       <Text style={styles.uploadText}>
-                        {images ? "Image Selected" : "No File Choosen"}
+                        {images ? "Image Selected" : "No File Chosen"}
                       </Text>
-                      <View
-                        style={{
-                          position: "absolute",
-                          right: 10,
-                        }}
-                      >
+                      <View style={{ position: "absolute", right: 10 }}>
                         <WithLocalSvg asset={Images.upload} />
                       </View>
                     </View>
                   )}
                 </TouchableOpacity>
               </View>
+
               <View style={styles.modalBody}>
                 {images ? (
                   <Image source={{ uri: images }} style={styles.modalImage} />
                 ) : null}
               </View>
+            </View>
 
-              <View style={styles.modalFooter}>
-                <TouchableOpacity
-                  style={[styles.modalButton, styles.saveButton]}
-                  onPress={() => {
-                    console.log("Saving service:", {
-                      name: serviceName,
-                      icon: selectedIcon,
-                    });
-                    setIsModalVisible(false);
-                    setServiceName("");
-                    setSelectedIcon(null);
-                  }}
-                >
-                  <Text style={styles.saveButtonText}>Add Service</Text>
-                </TouchableOpacity>
-              </View>
+            {/* Footer */}
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.saveButton]}
+                onPress={handleSave}
+              >
+                <Text style={styles.saveButtonText}>
+                  {editingService ? "Update Service" : "Add Service"}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
-
-      {/* Services content will go here */}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -335,45 +315,18 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(3),
     paddingHorizontal: adjustSize(10),
   },
-  headerIcons: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  headerIcon: {
-    marginRight: 16,
-  },
-
-  section: {
-    marginBottom: 24,
-    marginHorizontal: adjustSize(10),
-  },
-  sectionTitle: {
-    fontSize: adjustSize(15),
-    color: colors.primary,
-  },
-
-  headerinfo: {
-    flex: 1,
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  username: {
-    fontSize: adjustSize(15),
-    color: colors.primary,
-    lineHeight: adjustSize(20),
-  },
-
+  headerIcons: { flexDirection: "row", alignItems: "center" },
+  headerinfo: { flex: 1, paddingHorizontal: 10, alignItems: "center" },
+  username: { fontSize: adjustSize(15), color: colors.primary },
+  section: { marginBottom: 24, marginHorizontal: adjustSize(10) },
+  sectionTitle: { fontSize: adjustSize(15), color: colors.primary },
   _seciton_row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: adjustSize(20),
-    marginBottom: adjustSize(5),
   },
-  dropdownContainer: {
-    width: adjustSize(120),
-  },
+  dropdownContainer: { width: adjustSize(120) },
   customDropdownStyle: {
     height: adjustSize(33),
     borderRadius: adjustSize(100),
@@ -402,20 +355,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
-  _input: {
-    margin: 0,
-    fontFamily: typography.fonts.poppins.medium,
-    fontSize: adjustSize(12),
-  },
-  _inputview: {
-    flex: 1,
-    padding: 0,
-  },
+  _input: { fontSize: adjustSize(12) },
+  _inputview: { flex: 1 },
   listContent: {
     paddingVertical: adjustSize(10),
     paddingHorizontal: adjustSize(10),
-    gap: adjustSize(10),
   },
   listItem: {
     flex: 1,
@@ -428,16 +372,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: colors.grey,
     elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
-
-  // Modal Styles
+  // modal
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     padding: 20,
   },
@@ -451,18 +390,10 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: adjustSize(20),
   },
-  modalTitle: {
-    fontSize: adjustSize(18),
-    color: colors.primary,
-    textAlign: "center",
-    flex: 1,
-  },
-  modalBody: {
-    paddingVertical: 10,
-  },
+  modalTitle: { fontSize: adjustSize(18), color: colors.primary, flex: 1 },
+  modalBody: { paddingVertical: 10 },
   uploadContainer: {
     borderWidth: 0.5,
     borderColor: colors.grey,
@@ -470,120 +401,26 @@ const styles = StyleSheet.create({
     height: adjustSize(47),
     justifyContent: "center",
     alignItems: "center",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-    elevation: 2,
     backgroundColor: colors.white,
     flexDirection: "row",
   },
-  uploadButton: {
-    alignItems: "center",
-    flexDirection: "row",
-    flex: 1,
-    paddingHorizontal: adjustSize(10),
-  },
-  uploadText: {
-    color: colors.grey,
-    fontSize: adjustSize(12),
-  },
-  iconPreview: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 8,
-  },
-  inputGroup: {
-    marginBottom: adjustSize(15),
-  },
-  inputLabel: {
-    fontSize: adjustSize(14),
-    color: colors.primary,
-    marginBottom: adjustSize(5),
-    fontFamily: typography.fonts.poppins.medium,
-  },
-  inputField: {
-    borderRadius: adjustSize(8),
-  },
-  priceInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderRadius: adjustSize(8),
-    borderWidth: 1,
-    borderColor: colors.grey,
-  },
-  currencySymbol: {
-    paddingHorizontal: adjustSize(12),
-    color: colors.primary,
-    fontSize: adjustSize(16),
-    fontFamily: typography.fonts.poppins.medium,
-  },
-  priceInput: {
-    flex: 1,
-    borderLeftWidth: 1,
-    paddingLeft: adjustSize(10),
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  textArea: {
-    minHeight: adjustSize(80),
-    textAlignVertical: "top",
-  },
-  modalDropdown: {
-    borderRadius: adjustSize(8),
-    borderWidth: 1,
-    borderColor: colors.grey,
-    paddingHorizontal: 0,
-    height: adjustSize(45),
-  },
-  dropdownPlaceholder: {
-    fontSize: adjustSize(14),
-    fontFamily: typography.fonts.poppins.normal,
-  },
-  dropdownSelectedText: {
-    fontSize: adjustSize(14),
-    fontFamily: typography.fonts.poppins.normal,
-  },
-  modalFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: adjustSize(20),
-  },
+  uploadButton: { flexDirection: "row", flex: 1, paddingHorizontal: 10 },
+  uploadText: { color: colors.grey, fontSize: adjustSize(12) },
+  iconPreview: { width: "100%", height: "100%", borderRadius: 8 },
+  iconImage: { width: "100%", height: "100%", borderRadius: 8 },
+  inputGroup: { marginBottom: adjustSize(15) },
+  inputLabel: { fontSize: adjustSize(14), color: colors.primary },
+  inputField: { borderRadius: adjustSize(8) },
+  modalFooter: { flexDirection: "row", marginTop: adjustSize(20) },
   modalButton: {
     flex: 1,
     paddingVertical: adjustSize(12),
     borderRadius: adjustSize(8),
     alignItems: "center",
-    justifyContent: "center",
   },
-  cancelButton: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.grey,
-    marginRight: adjustSize(10),
-  },
-  saveButton: {
-    backgroundColor: colors.primary,
-  },
-  cancelButtonText: {
-    color: colors.primary,
-    fontFamily: typography.fonts.poppins.medium,
-    fontSize: adjustSize(14),
-  },
-  saveButtonText: {
-    color: colors.white,
-    fontFamily: typography.fonts.poppins.medium,
-    fontSize: adjustSize(14),
-  },
-  _title: {
-    fontSize: adjustSize(10),
-    color: colors.primary,
-  },
+  saveButton: { backgroundColor: colors.primary },
+  saveButtonText: { color: colors.white, fontSize: adjustSize(14) },
+  _title: { fontSize: adjustSize(10), color: colors.primary },
   modalImage: {
     height: adjustSize(80),
     width: adjustSize(80),

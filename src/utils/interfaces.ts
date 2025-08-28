@@ -42,6 +42,7 @@ export type AdminStackParamList = {
   };
   AdminGenerateWorkRequests: { propertyId: string };
   AdminCreateVisitorRequests: { propertyId: string };
+  InspectionDetails: { inspectionId: string };
   AdminManageBookings: undefined;
   AdminBookingDetails: { bookingId: string };
   AdminFacilityManagement: {
