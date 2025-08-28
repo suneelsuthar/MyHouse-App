@@ -1,5 +1,11 @@
 import React, { useMemo, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 import { Text, TextField } from "./index";
 import { adjustSize, colors, typography } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -13,6 +19,7 @@ interface MultiSelectDropdownProps {
   onChangeSelected: (next: string[]) => void;
   containerStyle?: ViewStyle;
   maxDropdownHeight?: number;
+  showSelectedChips?: boolean;
 }
 
 export default function MultiSelectDropdown({
@@ -22,14 +29,20 @@ export default function MultiSelectDropdown({
   onChangeSelected,
   containerStyle,
   maxDropdownHeight = 200,
+  showSelectedChips,
 }: MultiSelectDropdownProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const base = q ? data.filter((d) => d.label.toLowerCase().includes(q)) : data;
-    return base.filter((d) => !selectedValues.includes(d.value));
+    return q
+      ? data.filter(
+          (d) =>
+            d.label.toLowerCase().includes(q) &&
+            !selectedValues.includes(d.value)
+        )
+      : data.filter((d) => !selectedValues.includes(d.value));
   }, [query, data, selectedValues]);
 
   const add = (v: string) => {
@@ -63,16 +76,23 @@ export default function MultiSelectDropdown({
           style={styles.rightIcon}
           activeOpacity={0.7}
         >
-          <AntDesign name={open ? "up" : "down"} size={16} color={colors.primary} />
+          <AntDesign
+            name={open ? "up" : "down"}
+            size={16}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
 
-      {selectedChips.length > 0 && (
+      {!showSelectedChips && selectedChips.length > 0 && (
         <View style={styles.chipsRow}>
           {selectedChips.map((c) => (
             <View key={c.value} style={styles.chip}>
               <Text style={styles.chipText}>{c.label}</Text>
-              <TouchableOpacity onPress={() => remove(c.value)} style={styles.chipClose}>
+              <TouchableOpacity
+                onPress={() => remove(c.value)}
+                style={styles.chipClose}
+              >
                 <AntDesign name="close" size={12} color={colors.white} />
               </TouchableOpacity>
             </View>
@@ -81,22 +101,26 @@ export default function MultiSelectDropdown({
       )}
 
       {open && (
-        <View style={[styles.dropdownPanel, { maxHeight: adjustSize(maxDropdownHeight) }]}>
-          {filtered.length === 0 ? (
-            <View style={styles.dropdownRow}>
-              <Text style={{ color: colors.primary, opacity: 0.7 }}>No results</Text>
-            </View>
-          ) : (
-            filtered.slice(0, 20).map((d) => (
+        <View
+          style={[
+            styles.dropdownPanel,
+            { maxHeight: adjustSize(maxDropdownHeight) },
+          ]}
+        >
+          {filtered.length > 0 ? (
+            filtered.map((item) => (
               <TouchableOpacity
-                key={d.value}
-                onPress={() => add(d.value)}
-                style={styles.dropdownRow}
-                activeOpacity={0.7}
+                key={item.value}
+                style={styles.dropdownItem}
+                onPress={() => add(item.value)}
               >
-                <Text style={{ color: colors.primary }}>{d.label}</Text>
+                <Text style={styles.dropdownItemText}>{item.label}</Text>
               </TouchableOpacity>
             ))
+          ) : (
+            <View style={styles.noResults}>
+              <Text style={styles.noResultsText}>No properties found</Text>
+            </View>
           )}
         </View>
       )}
@@ -159,7 +183,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.greylight,
   },
+  dropdownItem: {
+    padding: adjustSize(12),
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.greylight,
+  },
+  dropdownItemText: {
+    fontSize: adjustSize(14),
+    color: colors.text,
+  },
+  noResults: {
+    padding: adjustSize(16),
+    alignItems: "center",
+  },
+  noResultsText: {
+    color: colors.text,
+    fontSize: adjustSize(14),
+    opacity: 0.7,
+  },
 });
-
-
-

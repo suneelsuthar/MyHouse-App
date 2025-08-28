@@ -148,6 +148,8 @@ import {
   AdminUtilitiesSettings,
   ViewMeterDetails,
   EditCreateMeter,
+  ViewPropertiesGroups,
+  AddEditGroup,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -575,6 +577,14 @@ const AdminHomeStackNavigator = () => (
       component={ViewMeterDetails}
     />
     <AdminHomeStack.Screen name="EditCreateMeter" component={EditCreateMeter} />
+    <AdminHomeStack.Screen
+      name="ViewPropertiesGroups"
+      component={ViewPropertiesGroups}
+    />
+    <AdminHomeStack.Screen
+      name="AddEditGroup"
+      component={AddEditGroup}
+    />
   </AdminHomeStack.Navigator>
 );
 

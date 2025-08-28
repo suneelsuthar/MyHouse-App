@@ -121,6 +121,19 @@ export type AdminStackParamList = {
   AdminUtilitiesSettings: undefined;
   ViewMeterDetails: { meter: MeterData };
   EditCreateMeter: { mode: 'add' | 'edit', meterId?: string };
+  ViewPropertiesGroups: undefined;
+  AddEditGroup: { 
+    mode: 'add' | 'edit'; 
+    group?: {
+      id: string;
+      title: string;
+      groupId: string;
+      noOfProp?: string;
+      noOfTenents?: string;
+      noOfMeters?: string;
+      date?: string;
+    } 
+  };
 };
 
 // Screens specific to Agent

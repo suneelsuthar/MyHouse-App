@@ -142,6 +142,8 @@ import { AdminAnalysis } from "./admin/utilities/analysis";
 import { AdminUtilitiesSettings } from "./admin/utilities/settings";
 import ViewMeterDetails from "./admin/utilities/manage-meters/ViewMeterDetails";
 import EditCreateMeter from "./admin/utilities/manage-meters/EditCreateMeter";
+import { ViewPropertiesGroups } from "./admin/utilities/view-properties-groups";
+import { AddEditGroup } from "./admin/utilities/add-edit-group";
 export {
   Splash,
   Intro,
@@ -267,9 +269,11 @@ export {
   AdminManageMeters,
   AdminManageTransactions,
   AdminManagePropertyGroup,
+  ViewPropertiesGroups,
   AdminManageVendingHistory,
   AdminAnalysis,
   AdminUtilitiesSettings,
   ViewMeterDetails,
-  EditCreateMeter
+  EditCreateMeter,
+  AddEditGroup
 };
