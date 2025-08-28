@@ -2,10 +2,11 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { Screen, Text, Header2, Header } from "../../../../Components";
 import { colors, typography, adjustSize } from "../../../../theme";
-import { DrawerActions } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../../assets/Images";
 export const AdminSimDataManagement: React.FC = () => {
+  const navigation = useNavigation();
   const data = [
     {
       id: 0,
@@ -46,7 +47,11 @@ export const AdminSimDataManagement: React.FC = () => {
         leftAccessory={
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => DrawerActions.openDrawer()}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
           >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>

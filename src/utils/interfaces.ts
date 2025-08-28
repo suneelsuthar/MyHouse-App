@@ -1,6 +1,19 @@
 // IUser;
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+export type MeterData = {
+  id: string;
+  meterName: string;
+  tenent: string;
+  status: string;
+  manufacturer: string | number;
+  meterType: string;
+  groupId: string;
+  propertyId: string;
+  meterId: string;
+};
+
 // Base screens that are common across all user types
 export type AuthStackParamList = {
   Splash: undefined;
@@ -106,6 +119,8 @@ export type AdminStackParamList = {
   AdminManageVendingHistory: undefined;
   AdminAnalysis: undefined;
   AdminUtilitiesSettings: undefined;
+  ViewMeterDetails: { meter: MeterData };
+  EditCreateMeter: { mode: 'add' | 'edit', meterId?: string };
 };
 
 // Screens specific to Agent

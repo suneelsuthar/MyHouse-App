@@ -146,6 +146,8 @@ import {
   AdminManageVendingHistory,
   AdminAnalysis,
   AdminUtilitiesSettings,
+  ViewMeterDetails,
+  EditCreateMeter,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -568,6 +570,11 @@ const AdminHomeStackNavigator = () => (
       name="AdminUtilitiesSettings"
       component={AdminUtilitiesSettings}
     />
+    <AdminHomeStack.Screen
+      name="ViewMeterDetails"
+      component={ViewMeterDetails}
+    />
+    <AdminHomeStack.Screen name="EditCreateMeter" component={EditCreateMeter} />
   </AdminHomeStack.Navigator>
 );
 
@@ -1159,6 +1166,17 @@ const AdminTabs = () => (
     <Tab.Screen name="Chat" component={AdminChatStackNavigator} />
   </Tab.Navigator>
 );
+
+import { Route } from "@react-navigation/native";
+
+const getTabBarVisibility = (route: Route<string, object | undefined>) => {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? "AdminDashboard";
+  const screensToHideTabBar = ["EditCreateMeter", "ViewMeterDetails"];
+  if (screensToHideTabBar.includes(routeName)) {
+    return { display: "none" };
+  }
+  return {};
+};
 
 const styles = StyleSheet.create({
   _indicator: {
