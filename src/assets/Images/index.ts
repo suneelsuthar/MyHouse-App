@@ -79,4 +79,8 @@ export const Images = {
   gym: require("./gym.svg"),
   basketball: require("./basketball.svg"),
   playground: require("./playground.svg"),
+  airtel: require("./airtel.svg"),
+  glo: require("./glo.svg"),
+  mobile: require("./mobile.svg"),
+  mtn: require("./mtn.svg"),
 };
