@@ -310,6 +310,96 @@ export interface IFacilityManagement {
   issueDate: string;
   dueDate: string;
 }
+
+
+const SERVICE_MOCK_DATA = [
+  { id: 0, title: "Swimming pool", image: Images.pool },
+  { id: 1, title: "Tennis Court", image: Images.tennis },
+  { id: 2, title: "Gym", image: Images.gym },
+  { id: 3, title: "Playground", image: Images.playground },
+  { id: 4, title: "Basketball Court", image: Images.basketball },
+  { id: 5, title: "Swimming pool", image: Images.pool },
+  { id: 6, title: "Tennis Court", image: Images.tennis },
+  { id: 7, title: "Gym", image: Images.gym },
+  { id: 8, title: "Playground", image: Images.playground },
+  { id: 9, title: "Basketball Court", image: Images.basketball },
+  { id: 10, title: "Swimming pool", image: Images.pool },
+  { id: 11, title: "Tennis Court", image: Images.tennis },
+  { id: 12, title: "Gym", image: Images.gym },
+  { id: 13, title: "Playground", image: Images.playground },
+  { id: 14, title: "Basketball Court", image: Images.basketball },
+];
+
+
+const INSEPECTION_MOCK_DATA = [
+  {
+    id: 1,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "Kidnap",
+    avatar: "E",
+    backgroundColor: "#E8E8E8",
+    textColor: "#333",
+    address: "Lahore, Punjab , Pakistan",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "Kidnap",
+    avatar: "B",
+    backgroundColor: "#292766",
+    textColor: "#FFF",
+    address: "Lahore, Punjab , Pakistan",
+  },
+  {
+    id: 3,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "Kidnap",
+    avatar: "E",
+    backgroundColor: "#E8E8E8",
+    textColor: "#333",
+    address: "Lahore, Punjab , Pakistan",
+  },
+  {
+    id: 4,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "Kidnap",
+    avatar: "B",
+    backgroundColor: "#292766",
+    textColor: "#FFF",
+    address: "Lahore, Punjab , Pakistan",
+  },
+  {
+    id: 5,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "pending",
+    avatar: "E",
+    backgroundColor: "#E8E8E8",
+    textColor: "#333",
+    address: "Lahore, Punjab , Pakistan",
+  },
+  {
+    id: 6,
+    name: "Jane Smith",
+    property: "Greenwood Apartments",
+    status: "pending",
+    alert: "Kidnap",
+    avatar: "B",
+    backgroundColor: "#292766",
+    textColor: "#FFF",
+    address: "Lahore, Punjab , Pakistan",
+  },
+];
+
 export {
   forYouList,
   topratedList,
@@ -318,4 +408,6 @@ export {
   rentalProperties,
   IRentalProperty,
   IFacilityManagement,
+  SERVICE_MOCK_DATA,
+  INSEPECTION_MOCK_DATA
 };

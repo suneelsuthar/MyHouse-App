@@ -244,7 +244,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
                 label="Choose type"
                 placeholder="Choose"
                 value={selectedTime}
-                onChangeValue={(v: TimeOption) => setSelectedTime(v)}
+                onChangeValue={(v: any) => setSelectedTime(v)}
                 dropdownStyle={styles.dropdown}
                 placeholderStyle={styles.dropdownPlaceholder}
                 selectedTextStyle={styles.dropdownSelected}
@@ -279,7 +279,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
                   </View>
                 </View>
               )}
-          
+
               {selectedTime === "Different time for each day" && (
                 <View>
                   {selectedDays.map((val, index) => {

@@ -69,9 +69,6 @@ export const Step1: React.FC<Step1Props> = ({ mode, value, onChange }) => {
               color={colors.primary}
             />
           </View>
-          {/* <Text style={styles.chevron}> */}
-          {/* {expanded.res ? "\u25B2" : "\u25BC"} */}
-          {/* </Text> */}
         </TouchableOpacity>
         {expanded.res && (
           <View style={styles.checkRow}>
@@ -190,7 +187,6 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
   },
   checkRow: {
-    // marginTop: adjustSize(10),
     paddingHorizontal: adjustSize(10),
   },
   checkItem: {
@@ -225,9 +221,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     marginRight: adjustSize(10),
   },
-  checkboxChecked: {
-    backgroundColor: colors.primary,
-  },
+
   checkboxLabel: {
     color: colors.primary,
     fontSize: adjustSize(13),

@@ -1,34 +1,27 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Screen, Text, Header, Button } from "../../../Components";
 import { colors, spacing, adjustSize, typography } from "../../../theme";
-import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../../../assets/Images";
-import { useNavigation } from "@react-navigation/native";
-
+// Mock inspection details (replace with API data later)
+const inspectionDetails = {
+  id: "P001",
+  propertyName: "Greenwood Villa",
+  status: "Pending",
+  city: "Abia",
+  state: "Aba",
+  country: "Nigeria",
+  address: "lorem ipsum is a dummy text",
+  days: "Monday, Thursday, Sunday",
+  dateTime: [
+    "Mon (2:00 PM – 6:00 PM)",
+    "Thu (2:00 AM – 5:00 PM)",
+    "Sun (2:00 PM – 6:00 PM)",
+    "Sun (2:00 PM – 6:00 PM)",
+    "Sun (2:00 PM – 6:00 PM)",
+    "Sun (2:00 PM – 6:00 PM)",
+  ],
+};
 export default function InspectionDetails(props: any) {
-  const navigation = useNavigation<any>();
-
-  // Mock inspection details (replace with API data later)
-  const inspectionDetails = {
-    id: "P001",
-    propertyName: "Greenwood Villa",
-    status: "Pending",
-    city: "Abia",
-    state: "Aba",
-    country: "Nigeria",
-    address: "lorem ipsum is a dummy text",
-    days: "Monday, Thursday, Sunday",
-    dateTime: [
-      "Mon (2:00 PM – 6:00 PM)",
-      "Thu (2:00 AM – 5:00 PM)",
-      "Sun (2:00 PM – 6:00 PM)",
-      "Sun (2:00 PM – 6:00 PM)",
-      "Sun (2:00 PM – 6:00 PM)",
-      "Sun (2:00 PM – 6:00 PM)",
-    ],
-  };
-
   return (
     <Screen
       preset="fixed"
@@ -147,10 +140,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
     paddingHorizontal: adjustSize(10),
   },
-  headerTitle: {
-    fontSize: adjustSize(18),
-    color: colors.primary,
-  },
+
   row: {
     flexDirection: "row",
     marginBottom: spacing.md,
@@ -182,7 +172,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   _btn: {
-    // width: "45%",
     borderWidth: 1,
     borderColor: colors.primary,
     flex: 1,

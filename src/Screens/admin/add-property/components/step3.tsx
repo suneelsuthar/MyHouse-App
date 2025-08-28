@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -13,10 +13,10 @@ import DropdownComponent from "../../../../Components/DropDown";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { useNavigation } from "@react-navigation/native";
 type Step3Props = {
-  // Back/Next handled by parent; nothing needed here
   initialServices?: string[];
   initialSelectedServices?: string[];
   initialRestrictions?: string[];
+  mode?: string;
 };
 
 const DEFAULT_SERVICES = [
@@ -260,82 +260,11 @@ const Step3: React.FC<Step3Props> = ({
 };
 
 const styles = StyleSheet.create({
-  headerTitle: {
-    fontSize: adjustSize(16),
-    color: colors.primary,
-    marginTop: adjustSize(16),
-    marginBottom: adjustSize(10),
-  },
-
-  stepperRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: adjustSize(16),
-    opacity: 0.6,
-  },
-  stepItem: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  stepCircle: {
-    width: adjustSize(28),
-    height: adjustSize(28),
-    borderRadius: adjustSize(14),
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-  },
-  stepCircleActive: {
-    backgroundColor: colors.white,
-    borderColor: colors.primary,
-  },
-  stepCircleInactive: {
-    backgroundColor: colors.fill,
-    borderColor: colors.greylight,
-  },
-  stepText: {
-    fontSize: adjustSize(12),
-  } as TextStyle,
-  stepTextActive: {
-    color: colors.primary,
-  } as TextStyle,
-  stepTextInactive: {
-    color: colors.primary,
-    opacity: 0.6,
-  } as TextStyle,
-  stepLine: {
-    width: adjustSize(28),
-    height: 1,
-    backgroundColor: colors.greylight,
-    marginHorizontal: adjustSize(6),
-  },
-
   sectionTitle: {
     fontSize: adjustSize(15),
     color: colors.primary,
     marginTop: adjustSize(12),
     marginBottom: adjustSize(10),
-  },
-
-  card: {
-    backgroundColor: colors.fill,
-    borderRadius: adjustSize(10),
-    padding: adjustSize(12),
-    marginBottom: adjustSize(16),
-  },
-
-  fieldGap: {
-    marginBottom: adjustSize(8),
-  },
-
-  inputIcon: {
-    position: "absolute",
-    right: adjustSize(12),
-    top: adjustSize(16),
-    width: adjustSize(24),
-    height: adjustSize(24),
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   chipsRow: {
@@ -365,22 +294,6 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(8),
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  dropdownPanel: {
-    backgroundColor: colors.fill,
-    borderRadius: adjustSize(10),
-    marginTop: adjustSize(8),
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.greylight,
-    maxHeight: adjustSize(180),
-    overflow: "hidden",
-  },
-  dropdownRow: {
-    paddingVertical: adjustSize(10),
-    paddingHorizontal: adjustSize(12),
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.greylight,
   },
 
   restrictionsWrap: {
@@ -423,17 +336,6 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     paddingRight: adjustSize(10),
   },
-
-  miniDropdown: {
-    width: adjustSize(110),
-    backgroundColor: colors.fill,
-    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
-  } as ViewStyle,
-  miniDropdownText: {
-    color: colors.primary,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.medium,
-  } as TextStyle,
 });
 
 export default Step3;

@@ -9,7 +9,7 @@ import { AppStackScreenProps } from "../../../utils/interfaces";
 type Agent = {
   id: string;
   name: string;
-  code: string; // e.g., 12345
+  code: string;
   avatar: string;
 };
 
@@ -208,10 +208,8 @@ export function AdminAssignProperties({
           showsVerticalScrollIndicator={false}
           renderItem={renderAgent}
           contentContainerStyle={{ paddingBottom: spacing.xxl }}
-          // ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
         />
       </View>
-
       {/* Bottom Assign Button */}
       <View style={styles.bottomBar}>
         <Button
@@ -268,11 +266,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xs,
     backgroundColor: colors.fill,
     borderRadius: adjustSize(12),
-    // shadowColor: "#000000",
-    // shadowOpacity: 0.06,
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowRadius: 3,
-    // elevation: 2,
   },
   avatar: {
     width: adjustSize(59),
@@ -338,7 +331,6 @@ const styles = StyleSheet.create({
     minWidth: adjustSize(44),
     height: adjustSize(27),
     borderRadius: adjustSize(8),
-    // backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: spacing.md,

@@ -1,49 +1,34 @@
-import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  FlatList,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { adjustSize, colors, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
-import { Text, Screen, Button, TextField } from "../../../Components";
+import { Text, Screen, TextField } from "../../../Components";
 import DropdownComponent from "../../../Components/DropDown";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { RentalCard } from "../../../Components/RentalCard";
 import { rentalProperties } from "../../../utils/data";
-const width = Dimensions.get("screen").width;
 
-// Import all property management screens
-import AdminPropertyServices from './services';
-import AdminPropertyFeatures from './features';
-import AdminPropertyRestriction from './restriction';
-import AdminManageInspections from './manage-inspections';
-
-// Re-export all property management screens
-export { 
+import AdminPropertyServices from "./services";
+import AdminPropertyFeatures from "./features";
+import AdminPropertyRestriction from "./restriction";
+import AdminManageInspections from "./manage-inspections";
+export {
   AdminPropertyServices,
   AdminPropertyFeatures,
   AdminPropertyRestriction,
-  AdminManageInspections 
+  AdminManageInspections,
 };
+
 interface AdminPropertyManagementProps
   extends AppStackScreenProps<"AdminPropertyManagement"> {}
 export function AdminPropertyManagement({
   route,
 }: AdminPropertyManagementProps) {
   const navigation = useNavigation();
-  const [search, setsearch] = useState();
   const { propertyType = "rental" } = route.params || {};
 
-  // Determine the title and data based on property type
-  const screenTitle =
-    propertyType === "rental" ? "Rental Properties" : "Managed Properties";
-  console.log("=====+>", propertyType);
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -72,7 +57,6 @@ export function AdminPropertyManagement({
         </TouchableOpacity>
       </View>
 
-      {/* Recent Notifications */}
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
@@ -93,7 +77,6 @@ export function AdminPropertyManagement({
             />
           </View>
         </View>
-        {/* ÷÷ */}
       </View>
 
       {/* Search Bar */}
@@ -117,7 +100,6 @@ export function AdminPropertyManagement({
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
       </View>
-
       {/* Properties List */}
       <FlatList
         data={rentalProperties}
@@ -194,9 +176,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollView: {
-    flex: 1,
-  },
+
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -229,12 +209,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  _welcomtext: {
-    color: colors.grey,
-    fontSize: adjustSize(10),
-    lineHeight: adjustSize(12),
-  },
-
 
   _seciton_row: {
     flexDirection: "row",
@@ -290,5 +264,8 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: adjustSize(10),
     paddingBottom: adjustSize(20),
+  },
+  username: {
+    fontSize: adjustSize(15),
   },
 });

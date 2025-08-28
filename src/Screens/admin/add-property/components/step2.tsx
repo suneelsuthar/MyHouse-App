@@ -7,18 +7,24 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
-import { Text, TextField, Button, CustomModal, OfferDiscountModal } from "../../../../Components";
-import PromotionModal, { type Promotion } from "../../../../Components/PromotionModal";
+import {
+  Text,
+  TextField,
+  Button,
+  CustomModal,
+  OfferDiscountModal,
+} from "../../../../Components";
+import PromotionModal, {
+  type Promotion,
+} from "../../../../Components/PromotionModal";
 import AdditionalChargesModal, {
   type AdditionalCharge,
 } from "../../../../Components/AdditionalChargesModal";
 import type { DiscountConfig } from "../../../../Components/OfferDiscountModal";
 import DropdownComponent from "../../../../Components/DropDown";
 import { adjustSize, colors, typography } from "../../../../theme";
-import AntDesign from '@expo/vector-icons/AntDesign';
 type Step2Props = {
   mode: "add" | "edit";
-  // in future we can lift state with onChange
 };
 
 const CounterRow = ({
@@ -107,21 +113,26 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
 
   const [hasOtherCharges, setHasOtherCharges] = useState(false);
   const [charges, setCharges] = useState<AdditionalCharge[]>([]);
-  const [chargesModalVisible, setChargesModalVisible] = useState<boolean>(false);
+  const [chargesModalVisible, setChargesModalVisible] =
+    useState<boolean>(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [customPricing, setCustomPricing] = useState(false);
-  const [customPricingModalVisible, setCustomPricingModalVisible] = useState<boolean>(false);
+  const [customPricingModalVisible, setCustomPricingModalVisible] =
+    useState<boolean>(false);
   const [customNightPrice, setCustomNightPrice] = useState<string>("");
   const [offerDiscount, setOfferDiscount] = useState(false);
-  const [offerDiscountModalVisible, setOfferDiscountModalVisible] = useState<boolean>(false);
-  const [discountConfig, setDiscountConfig] = useState<DiscountConfig | undefined>(undefined);
+  const [offerDiscountModalVisible, setOfferDiscountModalVisible] =
+    useState<boolean>(false);
+  const [discountConfig, setDiscountConfig] = useState<
+    DiscountConfig | undefined
+  >(undefined);
   const [setPromotions, setSetPromotions] = useState(false);
   const [promotions, setPromotionsList] = useState<Promotion[]>([]);
-  const [promotionModalVisible, setPromotionModalVisible] = useState<boolean>(false);
+  const [promotionModalVisible, setPromotionModalVisible] =
+    useState<boolean>(false);
 
   return (
     <View>
-      {/* Property Details */}
       <Text weight="semiBold" style={styles.sectionTitle}>
         Where is the property located?
       </Text>
@@ -134,7 +145,6 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
           placeholderTextColor={colors.grey}
           containerStyle={styles.fieldGap as ViewStyle}
         />
-
         {/* Property Type - custom dropdown */}
         <Text weight="normal" style={styles.label}>
           Property Type
@@ -375,13 +385,21 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
                     activeOpacity={0.7}
                   >
                     <Text style={styles.addedChargeName}>{c.name}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: adjustSize(10) }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: adjustSize(10),
+                      }}
+                    >
                       <Text style={styles.addedChargeAmount}>
                         {c.amount} ({c.rate})
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
-                          setCharges((prev: AdditionalCharge[]) => prev.filter((_, i) => i !== idx));
+                          setCharges((prev: AdditionalCharge[]) =>
+                            prev.filter((_, i) => i !== idx)
+                          );
                         }}
                       >
                         <Text style={{ color: colors.primary }}>Delete</Text>
@@ -428,7 +446,9 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
         }}
         onSubmit={(charge) => {
           if (editIndex !== null) {
-            setCharges((prev: AdditionalCharge[]) => prev.map((c, i) => (i === editIndex ? charge : c)));
+            setCharges((prev: AdditionalCharge[]) =>
+              prev.map((c, i) => (i === editIndex ? charge : c))
+            );
             setEditIndex(null);
             setChargesModalVisible(false);
           } else {
@@ -449,9 +469,22 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
       >
         {/* Subtitle and amount display (optional) */}
         {customNightPrice ? (
-          <View style={{ alignItems: "center", marginTop: adjustSize(8), marginBottom: adjustSize(8) }}>
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: adjustSize(8),
+              marginBottom: adjustSize(8),
+            }}
+          >
             <Text style={{ color: colors.grey }}>Price per night</Text>
-            <Text weight="semiBold" style={{ color: colors.primary, fontSize: adjustSize(16), marginTop: adjustSize(4) }}>
+            <Text
+              weight="semiBold"
+              style={{
+                color: colors.primary,
+                fontSize: adjustSize(16),
+                marginTop: adjustSize(4),
+              }}
+            >
               ₦ {customNightPrice}
             </Text>
           </View>
@@ -459,7 +492,10 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
 
         {/* Input mode */}
         <View style={{ marginTop: adjustSize(6) }}>
-          <Text weight="normal" style={{ color: colors.primary, marginBottom: adjustSize(6) }}>
+          <Text
+            weight="normal"
+            style={{ color: colors.primary, marginBottom: adjustSize(6) }}
+          >
             Price per night : ₦{customNightPrice || "0"}
           </Text>
           <TextField
@@ -471,12 +507,23 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
         </View>
 
         {/* Actions */}
-        <View style={{ flexDirection: "row", alignItems: "center", gap: adjustSize(10), marginTop: adjustSize(14) }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: adjustSize(10),
+            marginTop: adjustSize(14),
+          }}
+        >
           <View style={{ flex: 1 }}>
             <Button
               text="Cancel"
               onPress={() => setCustomPricingModalVisible(false)}
-              style={{ borderColor: colors.primary, borderWidth: 1, backgroundColor: colors.fill }}
+              style={{
+                borderColor: colors.primary,
+                borderWidth: 1,
+                backgroundColor: colors.fill,
+              }}
             />
           </View>
           <View style={{ flex: 1 }}>
@@ -533,11 +580,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.fill,
     borderRadius: adjustSize(10),
-    // borderWidth: 0.2,
-    // borderColor: colors.greylight,
-    // padding: adjustSize(12),
     marginBottom: adjustSize(12),
-    // elevation: 2,
   },
 
   row: {
@@ -561,7 +604,6 @@ const styles = StyleSheet.create({
     width: adjustSize(28),
     height: adjustSize(28),
     borderRadius: adjustSize(6),
-    // backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -583,27 +625,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: adjustSize(8),
   },
-  currencyPill: {
-    paddingHorizontal: adjustSize(10),
-    height: adjustSize(40),
-    borderRadius: adjustSize(10),
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.fill,
-    borderWidth: 1,
-    borderColor: colors.greylight,
-    marginRight: adjustSize(6),
-  } as ViewStyle,
-  currencyPillActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  currencyText: {
-    color: colors.primary,
-  } as TextStyle,
-  currencyTextActive: {
-    color: colors.white,
-  } as TextStyle,
+
 
   fieldGap: {
     marginBottom: adjustSize(8),

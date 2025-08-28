@@ -16,12 +16,14 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 
 type Step6Props = {
-  // Parent handles Back/Next/Save buttons; accept mode to match other steps
   mode?: "add" | "edit" | string;
 };
 
 const DOC_TYPES = [
-  { label: "Document or Power of Attorney", value: "Document or Power of Attorney" },
+  {
+    label: "Document or Power of Attorney",
+    value: "Document or Power of Attorney",
+  },
   { label: "Tenancy Agreement", value: "Tenancy Agreement" },
   { label: "Certificate of Occupancy", value: "Certificate of Occupancy" },
 ];
@@ -115,7 +117,7 @@ const Step6: React.FC<Step6Props> = () => {
 
   const pickDocument = async () => {
     try {
-      const res = await DocumentPicker.getDocumentAsync({
+      const res: any = await DocumentPicker.getDocumentAsync({
         copyToCacheDirectory: true,
         multiple: false,
       });

@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // paddingVertical: adjustSize(12),
     borderBottomWidth: 1,
     borderBottomColor: colors.grey,
     marginVertical: adjustSize(14),
@@ -202,7 +201,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// create a modal component in the component folder, title, body and button text will be passed as params, if props availble then show other wise no need to show the button etc,
-
-// i added above 3 iamges actually its one modal will open when press on "do you have other charges to add" toogle,
-// so ad click on it then modal will open with name,amount, rate field as press on save then filed, fileds will hide and will show the and another charges when press on it then will show the fileds same as before

@@ -248,7 +248,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
                 label="Choose type"
                 placeholder="Choose"
                 value={selectedTime}
-                onChangeValue={(v: TimeOption) => setSelectedTime(v)}
+                onChangeValue={(v: any) => setSelectedTime(v)}
                 dropdownStyle={styles.dropdown}
                 placeholderStyle={styles.dropdownPlaceholder}
                 selectedTextStyle={styles.dropdownSelected}

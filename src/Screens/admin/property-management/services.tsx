@@ -8,47 +8,22 @@ import {
   Image,
 } from "react-native";
 import { Screen, Text, TextField } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
 import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 import { adjustSize, colors, typography } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import * as ImagePicker from "expo-image-picker";
-
-interface AdminPropertyServicesProps
-  extends AppStackScreenProps<"AdminPropertyServices"> {}
-
-const SERVICE_MOCK_DATA = [
-  { id: 0, title: "Swimming pool", image: Images.pool },
-  { id: 1, title: "Tennis Court", image: Images.tennis },
-  { id: 2, title: "Gym", image: Images.gym },
-  { id: 3, title: "Playground", image: Images.playground },
-  { id: 4, title: "Basketball Court", image: Images.basketball },
-  { id: 5, title: "Swimming pool", image: Images.pool },
-  { id: 6, title: "Tennis Court", image: Images.tennis },
-  { id: 7, title: "Gym", image: Images.gym },
-  { id: 8, title: "Playground", image: Images.playground },
-  { id: 9, title: "Basketball Court", image: Images.basketball },
-  { id: 10, title: "Swimming pool", image: Images.pool },
-  { id: 11, title: "Tennis Court", image: Images.tennis },
-  { id: 12, title: "Gym", image: Images.gym },
-  { id: 13, title: "Playground", image: Images.playground },
-  { id: 14, title: "Basketball Court", image: Images.basketball },
-];
+import { SERVICE_MOCK_DATA } from "../../../utils/data";
 
 export default function AdminPropertyServices() {
   const navigation = useNavigation();
-
-  // state
   const [services, setServices] = useState(SERVICE_MOCK_DATA);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [serviceName, setServiceName] = useState("");
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
   const [images, setImages] = useState<string>("");
   const [editingService, setEditingService] = useState<any>(null);
-
-  // pick image
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -373,7 +348,6 @@ const styles = StyleSheet.create({
     borderColor: colors.grey,
     elevation: 2,
   },
-  // modal
   modalContainer: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -406,8 +380,6 @@ const styles = StyleSheet.create({
   },
   uploadButton: { flexDirection: "row", flex: 1, paddingHorizontal: 10 },
   uploadText: { color: colors.grey, fontSize: adjustSize(12) },
-  iconPreview: { width: "100%", height: "100%", borderRadius: 8 },
-  iconImage: { width: "100%", height: "100%", borderRadius: 8 },
   inputGroup: { marginBottom: adjustSize(15) },
   inputLabel: { fontSize: adjustSize(14), color: colors.primary },
   inputField: { borderRadius: adjustSize(8) },

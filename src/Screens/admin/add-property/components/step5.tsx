@@ -12,9 +12,6 @@ import { adjustSize, colors, typography } from "../../../../theme";
 import TimeInlinePicker from "../../../../Components/TimeInlinePicker";
 import { AntDesign } from "@expo/vector-icons";
 
-
-
-
 type Slot = { start: Date; end: Date };
 type SlotsByDate = Record<string, Slot[]>;
 type PickerOpen = { key: string; index: number; which: "start" | "end" } | null;
@@ -146,7 +143,6 @@ const Step5: React.FC<Props> = ({ onBack, onNext }) => {
       setPhase("times");
       return;
     }
-    // Phase times -> complete
     if (onNext) {
       const payload = selected.reduce<{
         dates: string[];
@@ -322,12 +318,6 @@ const Step5: React.FC<Props> = ({ onBack, onNext }) => {
                   activeOpacity={0.8}
                   onPress={() => toggleDate(cell)}
                 >
-                  {/* <View
-                    style={[
-                      styles.dayDot,
-                      isSelected && { backgroundColor: colors.primary },
-                    ]}
-                  /> */}
                   <View
                     style={[
                       isSelected && {
@@ -522,9 +512,6 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(8),
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: colors.white,
-    // borderWidth: StyleSheet.hairlineWidth,
-    // borderColor: colors.greylight,
   } as ViewStyle,
   navBtnLeft: {},
   navBtnRight: {},
@@ -563,13 +550,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   } as ViewStyle,
-  dayDot: {
-    width: adjustSize(6),
-    height: adjustSize(6),
-    borderRadius: adjustSize(3),
-    backgroundColor: "transparent",
-    marginBottom: adjustSize(6),
-  },
+
   dayText: {
     color: colors.primary,
     fontSize: adjustSize(12),
@@ -615,7 +596,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(10),
   },
   dateTitle: {
-    // color: colors.white,
     fontSize: adjustSize(13),
   },
   addBtn: {
@@ -635,23 +615,8 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(8),
     width: "47%",
   },
-  timeBox: {
-    flex: 1,
-    height: adjustSize(44),
-    borderRadius: 100,
-    backgroundColor: colors.white,
-    borderWidth: 0.3,
-    borderColor: colors.greylight,
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-  } as ViewStyle,
-  timePlaceholder: {
-    color: colors.primary,
-    fontSize: adjustSize(12),
-  } as TextStyle,
+
   timeChip: {
-    // flex: 1,
     height: adjustSize(44),
     borderRadius: 100,
     backgroundColor: colors.white,
@@ -660,7 +625,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: adjustSize(10),
     flex: 1,
-    // justifyContent: "space-between",
   } as ViewStyle,
   timeChipText: {
     color: colors.primary,
@@ -668,10 +632,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
   } as TextStyle,
-  toLabel: {
-    color: colors.primary,
-    marginHorizontal: adjustSize(6),
-  },
+
   removeIcon: {
     width: adjustSize(20),
     height: adjustSize(20),
@@ -698,16 +659,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: adjustSize(16),
   },
-  backBtn: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.grey,
-    width: "45%",
-  },
-  nextBtn: {
-    backgroundColor: colors.primary,
-    width: "45%",
-  },
+
   selectTimeBtn: {
     width: "100%",
     height: adjustSize(44),
