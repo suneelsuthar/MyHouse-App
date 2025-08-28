@@ -83,4 +83,5 @@ export const Images = {
   glo: require("./glo.svg"),
   mobile: require("./mobile.svg"),
   mtn: require("./mtn.svg"),
+  thistory: require("./thistory.svg"),
 };
