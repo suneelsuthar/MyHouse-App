@@ -12,7 +12,7 @@ import { rentalProperties } from "../../../utils/data";
 
 type Props = AppStackScreenProps<"AdminCreateVisitorRequests">;
 
-export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
+export function AdminCreateVisitorRequests({ route, navigation }: Props) {
   const preselectId = route?.params?.propertyId;
   const [name, setName] = useState("");
   const [type, setType] = useState<string | null>(null);
@@ -53,7 +53,9 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
 
   const fmt = (d: Date | null) => (d ? d.toLocaleDateString() : "Select Date");
   const fmtTime = (d: Date | null) =>
-    d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "--:-- --";
+    d
+      ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      : "--:-- --";
 
   const canSubmit =
     name.trim().length > 0 &&
@@ -81,10 +83,14 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
     navigation.goBack();
   };
 
-  const openPicker = (target: "from" | "to", step: "date" | "time" = "date") => {
+  const openPicker = (
+    target: "from" | "to",
+    step: "date" | "time" = "date"
+  ) => {
     setActiveTarget(target);
     setPickerStep(step);
-    const base = target === "from" ? fromDate ?? new Date() : toDate ?? new Date();
+    const base =
+      target === "from" ? fromDate ?? new Date() : toDate ?? new Date();
     setTempDate(base);
     setPickerVisible(true);
   };
@@ -160,11 +166,16 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
                 <Text weight="semiBold" style={styles.label}>
                   From<Text style={styles.required}>*</Text>
                 </Text>
-                <Pressable onPress={() => openPicker("from", "date")} style={styles.dtButton}>
+                <Pressable
+                  onPress={() => openPicker("from", "date")}
+                  style={styles.dtButton}
+                >
                   <Text
                     style={[
                       styles.dtText,
-                      { color: fromDate ? colors.primary : colors.primaryLight },
+                      {
+                        color: fromDate ? colors.primary : colors.primaryLight,
+                      },
                     ]}
                   >
                     {fmt(fromDate)}
@@ -177,11 +188,16 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
                 <Text weight="semiBold" style={styles.label}>
                   Time<Text style={styles.required}>*</Text>
                 </Text>
-                <Pressable onPress={() => openPicker("from", "time")} style={styles.dtButton}>
+                <Pressable
+                  onPress={() => openPicker("from", "time")}
+                  style={styles.dtButton}
+                >
                   <Text
                     style={[
                       styles.dtText,
-                      { color: fromDate ? colors.primary : colors.primaryLight },
+                      {
+                        color: fromDate ? colors.primary : colors.primaryLight,
+                      },
                     ]}
                   >
                     {fmtTime(fromDate)}
@@ -197,7 +213,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
                 <Text weight="semiBold" style={styles.label}>
                   To<Text style={styles.required}>*</Text>
                 </Text>
-                <Pressable onPress={() => openPicker("to", "date")} style={styles.dtButton}>
+                <Pressable
+                  onPress={() => openPicker("to", "date")}
+                  style={styles.dtButton}
+                >
                   <Text
                     style={[
                       styles.dtText,
@@ -214,7 +233,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
                 <Text weight="semiBold" style={styles.label}>
                   Time<Text style={styles.required}>*</Text>
                 </Text>
-                <Pressable onPress={() => openPicker("to", "time")} style={styles.dtButton}>
+                <Pressable
+                  onPress={() => openPicker("to", "time")}
+                  style={styles.dtButton}
+                >
                   <Text
                     style={[
                       styles.dtText,
@@ -235,7 +257,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
               <Text weight="semiBold" style={styles.label}>
                 From<Text style={styles.required}>*</Text>
               </Text>
-              <Pressable onPress={() => openPicker("from", "time")} style={styles.dtButton}>
+              <Pressable
+                onPress={() => openPicker("from", "time")}
+                style={styles.dtButton}
+              >
                 <Text
                   style={[
                     styles.dtText,
@@ -252,7 +277,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
               <Text weight="semiBold" style={styles.label}>
                 To<Text style={styles.required}>*</Text>
               </Text>
-              <Pressable onPress={() => openPicker("to", "time")} style={styles.dtButton}>
+              <Pressable
+                onPress={() => openPicker("to", "time")}
+                style={styles.dtButton}
+              >
                 <Text
                   style={[
                     styles.dtText,
@@ -272,7 +300,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
               <Text weight="semiBold" style={styles.label}>
                 From<Text style={styles.required}>*</Text>
               </Text>
-              <Pressable onPress={() => openPicker("from", "date")} style={styles.dtButton}>
+              <Pressable
+                onPress={() => openPicker("from", "date")}
+                style={styles.dtButton}
+              >
                 <Text
                   style={[
                     styles.dtText,
@@ -289,7 +320,10 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
               <Text weight="semiBold" style={styles.label}>
                 To<Text style={styles.required}>*</Text>
               </Text>
-              <Pressable onPress={() => openPicker("to", "date")} style={styles.dtButton}>
+              <Pressable
+                onPress={() => openPicker("to", "date")}
+                style={styles.dtButton}
+              >
                 <Text
                   style={[
                     styles.dtText,
@@ -345,18 +379,28 @@ export function AdminCreateVisitorRequests({ route ,navigation}: Props) {
             <View style={[styles.row, { alignItems: "center" }]}>
               <Pressable
                 onPress={() => setVisitorsCount((v) => Math.max(0, v - 1))}
-                style={[styles.dtButton, { width: 60, justifyContent: "center" }]}
+                style={[
+                  styles.dtButton,
+                  { width: 60, justifyContent: "center" },
+                ]}
               >
                 <Text style={styles.dtText}>-</Text>
               </Pressable>
               <View style={{ width: spacing.md }} />
-              <View style={[styles.dtButton, { flex: 1, justifyContent: "center" }]}> 
-                <Text style={[styles.dtText, { color: colors.primary }]}>{visitorsCount}</Text>
+              <View
+                style={[styles.dtButton, { flex: 1, justifyContent: "center" }]}
+              >
+                <Text style={[styles.dtText, { color: colors.primary }]}>
+                  {visitorsCount}
+                </Text>
               </View>
               <View style={{ width: spacing.md }} />
               <Pressable
                 onPress={() => setVisitorsCount((v) => v + 1)}
-                style={[styles.dtButton, { width: 60, justifyContent: "center" }]}
+                style={[
+                  styles.dtButton,
+                  { width: 60, justifyContent: "center" },
+                ]}
               >
                 <Text style={styles.dtText}>+</Text>
               </Pressable>
