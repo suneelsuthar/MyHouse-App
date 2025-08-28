@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { adjustSize, colors, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -27,8 +27,11 @@ export function AdminPropertyManagement({
   route,
 }: AdminPropertyManagementProps) {
   const navigation = useNavigation();
+  const [data, setdata] = useState(rentalProperties);
   const { propertyType = "rental" } = route.params || {};
+  const [search, setsearch] = useState("");
 
+  const filterData = data.filter((val) => val.name.includes(search));
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -83,6 +86,8 @@ export function AdminPropertyManagement({
       <View style={styles._searchrow}>
         <View style={styles._inputview}>
           <TextField
+            value={search}
+            onChangeText={setsearch}
             placeholderTextColor={colors.primaryLight}
             inputWrapperStyle={{ backgroundColor: colors.white }}
             placeholder="Search property"
@@ -102,7 +107,7 @@ export function AdminPropertyManagement({
       </View>
       {/* Properties List */}
       <FlatList
-        data={rentalProperties}
+        data={filterData}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (

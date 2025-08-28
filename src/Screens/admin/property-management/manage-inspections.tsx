@@ -78,7 +78,11 @@ export default function AdminManageInspections() {
         leftAccessory={
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => DrawerActions.openDrawer()}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
           >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>

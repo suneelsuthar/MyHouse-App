@@ -56,7 +56,7 @@ export type AdminStackParamList = {
   AdminGenerateWorkRequests: { propertyId: string };
   AdminCreateVisitorRequests: { propertyId: string };
   InspectionDetails: { inspectionId: string };
-  AdminManageBookings: undefined;
+  AdminManageBookings: { bookingType?: 'reserved' | 'active' | 'history' | 'cancelled' };
   AdminBookingDetails: { bookingId: string };
   AdminFacilityManagement: {
     status: "work_requests" | "work_orders" | "completed";

@@ -1,34 +1,69 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { Screen, Text, Header, Button } from "../../../Components";
+import { Screen, Text, Header, Button, TextField } from "../../../Components";
 import { adjustSize, colors } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-import Step1 from "./components/step1";
+import Step1, { type SelectedValue } from "./components/step1";
 import Step2 from "./components/step2";
 import Step3 from "./components/step3";
 import Step4 from "./components/step4";
 import Step5 from "./components/step5";
 import Step6 from "./components/step6";
+import Step7 from "./components/step7";
 import { Ionicons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 interface AdminAddPropertyProps
   extends AppStackScreenProps<"AdminAddProperty"> {}
 
 export function AdminAddProperty(props: AdminAddPropertyProps) {
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const steps = [
+  const [currentStep, setCurrentStep] = useState<number>(-1);
+  const [type, settype] = useState("Landlord");
+  const [step1Data, setStep1Data] = useState<SelectedValue>({
+    kind: "commercial",
+    subType: "retail",
+  });
+
+  // const steps = [
+  //   { id: 0, title: "Your Details" },
+  //   { id: 1, title: "Listing Details" },
+  //   { id: 2, title: "Features" },
+  //   { id: 3, title: "Property Inspection" },
+  //   { id: 4, title: "Reservations" },
+  //   { id: 5, title: "Media and Documents" },
+  // ];
+
+  const residentialSteps = [
     { id: 0, title: "Your Details" },
     { id: 1, title: "Listing Details" },
     { id: 2, title: "Features" },
     { id: 3, title: "Property Inspection" },
-    { id: 4, title: "Reservations" },
+    { id: 4, title: "Property Availability" },
     { id: 5, title: "Media and Documents" },
+    { id: 6, title: "Calendar Management" },
+
     // { id: 6, title: "Add Media" },
     // { id: 7, title: "Add Property" },
     // { id: 8, title: "When are you available for property inspections?" },
   ];
+  const commercialSteps = [
+    { id: 0, title: "Your Details" },
+    { id: 1, title: "Listing Details" },
+    { id: 2, title: "Features" },
+    { id: 3, title: "Property Inspection" },
+    { id: 4, title: "Property Availability" },
+    { id: 5, title: "Media and Documents" },
+  ];
+
+  const steps =
+    step1Data?.kind === "residential" ? residentialSteps : commercialSteps;
 
   const isFirst = currentStep === 0;
-  const isLast = currentStep === steps.length - 1;
+  const isLast =
+    currentStep ===
+    (step1Data?.kind === "residential" ? residentialSteps : commercialSteps)
+      .length -
+      1;
 
   const goPrev = () => {
     if (!isFirst) setCurrentStep((s) => s - 1);
@@ -49,11 +84,13 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
       safeAreaEdges={["top", "bottom"]}
     >
       <Header
-        title={steps[currentStep].title}
+        title={currentStep < 0 ? "Add New Property" : steps[currentStep].title}
         leftAccessory={
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => (isFirst ? props.navigation.goBack() : goPrev())}
+            onPress={() =>
+              isFirst || currentStep < 0 ? props.navigation.goBack() : goPrev()
+            }
             style={{ paddingVertical: adjustSize(4) }}
           >
             <Ionicons name="arrow-back" size={22} color={colors.primary} />
@@ -86,14 +123,156 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
               </TouchableOpacity>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
-            {currentStep === 0 && <Step1 mode="add" />}
-            {currentStep === 1 && <Step2 mode="add" />}
-            {currentStep === 2 && <Step3 mode="add" />}
-            {currentStep === 3 && <Step4 mode="add" />}
-            {currentStep === 4 && <Step5 mode="add" />}
-            {currentStep === 5 && <Step6 mode="add" />}
-          </View>
+
+          {currentStep === -1 && (
+            <View>
+              <Text
+                weight="medium"
+                style={{
+                  textAlign: "center",
+                  color: colors.textDim,
+                  marginVertical: adjustSize(10),
+                  fontSize: adjustSize(14),
+                  marginTop: adjustSize(30),
+                }}
+                text="Who are you listing this property as?"
+              />
+
+              <View style={styles._row}>
+                <TouchableOpacity
+                  onPress={() => settype("Landlord")}
+                  activeOpacity={0.7}
+                  style={
+                    type === "Landlord" ? styles.active_card : styles._card
+                  }
+                >
+                  <MaterialCommunityIcons
+                    name="bank"
+                    size={adjustSize(34)}
+                    color={type === "Landlord" ? colors.white : colors.primary}
+                  />
+                  <Text
+                    weight="semiBold"
+                    text="Landlord"
+                    style={
+                      type === "Landlord"
+                        ? styles.active_card_title
+                        : styles._card_title
+                    }
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => settype("Property Manager")}
+                  style={
+                    type === "Property Manager"
+                      ? styles.active_card
+                      : styles._card
+                  }
+                >
+                  <FontAwesome5
+                    name="user-nurse"
+                    size={adjustSize(34)}
+                    color={
+                      type === "Property Manager"
+                        ? colors.white
+                        : colors.primary
+                    }
+                  />
+                  <Text
+                    weight="semiBold"
+                    text="Property Manager"
+                    style={
+                      type === "Property Manager"
+                        ? styles.active_card_title
+                        : styles._card_title
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
+              {type === "Property Manager" && (
+                <View>
+                  <Text
+                    style={{ fontSize: adjustSize(14) }}
+                    weight="semiBold"
+                    text="Who owns this property?"
+                  />
+
+                  <Text
+                    text="First Name"
+                    weight="medium"
+                    style={styles._label}
+                  />
+                  <TextField
+                    placeholder="Landlord's first name"
+                    inputWrapperStyle={styles._input}
+                  />
+
+                  <Text
+                    text="Last Name"
+                    weight="medium"
+                    style={styles._label}
+                  />
+                  <TextField
+                    placeholder="Landlord's last name"
+                    inputWrapperStyle={styles._input}
+                  />
+
+                  <Text
+                    text="Landlord’s Email"
+                    weight="medium"
+                    style={styles._label}
+                  />
+                  <TextField
+                    placeholder="Landlord’s Email"
+                    autoComplete="email"
+                    inputWrapperStyle={styles._input}
+                  />
+
+                  <Text text="Phone*" weight="medium" style={styles._label} />
+                  <TextField
+                    placeholder="Landlord’s Phone"
+                    autoComplete="email"
+                    inputWrapperStyle={styles._input}
+                    keyboardType="number-pad"
+                  />
+                </View>
+              )}
+            </View>
+          )}
+
+          {step1Data?.kind === "commercial" ? (
+            <View style={{ flex: 1 }}>
+              {currentStep === 0 && (
+                <Step1
+                  mode="add"
+                  value={step1Data}
+                  onChange={(value) => setStep1Data(value)}
+                />
+              )}
+              {currentStep === 1 && <Step2 mode="add" />}
+              {currentStep === 2 && <Step3 mode="add" />}
+              {currentStep === 3 && <Step4 mode="add" />}
+              {currentStep === 4 && <Step5 mode="add" />}
+              {currentStep === 5 && <Step6 mode="add" />}
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              {currentStep === 0 && (
+                <Step1
+                  mode="add"
+                  value={step1Data}
+                  onChange={(value) => setStep1Data(value)}
+                />
+              )}
+              {currentStep === 1 && <Step2 mode="add" />}
+              {currentStep === 2 && <Step3 mode="add" />}
+              {currentStep === 3 && <Step4 mode="add" />}
+              {currentStep === 4 && <Step5 mode="add" />}
+              {currentStep === 5 && <Step6 mode="add" />}
+              {currentStep === 6 && <Step7 mode="add" />}
+            </View>
+          )}
 
           {/* Footer nav */}
         </View>
@@ -105,7 +284,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             text="Back"
             disabled={isFirst}
             style={[styles.navBtn, isFirst && styles.btnDisabled]}
-            //   textStyle={isFirst ? { color: colors.grey } : undefined}
+            textStyle={isFirst ? { color: colors.grey } : undefined}
             onPress={goPrev}
           />
         </View>
@@ -199,5 +378,44 @@ const styles = StyleSheet.create({
     zIndex: 1,
     marginBottom: adjustSize(-10),
   },
+  _row: {
+    flexDirection: "row",
+    gap: adjustSize(5),
+    marginVertical: adjustSize(20),
+  },
+  _card: {
+    flex: 1,
+    height: adjustSize(100),
+    borderWidth: 1,
+    backgroundColor: colors.fill,
+    borderRadius: adjustSize(5),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  active_card: {
+    flex: 1,
+    height: adjustSize(100),
+    borderWidth: 1,
+    backgroundColor: colors.primary,
+    borderRadius: adjustSize(5),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  _card_title: {
+    fontSize: adjustSize(14),
+    marginTop: adjustSize(10),
+  },
+  active_card_title: {
+    color: colors.white,
+    marginTop: adjustSize(10),
+  },
+  _label: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+  },
+  _input: {
+    borderWidth: 0.3,
+    borderColor: colors.grey,
+    backgroundColor: colors.white,
+  },
 });
-

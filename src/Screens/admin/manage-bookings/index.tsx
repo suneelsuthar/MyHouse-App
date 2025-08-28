@@ -86,13 +86,38 @@ const MOCK_DATA: BookingItem[] = [
   },
 ];
 
-export function AdminManageBookings() {
+export function AdminManageBookings({ route }: { route: any }) {
   const navigation =
     useNavigation<NativeStackNavigationProp<AdminStackParamList>>();
 
+  // Get the booking type from route params or default to 'all'
+  const { bookingType } = route.params || {};
+
+  // Map the booking type to the appropriate status filter
+  const getStatusFromType = (type?: string): "all" | BookingStatus => {
+    switch (type) {
+      case "reserved":
+        return "pending";
+      case "active":
+        return "approved";
+      case "cancelled":
+        return "rejected";
+      case "history":
+      default:
+        return "all";
+    }
+  };
+
+  console.log("=====>", route.params);
+
   const [activeTab, setActiveTab] = React.useState<"all" | BookingStatus>(
-    "all"
+    getStatusFromType(bookingType)
   );
+
+  // Update the active tab when the booking type changes
+  React.useEffect(() => {
+    setActiveTab(getStatusFromType(bookingType));
+  }, [bookingType]);
 
   const filtered = React.useMemo(() => {
     if (activeTab === "all") return MOCK_DATA;

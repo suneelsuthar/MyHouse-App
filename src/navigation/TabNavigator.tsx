@@ -150,6 +150,7 @@ import {
   EditCreateMeter,
   ViewPropertiesGroups,
   AddEditGroup,
+  AdminManageBookings,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -581,15 +582,17 @@ const AdminHomeStackNavigator = () => (
       name="ViewPropertiesGroups"
       component={ViewPropertiesGroups}
     />
-    <AdminHomeStack.Screen
-      name="AddEditGroup"
-      component={AddEditGroup}
-    />
+    <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
   </AdminHomeStack.Navigator>
 );
 
 const AdminBookingStackNavigator = () => (
   <AdminBookingStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminBookingStack.Screen
+      name="AdminManageBookings"
+      component={AdminManageBookings}
+    />
+
     <AdminBookingStack.Screen
       name="AdminBookingDetails"
       component={AdminBookingDetails}

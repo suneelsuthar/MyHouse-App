@@ -13,7 +13,7 @@ export type ListingCategory =
   | { kind: "residential"; subTypes: ResidentialSubtype[] }
   | { kind: "commercial"; subTypes: CommercialSubtype[] };
 
-type SelectedValue =
+export type SelectedValue =
   | { kind: "residential"; subType: ResidentialSubtype }
   | { kind: "commercial"; subType: CommercialSubtype }
   | null;

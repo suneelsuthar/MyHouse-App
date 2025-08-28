@@ -103,7 +103,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { rentalProperties } from "../../../utils/data";
 import { RentalCard } from "../../../Components/RentalCard";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../navigation/types";
 import { TextInput } from "react-native";
@@ -219,7 +219,7 @@ const ActionModal: React.FC<ActionModalProps> = ({
   >
     <View style={styles.modalOverlay}>
       <View style={styles.modalContent}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles._closebtn}
           onPress={() => {
             setRejectModalVisible(false);
@@ -390,7 +390,7 @@ export const AdminPropertyRequests: React.FC = () => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
-              setDropdownVisible(null)
+              setDropdownVisible(null);
               setSelectedRequest(item);
               setApproveModalVisible(true);
             }}
@@ -418,7 +418,14 @@ export const AdminPropertyRequests: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }

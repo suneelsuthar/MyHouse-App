@@ -91,8 +91,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Properties",
-              params: { 
-                screen: "AdminPropertyServices"
+              params: {
+                screen: "AdminPropertyServices",
               },
             }),
         },
@@ -102,8 +102,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Properties",
-              params: { 
-                screen: "AdminPropertyFeatures"
+              params: {
+                screen: "AdminPropertyFeatures",
               },
             }),
         },
@@ -113,8 +113,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Properties",
-              params: { 
-                screen: "AdminPropertyRestriction"
+              params: {
+                screen: "AdminPropertyRestriction",
               },
             }),
         },
@@ -124,8 +124,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Properties",
-              params: { 
-                screen: "AdminManageInspections"
+              params: {
+                screen: "AdminManageInspections",
               },
             }),
         },
@@ -134,13 +134,51 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     {
       id: 2,
       title: "Manage Bookings",
-      type: "item",
+      type: "dropdown",
       icon: Images.managebooking,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Properties",
-          params: { screen: "AdminManageBookings" },
-        }),
+      menueItems: [
+        {
+          id: 0,
+          title: "Reserved",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Booking",
+              params: {
+                screen: "AdminManageBookings",
+                params: { bookingType: "reserved" },
+              },
+            }),
+        },
+
+        {
+          id: 1,
+          title: "Active",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Booking",
+              params: { screen: "AdminManageBookings" },
+            }),
+        },
+
+        {
+          id: 2,
+          title: "History",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Booking",
+              params: { screen: "AdminManageBookings" },
+            }),
+        },
+        {
+          id: 3,
+          title: "Cancelled",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Booking",
+              params: { screen: "AdminManageBookings" },
+            }),
+        },
+      ],
     },
     {
       id: 3,
