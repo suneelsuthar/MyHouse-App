@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Text } from "../../../../Components";
 import { adjustSize, colors, typography } from "../../../../theme";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 export type MultiSelectItem = { label: string; value: string };
 

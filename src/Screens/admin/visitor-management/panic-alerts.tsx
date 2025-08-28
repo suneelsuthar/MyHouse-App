@@ -1,82 +1,5 @@
-// import React from "react";
-// import { StyleSheet, View } from "react-native";
-// import { Screen, Text } from "../../../Components";
-// import { spacing } from "../../../theme";
-
-// export const AdminPanicAlerts: React.FC = () => {
-//   return (
-//     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={styles.container}>
-//       <Text weight="semiBold" style={styles.title}>Panic Alerts</Text>
-//       <View style={styles.card}>
-//         <Text style={styles.muted}>Render Panic Alerts here.</Text>
-//       </View>
-//     </Screen>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: spacing.lg,
-//   },
-//   title: {
-//     fontSize: 18,
-//     marginBottom: spacing.md,
-//   },
-//   card: {
-//     padding: spacing.md,
-//     borderRadius: 8,
-//     backgroundColor: "#fff",
-//   },
-//   muted: {
-//     color: "#666",
-//   },
-// });
-
-// import React from "react";
-// import { StyleSheet, View } from "react-native";
-// import { Screen, Text } from "../../../Components";
-// import { spacing } from "../../../theme";
-
-// export const AdminAccessAlerts: React.FC = () => {
-//   return (
-//     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={styles.container}>
-//       <Text weight="semiBold" style={styles.title}>Access Alerts</Text>
-//       <View style={styles.card}>
-//         <Text style={styles.muted}>Render Access Alerts here.</Text>
-//       </View>
-//     </Screen>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: spacing.lg,
-//   },
-//   title: {
-//     fontSize: 18,
-//     marginBottom: spacing.md,
-//   },
-//   card: {
-//     padding: spacing.md,
-//     borderRadius: 8,
-//     backgroundColor: "#fff",
-//   },
-//   muted: {
-//     color: "#666",
-//   },
-// });
-
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Modal,
-} from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Screen, Text, Header, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
@@ -85,6 +8,7 @@ import { Images } from "../../../assets/Images";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
@@ -165,11 +89,11 @@ const visitorData = [
 ];
 
 export const AdminPanicAlerts: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [visitorList, setVisitorList] = useState(visitorData);
+  const navigation = useNavigation();
 
   const statusLabelColor = (status: any) => {
     switch (status) {
@@ -195,7 +119,14 @@ export const AdminPanicAlerts: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -473,15 +404,12 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: "row",
     backgroundColor: "#dedfef",
-
-    // padding: spacing.xs,
   },
   tab: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: spacing.sm,
-    // gap: spacing.xs,
   },
   activeTab: {
     shadowColor: "#000",
@@ -650,17 +578,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.fill,
     padding: adjustSize(10),
     borderRadius: adjustSize(7),
-    // shadowColor: "#000",
-    // boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
     elevation: 2,
     marginHorizontal: adjustSize(10),
     minHeight: adjustSize(96),
     marginVertical: adjustSize(8),
     zIndex: 1,
     shadowColor: "#000",
-    borderWidth:0.4,
-    borderColor:colors.grey,
-
+    borderWidth: 0.4,
+    borderColor: colors.grey,
   },
   cardWithDropdown: {
     zIndex: 9999,
@@ -685,7 +610,6 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.grey,
     fontSize: adjustSize(10),
-    // marginBottom: spacing.sm,
   },
 
   label: {
@@ -698,7 +622,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     zIndex: -1,
-    // marginTop: spacing.sm,
   },
   labelValue: {
     color: colors.primary,

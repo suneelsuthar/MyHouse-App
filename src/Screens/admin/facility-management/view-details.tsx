@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 import { Images } from "../../../assets/Images";
 
 export const AdminFMViewDetails = () => {

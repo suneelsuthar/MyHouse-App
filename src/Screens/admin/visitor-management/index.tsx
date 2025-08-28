@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, Image, Pressable } from "react-native";
-import { Screen, Text, SearchBar } from "../../../Components";
+import { StyleSheet, View, ScrollView, TouchableOpacity, Image } from "react-native";
+import { Screen, Text } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";

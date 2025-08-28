@@ -8,7 +8,7 @@ import {
   SearchBar,
   FacilityManagementCard,
 } from "../../../Components";
-import { colors, spacing, typography, adjustSize } from "../../../theme";
+import { colors, typography, adjustSize } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import {
   WorkRequestsIcon,
@@ -314,7 +314,7 @@ export function AdminFacilityManagement({ route }: Props) {
           contentContainerStyle={styles.listContent}
           renderItem={({ item, index }) => (
             <FacilityManagementCard
-              property={item}
+              property={item as any}
               activeTab={activeTab}
               onAction={(action, property) => {
                 // Navigate to corresponding dummy pages for Work Requests actions

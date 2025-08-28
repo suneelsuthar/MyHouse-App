@@ -1,38 +1,3 @@
-// import React from "react";
-// import { StyleSheet, View } from "react-native";
-// import { Screen, Text } from "../../../Components";
-// import { spacing } from "../../../theme";
-
-// export const AdminVisitorsList: React.FC = () => {
-//   return (
-//     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={styles.container}>
-//       <Text weight="semiBold" style={styles.title}>Visitors List</Text>
-//       <View style={styles.card}>
-//         <Text style={styles.muted}>Render Visitors list here.</Text>
-//       </View>
-//     </Screen>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: spacing.lg,
-//   },
-//   title: {
-//     fontSize: 18,
-//     marginBottom: spacing.md,
-//   },
-//   card: {
-//     padding: spacing.md,
-//     borderRadius: 8,
-//     backgroundColor: "#fff",
-//   },
-//   muted: {
-//     color: "#666",
-//   },
-// });
-
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -40,17 +5,15 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Modal,
 } from "react-native";
 import { Screen, Text, Header, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
-
 type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
@@ -130,8 +93,6 @@ export const AdminVisitorsList: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
-  const [searchQuery, setSearchQuery] = useState("");
-
   const handleVisitorPress = (visitorId: number) => {
     navigation.navigate("AdminVisitorDetails", {
       visitorId: visitorId.toString(),
@@ -146,7 +107,14 @@ export const AdminVisitorsList: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -365,15 +333,12 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: "row",
     backgroundColor: "#dedfef",
-
-    // padding: spacing.xs,
   },
   tab: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: spacing.sm,
-    // gap: spacing.xs,
   },
   activeTab: {
     shadowColor: "#000",
@@ -459,7 +424,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    // paddingHorizontal: spacing.lg,
   },
   visitorItem: {
     flexDirection: "row",

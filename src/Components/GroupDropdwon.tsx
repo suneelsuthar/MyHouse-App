@@ -69,7 +69,7 @@ export default function GroupDropdown({
       style={[
         styles.dropdown,
         {
-          backgroundColor: colors.primaryLight,
+          // backgroundColor: colors.primaryLight,
           //   marginHorizontal: adjustSize(10),
           //   shadowColor: "#000",
           //   shadowOffset: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     height: adjustSize(47),
     borderRadius: 10,
     paddingHorizontal: 8,
-    backgroundColor: "#292766A3",
+    backgroundColor: "#6369A4",
     paddingLeft: 15,
   },
   icon: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
   },
   placeholderStyle: {
-    color: "rgba(41, 39, 102, 0.5)",
+    color: colors.white,
     fontFamily: typography.fonts.poppins.normal,
     fontSize: adjustSize(12),
   },

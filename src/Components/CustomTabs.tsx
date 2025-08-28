@@ -384,11 +384,8 @@ const styles = StyleSheet.create({
   },
   iconWrapper: { marginBottom: adjustSize(3) },
   label: { fontSize: adjustSize(12) },
-  tabBgImage: { height: adjustSize(62),backgroundColor:colors.primaryLight },
+  tabBgImage: { height: adjustSize(62),backgroundColor:"#dedff0" },
   page: {
-    // justifyContent: "center",
-    // alignItems: "center",
-    // padding: adjustSize(16),
     flex: 1,
   },
 });

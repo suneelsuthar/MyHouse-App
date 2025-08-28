@@ -151,6 +151,7 @@ import {
   ViewPropertiesGroups,
   AddEditGroup,
   AdminManageBookings,
+  AdminTenantDetails,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -441,6 +442,11 @@ const AdminHomeStackNavigator = () => (
       component={AdminVisitorManagement}
     />
     <AdminHomeStack.Screen name="AdminTenants" component={AdminTenants} />
+    <AdminHomeStack.Screen
+      name="AdminTenantDetails"
+      component={AdminTenantDetails}
+    />
+
     <AdminHomeStack.Screen
       name="AdminCommunityArea"
       component={AdminCommunityArea}

@@ -7,7 +7,7 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../../assets/Images";
@@ -26,7 +26,6 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
 import Clipboard from "@react-native-clipboard/clipboard";
-
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -114,7 +113,7 @@ export const AdminManageMeters = ({ route }: AdminPropertyManagementProps) => {
 
   const copyToClipboard = () => {
     // Clipboard.setString(temperToken);
-    setIsModalVisible(false)
+    setIsModalVisible(false);
   };
 
   // Handle search functionality
@@ -157,7 +156,13 @@ export const AdminManageMeters = ({ route }: AdminPropertyManagementProps) => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }

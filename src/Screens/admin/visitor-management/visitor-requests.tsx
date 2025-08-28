@@ -11,10 +11,9 @@ import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
-
 type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
@@ -102,10 +101,6 @@ export const AdminVisitorRequests: React.FC = () => {
     });
   };
 
-  const handleGenerateRequest = () => {
-    navigation.navigate("AdminGenerateVisitorRequest");
-  };
-
   return (
     <Screen
       preset="fixed"
@@ -114,7 +109,14 @@ export const AdminVisitorRequests: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -427,7 +429,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    // paddingHorizontal: spacing.lg,
   },
   visitorItem: {
     flexDirection: "row",

@@ -87,13 +87,6 @@ export const AdminFMViewWorkOrder = () => {
           style={[styles.tabBtn, activeTab === "updates" && styles.tabActive]}
           onPress={() => setActiveTab("updates")}
         >
-          {/* <Ionicons
-            name="sync-outline"
-            size={20}
-            color={
-              activeTab === "updates" ? colors.primary : colors.primaryLight
-            }
-          /> */}
           <Image
             source={Images.ordersummary}
             style={{
@@ -336,8 +329,6 @@ const styles = StyleSheet.create({
   },
   detailsCard: {
     borderRadius: adjustSize(12),
-    // marginTop: adjustSize(40),
-    // marginBottom: spacing.lg,
   },
   kvRow: {
     flexDirection: "row",

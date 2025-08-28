@@ -1,247 +1,440 @@
-// import React, { useState } from "react";
-// import { StyleSheet, View, Pressable, Modal, Platform } from "react-native";
-// import { Screen, Text, Button } from "../../../../Components";
-// import { Header } from "../../../../Components/Header";
-// import { adjustSize, colors, spacing, typography } from "../../../../theme";
-// import DateTimePicker from "@react-native-community/datetimepicker";
-// import moment from "moment";
-
-// export const AdminUtilitiesSettings: React.FC = () => {
-//   const [fromDate, setFromDate] = useState<Date | null>(null);
-//   const [pickerVisible, setPickerVisible] = useState(false);
-//   const [pickerMode, setPickerMode] = useState<"date" | "time">("date");
-//   const [tempDate, setTempDate] = useState<Date>(new Date());
-
-//   const fmt = (d: Date | null) =>
-//     d ? moment(d).format("DD/MM/YYYY") : "Select Date";
-//   const fmtTime = (d: Date | null) =>
-//     d ? moment(d).format("hh:mm A") : "Select Time";
-
-//   const openPicker = (mode: "date" | "time") => {
-//     setPickerMode(mode);
-//     setTempDate(fromDate ?? new Date());
-//     setPickerVisible(true);
-//   };
-
-//   const cancelPicker = () => setPickerVisible(false);
-
-//   const confirmPicker = () => {
-//     setFromDate(tempDate);
-//     setPickerVisible(false);
-//   };
-
-//   const handleAndroidChange = (event: any, selectedDate?: Date) => {
-//     if (event.type === "dismissed") {
-//       cancelPicker();
-//       return;
-//     }
-//     if (selectedDate) {
-//       setTempDate(selectedDate);
-//       confirmPicker(); // finish immediately on Android
-//     }
-//   };
-
-//   return (
-//     <Screen
-//       preset="auto"
-//       contentContainerStyle={styles.screenContentContainer}
-//       statusBarStyle="dark"
-//       safeAreaEdges={["top"]}
-//     >
-//       <Header title="Testing " />
-//       <View style={styles.container}>
-//         <View style={styles.row}>
-//           <View style={{ flex: 1 }}>
-//             <Text weight="semiBold" style={styles.label}>
-//               Date<Text style={styles.required}>*</Text>
-//             </Text>
-//             <Pressable
-//               onPress={() => openPicker("date")}
-//               style={styles.dtButton}
-//             >
-//               <Text
-//                 style={[
-//                   styles.dtText,
-//                   { color: fromDate ? colors.primary : colors.primaryLight },
-//                 ]}
-//               >
-//                 {fmt(fromDate)}
-//               </Text>
-//             </Pressable>
-//           </View>
-//           <View style={{ width: spacing.md }} />
-//           <View style={{ flex: 1 }}>
-//             <Text weight="semiBold" style={styles.label}>
-//               Time<Text style={styles.required}>*</Text>
-//             </Text>
-//             <Pressable
-//               onPress={() => openPicker("time")}
-//               style={styles.dtButton}
-//             >
-//               <Text
-//                 style={[
-//                   styles.dtText,
-//                   { color: fromDate ? colors.primary : colors.primaryLight },
-//                 ]}
-//               >
-//                 {fmtTime(fromDate)}
-//               </Text>
-//             </Pressable>
-//           </View>
-//         </View>
-//       </View>
-
-//       {Platform.OS === "ios" ? (
-//         <Modal
-//           visible={pickerVisible}
-//           transparent
-//           animationType="fade"
-//           onRequestClose={cancelPicker}
-//         >
-//           <View style={styles.modalBackdrop}>
-//             <View style={styles.modalCard}>
-//               <Text weight="semiBold" style={styles.modalTitle}>
-//                 {pickerMode === "date" ? "Select Date" : "Select Time"}
-//               </Text>
-
-//               <View style={styles.modalPickerWrap}>
-//                 <DateTimePicker
-//                   value={tempDate}
-//                   mode={pickerMode}
-//                   display="spinner"
-//                   onChange={(_, d) => d && setTempDate(d)}
-//                 />
-//               </View>
-
-//               <View style={styles.modalActions}>
-//                 <Button
-//                   text="Cancel"
-//                   preset="default"
-//                   style={styles.modalBtn}
-//                   onPress={cancelPicker}
-//                 />
-//                 <Button
-//                   text="Done"
-//                   preset="reversed"
-//                   style={styles.modalBtn}
-//                   onPress={confirmPicker}
-//                 />
-//               </View>
-//             </View>
-//           </View>
-//         </Modal>
-//       ) : (
-//         pickerVisible && (
-//           <DateTimePicker
-//             value={tempDate}
-//             mode={pickerMode}
-//             display="default"
-//             onChange={handleAndroidChange}
-//           />
-//         )
-//       )}
-//     </Screen>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   screenContentContainer: { backgroundColor: colors.fill },
-//   container: { flex: 1, padding: spacing.lg },
-//   label: {
-//     marginTop: spacing.md,
-//     marginBottom: spacing.xs,
-//     color: colors.primary,
-//     fontSize: adjustSize(12),
-//     fontFamily: typography.fonts.poppins.semiBold,
-//   },
-//   required: { color: colors.primary },
-//   row: {
-//     flexDirection: "row",
-//     alignItems: "flex-start",
-//     marginTop: spacing.md,
-//   },
-//   dtButton: {
-//     height: adjustSize(48),
-//     borderRadius: adjustSize(10),
-//     backgroundColor: colors.fill,
-//     paddingHorizontal: spacing.md,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     flexDirection: "row",
-//     shadowColor: "#000000",
-//     shadowOpacity: 0.15,
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowRadius: 3,
-//     elevation: 3,
-//   },
-//   dtText: {
-//     color: colors.primaryLight,
-//     fontSize: adjustSize(12),
-//     fontFamily: typography.fonts.poppins.medium,
-//   },
-//   modalBackdrop: {
-//     flex: 1,
-//     backgroundColor: "rgba(0,0,0,0.4)",
-//     alignItems: "center",
-//     justifyContent: "flex-end",
-//   },
-//   modalCard: {
-//     width: "100%",
-//     backgroundColor: colors.white,
-//     borderTopLeftRadius: adjustSize(16),
-//     borderTopRightRadius: adjustSize(16),
-//     padding: spacing.lg,
-//   },
-//   modalTitle: {
-//     fontSize: adjustSize(16),
-//     color: colors.primary,
-//     marginBottom: spacing.md,
-//   },
-//   modalPickerWrap: {
-//     alignItems: "center",
-//     justifyContent: "center",
-//     paddingVertical: spacing.md,
-//   },
-//   modalActions: {
-//     flexDirection: "row",
-//     justifyContent: "flex-end",
-//     gap: spacing.sm,
-//   },
-//   modalBtn: { minWidth: 110 },
-// });
-
-
-
-
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Screen } from "../../../../Components";
-import { CustomDateTimePicker } from "./CustomDateTimePicker";
-import { spacing, colors } from "../../../../theme";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextStyle,
+  Switch,
+} from "react-native";
+import { Screen, Text, Header2, TextField } from "../../../../Components";
+import { colors, typography, adjustSize } from "../../../../theme";
+import DropdownComponent from "../../../../Components/DropDown";
+
+const CounterRow = ({
+  label,
+  value,
+  setValue,
+  min = 0,
+}: {
+  label: string;
+  value: number;
+  setValue: (n: number) => void;
+  min?: number;
+}) => {
+  const dec = () => setValue(Math.max(min, value - 1));
+  const inc = () => setValue(value + 1);
+  return (
+    <View style={styles.row}>
+      <Text style={styles.rowLabel}>{label}</Text>
+      <View style={styles.rowRight}>
+        <TouchableOpacity
+          style={styles.boxBtn}
+          activeOpacity={0.7}
+          onPress={dec}
+        >
+          <Text weight="semiBold" style={styles.boxBtnText}>
+            -
+          </Text>
+        </TouchableOpacity>
+        <Text weight="semiBold" style={styles.countValue}>
+          {value}
+        </Text>
+        <TouchableOpacity
+          style={styles.boxBtn}
+          activeOpacity={0.7}
+          onPress={inc}
+        >
+          <Text weight="semiBold" style={styles.boxBtnText}>
+            +
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const ToggleRow = ({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: boolean;
+  onChange: (v: boolean) => void;
+}) => {
+  return (
+    <View style={styles.toggleRow}>
+      <Text weight="semiBold" style={styles.toggleLabel}>
+        {label}
+      </Text>
+      <Switch
+        value={value}
+        onValueChange={onChange}
+        trackColor={{ false: colors.greylight, true: colors.primary }}
+        thumbColor={colors.white}
+      />
+    </View>
+  );
+};
 
 export const AdminUtilitiesSettings: React.FC = () => {
-  const [date1, setDate1] = useState<Date | null>(null);
-  const [date2, setDate2] = useState<Date | null>(null);
-  const [time1, setTime1] = useState<Date | null>(null);
-  const [time2, setTime2] = useState<Date | null>(null);
-  const [time3, setTime3] = useState<Date | null>(null);
+  // dropdown states
+  const [propertyGroup, setPropertyGroup] = useState<string | undefined>();
+  const [utilityType, setUtilityType] = useState<string | undefined>();
+  const [unitOfMeasurement, setUnitOfMeasurement] = useState<string>("KWH");
+  const [grandPeriodBasis, setGrandPeriodBasis] =
+    useState<string>("Calendar Day");
+
+  // counters
+  const [ratePerUnit, setRatePerUnit] = useState(0);
+
+  // toggles
+  const [enablePeriodThreshold, setEnablePeriodThreshold] = useState(false);
+  const [enableLimitPerPayment, setEnableLimitPerPayment] = useState(false);
+  const [allowEmergencyCredit, setAllowEmergencyCredit] = useState(false);
+  const [lowCreditWarning, setLowCreditWarning] = useState(false);
+
+  // text fields
+  const [dayOfMonth, setDayOfMonth] = useState("");
+  const [minQty, setMinQty] = useState<any>("");
+  const [minAmount, setMinAmount] = useState("");
+  const [maxQty, setMaxQty] = useState<any>("");
+  const [maxAmount, setMaxAmount] = useState("");
+  const [emergencyQty, setEmergencyQty] = useState("");
+  const [lowCredit1, setLowCredit1] = useState("");
+  const [lowCredit2, setLowCredit2] = useState("");
+
+  // dynamic unit symbol
+  const unitSymbol = unitOfMeasurement === "₦" ? "₦" : "KWH";
 
   return (
-    <Screen contentContainerStyle={styles.container}>
-      <View style={styles.row}>
-        <CustomDateTimePicker mode="date" value={date1} onChange={setDate1} label="Date 1" required />
-        <CustomDateTimePicker mode="date" value={date2} onChange={setDate2} label="Date 2" />
-      </View>
-      <View style={styles.row}>
-        <CustomDateTimePicker mode="time" value={time1} onChange={setTime1} label="Time 1" required />
-        <CustomDateTimePicker mode="time" value={time2} onChange={setTime2} label="Time 2" />
-        <CustomDateTimePicker mode="time" value={time3} onChange={setTime3} label="Time 3" />
-      </View>
+    <Screen
+      preset="fixed"
+      safeAreaEdges={["top"]}
+      contentContainerStyle={styles.container}
+    >
+      <Header2 title="Settings" onNotificationPress={() => {}} />
+
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: adjustSize(10),
+          paddingBottom: adjustSize(40),
+        }}
+      >
+        <Text style={styles.heading}>Utility Settings</Text>
+
+        {/* Property Group (Required First) */}
+        <Text style={styles.title}>Select by property group</Text>
+        <DropdownComponent
+          data={[
+            { label: "Property Group 1", value: "Property Group 1" },
+            { label: "Property Group 2", value: "Property Group 2" },
+          ]}
+          label="Choose type"
+          placeholder="Select "
+          value={propertyGroup}
+          onChangeValue={setPropertyGroup}
+          dropdownStyle={styles.dropdown}
+          placeholderStyle={styles.dropdownPlaceholder}
+          selectedTextStyle={styles.dropdownSelected}
+          rightIconColor={colors.primary}
+        />
+
+        {/* Show everything else only if property group selected */}
+        {propertyGroup && (
+          <>
+            {/* Utility Type */}
+            <Text style={styles.title}>Utility type</Text>
+            <DropdownComponent
+              data={[{ label: "Electricity", value: "Electricity" }]}
+              label="Choose type"
+              placeholder="Select type"
+              value={utilityType}
+              onChangeValue={setUtilityType}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+
+            <CounterRow
+              label="Rate Per Unit"
+              value={ratePerUnit}
+              setValue={setRatePerUnit}
+            />
+
+            {/* Unit of Measurement */}
+            <Text style={styles.title}>Unit of measurement</Text>
+            <DropdownComponent
+              data={[
+                { label: "KWH", value: "KWH" },
+                { label: "₦", value: "₦" },
+              ]}
+              label="Choose type"
+              placeholder="Select Unit"
+              value={unitOfMeasurement}
+              onChangeValue={setUnitOfMeasurement}
+              dropdownStyle={[
+                styles.dropdown,
+                { marginBottom: adjustSize(10) },
+              ]}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+
+            {/* Period Threshold */}
+            <ToggleRow
+              label="Enable Period Threshold"
+              value={enablePeriodThreshold}
+              onChange={setEnablePeriodThreshold}
+            />
+
+            {enablePeriodThreshold && (
+              <>
+                <Text style={[styles.title, { marginTop: adjustSize(10) }]}>
+                  Grand period Basis:
+                </Text>
+                <DropdownComponent
+                  data={[
+                    { label: "Calendar Day", value: "Calendar Day" },
+                    { label: "Grace Duration", value: "Grace Duration" },
+                  ]}
+                  label="Choose type"
+                  placeholder="Select Basis"
+                  value={grandPeriodBasis}
+                  onChangeValue={setGrandPeriodBasis}
+                  dropdownStyle={styles.dropdown}
+                  placeholderStyle={styles.dropdownPlaceholder}
+                  selectedTextStyle={styles.dropdownSelected}
+                  rightIconColor={colors.primary}
+                />
+                <Text style={styles.title}>
+                  {grandPeriodBasis === "Calendar Day"
+                    ? "Day of the Month"
+                    : "No. of Days"}
+                </Text>
+                <TextField
+                  placeholder={`Enter Day${
+                    grandPeriodBasis === "Calendar Day" ? "" : "s"
+                  }`}
+                  value={dayOfMonth}
+                  onChangeText={setDayOfMonth}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+              </>
+            )}
+
+            {/* Limit Per Payment */}
+            <ToggleRow
+              label="Enable Limit Per Payment"
+              value={enableLimitPerPayment}
+              onChange={setEnableLimitPerPayment}
+            />
+
+            {enableLimitPerPayment && (
+              <>
+                <Text style={styles.title}>
+                  Minimum Quantity Per Period ({unitSymbol}):
+                </Text>
+                <TextField
+                  placeholder="Enter amount"
+                  value={minQty}
+                  onChangeText={setMinQty}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+
+                <Text style={styles.title}>Minimum Amount Per Period (₦):</Text>
+                <TextField
+                  placeholder=""
+                  value={minQty ? `₦${(minQty * 5).toFixed(2)}` : ""}
+                  onChangeText={setMinAmount}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                  editable={false}
+                />
+
+                <Text style={styles.title}>
+                  Maximum Quantity Per Period ({unitSymbol}):
+                </Text>
+                <TextField
+                  placeholder="Enter amount"
+                  value={maxQty}
+                  onChangeText={setMaxQty}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+
+                <Text style={styles.title}>Maximum Amount Per Period (₦):</Text>
+                <TextField
+                  placeholder=""
+                  value={maxQty ? `₦${(maxQty * 5).toFixed(2)}` : ""}
+                  onChangeText={setMaxAmount}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+              </>
+            )}
+
+            {/* Emergency Credit */}
+            <ToggleRow
+              label="Allow Emergency Credit"
+              value={allowEmergencyCredit}
+              onChange={setAllowEmergencyCredit}
+            />
+            {allowEmergencyCredit && (
+              <>
+                <Text style={[styles.title, { marginTop: adjustSize(10) }]}>
+                  Set Emergency Quantity ({unitSymbol}):
+                </Text>
+                <TextField
+                  placeholder="Enter amount"
+                  value={emergencyQty}
+                  onChangeText={setEmergencyQty}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+              </>
+            )}
+
+            {/* Low Credit Warning */}
+            <ToggleRow
+              label="Low Credit Warning"
+              value={lowCreditWarning}
+              onChange={setLowCreditWarning}
+            />
+            {lowCreditWarning && (
+              <>
+                <Text style={[styles.title, { marginTop: adjustSize(10) }]}>
+                  Low Credit Warning 1 (₦) :
+                </Text>
+                <TextField
+                  placeholder="Enter amount"
+                  value={lowCredit1}
+                  onChangeText={setLowCredit1}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+
+                <Text style={styles.title}>Low Credit Warning 2 (₦) :</Text>
+                <TextField
+                  placeholder="Enter amount"
+                  value={lowCredit2}
+                  onChangeText={setLowCredit2}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                />
+              </>
+            )}
+          </>
+        )}
+      </ScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: spacing.lg, backgroundColor: colors.fill },
-  row: { flexDirection: "row", gap: spacing.md, marginBottom: spacing.md },
+  container: {
+    flex: 1,
+    backgroundColor: colors.fill,
+  },
+  heading: {
+    fontSize: adjustSize(15),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+    marginTop: adjustSize(20),
+  },
+  dropdown: {
+    height: adjustSize(49),
+    borderRadius: adjustSize(10),
+    backgroundColor: colors.fill,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+    marginBottom: adjustSize(3),
+  },
+  input: {
+    color: colors.primary,
+  },
+  dropdownPlaceholder: {
+    fontSize: adjustSize(12),
+    color: colors.primaryLight,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  dropdownSelected: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  title: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+    marginTop: adjustSize(20),
+    marginBottom: adjustSize(3),
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: adjustSize(20),
+    marginBottom: adjustSize(3),
+  },
+  rowLabel: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+    flexShrink: 1,
+  },
+  rowRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: adjustSize(10),
+  },
+  boxBtn: {
+    width: adjustSize(21),
+    height: adjustSize(21),
+    borderRadius: adjustSize(5),
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: adjustSize(0.5),
+    borderColor: colors.primary,
+  },
+  boxBtnText: {
+    color: colors.primaryLight,
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.bold,
+  } as TextStyle,
+  countValue: {
+    minWidth: adjustSize(20),
+    textAlign: "center",
+    color: colors.primaryLight,
+    fontSize: adjustSize(16),
+    fontFamily: typography.fonts.poppins.bold,
+  },
+  toggleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: adjustSize(5),
+  },
+  toggleLabel: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    flexShrink: 1,
+    fontFamily: typography.fonts.poppins.normal,
+  },
 });

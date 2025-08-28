@@ -1,14 +1,3 @@
-// import React from "react";
-// import { Screen, Text } from "../../../Components";
-
-// export const AdminFMOrderView = () => {
-//   return (
-//     <Screen preset="fixed" safeAreaEdges={["top"]}>
-//       <Text text="AdminFMOrderView" />
-//     </Screen>
-//   );
-// };
-
 import React, { useMemo, useState } from "react";
 import {
   Image,
@@ -27,7 +16,6 @@ type TabKey = "summary" | "updates";
 
 export const AdminFMOrderView = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("summary");
-
   // gallery for banner
   const slides = [Images.slide1, Images.slide2, Images.slide3];
   const [activeSlide, setActiveSlide] = useState(0);

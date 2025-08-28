@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Modal,
-} from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Screen, Text, Header, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
@@ -15,6 +8,7 @@ import { Images } from "../../../assets/Images";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
@@ -100,6 +94,7 @@ export const AdminAccessAlerts: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [visitorList, setVisitorList] = useState(visitorData);
+  const navigation = useNavigation();
 
   const statusLabelColor = (status: any) => {
     switch (status) {
@@ -125,7 +120,14 @@ export const AdminAccessAlerts: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -193,12 +195,12 @@ export const AdminAccessAlerts: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {visitorList.map((item, index) => (
-          <TouchableOpacity 
-            key={index} 
+          <TouchableOpacity
+            key={index}
             style={[
               styles.card,
-              dropdownVisible === item.id && styles.cardWithDropdown
-            ]} 
+              dropdownVisible === item.id && styles.cardWithDropdown,
+            ]}
             activeOpacity={0.8}
           >
             <View style={styles.cardHeaderRow}>

@@ -2,11 +2,9 @@ import React, { useRef, useState } from "react";
 import {
   TextInput,
   View,
-  ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from "react-native";
 import { Button, Screen, Text, TextField } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
@@ -373,6 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 8,
     backgroundColor: "#292766A3",
+    height: adjustSize(49),
   },
   _placeholderStyle: {
     color: "#6C757D",

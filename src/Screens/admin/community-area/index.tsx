@@ -7,7 +7,7 @@ import {
   CustomTabs,
   TextField,
 } from "../../../Components";
-import { colors, spacing, typography, adjustSize } from "../../../theme";
+import { colors, typography, adjustSize } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { AmenitiesIcon, ReservationsIcon } from "../../../assets/svg";
@@ -210,9 +210,7 @@ export function AdminCommunityArea({ route }: Props) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles._addbtn}
-            onPress={() =>
-               (navigation as any).navigate("AdminAddNewAmenity")
-            }
+            onPress={() => (navigation as any).navigate("AdminAddNewAmenity")}
           >
             <WithLocalSvg asset={Images.addprop} />
           </TouchableOpacity>

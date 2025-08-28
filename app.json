@@ -33,7 +33,7 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.suneel.bullwise"
+      "package": "com.suneel.myhomes"
     },
     "web": {
       "favicon": "./assets/favicon.png"

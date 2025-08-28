@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
-import { Screen, Text, Header2, CustomTabs, Button } from "../../../Components";
+import { Screen, Text, Header2, CustomTabs } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { colors, spacing, adjustSize, typography } from "../../../theme";
 import { MyAccountIcon, TransactionHistoryIcon } from "../../../assets/svg";

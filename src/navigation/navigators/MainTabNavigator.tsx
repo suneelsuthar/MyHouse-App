@@ -1,20 +1,20 @@
-import React, { useContext } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MainTabParamList, SCREEN_GROUPS } from '../types';
-import { AuthContext } from '../../../context/AuthContext';
-import { HomeStackNavigator } from './HomeStackNavigator';
-import { PropertiesStackNavigator } from './PropertiesStackNavigator';
-import { TenantsStackNavigator } from './TenantsStackNavigator';
-import { MaintenanceStackNavigator } from './MaintenanceStackNavigator';
-import { MoreStackNavigator } from './MoreStackNavigator';
-import { TabBarIcon } from '../../components/TabBarIcon';
-import { colors, spacing, typography } from '../../../theme';
+import React, { useContext } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MainTabParamList, SCREEN_GROUPS } from "../types";
+import { AuthContext } from "../../../context/AuthContext";
+import { HomeStackNavigator } from "./HomeStackNavigator";
+import { PropertiesStackNavigator } from "./PropertiesStackNavigator";
+import { TenantsStackNavigator } from "./TenantsStackNavigator";
+import { MaintenanceStackNavigator } from "./MaintenanceStackNavigator";
+import { MoreStackNavigator } from "./MoreStackNavigator";
+import { TabBarIcon } from "../../components/TabBarIcon";
+import { colors, spacing, typography } from "../../../theme";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export const MainTabNavigator = () => {
   const { user } = useContext(AuthContext);
-  const userRole = user?.role || 'tenant'; // Default to tenant if no role
+  const userRole = user?.role || "tenant"; // Default to tenant if no role
   const { tabs } = SCREEN_GROUPS[userRole];
 
   const tabBarOptions = (label: string) => ({
@@ -32,7 +32,7 @@ export const MainTabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-         tabBarHideOnKeyboard:true,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: colors.background,
           borderTopWidth: 0,
@@ -43,19 +43,19 @@ export const MainTabNavigator = () => {
           shadowOpacity: 0,
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
-          position: 'absolute',
+          position: "absolute",
           left: 0,
           right: 0,
           bottom: 0,
         },
       }}
     >
-      {tabs.includes('HomeTab') && (
+      {tabs.includes("HomeTab") && (
         <Tab.Screen
           name="HomeTab"
           component={HomeStackNavigator}
           options={{
-            ...tabBarOptions('Home'),
+            ...tabBarOptions("Home"),
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name="HomeTab" color={color} focused={focused} />
             ),
@@ -63,25 +63,29 @@ export const MainTabNavigator = () => {
         />
       )}
 
-      {tabs.includes('PropertiesTab') && (
+      {tabs.includes("PropertiesTab") && (
         <Tab.Screen
           name="PropertiesTab"
           component={PropertiesStackNavigator}
           options={{
-            ...tabBarOptions('Properties'),
+            ...tabBarOptions("Properties"),
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name="PropertiesTab" color={color} focused={focused} />
+              <TabBarIcon
+                name="PropertiesTab"
+                color={color}
+                focused={focused}
+              />
             ),
           }}
         />
       )}
 
-      {tabs.includes('TenantsTab') && (
+      {tabs.includes("TenantsTab") && (
         <Tab.Screen
           name="TenantsTab"
           component={TenantsStackNavigator}
           options={{
-            ...tabBarOptions('Tenants'),
+            ...tabBarOptions("Tenants"),
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name="TenantsTab" color={color} focused={focused} />
             ),
@@ -89,25 +93,29 @@ export const MainTabNavigator = () => {
         />
       )}
 
-      {tabs.includes('MaintenanceTab') && (
+      {tabs.includes("MaintenanceTab") && (
         <Tab.Screen
           name="MaintenanceTab"
           component={MaintenanceStackNavigator}
           options={{
-            ...tabBarOptions('Maintenance'),
+            ...tabBarOptions("Maintenance"),
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name="MaintenanceTab" color={color} focused={focused} />
+              <TabBarIcon
+                name="MaintenanceTab"
+                color={color}
+                focused={focused}
+              />
             ),
           }}
         />
       )}
 
-      {tabs.includes('MoreTab') && (
+      {tabs.includes("MoreTab") && (
         <Tab.Screen
           name="MoreTab"
           component={MoreStackNavigator}
           options={{
-            ...tabBarOptions('More'),
+            ...tabBarOptions("More"),
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name="MoreTab" color={color} focused={focused} />
             ),

@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Screen, Text, Header, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
-type TabType = "Active" | "History";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const propertyGroupOptions = [
   { label: "All Properties", value: "all" },
@@ -85,10 +79,9 @@ const visitorData = [
 ];
 
 export const AdminRevokedInvitations: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
-
+  const navigation = useNavigation();
   const statusLabelColor = (status: any) => {
     switch (status) {
       case "approved":
@@ -109,7 +102,14 @@ export const AdminRevokedInvitations: React.FC = () => {
     >
       <Header
         leftAccessory={
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -463,7 +463,6 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.grey,
     fontSize: adjustSize(10),
-    // marginBottom: spacing.sm,
   },
 
   label: {
@@ -478,7 +477,6 @@ const styles = StyleSheet.create({
   },
   labelValue: {
     color: colors.primary,
-    // fontSize: adjustSize(12),
   },
   dropdown: {
     minWidth: adjustSize(120),

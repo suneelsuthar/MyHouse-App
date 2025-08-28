@@ -14,7 +14,6 @@ import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { Header, Screen, TextField } from "../../../Components";
 import DropdownComponent from "../../../Components/DropDown";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Ionicons } from "@expo/vector-icons";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 

@@ -10,7 +10,7 @@ export const MoreStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        // animation: 'slide_from_right',
       }}
     >
       <Stack.Screen name="Settings" component={SettingsScreen} />

@@ -10,8 +10,6 @@ import { Screen, Text, Header } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { IRentalProperty, rentalProperties } from "../../../utils/data";
-import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../../../assets/Images";
 import Feather from "@expo/vector-icons/Feather";
 
 interface AdminPropertyDetailsProps
@@ -352,7 +350,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: adjustSize(5),
     paddingHorizontal: adjustSize(10),
-    // marginBottom: spacing.md,
   },
   propTitle: {
     fontSize: adjustSize(18),
@@ -416,14 +413,12 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     color: colors.primary,
-    // fontFamily: typography.fonts.poppins.medium,
     fontSize: adjustSize(12),
     flex: 1,
   },
   rowValue: {
     color: colors.primaryLight,
     fontSize: adjustSize(12),
-    // marginBottom: spacing.sm,
     flex: 1,
   },
   sectionTitle: {
@@ -471,7 +466,6 @@ const styles = StyleSheet.create({
   hero: {
     width: "100%",
     height: adjustSize(228),
-    // borderRadius: adjustSize(12),
     backgroundColor: colors.border,
     marginTop: adjustSize(5),
   },
@@ -483,13 +477,11 @@ const styles = StyleSheet.create({
     width: adjustSize(81),
     height: adjustSize(74),
     borderRadius: adjustSize(7),
-    // backgroundColor: colors.border,
   },
   galleryThumbSelected: {
     borderWidth: 2,
     borderColor: colors.primary,
   },
-  // Inspection tab styles
   insTitle: {
     fontSize: adjustSize(16),
     color: colors.primary,

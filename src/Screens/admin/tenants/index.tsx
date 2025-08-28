@@ -228,10 +228,12 @@ export function AdminTenants() {
                         onPress={() => {
                           setVisibleMenuIndex(null);
                           // Navigate to AdminTenantDetails screen
-                          (navigation as any).navigate("AdminTenantDetails", { 
-                            tenantId: index.toString(),
-                            tenantName: item.name,
-                            property: item.property
+                          (navigation as any).navigate("AdminTenantDetails", {
+                            params: {
+                              tenantId: index.toString(),
+                              tenantName: item.name,
+                              property: item.property,
+                            },
                           });
                         }}
                         style={styles.menuItem}
@@ -287,7 +289,7 @@ const styles = StyleSheet.create({
   },
   customSelectedTextStyle: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: colors.grey,
     fontFamily: typography.fonts.poppins.normal,
   },
   card: {

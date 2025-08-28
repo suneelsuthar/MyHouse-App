@@ -363,7 +363,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
           <Button
             text={loading ? "Adding ..." : "Add Amenity"}
             preset="reversed"
-            style={[styles.btn, !isFormValid && { opacity: 0.7 }]}
+            style={[styles.btn]}
             disabled={!isFormValid}
             onPress={() => {
               setLoading(true);

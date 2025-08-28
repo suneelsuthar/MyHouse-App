@@ -41,7 +41,7 @@ export type AdminStackParamList = {
   Admin: undefined;
   AdminDashboard: undefined;
   AdminUserManagement: undefined;
-  AdminPropertyManagement: { propertyType?: 'rental' | 'managed' };
+  AdminPropertyManagement: { propertyType?: "rental" | "managed" };
   AdminPropertyDetails: { propertyId: string };
   AdminPropertyServices: undefined;
   AdminPropertyFeatures: undefined;
@@ -56,7 +56,9 @@ export type AdminStackParamList = {
   AdminGenerateWorkRequests: { propertyId: string };
   AdminCreateVisitorRequests: { propertyId: string };
   InspectionDetails: { inspectionId: string };
-  AdminManageBookings: { bookingType?: 'reserved' | 'active' | 'history' | 'cancelled' };
+  AdminManageBookings: {
+    bookingType?: "reserved" | "active" | "history" | "cancelled";
+  };
   AdminBookingDetails: { bookingId: string };
   AdminFacilityManagement: {
     status: "work_requests" | "work_orders" | "completed";
@@ -120,10 +122,10 @@ export type AdminStackParamList = {
   AdminAnalysis: undefined;
   AdminUtilitiesSettings: undefined;
   ViewMeterDetails: { meter: MeterData };
-  EditCreateMeter: { mode: 'add' | 'edit', meterId?: string };
+  EditCreateMeter: { mode: "add" | "edit"; meterId?: string };
   ViewPropertiesGroups: undefined;
-  AddEditGroup: { 
-    mode: 'add' | 'edit'; 
+  AddEditGroup: {
+    mode: "add" | "edit";
     group?: {
       id: string;
       title: string;
@@ -132,7 +134,7 @@ export type AdminStackParamList = {
       noOfTenents?: string;
       noOfMeters?: string;
       date?: string;
-    } 
+    };
   };
 };
 

@@ -12,12 +12,10 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Header, Screen } from "../../../Components";
 import { WithLocalSvg } from "react-native-svg/css";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Images } from "../../../assets/Images";
-// import QRCode from 'react-native-qrcode-svg';
 type Props = NativeStackScreenProps<AdminStackParamList, "AdminVisitorDetails">;
 
 interface VisitorDetailsData {

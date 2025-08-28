@@ -7,7 +7,7 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../../assets/Images";
@@ -23,7 +23,6 @@ import { AppStackScreenProps } from "../../../../utils/interfaces";
 import Entypo from "@expo/vector-icons/Entypo";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
-
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -121,7 +120,13 @@ export const AdminManagePropertyGroup = ({
     >
       <Header
         leftAccessory={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() =>
+              (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
+            }
+          >
             <WithLocalSvg asset={Images.user} />
           </TouchableOpacity>
         }
@@ -149,9 +154,9 @@ export const AdminManagePropertyGroup = ({
             onChangeText={(text) => setSearch(text as string)}
           />
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles._addbtn}
-          onPress={() => navigation.navigate('AddEditGroup', { mode: 'add' })}
+          onPress={() => navigation.navigate("AddEditGroup", { mode: "add" })}
         >
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
@@ -254,7 +259,9 @@ export const AdminManagePropertyGroup = ({
                   style={styles.menuItem}
                   onPress={() => {
                     setDropdownVisible(null);
-                    navigation.navigate("ViewPropertiesGroups", { group: item });
+                    navigation.navigate("ViewPropertiesGroups", {
+                      group: item,
+                    });
                   }}
                 >
                   <Text style={styles.menuText}>View</Text>
@@ -264,9 +271,9 @@ export const AdminManagePropertyGroup = ({
                   style={styles.menuItem}
                   onPress={() => {
                     setDropdownVisible(null);
-                    navigation.navigate('AddEditGroup', { 
-                      mode: 'edit',
-                      group: item
+                    navigation.navigate("AddEditGroup", {
+                      mode: "edit",
+                      group: item,
                     });
                   }}
                 >

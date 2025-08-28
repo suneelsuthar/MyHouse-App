@@ -6,7 +6,7 @@ import {
   PropertyDetailsScreen,
   AddPropertyScreen,
   EditPropertyScreen,
-} from "../../../screens/properties";
+} from "../../../screens";
 
 const Stack = createNativeStackNavigator<PropertiesStackParamList>();
 
@@ -15,7 +15,7 @@ export const PropertiesStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: "slide_from_right",
+        // animation: "slide_from_right",
       }}
     >
       <Stack.Screen name="PropertyList" component={PropertyListScreen} />

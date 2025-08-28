@@ -12,7 +12,7 @@ import {
   AppStackScreenProps,
   AppStackParamList,
 } from "../../../utils/interfaces";
-import { colors, spacing } from "../../../theme";
+import { adjustSize, colors, spacing } from "../../../theme";
 import Toast from "react-native-toast-message";
 import { Images } from "../../../assets/Images";
 import { yupResolver } from "@hookform/resolvers/yup";

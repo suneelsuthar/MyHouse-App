@@ -13,9 +13,7 @@ interface FacilityManagementCardProps {
   style?: object; // ✅ custom styling (red/blue bg)
 }
 export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
-  activeTab,
   property,
-  onPress,
   onAction,
   style,
 }) => {

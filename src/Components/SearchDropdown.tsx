@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     backgroundColor: "#292766A3",
     paddingLeft: 15,
+    borderWidth: 0.2,
+    borderColor: colors.grey,
   },
   icon: {
     marginRight: 5,
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
   },
   selectedTextStyle: {
-    color: colors.white,
     fontFamily: typography.fonts.poppins.normal,
     fontSize: adjustSize(12),
   },

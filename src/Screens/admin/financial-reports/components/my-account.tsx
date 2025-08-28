@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
-import { Text, Button } from "../../../../Components";
+import { Text } from "../../../../Components";
 export const MyAccount = () => {
   const data = [
     {

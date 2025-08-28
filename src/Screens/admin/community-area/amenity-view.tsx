@@ -20,7 +20,7 @@ export function AdminAmenityView({
   route,
 }: AppStackScreenProps<"AdminAmenityView">) {
   const navigation = useNavigation();
-  const data = route?.params?.data;
+  const data: any = route?.params?.data;
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
     d.setDate(1);

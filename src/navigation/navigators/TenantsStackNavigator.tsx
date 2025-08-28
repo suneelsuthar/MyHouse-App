@@ -1,8 +1,13 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TenantsStackParamList } from '../types';
-import { TenantListScreen, TenantDetailsScreen, AddTenantScreen, EditTenantScreen } from '../../../screens/tenants';
-
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { TenantsStackParamList } from "../types";
+import {
+  TenantListScreen,
+  TenantDetailsScreen,
+  AddTenantScreen,
+  EditTenantScreen,
+} from "../../../screens/tenants";
+TenantListScreen
 const Stack = createNativeStackNavigator<TenantsStackParamList>();
 
 export const TenantsStackNavigator = () => {
@@ -10,7 +15,7 @@ export const TenantsStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        // animation: "slide_from_right",
       }}
     >
       <Stack.Screen name="TenantList" component={TenantListScreen} />

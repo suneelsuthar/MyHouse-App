@@ -6,7 +6,7 @@ import ReservationCalendar from "./components/ReservationCalendar";
 import ReservationStep1 from "./components/ReservationStep1";
 import ReservationCalendarAddTime from "./components/ReservationCalendarAddTime";
 import { WithLocalSvg } from "react-native-svg/css";
-import { adjustSize, colors, spacing, typography } from "../../../theme";
+import { adjustSize, colors, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
 export function AdminAmenityMakeReservation({ navigation }: any) {
   const [step, setStep] = useState<number>(0);

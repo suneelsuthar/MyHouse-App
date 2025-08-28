@@ -114,7 +114,7 @@ export default function DropdownComponent({
 
 const styles = StyleSheet.create({
   dropdown: {
-    height: adjustSize(55),
+    height: adjustSize(49),
     borderRadius: 10,
     paddingHorizontal: 8,
     backgroundColor: "#292766A3",
