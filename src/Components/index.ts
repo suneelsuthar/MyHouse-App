@@ -16,3 +16,4 @@ export { default as CustomModal } from "./CustomModal";
 export { default as AdditionalChargesModal } from "./AdditionalChargesModal";
 export { default as OfferDiscountModal } from "./OfferDiscountModal";
 export { default as InspectionTimeModal } from "./InspectionTimeModal";
+export { default as MultiSelectDropdown } from "./MultiSelectDropdown";

@@ -83,7 +83,7 @@ import { SecurityEmergencyContacts } from "./security/emergency-contacts";
 import { SecurityAlerts } from "./security/security-alerts";
 import { SecurityPatrolLogs } from "./security/patrol-logs";
 import { SecuritySettings } from "./security/settings";
-import { Admin } from "./admin";
+import { Admin  } from "./admin";
 import { AdminDashboard } from "./admin/dashboard";
 import { AdminUserManagement } from "./admin/user-management";
 import { AdminPropertyManagement } from "./admin/property-management";
@@ -140,6 +140,10 @@ import { AdminManagePropertyGroup } from "./admin/utilities/manage-property-grou
 import { AdminManageVendingHistory } from "./admin/utilities/manage-vending-history";
 import { AdminAnalysis } from "./admin/utilities/analysis";
 import { AdminUtilitiesSettings } from "./admin/utilities/settings";
+import ViewMeterDetails from "./admin/utilities/manage-meters/ViewMeterDetails";
+import EditCreateMeter from "./admin/utilities/manage-meters/EditCreateMeter";
+import { ViewPropertiesGroups } from "./admin/utilities/view-properties-groups";
+import { AddEditGroup } from "./admin/utilities/add-edit-group";
 export {
   Splash,
   Intro,
@@ -265,7 +269,11 @@ export {
   AdminManageMeters,
   AdminManageTransactions,
   AdminManagePropertyGroup,
+  ViewPropertiesGroups,
   AdminManageVendingHistory,
   AdminAnalysis,
-  AdminUtilitiesSettings
+  AdminUtilitiesSettings,
+  ViewMeterDetails,
+  EditCreateMeter,
+  AddEditGroup
 };

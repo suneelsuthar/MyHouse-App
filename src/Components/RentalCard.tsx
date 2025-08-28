@@ -30,6 +30,13 @@ const RENTAL_ACTIONS = [
 
 const ACTIONS_MANAGE = ["View", "Register Tenant", "Generate work request"];
 
+const ACTIONS_GROUP = [
+  "View",
+  "Register Tenant",
+  "Generate work request",
+  "Create Visitor request",
+];
+
 export const RentalCard: React.FC<RentalCardProps> = ({
   property,
   onPress,
@@ -38,7 +45,12 @@ export const RentalCard: React.FC<RentalCardProps> = ({
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const thumb = property.images?.[0];
-  const ACTIONS = type === "rental" ? RENTAL_ACTIONS : ACTIONS_MANAGE;
+  const ACTIONS =
+    type === "rental"
+      ? RENTAL_ACTIONS
+      : type === "manage"
+      ? ACTIONS_MANAGE
+      : ACTIONS_GROUP;
 
   return (
     <View style={{ position: "relative" }}>
