@@ -7,7 +7,7 @@ import { PropertiesStackNavigator } from "./PropertiesStackNavigator";
 import { TenantsStackNavigator } from "./TenantsStackNavigator";
 import { MaintenanceStackNavigator } from "./MaintenanceStackNavigator";
 import { MoreStackNavigator } from "./MoreStackNavigator";
-import { TabBarIcon } from "../../components/TabBarIcon";
+import { TabBarIcon } from "../../Components/TabBarIcon";
 import { colors, spacing, typography } from "../../../theme";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();

@@ -1,7 +1,30 @@
-import {
-  MeterData,
-  MeterMode,
-} from "../../../Screens/admin/utilities/manage-meters/types";
+export type TenantUtilitiesStackParamList = {
+  TenantUtilitiesSummary: undefined;
+  TenantUtilitiesMyMeter: undefined;
+  TenantUtilitiesCharges: undefined;
+  TenantUtilitiesTransactions: undefined;
+  TenantUtilitiesVendingHistory: undefined;
+  TenantUtilitiesReportIssue: undefined;
+};
+
+export type TenantStackParamList = {
+  Tenant: undefined;
+  TenantDashboard: undefined;
+  TenantProfile: undefined;
+  TenantMaintenance: undefined;
+  TenantRentPayment: undefined;
+  TenantLeaseAgreement: undefined;
+  TenantNotifications: undefined;
+  TenantSupport: undefined;
+  TenantSettings: undefined;
+  // Tenant Utilities Screens
+  TenantUtilitiesSummary: undefined;
+  TenantUtilitiesMyMeter: undefined;
+  TenantUtilitiesCharges: undefined;
+  TenantUtilitiesTransactions: undefined;
+  TenantUtilitiesVendingHistory: undefined;
+  TenantUtilitiesReportIssue: undefined;
+};
 
 export type AdminStackParamList = {
   AdminPropertyDetails: {

@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Text } from "./Text";
-import { adjustSize, colors } from "../theme";
+import { Text } from "../Text";
+import { adjustSize, colors } from "../../theme";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import type { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { WithLocalSvg } from "react-native-svg/css";
-import { Images } from "../assets/Images";
+import { Images } from "../../assets/Images";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAppDispatch } from "../store/hooks";
-import { logoutUser } from "../store/thunks/authThunks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { RootState } from "../../store";
+import { logoutUser } from "../../store/thunks/authThunks";
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const [active, setactive] = useState(0);
   const [openId, setOpenId] = useState<number | null>(null); // which dropdown is open
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   // Close any open nested menu and the drawer, then navigate
   const closeMenusAndNavigate = (routeName: any, params?: any) => {
@@ -457,7 +459,299 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
   ];
 
-  const items = active === 0 ? propertiesItems : utilitesItems;
+  const tenantItems = [
+    {
+      id: 0,
+      title: "Dashboard",
+      type: "item",
+      icon: Images.dashborad,
+      onPress: () =>
+        closeMenusAndNavigate("Tenant", {
+          screen: "Home",
+          params: { screen: "TenantDashboard" },
+        }),
+    },
+
+    {
+      id: 1,
+      title: "Assigned Property",
+      type: "item",
+      icon: Images.propreq,
+      onPress: () =>
+        closeMenusAndNavigate("Tenant", {
+          screen: "Home",
+          params: { screen: "TenantAssignedProperty" },
+        }),
+    },
+    {
+      id: 2,
+      title: "Facility Management",
+      type: "dropdown",
+      icon: Images.facilitymanag,
+      menueItems: [
+        {
+          id: 0,
+          title: "Work Requests",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "work_requests" },
+              },
+            }),
+        },
+        {
+          id: 1,
+          title: "Work Orders",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "work_orders" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Completed",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminFacilityManagement",
+                params: { status: "completed" },
+              },
+            }),
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Visitor Management",
+      type: "item",
+      icon: Images.visitormanagement,
+      onPress: () =>
+        closeMenusAndNavigate("Tenant", {
+          screen: "Home",
+          params: { screen: "TenantVisitorManagement" },
+        }),
+    },
+    {
+      id: 4,
+      title: "Community Area",
+      type: "dropdown",
+      icon: Images.community,
+      nestedItems: [
+        {
+          id: 0,
+          title: "Amenities",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminCommunityArea",
+                params: { tab: "amenities" },
+              },
+            }),
+        },
+        {
+          id: 1,
+          title: "Reservations",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminCommunityArea",
+                params: { tab: "reservations" },
+              },
+            }),
+        },
+      ],
+    },
+
+    {
+      id: 5,
+      title: "Utilities",
+      type: "dropdown",
+      icon: Images.settings,
+      menueItems: [
+        {
+          id: 1,
+          title: "Summary",
+          type: "item",
+          icon: Images.simdata,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesSummary"
+          })
+        },
+        {
+          id: 2,
+          title: "My Meter",
+          type: "item",
+          icon: Images.meters,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesMyMeter"
+          })
+        },
+        {
+          id: 3,
+          title: "Charges",
+          type: "item",
+          icon: Images.managetrans,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesCharges"
+          })
+        },
+        {
+          id: 4,
+          title: "Transactions",
+          type: "item",
+          icon: Images.managegroups,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesTransactions"
+          })
+        },
+        {
+          id: 5,
+          title: "Vending History",
+          type: "item",
+          icon: Images.managehistory,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesVendingHistory"
+          })
+        },
+        {
+          id: 6,
+          title: "Report an Issue",
+          type: "item",
+          icon: Images.settings,
+          onPress: () => closeMenusAndNavigate("Home", {
+            screen: "TenantUtilitiesReportIssue"
+          })
+        }
+      ]
+    },
+
+    {
+      id: 6,
+      title: "Communications",
+      type: "dropdown",
+      icon: Images.communication,
+      menueItems: [
+        {
+          id: 0,
+          title: "Message History",
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Chat",
+            }),
+        },
+      ],
+    },
+
+    {
+      id: 7,
+      title: "Emergency",
+      type: "item",
+      icon: Images.emergency,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminEmergency" },
+        }),
+    },
+    {
+      id: 8,
+      title: "Wallet",
+      type: "item",
+      icon: Images.wallet,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Wallet",
+        }),
+    },
+
+    {
+      id: 9,
+      title: "Payments",
+      type: "item",
+      icon: Images.wallet,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Wallet",
+        }),
+    },
+    {
+      id: 10,
+      title: "Chat",
+      type: "item",
+      icon: Images.communication,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
+    },
+  ];
+
+  const getItemsForRole = () => {
+    switch (user?.role) {
+      case "admin":
+        return active === 0 ? propertiesItems : utilitesItems;
+      case "tenant":
+        return tenantItems;
+      default:
+        return []; // Return empty array for unknown roles or if user is not logged in
+    }
+  };
+
+  // const tenantUtilitiesItems = [
+  //   {
+  //     id: 1,
+  //     title: "Summary",
+  //     type: "item",
+  //     icon: Images.simdata,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesSummary")
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "My Meter",
+  //     type: "item",
+  //     icon: Images.meters,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesMyMeter")
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Charges",
+  //     type: "item",
+  //     icon: Images.managetrans,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesCharges")
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Transactions",
+  //     type: "item",
+  //     icon: Images.managegroups,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesTransactions")
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Vending History",
+  //     type: "item",
+  //     icon: Images.managehistory,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesVendingHistory")
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Report an Issue",
+  //     type: "item",
+  //     icon: Images.settings,
+  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesReportIssue")
+  //   }
+  // ];
+
+  const items = getItemsForRole();
 
   return (
     <DrawerContentScrollView
@@ -480,9 +774,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <View style={styles.headerinfo}>
             <Text style={styles._welcomtext}>Welcome!</Text>
             <Text weight="semiBold" style={styles.username}>
-              Brume Djbah
+              {user?.firstname} {user?.lastname}
             </Text>
-            <Text style={styles.role}>Admin</Text>
+            <Text style={styles.role}>{user?.role}</Text>
           </View>
           <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
             <WithLocalSvg asset={Images.notofication} />
@@ -491,30 +785,32 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
         {/* tabs */}
 
-        <View style={styles.tab_row}>
-          <TouchableOpacity
-            onPress={() => setactive(0)}
-            activeOpacity={0.6}
-            style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
-          >
-            <Text
-              weight="medium"
-              text="Properties"
-              style={[active === 0 ? styles.active_text : styles.tabtext]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setactive(1)}
-            activeOpacity={0.6}
-            style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
-          >
-            <Text
-              weight="medium"
-              text="Utilities"
-              style={[active === 1 ? styles.active_text : styles.tabtext]}
-            />
-          </TouchableOpacity>
-        </View>
+        {user?.role === "admin" && (
+          <View style={styles.tab_row}>
+            <TouchableOpacity
+              onPress={() => setactive(0)}
+              activeOpacity={0.6}
+              style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text={"Properties"}
+                style={[active === 0 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setactive(1)}
+              activeOpacity={0.6}
+              style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text="Utilities"
+                style={[active === 1 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {items.map((val, i) => {
           return (
@@ -717,7 +1013,7 @@ const styles = StyleSheet.create({
   _divider: {
     borderBottomWidth: adjustSize(0.5),
     borderColor: colors.white,
-    marginTop: 80,
+    marginTop: 40,
     marginBottom: adjustSize(10),
   },
 });

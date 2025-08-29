@@ -2,32 +2,33 @@ import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import { adjustSize, colors, typography } from "../theme";
-const screenWidth = Dimensions.get("window").width;
 
-// same color as your screenshot
+const screenWidth = Dimensions.get("window").width;
 const chartColor = colors.primaryLight;
 
 interface BookingsChartProps {
   data: number[];
+  labels: string[];
+  period: string; // ✅ Add period prop to detect which time range is selected
 }
 
-const AnalysisChart: React.FC<BookingsChartProps> = ({ data }) => {
+const AnalysisChart: React.FC<BookingsChartProps> = ({
+  data,
+  labels,
+  period,
+}) => {
+  // Check if we're showing yearly data (which has longer labels)
+  const isYearlyData = period === "This Year";
+
   return (
     <View style={styles.container}>
       <BarChart
         data={{
-          labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
-          datasets: [
-            {
-              data:
-                data && data.length === 7
-                  ? data
-                  : [300, 180, 120, 200, 150, 220, 60],
-            },
-          ],
+          labels: labels,
+          datasets: [{ data: data }],
         }}
-        width={screenWidth - 32}
-        height={260}
+        width={screenWidth - 50}
+        height={260} // Increase height for yearly data to accommodate vertical labels
         fromZero
         showValuesOnTopOfBars={false}
         withInnerLines={false}
@@ -36,19 +37,19 @@ const AnalysisChart: React.FC<BookingsChartProps> = ({ data }) => {
           backgroundGradientFrom: colors.fill,
           backgroundGradientTo: colors.fill,
           decimalPlaces: 0,
-          color: () => chartColor, // bar color
-          labelColor: () => chartColor, // label color
-          propsForBackgroundLines: {
-            strokeWidth: 0,
-          },
-        
+          color: () => chartColor,
+          labelColor: () => chartColor,
+          propsForBackgroundLines: { strokeWidth: 0 },
           propsForLabels: {
-            fontSize: adjustSize(10), // custom font size
-            fontFamily: typography.fonts.poppins.medium, // replace with your font
+            fontSize: adjustSize(10),
+            fontFamily: typography.fonts.poppins.medium,
+            dy: isYearlyData ? 0 : 0,
+            dx: isYearlyData ? -10 : 0,
           },
-          barPercentage: 0.6,
+          barPercentage: isYearlyData ? adjustSize(0.3) : adjustSize(0.6),
         }}
         style={styles.chart}
+        verticalLabelRotation={isYearlyData ? -90 : 0}
       />
     </View>
   );

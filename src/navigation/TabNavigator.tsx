@@ -175,7 +175,7 @@ import {
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../assets/Images";
 import { View } from "react-native";
-import { CustomDrawerContent } from "../Components/CustomDrawer";
+import { CustomDrawerContent } from "../Components/drawer/CustomDrawer";
 
 // Create stack navigators for each role
 const TenantStack = createNativeStackNavigator<TenantStackParamList>();
@@ -192,6 +192,13 @@ const AdminBookingStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminWalletStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
+
+import { TenantUtilitiesSummary } from '../Screens/tenant/utilities/Summary';
+import { TenantUtilitiesMyMeter } from '../Screens/tenant/utilities/MyMeter';
+import { TenantUtilitiesCharges } from '../Screens/tenant/utilities/Charges';
+import { TenantUtilitiesTransactions } from '../Screens/tenant/utilities/Transactions';
+import { TenantUtilitiesVendingHistory } from '../Screens/tenant/utilities/VendingHistory';
+import { TenantUtilitiesReportIssue } from '../Screens/tenant/utilities/ReportIssue';
 
 // Tenant Stack Navigator
 const TenantStackNavigator = () => (
@@ -217,6 +224,13 @@ const TenantStackNavigator = () => (
     />
     <TenantStack.Screen name="TenantSupport" component={TenantSupport} />
     <TenantStack.Screen name="TenantSettings" component={TenantSettings} />
+    {/* Tenant Utilities Screens */}
+    <TenantStack.Screen name="TenantUtilitiesSummary" component={TenantUtilitiesSummary} />
+    <TenantStack.Screen name="TenantUtilitiesMyMeter" component={TenantUtilitiesMyMeter} />
+    <TenantStack.Screen name="TenantUtilitiesCharges" component={TenantUtilitiesCharges} />
+    <TenantStack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />
+    <TenantStack.Screen name="TenantUtilitiesVendingHistory" component={TenantUtilitiesVendingHistory} />
+    <TenantStack.Screen name="TenantUtilitiesReportIssue" component={TenantUtilitiesReportIssue} />
   </TenantStack.Navigator>
 );
 
@@ -670,7 +684,6 @@ const AdminWalletStackNavigator = () => (
   </AdminWalletStack.Navigator>
 );
 
-
 const AdminChatStackNavigator = () => (
   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminChatStack.Screen
@@ -680,11 +693,23 @@ const AdminChatStackNavigator = () => (
   </AdminChatStack.Navigator>
 );
 
-
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
-
+const HomeStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+
+// Home Stack Navigator for Tenant
+const TenantHomeStack = () => (
+  <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Screen name="TenantHome" component={TenantHome} />
+    <HomeStack.Screen name="TenantUtilitiesSummary" component={TenantUtilitiesSummary} />
+    <HomeStack.Screen name="TenantUtilitiesMyMeter" component={TenantUtilitiesMyMeter} />
+    <HomeStack.Screen name="TenantUtilitiesCharges" component={TenantUtilitiesCharges} />
+    <HomeStack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />
+    <HomeStack.Screen name="TenantUtilitiesVendingHistory" component={TenantUtilitiesVendingHistory} />
+    <HomeStack.Screen name="TenantUtilitiesReportIssue" component={TenantUtilitiesReportIssue} />
+  </HomeStack.Navigator>
+);
 
 // Tenant Tab Navigator (internal tabs)
 const TenantTabs = () => (
@@ -732,7 +757,7 @@ const TenantTabs = () => (
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Home" component={TenantHome} />
+    <Tab.Screen name="Home" component={TenantHomeStack} />
     <Tab.Screen name="Chat" component={TenantChat} />
     <Tab.Screen name="Wallet" component={TenantWallet} />
   </Tab.Navigator>
@@ -748,6 +773,8 @@ export const TenantTabNavigator = () => (
     )}
   >
     <Drawer.Screen name="Tenant" component={TenantTabs} />
+    
+
   </Drawer.Navigator>
 );
 
@@ -1052,14 +1079,14 @@ const AdminTabs = () => (
           case "Home":
             return (
               <View>
-                <WithLocalSvg asset={Images.homeIocn} />;
+                <WithLocalSvg asset={Images.homeIocn} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Booking":
             return (
               <View>
-                <WithLocalSvg asset={Images.booknow} />;
+                <WithLocalSvg asset={Images.booknow} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
@@ -1067,21 +1094,21 @@ const AdminTabs = () => (
           case "Properties":
             return (
               <View>
-                <WithLocalSvg asset={Images.manageprop} />;
+                <WithLocalSvg asset={Images.manageprop} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Wallet":
             return (
               <View>
-                <WithLocalSvg asset={Images.wallet} />;
+                <WithLocalSvg asset={Images.wallet} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Chat":
             return (
               <View>
-                <WithLocalSvg asset={Images.chat} />;
+                <WithLocalSvg asset={Images.chat} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );

@@ -86,7 +86,28 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Role-based main navigator */}
-      <Stack.Screen name="Main" component={MainNavigator} />
+      {userRole === "admin" && (
+        <Stack.Screen name="Main" component={AdminTabNavigator} />
+      )}
+      {userRole === "tenant" && (
+        <Stack.Screen name="Main" component={TenantTabNavigator} />
+      )}
+      {userRole === "agent" && (
+        <Stack.Screen name="Main" component={AgentTabNavigator} />
+      )}
+      {userRole === "facility_manager" && (
+        <Stack.Screen name="Main" component={FacilityManagerTabNavigator} />
+      )}
+      {userRole === "landlord" && (
+        <Stack.Screen name="Main" component={LandlordTabNavigator} />
+      )}
+      {userRole === "sub_landlord" && (
+        <Stack.Screen name="Main" component={SubLandlordTabNavigator} />
+      )}
+      {userRole === "security" && (
+        <Stack.Screen name="Main" component={SecurityTabNavigator} />
+      )}
+      {!userRole && <Stack.Screen name="Main" component={TenantTabNavigator} />}
 
       {/* Global screens accessible from any role */}
       <Stack.Screen name="Global" component={GlobalScreen} />
@@ -138,7 +159,7 @@ const authRoutes: any[] = [
 
 export const Navigation = () => {
   const navigation = useNavigation();
-  const { isAuthenticated, isFirstLaunch } = useAppSelector(
+  const { isAuthenticated } = useAppSelector(
     selectNavigationState
   );
   const [initialRoute, setInitialRoute] =
