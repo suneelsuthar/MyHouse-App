@@ -59,34 +59,34 @@ const AppNavigator = () => {
     return <AuthNavigator />;
   }
 
+  const getNavigator = () => {
+    switch (userRole) {
+      case "admin":
+        return AdminTabNavigator;
+      case "tenant":
+        return TenantTabNavigator;
+      case "agent":
+        return AgentTabNavigator;
+      case "facility_manager":
+        return FacilityManagerTabNavigator;
+      case "landlord":
+        return LandlordTabNavigator;
+      case "sub_landlord":
+        return SubLandlordTabNavigator;
+      case "security":
+        return SecurityTabNavigator;
+      default:
+        return TenantTabNavigator; // Fallback to tenant navigator
+    }
+  };
+
+  const MainNavigator = getNavigator();
+
   // Return appropriate tab navigator based on user role with global screens
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Role-based main navigator */}
-      {
-      userRole === "admin" && (
-        <Stack.Screen name="Main" component={AdminTabNavigator} />
-      )
-      }
-      {userRole === "tenant" && (
-        <Stack.Screen name="Main" component={TenantTabNavigator} />
-      )}
-      {userRole === "agent" && (
-        <Stack.Screen name="Main" component={AgentTabNavigator} />
-      )}
-      {userRole === "facility_manager" && (
-        <Stack.Screen name="Main" component={FacilityManagerTabNavigator} />
-      )}
-      {userRole === "landlord" && (
-        <Stack.Screen name="Main" component={LandlordTabNavigator} />
-      )}
-      {userRole === "sub_landlord" && (
-        <Stack.Screen name="Main" component={SubLandlordTabNavigator} />
-      )}
-      {userRole === "security" && (
-        <Stack.Screen name="Main" component={SecurityTabNavigator} />
-      )}
-      {!userRole && <Stack.Screen name="Main" component={TenantTabNavigator} />}
+      <Stack.Screen name="Main" component={MainNavigator} />
 
       {/* Global screens accessible from any role */}
       <Stack.Screen name="Global" component={GlobalScreen} />
