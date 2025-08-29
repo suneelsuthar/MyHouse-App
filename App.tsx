@@ -24,6 +24,7 @@ import Toast, { BaseToast, BaseToastProps } from "react-native-toast-message";
 import { colors } from "./src/theme";
 import { Feather } from "@expo/vector-icons";
 import { typography } from "./src/theme";
+import { ActivityIndicator } from "react-native";
 
 // Define our custom toast types
 type ToastType = "success" | "error" | "info";
@@ -112,6 +113,14 @@ LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
+
+// Loading component for PersistGate
+const LoadingComponent = () => (
+  <View style={styles.loadingContainer}>
+    <ActivityIndicator size="large" color={colors.palette.primary} />
+  </View>
+);
+
 const App = () => {
   let [fontsLoaded] = useFonts({
     light: require("./assets/fonts/Poppins-Light.ttf"),
@@ -126,7 +135,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<LoadingComponent />} persistor={persistor}>
         <StatusBar
           barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
           backgroundColor="#FFFFFF"
@@ -190,5 +199,14 @@ const App = () => {
     </Provider>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
+});
 
 export default App;

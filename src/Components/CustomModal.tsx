@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Text } from "./index";
+import { Text } from "./Text";
 import { adjustSize, colors, typography } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 interface CustomModalProps {
