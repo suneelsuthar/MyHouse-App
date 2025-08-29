@@ -11,7 +11,8 @@ import { Text } from "../../../../Components";
 import { adjustSize, colors, typography, spacing } from "../../../../theme";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicker"; // ✅ replaced import
+
 const formatTime = (date: Date) => {
   let hours = date.getHours();
   let minutes = date.getMinutes();
@@ -37,6 +38,7 @@ export default function ReservationCalendarAddTime({
   const [tempStart, setTempStart] = useState<string>("");
   const [tempDate, setTempDate] = useState(new Date());
   const [timeDone, setTimeDone] = useState<boolean>(false);
+
   const openDayPicker = (day: string, step: "start" | "end") => {
     setCurrentDay(day);
     setSlotStep(step);
@@ -51,8 +53,13 @@ export default function ReservationCalendarAddTime({
       if (slotStep === "start") {
         setTempStart(formatted);
         setSlotStep("end");
-        setTempDate(new Date());
-        setShowPicker(true);
+
+        // close and reopen for end
+        setShowPicker(false);
+        setTimeout(() => {
+          setTempDate(new Date());
+          setShowPicker(true);
+        }, 100);
         return;
       } else {
         if (currentDay) {
@@ -155,18 +162,23 @@ export default function ReservationCalendarAddTime({
         </TouchableOpacity>
       </View>
 
+      {/* ✅ replaced DateTimePicker with CustomDateTimePicker */}
       {showPicker && (
-        <DateTimePicker
-          value={tempDate}
+        <CustomDateTimePicker
           mode="time"
-          display="default"
-          is24Hour={false}
-          onChange={onChange}
+          value={tempDate}
+          visible={showPicker}
+          onChange={(d: Date) => {
+            onChange({ type: "set" }, d);
+          }}
+          onCancel={() => setShowPicker(false)}
+          onConfirm={() => setShowPicker(false)}
         />
       )}
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

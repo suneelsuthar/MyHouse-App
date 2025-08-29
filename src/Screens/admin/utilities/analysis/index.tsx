@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Pressable,
-  Platform,
-} from "react-native";
+import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { Screen, Text, Header2, CustomTabs } from "../../../../Components";
 import { colors, typography, adjustSize, spacing } from "../../../../theme";
 import {
@@ -15,8 +9,8 @@ import {
 import DropdownComponent from "../../../../Components/DropDown";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import AnalysisChart from "../../../../Components/AnalysisChart";
+import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicker";
 export const AdminAnalysis: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Power Consumption");
   const [selectBy, setSelectBy] = useState<string | undefined>();
@@ -27,25 +21,76 @@ export const AdminAnalysis: React.FC = () => {
   // 🔹 Date picker states
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [showPicker, setShowPicker] = useState<"start" | "end" | null>(null);
+  const [showPicker, setShowPicker] = useState<boolean>(false);
+  const [pickerMode, setPickerMode] = useState<"start" | "end">("start");
+  const [tempDate, setTempDate] = useState<Date>(new Date());
 
-  const openPicker = (type: "start" | "end") => {
-    setShowPicker(type);
+  // 🔹 Chart states
+  const [selectedPeriod, setSelectedPeriod] = useState<string>("This Week");
+  const [chartData, setChartData] = useState<number[]>([
+    300, 170, 130, 200, 150, 217, 50,
+  ]);
+  const [chartLabels, setChartLabels] = useState<string[]>([
+    "Sat",
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+  ]);
+
+  const openPicker = (mode: "start" | "end") => {
+    setPickerMode(mode);
+    setTempDate(
+      mode === "start" ? startDate || new Date() : endDate || new Date()
+    );
+    setShowPicker(true);
   };
 
-  const onDateChange = (event: any, selectedDate?: Date) => {
-    if (showPicker === "start") {
-      setStartDate(selectedDate || startDate);
-    } else if (showPicker === "end") {
-      setEndDate(selectedDate || endDate);
-    }
-    if (Platform.OS !== "ios") {
-      setShowPicker(null); // close picker on Android
-    }
+  const onChange = (date: Date) => {
+    if (pickerMode === "start") setStartDate(date);
+    else setEndDate(date);
+    setShowPicker(false);
   };
 
   const formatDate = (date: Date | null) =>
     date ? date.toLocaleDateString() : "Select Date";
+
+  // 🔹 Update chart by selected period
+  const updateChartByPeriod = (period: string) => {
+    setSelectedPeriod(period);
+    switch (period) {
+      case "This Week":
+        setChartLabels(["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]);
+        setChartData([300, 170, 130, 200, 150, 217, 50]);
+        break;
+      case "This Month":
+        setChartLabels(["Week 1", "Week 2", "Week 3", "Week 4"]);
+        setChartData([1200, 1500, 1000, 1700]);
+        break;
+      case "This Year":
+        setChartLabels([
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ]);
+        setChartData([
+          5000, 4200, 6000, 5500, 4800, 5000, 6200, 5900, 5700, 6000, 6300,
+          6500,
+        ]);
+        break;
+    }
+  };
 
   return (
     <Screen
@@ -85,8 +130,8 @@ export const AdminAnalysis: React.FC = () => {
             onChangeValue={(v: string) => {
               setSelectBy(v);
               setSelectedProperty(undefined);
-              setStartDate(null); // reset
-              setEndDate(null); // reset
+              setStartDate(null);
+              setEndDate(null);
             }}
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
@@ -94,7 +139,7 @@ export const AdminAnalysis: React.FC = () => {
             rightIconColor={colors.primary}
           />
 
-          {/* Show second dropdown only if first one is selected */}
+          {/* Second Dropdown */}
           {selectBy && (
             <>
               <Text style={styles.title}>Select {selectBy}</Text>
@@ -109,8 +154,8 @@ export const AdminAnalysis: React.FC = () => {
                 value={selectedProperty}
                 onChangeValue={(v: string) => {
                   setSelectedProperty(v);
-                  setStartDate(null); // reset
-                  setEndDate(null); // reset
+                  setStartDate(null);
+                  setEndDate(null);
                 }}
                 dropdownStyle={styles.dropdown}
                 placeholderStyle={styles.dropdownPlaceholder}
@@ -120,7 +165,7 @@ export const AdminAnalysis: React.FC = () => {
             </>
           )}
 
-          {/* 🔹 Show Power Consumption + Date pickers only if property selected */}
+          {/* Power Consumption Section */}
           {selectedProperty && (
             <>
               <View style={styles.line} />
@@ -138,6 +183,8 @@ export const AdminAnalysis: React.FC = () => {
                       ]}
                       label="Select Period"
                       placeholder="Sort by"
+                      value={selectedPeriod}
+                      onChangeValue={updateChartByPeriod}
                       dropdownStyle={styles.customDropdownStyle}
                       placeholderStyle={styles.customPlaceholderStyle}
                       selectedTextStyle={styles.customSelectedTextStyle}
@@ -159,7 +206,7 @@ export const AdminAnalysis: React.FC = () => {
                   style={[styles.dtButton, { width: "48%" }]}
                   onPress={() => openPicker("start")}
                 >
-                  <Text style={[styles.dtText]}>
+                  <Text style={styles.dtText}>
                     {startDate ? formatDate(startDate) : "Start Date"}
                   </Text>
                   <WithLocalSvg asset={Images.calendar} />
@@ -169,21 +216,32 @@ export const AdminAnalysis: React.FC = () => {
                   style={[styles.dtButton, { width: "48%" }]}
                   onPress={() => openPicker("end")}
                 >
-                  <Text style={[styles.dtText]}>
+                  <Text style={styles.dtText}>
                     {endDate ? formatDate(endDate) : "End Date"}
                   </Text>
                   <WithLocalSvg asset={Images.calendar} />
                 </Pressable>
               </View>
+
+              {/* Units */}
               <Text style={styles.units}>300 units</Text>
-              <AnalysisChart data={[300, 170, 130, 200, 150, 217, 50]} />
-              {/* Native Date Picker */}
+
+              {/* Chart */}
+              <AnalysisChart
+                data={chartData}
+                labels={chartLabels}
+                period={selectedPeriod} // e.g., "This Year"
+              />
+
+              {/* Custom Date Picker */}
               {showPicker && (
-                <DateTimePicker
-                  value={new Date()}
+                <CustomDateTimePicker
                   mode="date"
-                  display="default"
-                  onChange={onDateChange}
+                  value={tempDate}
+                  visible={showPicker}
+                  onChange={onChange}
+                  onCancel={() => setShowPicker(false)}
+                  onConfirm={() => setShowPicker(false)}
                 />
               )}
             </>
@@ -229,9 +287,7 @@ const styles = StyleSheet.create({
     marginHorizontal: adjustSize(10),
     marginBottom: adjustSize(3),
   },
-  dropdownContainer: {
-    width: adjustSize(120),
-  },
+  dropdownContainer: { width: adjustSize(120) },
   customDropdownStyle: {
     height: adjustSize(33),
     borderRadius: adjustSize(100),

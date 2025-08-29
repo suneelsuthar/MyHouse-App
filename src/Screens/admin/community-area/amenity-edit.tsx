@@ -15,8 +15,8 @@ import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import * as ImagePicker from "expo-image-picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import MultiSelect from "./components/MutliSelect";
+import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 type DayOption = "One-Time" | "Permanent" | "Event";
 type TimeOption = "Same time everyday" | "Different time for each day";
 const formatTime = (date: Date) => {
@@ -60,12 +60,11 @@ export function AdminAmenityEdit({ route, navigation }: any) {
   const [tempStart, setTempStart] = useState<string>("");
   const openDayPicker = (day: string, step: "start" | "end") => {
     setCurrentDay(day);
-    setPickerMode(step === "start" ? "start" : "end");
-    setTempDate(new Date());
+    setPickerMode(step); // start or end
     setSlotStep(step);
+    setTempDate(new Date());
     setShowPicker(true);
   };
-
   const onChange = (event: any, selectedDate?: Date) => {
     if (event.type === "set" && selectedDate) {
       const formatted = formatTime(selectedDate);
@@ -75,27 +74,30 @@ export function AdminAmenityEdit({ route, navigation }: any) {
         else setEndTime(formatted);
       } else if (selectedTime === "Different time for each day") {
         if (slotStep === "start") {
-          setTempStart(formatted); // save temp start
-          // next step → open end picker
-          setSlotStep("end");
-          setPickerMode("end");
-          setTempDate(new Date());
-          setShowPicker(true);
+          setTempStart(formatted); // save start
+
+          // Auto open end picker after a tiny delay
+          setShowPicker(false); // close current first
+          setTimeout(() => {
+            setSlotStep("end");
+            setPickerMode("end");
+            setTempDate(new Date());
+            setShowPicker(true); // reopen for end
+          }, 100); // 100ms delay ensures modal closes then opens
           return;
-        } else {
-          // end step → push slot to state
-          if (currentDay) {
-            setDayTimeSlots((prev) => [
-              ...prev,
-              { day: currentDay, start: tempStart, end: formatted },
-            ]);
-          }
+        } else if (slotStep === "end" && currentDay) {
+          // save slot
+          setDayTimeSlots((prev) => [
+            ...prev,
+            { day: currentDay, start: tempStart, end: formatted },
+          ]);
         }
       }
     }
 
     if (Platform.OS === "android") setShowPicker(false);
   };
+
   const openPicker = (mode: "start" | "end") => {
     setPickerMode(mode);
     setTempDate(new Date());
@@ -151,6 +153,8 @@ export function AdminAmenityEdit({ route, navigation }: any) {
         ? startTime.trim() !== "" && endTime.trim() !== ""
         : true // if "Different time for each day", skip for now or handle individually
       : false);
+
+  //
   return (
     <Screen
       preset="fixed"
@@ -336,6 +340,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
               )}
             </View>
           )}
+
           <Text style={styles.title}>Upload Images</Text>
           <Pressable style={styles.dtButton} onPress={pickImage}>
             <Text style={[styles.dtText]}>Choose Image</Text>
@@ -391,13 +396,21 @@ export function AdminAmenityEdit({ route, navigation }: any) {
               }, 500);
             }}
           />
+
           {showPicker && (
-            <DateTimePicker
+            <CustomDateTimePicker
+              mode={
+                pickerMode === "start" || pickerMode === "end"
+                  ? "time"
+                  : pickerMode
+              } // keep logic same
               value={tempDate}
-              mode="time"
-              display="default"
-              is24Hour={false}
-              onChange={onChange}
+              visible={showPicker}
+              onChange={(d: Date) => {
+                onChange({ type: "set" }, d); // mimic DateTimePicker event
+              }}
+              onCancel={() => setShowPicker(false)}
+              onConfirm={() => setShowPicker(false)}
             />
           )}
         </ScrollView>
