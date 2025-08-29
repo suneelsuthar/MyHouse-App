@@ -11,7 +11,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#292766"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.suneel.myhomes",
@@ -56,7 +58,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "fc5efe05-55c4-4f47-ac09-b81875afd5a5"
+        "projectId": "856845b7-7341-4af9-88f4-621cc23b5abb"
       }
     }
   }

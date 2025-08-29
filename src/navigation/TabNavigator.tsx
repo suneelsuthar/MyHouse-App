@@ -152,6 +152,8 @@ import {
   AddEditGroup,
   AdminManageBookings,
   AdminTenantDetails,
+  AdminSupportTickets,
+  AdminFinancialReports,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -661,15 +663,23 @@ const AdminPropertiesStackNavigator = () => (
 
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminWalletStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    <AdminWalletStack.Screen
+      name="AdminFinancialReports"
+      component={AdminFinancialReports}
+    />
   </AdminWalletStack.Navigator>
 );
 
+
 const AdminChatStackNavigator = () => (
   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminChatStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    <AdminChatStack.Screen
+      name="AdminSupportTickets"
+      component={AdminSupportTickets}
+    />
   </AdminChatStack.Navigator>
 );
+
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
