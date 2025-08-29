@@ -1,5 +1,5 @@
 // Re-export all admin screens
-export * from "./index";
+export * from ".";
 export * from "./property-management";
 export { default as AdminPropertyServices } from "./property-management/services";
 export { default as AdminPropertyFeatures } from "./property-management/features";

@@ -152,6 +152,8 @@ import {
   AddEditGroup,
   AdminManageBookings,
   AdminTenantDetails,
+  AdminSupportTickets,
+  AdminFinancialReports,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -661,15 +663,23 @@ const AdminPropertiesStackNavigator = () => (
 
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminWalletStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    <AdminWalletStack.Screen
+      name="AdminFinancialReports"
+      component={AdminFinancialReports}
+    />
   </AdminWalletStack.Navigator>
 );
 
+
 const AdminChatStackNavigator = () => (
   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminChatStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    <AdminChatStack.Screen
+      name="AdminSupportTickets"
+      component={AdminSupportTickets}
+    />
   </AdminChatStack.Navigator>
 );
+
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
@@ -1042,14 +1052,14 @@ const AdminTabs = () => (
           case "Home":
             return (
               <View>
-                <WithLocalSvg asset={Images.homeIocn} />;
+                <WithLocalSvg asset={Images.homeIocn} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Booking":
             return (
               <View>
-                <WithLocalSvg asset={Images.booknow} />;
+                <WithLocalSvg asset={Images.booknow} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
@@ -1057,21 +1067,21 @@ const AdminTabs = () => (
           case "Properties":
             return (
               <View>
-                <WithLocalSvg asset={Images.manageprop} />;
+                <WithLocalSvg asset={Images.manageprop} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Wallet":
             return (
               <View>
-                <WithLocalSvg asset={Images.wallet} />;
+                <WithLocalSvg asset={Images.wallet} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );
           case "Chat":
             return (
               <View>
-                <WithLocalSvg asset={Images.chat} />;
+                <WithLocalSvg asset={Images.chat} />
                 {focused && <View style={styles._indicator} />}
               </View>
             );

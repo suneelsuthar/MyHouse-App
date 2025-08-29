@@ -80,6 +80,9 @@ export function LoginScreen(props: LoginScreenProps) {
           text1: "Login Successful",
           text2: `Welcome back! Logged in as ${result.payload.user.role}`,
         });
+        
+        // Navigation will be handled automatically by the AppNavigator
+        // when isAuthenticated becomes true in the Redux store
       } else {
         Toast.show({
           type: "error",
