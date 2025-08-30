@@ -789,6 +789,8 @@ const TenantHomeStack = () => (
       name="AdminCommunityArea"
       component={AdminCommunityArea}
     />
+
+    <HomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
   </HomeStack.Navigator>
 );
 

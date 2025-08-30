@@ -631,9 +631,48 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         },
       ],
     },
-
     {
       id: 6,
+      title: "Utilities Analysis",
+      type: "dropdown",
+      icon: Images.analysis,
+      menueItems: [
+        {
+          id: 1,
+          title: "Power Consumption",
+          type: "item",
+          icon: Images.simdata,
+          // onPress: () =>
+          //   closeMenusAndNavigate("Home", {
+          //     screen: "TenantUtilitiesSummary",
+          //   }),
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Home",
+              params: {
+                screen: "AdminAnalysis",
+                params: { tab: "power_consumption" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Vending History",
+          type: "item",
+          icon: Images.meters,
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Home",
+              params: {
+                screen: "AdminAnalysis",
+                params: { tab: "vending_history" },
+              },
+            }),
+        },
+      ],
+    },
+    {
+      id: 7,
       title: "Communications",
       type: "dropdown",
       icon: Images.communication,
@@ -650,7 +689,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
 
     {
-      id: 7,
+      id: 8,
       title: "Emergency",
       type: "item",
       icon: Images.emergency,
@@ -661,7 +700,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         }),
     },
     {
-      id: 8,
+      id: 9,
       title: "Wallet",
       type: "item",
       icon: Images.wallet,
@@ -672,7 +711,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
 
     {
-      id: 9,
+      id: 10,
       title: "Payments",
       type: "item",
       icon: Images.wallet,
@@ -682,7 +721,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         }),
     },
     {
-      id: 10,
+      id: 11,
       title: "Chat",
       type: "item",
       icon: Images.communication,
