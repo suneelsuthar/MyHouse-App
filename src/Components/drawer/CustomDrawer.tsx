@@ -477,11 +477,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Assigned Property",
       type: "item",
       icon: Images.propreq,
-      onPress: () =>
-        closeMenusAndNavigate("Tenant", {
-          screen: "Home",
-          params: { screen: "TenantAssignedProperty" },
-        }),
+      onPress: () => closeMenusAndNavigate("TenantAssignedProp"),
     },
     {
       id: 2,
@@ -493,19 +489,15 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Work Requests",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
-              screen: "Home",
-              params: {
-                screen: "AdminFacilityManagement",
-                params: { status: "work_requests" },
-              },
+            closeMenusAndNavigate("TenantFacilityManagement", {
+              status: "work_requests",
             }),
         },
         {
           id: 1,
           title: "Work Orders",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("TenantFacilityManagement", {
               screen: "Home",
               params: {
                 screen: "AdminFacilityManagement",
@@ -517,7 +509,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 2,
           title: "Completed",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("TenantFacilityManagement", {
               screen: "Home",
               params: {
                 screen: "AdminFacilityManagement",
@@ -582,56 +574,62 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           title: "Summary",
           type: "item",
           icon: Images.simdata,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesSummary"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesSummary",
+            }),
         },
         {
           id: 2,
           title: "My Meter",
           type: "item",
           icon: Images.meters,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesMyMeter"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesMyMeter",
+            }),
         },
         {
           id: 3,
           title: "Charges",
           type: "item",
           icon: Images.managetrans,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesCharges"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesCharges",
+            }),
         },
         {
           id: 4,
           title: "Transactions",
           type: "item",
           icon: Images.managegroups,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesTransactions"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesTransactions",
+            }),
         },
         {
           id: 5,
           title: "Vending History",
           type: "item",
           icon: Images.managehistory,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesVendingHistory"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesVendingHistory",
+            }),
         },
         {
           id: 6,
           title: "Report an Issue",
           type: "item",
           icon: Images.settings,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesReportIssue"
-          })
-        }
-      ]
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesReportIssue",
+            }),
+        },
+      ],
     },
 
     {

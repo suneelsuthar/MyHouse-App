@@ -721,7 +721,34 @@ const Drawer = createDrawerNavigator();
 const TenantHomeStack = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="TenantHome" component={TenantHome} />
-
+    {/* Facility Management action pages */}
+    <HomeStack.Screen
+      name="AdminFMViewDetails"
+      component={AdminFMViewDetails}
+    />
+    <HomeStack.Screen name="AdminFMEdit" component={AdminFMEdit} />
+    <HomeStack.Screen
+      name="AdminFMGenerateWorkOrder"
+      component={AdminFMGenerateWorkOrder}
+    />
+    <HomeStack.Screen
+      name="AdminFMViewWorkOrder"
+      component={AdminFMViewWorkOrder}
+    />
+    {/* Facility Management Order action pages */}
+    <HomeStack.Screen name="AdminFMOrderView" component={AdminFMOrderView} />
+    <HomeStack.Screen
+      name="AdminFMOrderUpdate"
+      component={AdminFMOrderUpdate}
+    />
+    <HomeStack.Screen
+      name="AdminFMOrderExport"
+      component={AdminFMOrderExport}
+    />
+    <HomeStack.Screen
+      name="TenantFacilityManagement"
+      component={AdminFacilityManagement}
+    />
     <HomeStack.Screen
       name="TenantUtilitiesSummary"
       component={TenantUtilitiesSummary}
