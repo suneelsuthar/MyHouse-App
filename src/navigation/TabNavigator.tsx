@@ -129,9 +129,9 @@ import {
   AdminAmenityView,
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
-  AdminAmenityManageCalendar,
   AdminReservationView,
   AdminAddNewAmenity,
+  AdminAmenityManageCalendar,
   AdminEmergency,
   AdminProfile,
   AdminVisitorDetails,
@@ -784,6 +784,11 @@ const TenantHomeStack = () => (
       name="TenantUtilitiesReportIssue"
       component={TenantUtilitiesReportIssue}
     />
+
+    <HomeStack.Screen
+      name="AdminCommunityArea"
+      component={AdminCommunityArea}
+    />
   </HomeStack.Navigator>
 );
 
@@ -856,6 +861,16 @@ export const TenantTabNavigator = () => (
       component={AdminGenerateVisitorRequest}
     />
 
+    <Drawer.Screen
+      name="AdminAmenityMakeReservation"
+      component={AdminAmenityMakeReservation}
+    />
+    <Drawer.Screen
+      name="AdminReservationView"
+      component={AdminReservationView}
+    />
+    <Drawer.Screen name="AdminAddNewAmenity" component={AdminAddNewAmenity} />
+    <Drawer.Screen name="AdminAmenityView" component={AdminAmenityView} />
     {/* <HomeStack.Screen
       name="AdminVisitorDetails"
       component={AdminVisitorDetails}

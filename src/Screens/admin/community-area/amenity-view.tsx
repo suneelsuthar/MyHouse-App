@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -11,6 +11,9 @@ import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
+
 type DayCell = {
   date: Date;
   inMonth: boolean;
@@ -20,6 +23,7 @@ export function AdminAmenityView({
   route,
 }: AppStackScreenProps<"AdminAmenityView">) {
   const navigation = useNavigation();
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const data: any = route?.params?.data;
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -254,22 +258,44 @@ export function AdminAmenityView({
         <View style={styles.footerRow}>
           <TouchableOpacity
             activeOpacity={0.7}
-            style={[styles.addMoneyBtn]}
+            style={[
+              styles.addMoneyBtn,
+              {
+                backgroundColor:
+                  user?.role !== "tenant" ? colors.fill : colors.primary,
+              },
+            ]}
             onPress={() =>
               (navigation as any).navigate("AdminAmenityMakeReservation")
             }
           >
-            <Text style={styles.addMoneyBtnText}>New Reservation</Text>
+            <Text
+              weight="semibold"
+              style={[
+                styles.addMoneyBtnText,
+                {
+                  color:
+                    user?.role !== "tenant" ? colors.primary : colors.white,
+                },
+              ]}
+            >
+              New Reservation
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.sendMoneyBtn}
-            onPress={() =>
-              (navigation as any).navigate("AdminAmenityManageCalendar")
-            }
-          >
-            <Text style={styles.sendMoneyBtnText}>Manage Calendar</Text>
-          </TouchableOpacity>
+
+          {user?.role !== "tenant" && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.sendMoneyBtn}
+              onPress={() =>
+                (navigation as any).navigate("AdminAmenityManageCalendar")
+              }
+            >
+              <Text weight="semiBold" style={styles.sendMoneyBtnText}>
+                Manage Calendar
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </Screen>
@@ -442,7 +468,7 @@ const styles = StyleSheet.create({
   addMoneyBtnText: {
     color: colors.primaryLight,
     fontSize: adjustSize(14),
-    fontFamily: typography.fonts.poppins.normal,
+    fontFamily: typography.fonts.poppins.semiBold,
   },
   sendMoneyBtn: {
     flex: 1,

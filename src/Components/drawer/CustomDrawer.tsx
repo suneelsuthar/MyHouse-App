@@ -540,7 +540,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Amenities",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "AdminCommunityArea",
@@ -552,7 +552,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 1,
           title: "Reservations",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "AdminCommunityArea",
