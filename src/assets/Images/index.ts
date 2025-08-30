@@ -84,4 +84,8 @@ export const Images = {
   mobile: require("./mobile.svg"),
   mtn: require("./mtn.svg"),
   thistory: require("./thistory.svg"),
+  person: require("./person.svg"),
+  wallet2: require("./wallet-2.svg"),
+  dollar: require("./dollar.svg"),
+  meter: require("./meter-2.svg"),
 };

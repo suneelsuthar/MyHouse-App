@@ -27,7 +27,7 @@ const AnalysisChart: React.FC<BookingsChartProps> = ({
           labels: labels,
           datasets: [{ data: data }],
         }}
-        width={screenWidth - 50}
+        width={screenWidth - adjustSize(20)}
         height={260} // Increase height for yearly data to accommodate vertical labels
         fromZero
         showValuesOnTopOfBars={false}
