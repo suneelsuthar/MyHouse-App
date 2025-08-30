@@ -4,7 +4,8 @@ import { adjustSize, colors, typography } from "../../../../theme";
 import { Text } from "../../../../Components";
 import Entypo from "@expo/vector-icons/Entypo";
 import { IFacilityManagement } from "./../../../../utils/data";
-
+import { useAppSelector } from "../../../../store/hooks";
+import { RootState } from "../../../../store";
 interface FacilityManagementCardProps {
   activeTab: string;
   property: IFacilityManagement;
@@ -17,8 +18,21 @@ export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
   onAction,
   style,
 }) => {
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const [menuVisible, setMenuVisible] = useState(false);
   const thumb = property?.images?.[0];
+
+  const items = [
+    "View",
+    "Edit",
+    "Make reservations",
+    "Manage Calendar",
+    "Delete",
+  ];
+
+  user?.role === "tenant" && items.splice(items.indexOf("Delete"), 1);
+  user?.role === "tenant" && items.splice(items.indexOf("Edit"), 1);
+  user?.role === "tenant" && items.splice(items.indexOf("Manage Calendar"), 1);
   return (
     <View style={{ position: "relative" }}>
       <View style={[styles.container, style]}>
@@ -104,13 +118,7 @@ export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
 
           {/* Menu box */}
           <View style={styles.menuBox}>
-            {[
-              "View",
-              "Edit",
-              "Make reservations",
-              "Manage Calendar",
-              "Delete",
-            ].map((a) => (
+            {items.map((a) => (
               <TouchableOpacity
                 key={a}
                 onPress={() => {

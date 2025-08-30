@@ -477,11 +477,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Assigned Property",
       type: "item",
       icon: Images.propreq,
-      onPress: () =>
-        closeMenusAndNavigate("Tenant", {
-          screen: "Home",
-          params: { screen: "TenantAssignedProperty" },
-        }),
+      onPress: () => closeMenusAndNavigate("TenantAssignedProp"),
     },
     {
       id: 2,
@@ -493,19 +489,15 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Work Requests",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
-              screen: "Home",
-              params: {
-                screen: "AdminFacilityManagement",
-                params: { status: "work_requests" },
-              },
+            closeMenusAndNavigate("TenantFacilityManagement", {
+              status: "work_requests",
             }),
         },
         {
           id: 1,
           title: "Work Orders",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("TenantFacilityManagement", {
               screen: "Home",
               params: {
                 screen: "AdminFacilityManagement",
@@ -517,7 +509,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 2,
           title: "Completed",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("TenantFacilityManagement", {
               screen: "Home",
               params: {
                 screen: "AdminFacilityManagement",
@@ -535,7 +527,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Tenant", {
           screen: "Home",
-          params: { screen: "TenantVisitorManagement" },
+          params: { screen: "AdminVisitorRequests" },
         }),
     },
     {
@@ -548,7 +540,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Amenities",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "AdminCommunityArea",
@@ -560,7 +552,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 1,
           title: "Reservations",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "AdminCommunityArea",
@@ -582,60 +574,105 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           title: "Summary",
           type: "item",
           icon: Images.simdata,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesSummary"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesSummary",
+            }),
         },
         {
           id: 2,
           title: "My Meter",
           type: "item",
           icon: Images.meters,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesMyMeter"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesMyMeter",
+            }),
         },
         {
           id: 3,
           title: "Charges",
           type: "item",
           icon: Images.managetrans,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesCharges"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesCharges",
+            }),
         },
         {
           id: 4,
           title: "Transactions",
           type: "item",
           icon: Images.managegroups,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesTransactions"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesTransactions",
+            }),
         },
         {
           id: 5,
           title: "Vending History",
           type: "item",
           icon: Images.managehistory,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesVendingHistory"
-          })
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesVendingHistory",
+            }),
         },
         {
           id: 6,
           title: "Report an Issue",
           type: "item",
           icon: Images.settings,
-          onPress: () => closeMenusAndNavigate("Home", {
-            screen: "TenantUtilitiesReportIssue"
-          })
-        }
-      ]
+          onPress: () =>
+            closeMenusAndNavigate("Home", {
+              screen: "TenantUtilitiesReportIssue",
+            }),
+        },
+      ],
     },
-
     {
       id: 6,
+      title: "Utilities Analysis",
+      type: "dropdown",
+      icon: Images.analysis,
+      menueItems: [
+        {
+          id: 1,
+          title: "Power Consumption",
+          type: "item",
+          icon: Images.simdata,
+          // onPress: () =>
+          //   closeMenusAndNavigate("Home", {
+          //     screen: "TenantUtilitiesSummary",
+          //   }),
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Home",
+              params: {
+                screen: "AdminAnalysis",
+                params: { tab: "power_consumption" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Vending History",
+          type: "item",
+          icon: Images.meters,
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Home",
+              params: {
+                screen: "AdminAnalysis",
+                params: { tab: "vending_history" },
+              },
+            }),
+        },
+      ],
+    },
+    {
+      id: 7,
       title: "Communications",
       type: "dropdown",
       icon: Images.communication,
@@ -652,7 +689,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
 
     {
-      id: 7,
+      id: 8,
       title: "Emergency",
       type: "item",
       icon: Images.emergency,
@@ -663,7 +700,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         }),
     },
     {
-      id: 8,
+      id: 9,
       title: "Wallet",
       type: "item",
       icon: Images.wallet,
@@ -674,7 +711,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
 
     {
-      id: 9,
+      id: 10,
       title: "Payments",
       type: "item",
       icon: Images.wallet,
@@ -684,7 +721,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         }),
     },
     {
-      id: 10,
+      id: 11,
       title: "Chat",
       type: "item",
       icon: Images.communication,

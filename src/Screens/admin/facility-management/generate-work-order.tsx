@@ -175,7 +175,7 @@ export function AdminFMGenerateWorkOrder({ navigation }: Props) {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header title="Create work order" />
+      <Header title="Generate Work Request" />
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}

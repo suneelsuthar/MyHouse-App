@@ -4,6 +4,8 @@ import { Text } from "./Text";
 import { colors, adjustSize } from "../theme";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { WithLocalSvg } from "react-native-svg/css";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { RootState } from "../store";
 import { Images } from "../assets/Images";
 
 interface HeaderProps {
@@ -14,6 +16,40 @@ interface HeaderProps {
 
 export function Header2({ title, onNotificationPress, onPress }: HeaderProps) {
   const navigation = useNavigation();
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
+  // const { user } = useAppSelector((state: RootState) => state.auth);
+  // Map route names to drawer names
+  const routeToDrawerMap: Record<string, string> = {
+    tenant: "TenantDrawer",
+    admin: "AdminDrawer",
+    agent: "AgentDrawer",
+    landlord: "LandlordDrawer",
+    subLandlord: "SubLandlordDrawer",
+    security: "SecurityDrawer",
+    facilityManager: "FacilityManagerDrawer",
+  };
+
+  // console.log(user.role)
+  // Function to get drawer name based on user role
+  const getDrawerName = () => {
+    // This is a simplified example - you should replace this with your actual role detection logic
+    // For example, you might get this from your auth context or global state
+    const path = (navigation as any).getState()?.routes?.[0]?.name || "";
+    console.log(path);
+    // Default to AdminDrawer if no match found
+    return routeToDrawerMap[user?.role as string] || "AdminDrawer";
+  };
+
+  console.log("=====>", getDrawerName());
+
+  const handleDrawerOpen = () => {
+    const drawerName = getDrawerName();
+
+    (navigation as any)
+      .getParent?.(drawerName)
+      ?.dispatch(DrawerActions.openDrawer());
+  };
 
   const handleDrawerOpen = () => {
     if (onPress) {

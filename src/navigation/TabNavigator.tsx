@@ -129,9 +129,9 @@ import {
   AdminAmenityView,
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
-  AdminAmenityManageCalendar,
   AdminReservationView,
   AdminAddNewAmenity,
+  AdminAmenityManageCalendar,
   AdminEmergency,
   AdminProfile,
   AdminVisitorDetails,
@@ -721,7 +721,45 @@ const Drawer = createDrawerNavigator();
 const TenantHomeStack = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="TenantHome" component={TenantHome} />
+    {/* Facility Management action pages */}
+    <HomeStack.Screen
+      name="AdminFMViewDetails"
+      component={AdminFMViewDetails}
+    />
+    <HomeStack.Screen name="AdminFMEdit" component={AdminFMEdit} />
+    <HomeStack.Screen
+      name="AdminFMGenerateWorkOrder"
+      component={AdminFMGenerateWorkOrder}
+    />
+    <HomeStack.Screen
+      name="AdminFMViewWorkOrder"
+      component={AdminFMViewWorkOrder}
+    />
+    {/* Facility Management Order action pages */}
+    <HomeStack.Screen name="AdminFMOrderView" component={AdminFMOrderView} />
+    <HomeStack.Screen
+      name="AdminFMOrderUpdate"
+      component={AdminFMOrderUpdate}
+    />
+    <HomeStack.Screen
+      name="AdminFMOrderExport"
+      component={AdminFMOrderExport}
+    />
 
+    <HomeStack.Screen
+      name="AdminVisitorRequests"
+      component={AdminVisitorRequests}
+    />
+
+    <HomeStack.Screen
+      name="AdminRevokedInvitations"
+      component={AdminRevokedInvitations}
+    />
+
+    <HomeStack.Screen
+      name="TenantFacilityManagement"
+      component={AdminFacilityManagement}
+    />
     <HomeStack.Screen
       name="TenantUtilitiesSummary"
       component={TenantUtilitiesSummary}
@@ -746,6 +784,13 @@ const TenantHomeStack = () => (
       name="TenantUtilitiesReportIssue"
       component={TenantUtilitiesReportIssue}
     />
+
+    <HomeStack.Screen
+      name="AdminCommunityArea"
+      component={AdminCommunityArea}
+    />
+
+    <HomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
   </HomeStack.Navigator>
 );
 
@@ -812,6 +857,26 @@ export const TenantTabNavigator = () => (
   >
     <Drawer.Screen name="Tenant" component={TenantTabs} />
     <Drawer.Screen name="TenantAssignedProp" component={TenantAssignedProp} />
+    <Drawer.Screen name="AdminVisitorDetails" component={AdminVisitorDetails} />
+    <Drawer.Screen
+      name="AdminGenerateVisitorRequest"
+      component={AdminGenerateVisitorRequest}
+    />
+
+    <Drawer.Screen
+      name="AdminAmenityMakeReservation"
+      component={AdminAmenityMakeReservation}
+    />
+    <Drawer.Screen
+      name="AdminReservationView"
+      component={AdminReservationView}
+    />
+    <Drawer.Screen name="AdminAddNewAmenity" component={AdminAddNewAmenity} />
+    <Drawer.Screen name="AdminAmenityView" component={AdminAmenityView} />
+    {/* <HomeStack.Screen
+      name="AdminVisitorDetails"
+      component={AdminVisitorDetails}
+    /> */}
   </Drawer.Navigator>
 );
 

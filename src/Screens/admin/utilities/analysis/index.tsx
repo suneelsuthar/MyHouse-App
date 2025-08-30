@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { Screen, Text, Header2, CustomTabs } from "../../../../Components";
 import { colors, typography, adjustSize, spacing } from "../../../../theme";
@@ -11,12 +11,20 @@ import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import AnalysisChart from "../../../../Components/AnalysisChart";
 import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicker";
-export const AdminAnalysis: React.FC = () => {
+export const AdminAnalysis: React.FC = (props: any) => {
   const [activeTab, setActiveTab] = useState("Power Consumption");
   const [selectBy, setSelectBy] = useState<string | undefined>();
   const [selectedProperty, setSelectedProperty] = useState<
     string | undefined
   >();
+
+  useEffect(() => {
+    if (props?.route?.params?.tab === "power_consumption") {
+      setActiveTab("Power Consumption");
+    } else {
+      setActiveTab("Vending History");
+    }
+  }, [props?.route?.params]);
 
   // 🔹 Date picker states
   const [startDate, setStartDate] = useState<Date | null>(null);

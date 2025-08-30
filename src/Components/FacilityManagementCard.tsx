@@ -4,7 +4,9 @@ import { adjustSize, colors, typography } from "../theme";
 import { Text } from "./Text";
 import Entypo from "@expo/vector-icons/Entypo";
 import { IFacilityManagement } from "../utils/data";
-
+import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { RootState } from "../store";
 interface FacilityManagementCardProps {
   activeTab: string;
   property: IFacilityManagement;
@@ -13,12 +15,6 @@ interface FacilityManagementCardProps {
   style?: object; // ✅ custom styling (red/blue bg)
 }
 
-const WorkRequestsAction = [
-  "View Details",
-  "Edit",
-  "Generate work order",
-  "View work order",
-];
 const OrderAction = ["View", "Update", "Export", "Chat"];
 const CompletedAction = ["View", "Export", "Chat"];
 export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
@@ -30,14 +26,30 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const thumb = property?.images?.[0];
-let ACTIONS: string[] = [];
+  const navigation = useNavigation();
+
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
+  // user?.role === "tenant" && OrderAction.splice(2, 2);
+
+  const AdminWorkRequestsAction = [
+    "View Details",
+    "Edit",
+    "Generate work order",
+    "View work order",
+  ];
+
+  // user?.role === "tenant" && AdminWorkRequestsAction.splice(2, 1);
+
+  let ACTIONS: string[] = [];
   if (activeTab?.toLowerCase() === "work requests") {
-    ACTIONS = WorkRequestsAction;
+    ACTIONS = AdminWorkRequestsAction;
   } else if (activeTab?.toLowerCase() === "orders") {
     ACTIONS = OrderAction;
   } else if (activeTab?.toLowerCase() === "completed") {
     ACTIONS = CompletedAction;
   }
+
   return (
     <View style={{ position: "relative" }}>
       <View style={[styles.container, style]}>

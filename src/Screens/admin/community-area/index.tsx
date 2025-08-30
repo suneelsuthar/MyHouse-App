@@ -18,6 +18,8 @@ import GroupDropdown from "../../../Components/GroupDropdwon";
 import { AmenitiesCard } from "./components/AmenitiesCard";
 import { ReservationsCard } from "./components/ReservationsCard";
 import SmallCustomModal from "../../../Components/SmallCustomModal";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
 type Props = AppStackScreenProps<"AdminCommunityArea">;
 export function AdminCommunityArea({ route }: Props) {
   const navigation = useNavigation();
@@ -32,6 +34,8 @@ export function AdminCommunityArea({ route }: Props) {
   const [rejectModal, setRejectModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [amenityDeleteModal, setAmenityDeleteModal] = useState(false);
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
   useEffect(() => {
     setActiveTab(titleMap[status]);
   }, [status]);
@@ -196,7 +200,7 @@ export function AdminCommunityArea({ route }: Props) {
         <View style={[styles._searchrow, { marginTop: adjustSize(15) }]}>
           <View style={styles._inputview}>
             {activeTab === "Amenities" ? (
-              <GroupDropdown />
+              <GroupDropdown placeholder="Select Properties" />
             ) : (
               <TextField
                 placeholderTextColor={colors.primaryLight}
@@ -207,13 +211,29 @@ export function AdminCommunityArea({ route }: Props) {
             )}
           </View>
 
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles._addbtn}
-            onPress={() => (navigation as any).navigate("AdminAddNewAmenity")}
-          >
-            <WithLocalSvg asset={Images.addprop} />
-          </TouchableOpacity>
+          {user?.role === "tenant" ? (
+            activeTab !== "Amenities" && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles._addbtn}
+                onPress={() =>
+                  (navigation as any).navigate("AdminAmenityMakeReservation", {
+                    data: data,
+                  })
+                }
+              >
+                <WithLocalSvg asset={Images.addprop} />
+              </TouchableOpacity>
+            )
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles._addbtn}
+              onPress={() => (navigation as any).navigate("AdminAddNewAmenity")}
+            >
+              <WithLocalSvg asset={Images.addprop} />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.section}>
           <View style={styles._seciton_row}>
