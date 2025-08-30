@@ -17,6 +17,7 @@ export type TenantStackParamList = {
   TenantNotifications: undefined;
   TenantSupport: undefined;
   TenantSettings: undefined;
+  TenantAssignedProp:undefined;
   // Tenant Utilities Screens
   TenantUtilitiesSummary: undefined;
   TenantUtilitiesMyMeter: undefined;

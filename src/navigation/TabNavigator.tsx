@@ -22,6 +22,7 @@ import {
   TenantNotifications,
   TenantSupport,
   TenantSettings,
+  TenantAssignedProp,
 
   // New Tenant Tab Screens
   TenantHome,
@@ -193,12 +194,12 @@ const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminWalletStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
 
-import { TenantUtilitiesSummary } from '../Screens/tenant/utilities/Summary';
-import { TenantUtilitiesMyMeter } from '../Screens/tenant/utilities/MyMeter';
-import { TenantUtilitiesCharges } from '../Screens/tenant/utilities/Charges';
-import { TenantUtilitiesTransactions } from '../Screens/tenant/utilities/Transactions';
-import { TenantUtilitiesVendingHistory } from '../Screens/tenant/utilities/VendingHistory';
-import { TenantUtilitiesReportIssue } from '../Screens/tenant/utilities/ReportIssue';
+import { TenantUtilitiesSummary } from "../Screens/tenant/utilities/Summary";
+import { TenantUtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
+import { TenantUtilitiesCharges } from "../Screens/tenant/utilities/Charges";
+import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transactions";
+import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/VendingHistory";
+import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
 
 // Tenant Stack Navigator
 const TenantStackNavigator = () => (
@@ -225,12 +226,30 @@ const TenantStackNavigator = () => (
     <TenantStack.Screen name="TenantSupport" component={TenantSupport} />
     <TenantStack.Screen name="TenantSettings" component={TenantSettings} />
     {/* Tenant Utilities Screens */}
-    <TenantStack.Screen name="TenantUtilitiesSummary" component={TenantUtilitiesSummary} />
-    <TenantStack.Screen name="TenantUtilitiesMyMeter" component={TenantUtilitiesMyMeter} />
-    <TenantStack.Screen name="TenantUtilitiesCharges" component={TenantUtilitiesCharges} />
-    <TenantStack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />
-    <TenantStack.Screen name="TenantUtilitiesVendingHistory" component={TenantUtilitiesVendingHistory} />
-    <TenantStack.Screen name="TenantUtilitiesReportIssue" component={TenantUtilitiesReportIssue} />
+    <TenantStack.Screen
+      name="TenantUtilitiesSummary"
+      component={TenantUtilitiesSummary}
+    />
+    <TenantStack.Screen
+      name="TenantUtilitiesMyMeter"
+      component={TenantUtilitiesMyMeter}
+    />
+    <TenantStack.Screen
+      name="TenantUtilitiesCharges"
+      component={TenantUtilitiesCharges}
+    />
+    <TenantStack.Screen
+      name="TenantUtilitiesTransactions"
+      component={TenantUtilitiesTransactions}
+    />
+    <TenantStack.Screen
+      name="TenantUtilitiesVendingHistory"
+      component={TenantUtilitiesVendingHistory}
+    />
+    <TenantStack.Screen
+      name="TenantUtilitiesReportIssue"
+      component={TenantUtilitiesReportIssue}
+    />
   </TenantStack.Navigator>
 );
 
@@ -702,12 +721,31 @@ const Drawer = createDrawerNavigator();
 const TenantHomeStack = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="TenantHome" component={TenantHome} />
-    <HomeStack.Screen name="TenantUtilitiesSummary" component={TenantUtilitiesSummary} />
-    <HomeStack.Screen name="TenantUtilitiesMyMeter" component={TenantUtilitiesMyMeter} />
-    <HomeStack.Screen name="TenantUtilitiesCharges" component={TenantUtilitiesCharges} />
-    <HomeStack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />
-    <HomeStack.Screen name="TenantUtilitiesVendingHistory" component={TenantUtilitiesVendingHistory} />
-    <HomeStack.Screen name="TenantUtilitiesReportIssue" component={TenantUtilitiesReportIssue} />
+
+    <HomeStack.Screen
+      name="TenantUtilitiesSummary"
+      component={TenantUtilitiesSummary}
+    />
+    <HomeStack.Screen
+      name="TenantUtilitiesMyMeter"
+      component={TenantUtilitiesMyMeter}
+    />
+    <HomeStack.Screen
+      name="TenantUtilitiesCharges"
+      component={TenantUtilitiesCharges}
+    />
+    <HomeStack.Screen
+      name="TenantUtilitiesTransactions"
+      component={TenantUtilitiesTransactions}
+    />
+    <HomeStack.Screen
+      name="TenantUtilitiesVendingHistory"
+      component={TenantUtilitiesVendingHistory}
+    />
+    <HomeStack.Screen
+      name="TenantUtilitiesReportIssue"
+      component={TenantUtilitiesReportIssue}
+    />
   </HomeStack.Navigator>
 );
 
@@ -773,8 +811,7 @@ export const TenantTabNavigator = () => (
     )}
   >
     <Drawer.Screen name="Tenant" component={TenantTabs} />
-    
-
+    <Drawer.Screen name="TenantAssignedProp" component={TenantAssignedProp} />
   </Drawer.Navigator>
 );
 

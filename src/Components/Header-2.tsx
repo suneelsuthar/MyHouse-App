@@ -8,9 +8,10 @@ import { Images } from "../assets/Images";
 interface HeaderProps {
   title: string;
   onNotificationPress?: () => void;
+  onPress?: () => void;
 }
 
-export function Header2({ title, onNotificationPress }: HeaderProps) {
+export function Header2({ title, onNotificationPress, onPress }: HeaderProps) {
   const navigation = useNavigation();
 
   return (
@@ -19,9 +20,11 @@ export function Header2({ title, onNotificationPress }: HeaderProps) {
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={() =>
-          (navigation as any)
-            .getParent?.("AdminDrawer")
-            ?.dispatch(DrawerActions.openDrawer())
+          onPress
+            ? onPress()
+            : (navigation as any)
+                .getParent?.("AdminDrawer")
+                ?.dispatch(DrawerActions.openDrawer())
         }
       >
         <WithLocalSvg

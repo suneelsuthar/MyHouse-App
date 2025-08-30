@@ -19,7 +19,7 @@ import BookingsChart from "../../../Components/BookingChart";
 const width = Dimensions.get("screen").width;
 
 export const TenantHome = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const analyticsData = [
     { label: "Monthly", value: "monthly" },
     { label: "Weekly", value: "weekly" },
@@ -135,17 +135,17 @@ export const TenantHome = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles._card}>
-              <WithLocalSvg asset={Images.visitormanagement} />
+              <WithLocalSvg asset={Images.workrequests} />
               <Text text="Work Requests" style={styles._card_text} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles._card}>
-              <WithLocalSvg asset={Images.visitormanagement} />
+              <WithLocalSvg asset={Images.makepayment} />
               <Text text="Make Payment" style={styles._card_text} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles._card}>
-              <WithLocalSvg asset={Images.visitormanagement} />
+              <WithLocalSvg asset={Images.kyc} />
               <Text text="KYC" style={styles._card_text} />
             </TouchableOpacity>
           </View>
@@ -178,6 +178,7 @@ export const TenantHome = () => {
             width: "95%",
             alignSelf: "center",
           }}
+          onPress={() => navigation.navigate("TenantAssignedProp")}
         />
         {/* PROPERTIES CARD */}
         <View style={styles.propertiesSection}>
@@ -219,10 +220,8 @@ export const TenantHome = () => {
             </Text>
           </View>
           <BookingsChart
-           data={[14, 20, 28, 32]}
-           lables={["Week1","Week2","Week3","Week4"]}
-
-          
+            data={[14, 20, 28, 32]}
+            lables={["Week1", "Week2", "Week3", "Week4"]}
           />
         </View>
       </ScrollView>
@@ -309,7 +308,7 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dropdownContainer: {
-    width: adjustSize(120),
+    width: adjustSize(130),
   },
   customDropdownStyle: {
     height: adjustSize(40),
