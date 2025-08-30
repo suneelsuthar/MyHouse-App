@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Screen, Text, Header, TextField } from "../../../Components";
+import { Screen, Text, Header2, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -107,35 +107,7 @@ export const AdminVisitorRequests: React.FC = () => {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header
-        leftAccessory={
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() =>
-              (navigation as any)
-                .getParent?.("AdminDrawer")
-                ?.dispatch(DrawerActions.openDrawer())
-            }
-          >
-            <WithLocalSvg asset={Images.user} />
-          </TouchableOpacity>
-        }
-        centerAccessory={
-          <Text
-            weight="semiBold"
-            style={{ fontSize: adjustSize(15), color: colors.primary }}
-          >
-            Visitor Management
-          </Text>
-        }
-        rightAccessory={
-          <View style={styles.headerRightContainer}>
-            <TouchableOpacity activeOpacity={0.5}>
-              <WithLocalSvg asset={Images.notofication} />
-            </TouchableOpacity>
-          </View>
-        }
-      />
+      <Header2 title="Visitor Management" />
 
       {/* Tabs */}
       <View style={styles.tabsContainer}>

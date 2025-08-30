@@ -527,7 +527,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Tenant", {
           screen: "Home",
-          params: { screen: "TenantVisitorManagement" },
+          params: { screen: "AdminVisitorRequests" },
         }),
     },
     {

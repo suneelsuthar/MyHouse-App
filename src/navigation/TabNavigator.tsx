@@ -745,6 +745,17 @@ const TenantHomeStack = () => (
       name="AdminFMOrderExport"
       component={AdminFMOrderExport}
     />
+
+    <HomeStack.Screen
+      name="AdminVisitorRequests"
+      component={AdminVisitorRequests}
+    />
+
+    <HomeStack.Screen
+      name="AdminRevokedInvitations"
+      component={AdminRevokedInvitations}
+    />
+
     <HomeStack.Screen
       name="TenantFacilityManagement"
       component={AdminFacilityManagement}
@@ -839,6 +850,16 @@ export const TenantTabNavigator = () => (
   >
     <Drawer.Screen name="Tenant" component={TenantTabs} />
     <Drawer.Screen name="TenantAssignedProp" component={TenantAssignedProp} />
+    <Drawer.Screen name="AdminVisitorDetails" component={AdminVisitorDetails} />
+    <Drawer.Screen
+      name="AdminGenerateVisitorRequest"
+      component={AdminGenerateVisitorRequest}
+    />
+
+    {/* <HomeStack.Screen
+      name="AdminVisitorDetails"
+      component={AdminVisitorDetails}
+    /> */}
   </Drawer.Navigator>
 );
 
