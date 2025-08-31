@@ -51,18 +51,18 @@ export function Header2({ title, onNotificationPress, onPress }: HeaderProps) {
       ?.dispatch(DrawerActions.openDrawer());
   };
 
-  const handleDrawerOpen = () => {
-    if (onPress) {
-      onPress(); // use custom handler if passed
-    } else {
-      // fallback: open AdminDrawer OR TenantDrawer if available
-      const parentNav: any =
-        (navigation as any).getParent?.("AdminDrawer") ||
-        (navigation as any).getParent?.("TenantDrawer");
+  // const handleDrawerOpen = () => {
+  //   if (onPress) {
+  //     onPress(); // use custom handler if passed
+  //   } else {
+  //     // fallback: open AdminDrawer OR TenantDrawer if available
+  //     const parentNav: any =
+  //       (navigation as any).getParent?.("AdminDrawer") ||
+  //       (navigation as any).getParent?.("TenantDrawer");
 
-      parentNav?.dispatch(DrawerActions.openDrawer());
-    }
-  };
+  //     parentNav?.dispatch(DrawerActions.openDrawer());
+  //   }
+  // };
 
   return (
     <View style={styles.header}>

@@ -88,4 +88,5 @@ export const Images = {
   wallet2: require("./wallet-2.svg"),
   dollar: require("./dollar.svg"),
   meter: require("./meter-2.svg"),
+  check: require("./check.svg"),
 };

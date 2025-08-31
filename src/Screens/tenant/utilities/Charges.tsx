@@ -4,7 +4,6 @@ import { Screen, Text, Header2, TextField } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { TenantUtilitiesTabs } from "./Components/TenantUtilitiesTabs";
-import { TenantUtilitiesHistory } from "./Components/TenantUtilitiesHistory";
 import { TenantUtilitiesChargesList } from "./Components//TenantUtilitiesChargesList";
 // 🔹 Static dropdown data
 const typeOptions = [

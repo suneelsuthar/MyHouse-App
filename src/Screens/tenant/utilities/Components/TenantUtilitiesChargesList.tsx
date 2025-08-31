@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
-import { Text, Button } from "../../../../Components";
+import { Text, Button, TextField } from "../../../../Components";
 import moment from "moment";
 import Entypo from "@expo/vector-icons/Entypo";
 import { CustomModal } from "./CustomModal";
-// ✅ Define Transaction type
+import { Images } from "../../../../assets/Images";
+import { WithLocalSvg } from "react-native-svg/css";
+
 interface Transaction {
   chargeType: string;
   totalAmount: number;
@@ -18,14 +20,28 @@ interface Transaction {
 
 export const TenantUtilitiesChargesList: React.FC = () => {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
-  const [visible, setVisible] = useState(false); // receipt modal
+  const [visible, setVisible] = useState(false);
   const [payNowModal, setPayNowModal] = useState(false);
   const [pinModal, setPinModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [selectedData, setSelectedData] = useState<Transaction | null>(null);
+  const [amount, setAmount] = useState("");
+  const amountRef = useRef(null);
+  const pinRef = useRef(null);
 
   const formatAmount = (num: number) =>
     new Intl.NumberFormat("en-IN").format(num);
+
+  // ✅ global computed outstanding amount
+  const outstanding =
+    (selectedData?.totalAmount || 0) - (selectedData?.amountPaid || 0);
+
+  const getButtonTitle = () => {
+    if (!amount || parseInt(amount, 10) === 0) return "Pay Now";
+    if (parseInt(amount, 10) === outstanding) return "Pay Full";
+    if (parseInt(amount, 10) < outstanding) return "Pay Partial";
+    return "Pay Now";
+  };
 
   const data: Transaction[] = Array.from({ length: 20 }, (_, i) => {
     const totalAmount = 100000 + i * 50000;
@@ -140,7 +156,10 @@ export const TenantUtilitiesChargesList: React.FC = () => {
                         setVisibleMenuIndex(null);
                         setSelectedData(item);
                         if (a === "View Receipt") setVisible(true);
-                        else setPayNowModal(true);
+                        else {
+                          setAmount("");
+                          setPayNowModal(true);
+                        }
                       }}
                       style={styles.menuItem}
                       activeOpacity={0.6}
@@ -200,10 +219,7 @@ export const TenantUtilitiesChargesList: React.FC = () => {
             ₦ {formatAmount(selectedData?.totalAmount || 0)}
           </Text>
           <Text style={styles.modalRemaningPayment}>
-            Remaining Payment: ₦
-            {formatAmount(
-              (selectedData?.totalAmount || 0) - (selectedData?.amountPaid || 0)
-            )}
+            Remaining Payment: ₦{formatAmount(outstanding)}
           </Text>
         </View>
 
@@ -256,21 +272,104 @@ export const TenantUtilitiesChargesList: React.FC = () => {
       {/* Pay Now Modal */}
       <CustomModal visible={payNowModal} onClose={() => setPayNowModal(false)}>
         <Text style={styles.modalHeading}>Outstanding</Text>
-        <View style={styles.btnMain}>
-          <Button
-            text={"Pay Now"}
-            preset="reversed"
-            onPress={() => {
-              setPayNowModal(false);
-              setPinModal(true);
+        <View style={styles.outstandingHeader}>
+          <Text style={styles.outstandingAmountPaid}>
+            ₦ {formatAmount(selectedData?.amountPaid || 0)}{" "}
+            <Text
+              style={[styles.outstandingAmountPaid, { color: colors.grey }]}
+            >
+              (Paid)
+            </Text>
+          </Text>
+          <TouchableOpacity activeOpacity={0.7} style={styles.fundWalletBtn}>
+            <Text style={styles.fundWalletBtnTxt}>Fund Wallet</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.OutstandingAmount}>Outstanding Amount</Text>
+        <Text style={styles.OutstandingRemaningPayment}>
+          ₦ {formatAmount(outstanding)}
+        </Text>
+        {outstanding > 0 && (
+          <View
+            style={{
+              marginHorizontal: adjustSize(10),
+              marginVertical: adjustSize(10),
             }}
-          />
+          >
+            <TextField
+              ref={amountRef}
+              value={amount}
+              onChangeText={(text) => {
+                let numeric = text.replace(/[^0-9]/g, "");
+                if (numeric === "") {
+                  setAmount("");
+                  return;
+                }
+                let num = parseInt(numeric, 10);
+                if (num > outstanding) num = outstanding;
+                setAmount(num.toString());
+                if (num === outstanding) {
+                  amountRef.current?.blur();
+                }
+              }}
+              placeholderTextColor={colors.primaryLight}
+              inputWrapperStyle={{ backgroundColor: colors.fill }}
+              placeholder={`Max ₦${formatAmount(outstanding)}`}
+              keyboardType="numeric"
+              maxLength={outstanding.toString().length}
+            />
+          </View>
+        )}
+
+        <Text style={styles.outstandingTxt}>Reason of Charges</Text>
+        <Text style={styles.outstandingTxt}>Common Area Charges</Text>
+        <View style={styles.btnMain}>
+          {outstanding > 0 ? (
+            <Button
+              text={getButtonTitle()}
+              preset="reversed"
+              disabled={amount === "" ? true : false}
+              onPress={() => {
+                setPayNowModal(false);
+                setPinModal(true);
+              }}
+            />
+          ) : (
+            <Button
+              text="Close"
+              preset="reversed"
+              onPress={() => setPayNowModal(false)}
+            />
+          )}
         </View>
       </CustomModal>
 
       {/* PIN Modal */}
       <CustomModal visible={pinModal} onClose={() => setPinModal(false)}>
         <Text style={styles.modalHeading}>Enter Your PIN</Text>
+        <View
+          style={{
+            marginHorizontal: adjustSize(10),
+            marginVertical: adjustSize(15),
+            marginTop: adjustSize(20),
+          }}
+        >
+          <TextField
+            ref={pinRef}
+            placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={{ backgroundColor: colors.fill }}
+            placeholder={`Enter Pin`}
+            keyboardType="numeric"
+            maxLength={4}
+            style={{ textAlign: "center" }}
+            secureTextEntry={true}
+            onChangeText={(text) => {
+              if (text.length === 4) {
+                pinRef.current?.blur(); // ✅ auto unfocus
+              }
+            }}
+          />
+        </View>
         <View style={styles.btnMain}>
           <Button
             text={"Continue"}
@@ -288,10 +387,18 @@ export const TenantUtilitiesChargesList: React.FC = () => {
         visible={successModal}
         onClose={() => setSuccessModal(false)}
       >
+        <WithLocalSvg
+          asset={Images.check}
+          style={{
+            alignSelf: "center",
+            marginTop: adjustSize(10),
+            marginBottom: adjustSize(15),
+          }}
+        />
         <Text style={styles.modalHeading}>Purchase Successful 🎉</Text>
         <View style={styles.btnMain}>
           <Button
-            text={"Close"}
+            text={"Continue"}
             preset="reversed"
             onPress={() => setSuccessModal(false)}
           />
@@ -396,4 +503,62 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(10),
   },
   doneProgress: { height: "100%", borderRadius: 100 },
+  outstandingHeader: {
+    flexDirection: "row",
+    paddingHorizontal: adjustSize(15),
+    borderBottomWidth: adjustSize(0.5),
+    borderColor: "#B0B0B0",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: adjustSize(20),
+    marginTop: adjustSize(30),
+  },
+  outstandingAmountPaid: {
+    fontSize: adjustSize(15),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  fundWalletBtn: {
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 0.5,
+    borderWidth: adjustSize(0.5),
+    borderColor: "#F2F3FF",
+    height: adjustSize(40),
+    borderRadius: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: adjustSize(15),
+  },
+  fundWalletBtnTxt: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+    opacity: 0.7,
+  },
+  OutstandingAmount: {
+    fontSize: adjustSize(14),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+    textAlign: "center",
+    opacity: 0.7,
+    marginTop: adjustSize(10),
+  },
+  OutstandingRemaningPayment: {
+    fontSize: adjustSize(36),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.bold,
+    textAlign: "center",
+    lineHeight: adjustSize(55),
+  },
+  outstandingTxt: {
+    fontSize: adjustSize(14),
+    color: "#7E7E7E",
+    fontFamily: typography.fonts.poppins.normal,
+    textAlign: "center",
+    marginTop: adjustSize(5),
+  },
 });
