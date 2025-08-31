@@ -13,6 +13,11 @@ import NewMessageIcon from "./NewMessageIcon";
 import HistoryIcon2 from "./HistoryIcon2";
 import VendingHistoryIcon from "./VendingHistoryIcon";
 import PowerConsumptionIcon from "./PowerConsumptionIcon";
+import SummaryIcon from "./SummaryIcon";
+import TransactionIcon from "./TransactionIcon";
+import MyMeterIcon from "./MyMeterIcon";
+import ChargesIcon from "./ChargesIcon";
+import ReportIssueIcon from "./ReportIssueIcon";
 export {
   HistoryIcon,
   HomeIcon,
@@ -28,4 +33,9 @@ export {
   HistoryIcon2,
   VendingHistoryIcon,
   PowerConsumptionIcon,
+  SummaryIcon,
+  TransactionIcon,
+  MyMeterIcon,
+  ChargesIcon,
+  ReportIssueIcon,
 };

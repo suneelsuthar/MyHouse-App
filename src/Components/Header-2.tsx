@@ -7,10 +7,11 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store";
 import { Images } from "../assets/Images";
+
 interface HeaderProps {
   title: string;
   onNotificationPress?: () => void;
-  onPress?: () => void;
+  onPress?: () => void; // optional custom handler
 }
 
 export function Header2({ title, onNotificationPress, onPress }: HeaderProps) {
@@ -49,6 +50,19 @@ export function Header2({ title, onNotificationPress, onPress }: HeaderProps) {
       .getParent?.(drawerName)
       ?.dispatch(DrawerActions.openDrawer());
   };
+
+  // const handleDrawerOpen = () => {
+  //   if (onPress) {
+  //     onPress(); // use custom handler if passed
+  //   } else {
+  //     // fallback: open AdminDrawer OR TenantDrawer if available
+  //     const parentNav: any =
+  //       (navigation as any).getParent?.("AdminDrawer") ||
+  //       (navigation as any).getParent?.("TenantDrawer");
+
+  //     parentNav?.dispatch(DrawerActions.openDrawer());
+  //   }
+  // };
 
   return (
     <View style={styles.header}>
@@ -89,7 +103,6 @@ const styles = StyleSheet.create({
     paddingVertical: adjustSize(8),
     borderBottomWidth: 0.5,
     borderColor: colors.primary,
-    // marginBottom: adjustSize(3),
     paddingHorizontal: adjustSize(10),
   },
   headerInfo: {
