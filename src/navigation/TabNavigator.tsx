@@ -28,6 +28,8 @@ import {
   TenantHome,
   TenantChat,
   TenantWallet,
+  TenantSendMoney,
+  TenantAddBeneficiary,
 
   // Agent screens
   Agent,
@@ -202,56 +204,56 @@ import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/Vendi
 import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
 
 // Tenant Stack Navigator
-const TenantStackNavigator = () => (
-  <TenantStack.Navigator screenOptions={{ headerShown: false }}>
-    <TenantStack.Screen name="Tenant" component={Tenant} />
-    <TenantStack.Screen name="TenantDashboard" component={TenantDashboard} />
-    <TenantStack.Screen name="TenantProfile" component={TenantProfile} />
-    <TenantStack.Screen
-      name="TenantMaintenance"
-      component={TenantMaintenance}
-    />
-    <TenantStack.Screen
-      name="TenantRentPayment"
-      component={TenantRentPayment}
-    />
-    <TenantStack.Screen
-      name="TenantLeaseAgreement"
-      component={TenantLeaseAgreement}
-    />
-    <TenantStack.Screen
-      name="TenantNotifications"
-      component={TenantNotifications}
-    />
-    <TenantStack.Screen name="TenantSupport" component={TenantSupport} />
-    <TenantStack.Screen name="TenantSettings" component={TenantSettings} />
-    {/* Tenant Utilities Screens */}
-    <TenantStack.Screen
-      name="TenantUtilitiesSummary"
-      component={TenantUtilitiesSummary}
-    />
-    <TenantStack.Screen
-      name="TenantUtilitiesMyMeter"
-      component={TenantUtilitiesMyMeter}
-    />
-    <TenantStack.Screen
-      name="TenantUtilitiesCharges"
-      component={TenantUtilitiesCharges}
-    />
-    <TenantStack.Screen
-      name="TenantUtilitiesTransactions"
-      component={TenantUtilitiesTransactions}
-    />
-    <TenantStack.Screen
-      name="TenantUtilitiesVendingHistory"
-      component={TenantUtilitiesVendingHistory}
-    />
-    <TenantStack.Screen
-      name="TenantUtilitiesReportIssue"
-      component={TenantUtilitiesReportIssue}
-    />
-  </TenantStack.Navigator>
-);
+// const TenantStackNavigator = () => (
+//   <TenantStack.Navigator screenOptions={{ headerShown: false }}>
+//     <TenantStack.Screen name="Tenant" component={Tenant} />
+//     <TenantStack.Screen name="TenantDashboard" component={TenantDashboard} />
+//     <TenantStack.Screen name="TenantProfile" component={TenantProfile} />
+//     <TenantStack.Screen
+//       name="TenantMaintenance"
+//       component={TenantMaintenance}
+//     />
+//     <TenantStack.Screen
+//       name="TenantRentPayment"
+//       component={TenantRentPayment}
+//     />
+//     <TenantStack.Screen
+//       name="TenantLeaseAgreement"
+//       component={TenantLeaseAgreement}
+//     />
+//     <TenantStack.Screen
+//       name="TenantNotifications"
+//       component={TenantNotifications}
+//     />
+//     <TenantStack.Screen name="TenantSupport" component={TenantSupport} />
+//     <TenantStack.Screen name="TenantSettings" component={TenantSettings} />
+//     {/* Tenant Utilities Screens */}
+//     <TenantStack.Screen
+//       name="TenantUtilitiesSummary"
+//       component={TenantUtilitiesSummary}
+//     />
+//     <TenantStack.Screen
+//       name="TenantUtilitiesMyMeter"
+//       component={TenantUtilitiesMyMeter}
+//     />
+//     <TenantStack.Screen
+//       name="TenantUtilitiesCharges"
+//       component={TenantUtilitiesCharges}
+//     />
+//     <TenantStack.Screen
+//       name="TenantUtilitiesTransactions"
+//       component={TenantUtilitiesTransactions}
+//     />
+//     <TenantStack.Screen
+//       name="TenantUtilitiesVendingHistory"
+//       component={TenantUtilitiesVendingHistory}
+//     />
+//     <TenantStack.Screen
+//       name="TenantUtilitiesReportIssue"
+//       component={TenantUtilitiesReportIssue}
+//     />
+//   </TenantStack.Navigator>
+// );
 
 // Agent Stack Navigator
 const AgentStackNavigator = () => (
@@ -791,6 +793,20 @@ const TenantHomeStack = () => (
     />
 
     <HomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
+
+    <HomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
+    <HomeStack.Screen
+      name="AdminPanicEmergency"
+      component={AdminPanicEmergency}
+    />
+
+    <HomeStack.Screen name="TenantRentPayment" component={TenantRentPayment} />
+
+    <HomeStack.Screen name="TenantSendMoney" component={TenantSendMoney} />
+    <HomeStack.Screen
+      name="TenantAddBeneficiary"
+      component={TenantAddBeneficiary}
+    />
   </HomeStack.Navigator>
 );
 
@@ -1245,10 +1261,10 @@ const AdminTabs = () => (
           "AdminFMOrderExport",
           "AdminVisitorDetails",
           "AdminEmergency",
+          "AdminPanicEmergency",
           "AdminProfile",
           "AdminEditProfile",
           "AdminProfileSettings",
-          "AdminPanicEmergency",
           "AdminPropertyRequests",
           "AdminManageInspections",
           "AdminSimDataManagement",

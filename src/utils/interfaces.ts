@@ -41,8 +41,10 @@ export type TenantStackParamList = {
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
-  TenantAssignedProp:undefined
-  TenantFacilityManagement:undefined
+  TenantAssignedProp:undefined;
+  TenantFacilityManagement:undefined;
+  TenantSendMoney:undefined;
+  TenantAddBeneficiary:undefined;
 };
 
 // Screens specific to Admin

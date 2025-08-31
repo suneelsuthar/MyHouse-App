@@ -35,6 +35,8 @@ import { TenantHome } from "./tenant/home";
 import { TenantChat } from "./tenant/chat";
 import { TenantWallet } from "./tenant/wallet";
 import { TenantAssignedProp } from "./tenant/assignemd-properties";
+import { TenantSendMoney } from "./tenant/sendmoney";
+import { TenantAddBeneficiary } from "./tenant/addbeneficiary";
 
 import { Agent } from "./agent";
 import { AgentDashboard } from "./agent/dashboard";
@@ -169,6 +171,8 @@ export {
   TenantChat,
   TenantWallet,
   TenantAssignedProp,
+  TenantSendMoney,
+  TenantAddBeneficiary,
   Agent,
   AgentDashboard,
   AgentPropertyListings,
