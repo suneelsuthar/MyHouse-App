@@ -20,9 +20,9 @@ interface Transaction {
   status: "completed" | "pending" | "failed";
   description: string;
 }
-interface TenantSendMoneyProps extends AppStackScreenProps<"TenantSendMoney"> {}
+interface SendMoneyProps extends AppStackScreenProps<"SendMoney"> {}
 
-export function TenantSendMoney(props: TenantSendMoneyProps) {
+export function SendMoney(props: SendMoneyProps) {
   const [showBalance, setShowBalance] = useState(true);
 
   const benificiaries = [
@@ -125,7 +125,7 @@ export function TenantSendMoney(props: TenantSendMoneyProps) {
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => {
-              props.navigation.navigate("TenantAddBeneficiary");
+              props.navigation.navigate("AddBeneficiary");
             }}
           >
             <WithLocalSvg asset={Images.addprop} />

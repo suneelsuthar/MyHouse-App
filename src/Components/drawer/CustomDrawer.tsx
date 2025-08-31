@@ -350,7 +350,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminEmergency" },
+          params: { screen: "Emergency" },
         }),
     },
     {
@@ -639,7 +639,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           title: "Power Consumption",
           type: "item",
           icon: Images.simdata,
-        
+
           onPress: () =>
             closeMenusAndNavigate("Tenant", {
               screen: "Home",
@@ -687,7 +687,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Tenant", {
           screen: "Home",
-          params: { screen: "AdminEmergency" },
+          params: { screen: "Emergency" },
         }),
     },
     {
@@ -713,7 +713,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Chat",
       type: "item",
       icon: Images.communication,
-      onPress: () => closeMenusAndNavigate("Chat"),
+      onPress: () =>
+        closeMenusAndNavigate("Tenant", {
+          screen: "Chat",
+        }),
     },
   ];
 
@@ -785,14 +788,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              closeMenusAndNavigate(
-                user &&
-                  user?.role.charAt(0).toUpperCase() + user?.role.slice(1),
-                {
-                  screen: "Home",
-                  params: { screen: "Profile" },
-                }
-              )
+              closeMenusAndNavigate("Admin", {
+                screen: "Home",
+                params: { screen: "AdminProfile" },
+              })
             }
           >
             <WithLocalSvg asset={Images.user} />

@@ -1,10 +1,15 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Screen, Text, Button } from "../../Components";
-import { AppStackScreenProps } from "../../utils/interfaces";
+import { SubLandlordStackParamList } from "../../utils/interfaces";
 import { colors, spacing } from "../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface SubLandlordScreenProps extends AppStackScreenProps<"SubLandlord"> {}
+// interface SubLandlordScreenProps extends AppStackScreenProps<"SubLandlord"> {}
+export type SubLandlordScreenProps = NativeStackScreenProps<
+  SubLandlordStackParamList,
+  "SubLandlord"
+>;
 
 export function SubLandlord(props: SubLandlordScreenProps) {
   const navigateToScreen = (screenName: string) => {

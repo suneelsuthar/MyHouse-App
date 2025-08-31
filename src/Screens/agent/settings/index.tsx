@@ -1,10 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AgentStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface AgentSettingsProps extends AppStackScreenProps<"AgentSettings"> {}
+// interface AgentSettingsProps extends AppStackScreenProps<"AgentSettings"> {}
+export type AgentSettingsProps = NativeStackScreenProps<
+  AgentStackParamList,
+  "AgentSettings"
+>;
 
 export function AgentSettings(props: AgentSettingsProps) {
   return (

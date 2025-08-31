@@ -6,8 +6,7 @@ import { Home } from "./global/home";
 import { Notification } from "./global/notifications";
 import { Favourities } from "./global/favourites";
 import { BookNow } from "./global/booknow";
-import { Chat } from "./global/chat/index";
-import { Message } from "./global/chat/messages";
+import { Chat } from "./global/chat";
 
 // Global screens exports
 export * from "./global";
@@ -28,8 +27,6 @@ import { TenantRentPayment } from "./tenant/rent-payment";
 import { TenantNotifications } from "./tenant/notifications";
 import { TenantHome } from "./tenant/home";
 import { TenantAssignedProp } from "./tenant/assignemd-properties";
-import { TenantSendMoney } from "./tenant/sendmoney";
-import { TenantAddBeneficiary } from "./tenant/addbeneficiary";
 
 import { Agent } from "./agent";
 import { AgentDashboard } from "./agent/dashboard";
@@ -80,7 +77,8 @@ import { SecurityEmergencyContacts } from "./security/emergency-contacts";
 import { SecurityAlerts } from "./security/security-alerts";
 import { SecurityPatrolLogs } from "./security/patrol-logs";
 import { SecuritySettings } from "./security/settings";
-// import { Admin  } from "./admin";
+import { Admin } from "./admin";
+import { Message } from "./global/chat/messages";
 import { AdminDashboard } from "./admin/dashboard";
 import { AdminUserManagement } from "./admin/user-management";
 import { AdminPropertyManagement } from "./admin/property-management";
@@ -90,7 +88,7 @@ import { AdminAnalytics } from "./admin/analytics";
 import { AdminAuditLogs } from "./admin/audit-logs";
 import { AdminBackupRestore } from "./admin/backup-restore";
 import { Commuication } from "./admin/support-tickets";
-import { AdminPropertyDetails } from "./admin/property-details";
+import { PropertyDetails } from "./admin/property-details";
 import { AdminAddProperty } from "./admin/add-property";
 import { AdminManageCalendar } from "./admin/manage-calendar";
 import { AdminAssignProperties } from "./admin/assign-properties";
@@ -121,14 +119,13 @@ import { AdminAmenityMakeReservation } from "./admin/community-area/amenity-make
 import { AdminAmenityManageCalendar } from "./admin/community-area/amenity-manage-calendar";
 import { AdminReservationView } from "./admin/community-area/reservation-view";
 import { AdminAddNewAmenity } from "./admin/community-area/add-new-amenity";
-import { AdminEmergency } from "./admin/emergency";
-import { Profile } from "./global/profile";
+import { Emergency } from "./admin/emergency";
+import { AdminProfile } from "./admin/profile";
 import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details";
 import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
-import { EditProfile } from "./global/profile/edit-profile";
-import { ProfileSettings } from "./global/profile/profile-settings";
-import { Verify } from "./global/profile/verify";
-import { AdminPanicEmergency } from "./admin/emergency/panic";
+import { AdminEditProfile } from "./admin/profile/edit-profile";
+import { AdminProfileSettings } from "./admin/profile/profile-settings";
+import { PanicEmergency } from "./admin/emergency/panic";
 import { AdminPropertyRequests } from "./admin/property-requests";
 import { AdminManageInspections } from "./admin/manage-inspections";
 import { AdminSimDataManagement } from "./admin/utilities/sim-data-management";
@@ -142,6 +139,13 @@ import ViewMeterDetails from "./admin/utilities/manage-meters/ViewMeterDetails";
 import EditCreateMeter from "./admin/utilities/manage-meters/EditCreateMeter";
 import { ViewPropertiesGroups } from "./admin/utilities/view-properties-groups";
 import { AddEditGroup } from "./admin/utilities/add-edit-group";
+import { SendMoney } from "./tenant/sendmoney";
+import { AddBeneficiary } from "./tenant/addbeneficiary";
+import { Profile } from "./global/profile";
+import { Verify } from "./global/profile/verify";
+import { EditProfile } from "./global/profile/edit-profile";
+import { ProfileSettings } from "./global/profile/profile-settings";
+
 export {
   Splash,
   Intro,
@@ -159,8 +163,6 @@ export {
   TenantNotifications,
   TenantHome,
   TenantAssignedProp,
-  TenantSendMoney,
-  TenantAddBeneficiary,
   Agent,
   AgentDashboard,
   AgentPropertyListings,
@@ -210,7 +212,7 @@ export {
   SecurityAlerts,
   SecurityPatrolLogs,
   SecuritySettings,
-  // Admin,
+  Admin,
   AdminDashboard,
   AdminUserManagement,
   AdminPropertyManagement,
@@ -220,7 +222,7 @@ export {
   AdminAuditLogs,
   AdminBackupRestore,
   Commuication,
-  AdminPropertyDetails,
+  PropertyDetails,
   AdminAddProperty,
   AdminManageCalendar,
   AdminAssignProperties,
@@ -251,14 +253,13 @@ export {
   AdminAmenityManageCalendar,
   AdminReservationView,
   AdminAddNewAmenity,
-  AdminEmergency,
-  Profile,
-  Verify,
+  Emergency,
+  AdminProfile,
   AdminVisitorDetails,
   AdminGenerateVisitorRequest,
-  EditProfile,
-  ProfileSettings,
-  AdminPanicEmergency,
+  AdminEditProfile,
+  AdminProfileSettings,
+  PanicEmergency,
   AdminPropertyRequests,
   AdminManageInspections,
   AdminSimDataManagement,
@@ -272,4 +273,10 @@ export {
   ViewMeterDetails,
   EditCreateMeter,
   AddEditGroup,
+  SendMoney,
+  AddBeneficiary,
+  Profile,
+  Verify,
+  EditProfile,
+  ProfileSettings,
 };

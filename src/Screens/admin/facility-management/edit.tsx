@@ -16,11 +16,13 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import DropdownComponent from "../../../Components/DropDown";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { rentalProperties } from "../../../utils/data";
 import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
-type Props = AppStackScreenProps<"AdminGenerateWorkRequests">;
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type Props = NativeStackScreenProps<AdminStackParamList, "FMEdit">;
 
 export function FMEdit({ navigation }: Props) {
   // form state

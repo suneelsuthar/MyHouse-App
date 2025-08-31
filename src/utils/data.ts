@@ -160,7 +160,6 @@ export type IRentalProperty = {
   propertyId: string;
   addedBy: string;
   images: string[]; // generated via faker
-  // Detailed fields for AdminPropertyDetails
   mandate: string;
   category: string;
   address: string;

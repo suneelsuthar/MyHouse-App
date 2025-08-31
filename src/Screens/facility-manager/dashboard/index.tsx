@@ -1,10 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button, LogoutButton } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { FacilityManagerDashboardProps } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
-
-interface FacilityManagerDashboardProps extends AppStackScreenProps<"FacilityManagerDashboard"> {}
 
 export function FacilityManagerDashboard(props: FacilityManagerDashboardProps) {
   return (

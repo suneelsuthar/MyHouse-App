@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { SecurityStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface SecurityIncidentReportsProps extends AppStackScreenProps<"SecurityIncidentReports"> {}
+export type SecurityIncidentReportsProps = NativeStackScreenProps<
+  SecurityStackParamList,
+  "SecurityIncidentReports"
+>;
 
 export function SecurityIncidentReports(props: SecurityIncidentReportsProps) {
   return (

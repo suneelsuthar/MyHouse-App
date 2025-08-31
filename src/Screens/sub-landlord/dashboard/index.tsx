@@ -1,10 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button, LogoutButton } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { SubLandlordStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface SubLandlordDashboardProps extends AppStackScreenProps<"SubLandlordDashboard"> {}
+// interface SubLandlordDashboardProps extends AppStackScreenProps<"SubLandlordDashboard"> {}
+export type SubLandlordDashboardProps = NativeStackScreenProps<
+  SubLandlordStackParamList,
+  "SubLandlordDashboard"
+>;
 
 export function SubLandlordDashboard(props: SubLandlordDashboardProps) {
   return (

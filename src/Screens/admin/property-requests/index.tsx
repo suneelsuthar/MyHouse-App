@@ -111,7 +111,7 @@ import { Modal as RNModal } from "react-native";
 
 type PropertyRequestsScreenNavigationProp = NativeStackNavigationProp<
   AdminStackParamList,
-  "AdminPropertyDetails"
+  "PropertyDetails"
 >;
 type TabType = "Active" | "History";
 
@@ -379,7 +379,7 @@ export const AdminPropertyRequests: React.FC = () => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
-              navigation.navigate("AdminPropertyDetails", {
+              navigation.navigate("PropertyDetails", {
                 propertyId: item.propertyId,
               });
               setDropdownVisible(null);

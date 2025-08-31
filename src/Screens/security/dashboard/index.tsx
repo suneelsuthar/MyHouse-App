@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button, LogoutButton } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { SecurityStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface SecurityDashboardProps extends AppStackScreenProps<"SecurityDashboard"> {}
+export type SecurityDashboardProps = NativeStackScreenProps<
+  SecurityStackParamList,
+  "SecurityDashboard"
+>;
 
 export function SecurityDashboard(props: SecurityDashboardProps) {
   return (

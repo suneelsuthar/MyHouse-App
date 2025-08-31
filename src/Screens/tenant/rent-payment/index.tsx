@@ -105,7 +105,7 @@ export function TenantRentPayment(props: TenantRentPaymentProps) {
             text="Send Money"
             style={styles.backButton}
             textStyle={styles.backButtonText}
-            onPress={() => props.navigation.navigate("TenantSendMoney")}
+            onPress={() => props.navigation.navigate("SendMoney")}
           />
         </View>
       </ScrollView>

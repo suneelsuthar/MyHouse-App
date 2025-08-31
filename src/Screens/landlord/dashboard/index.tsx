@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button, LogoutButton } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { LandlordStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface LandlordDashboardProps extends AppStackScreenProps<"LandlordDashboard"> {}
+export type LandlordDashboardProps = NativeStackScreenProps<
+  LandlordStackParamList,
+  "LandlordDashboard"
+>;
 
 export function LandlordDashboard(props: LandlordDashboardProps) {
   return (

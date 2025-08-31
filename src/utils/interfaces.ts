@@ -43,8 +43,10 @@ export type TenantStackParamList = {
   TenantUtilitiesReportIssue: undefined;
   TenantAssignedProp: undefined;
   FacilityManagement: undefined;
-  TenantSendMoney: undefined;
-  TenantAddBeneficiary: undefined;
+  SendMoney: undefined;
+  AddBeneficiary: undefined;
+  FacilityManager: undefined;
+  FacilityManagerDashboard: undefined;
 };
 
 // Screens specific to Admin
@@ -53,7 +55,7 @@ export type AdminStackParamList = {
   AdminDashboard: undefined;
   AdminUserManagement: undefined;
   AdminPropertyManagement: { propertyType?: "rental" | "managed" };
-  AdminPropertyDetails: { propertyId: string };
+  PropertyDetails: { propertyId: string };
   AdminPropertyServices: undefined;
   AdminPropertyFeatures: undefined;
   AdminPropertyRestriction: undefined;
@@ -114,15 +116,16 @@ export type AdminStackParamList = {
   FMOrderUpdate: undefined;
   FMOrderExport: undefined;
   // Admin Emergency and Profile screens
-  AdminEmergency: undefined;
-  Profile: undefined;
+  Emergency: undefined;
+  AdminProfile: undefined;
   // Admin Visitor Details screen
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
   AdminGenerateVisitorRequest: undefined;
-  EditProfile: undefined;
-  ProfileSettings: undefined;
-  AdminPanicEmergency: undefined;
+  AdminEditProfile: undefined;
+  AdminProfileSettings: undefined;
+  PanicEmergency: undefined;
+  Profile: undefined;
   AdminPropertyRequests: undefined;
   AdminManageInspections: undefined;
   AdminSimDataManagement: undefined;
@@ -167,7 +170,6 @@ export type AgentStackParamList = {
 export type FacilityManagerStackParamList = {
   FacilityManager: undefined;
   FacilityManagerDashboard: undefined;
-  FacilityMaintenanceRequests: undefined;
   FacilityWorkOrders: undefined;
   FacilityVendorManagement: undefined;
   FacilityInventoryManagement: undefined;
@@ -176,6 +178,11 @@ export type FacilityManagerStackParamList = {
   FacilityPreventiveMaintenance: undefined;
   FacilityManagerSettings: undefined;
 };
+
+export type FacilityManagerDashboardProps = NativeStackScreenProps<
+  FacilityManagerStackParamList,
+  "FacilityManagerDashboard"
+>;
 
 // Screens specific to Landlord
 export type LandlordStackParamList = {
@@ -189,6 +196,11 @@ export type LandlordStackParamList = {
   LandlordFinancialReports: undefined;
   LandlordPropertyAnalytics: undefined;
   LandlordSettings: undefined;
+  Dashboard: undefined;
+  Properties: undefined;
+  Tenants: undefined;
+  Finances: undefined;
+  Analytics: undefined;
 };
 
 // Screens specific to Sub-Landlord
@@ -216,6 +228,10 @@ export type SecurityStackParamList = {
   SecurityAlerts: undefined;
   SecurityPatrolLogs: undefined;
   SecuritySettings: undefined;
+  Dashboard: undefined;
+  Visitors: undefined;
+  Incidents: undefined;
+  Access: undefined;
 };
 
 // Global screens available to all users

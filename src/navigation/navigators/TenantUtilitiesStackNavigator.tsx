@@ -7,7 +7,7 @@ import { TenantUtilitiesCharges } from "../../Screens/tenant/utilities/Charges";
 import { TenantUtilitiesTransactions } from "../../Screens/tenant/utilities/Transactions";
 import { TenantUtilitiesVendingHistory } from "../../Screens/tenant/utilities/VendingHistory";
 import { TenantUtilitiesReportIssue } from "../../Screens/tenant/utilities/ReportIssue";
-
+import { TenantUtilitiesUpdateProfile } from "../../Screens/tenant/utilities";
 const Stack = createNativeStackNavigator<TenantUtilitiesStackParamList>();
 
 export const TenantUtilitiesStackNavigator = () => {
@@ -23,6 +23,7 @@ export const TenantUtilitiesStackNavigator = () => {
       <Stack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />
       <Stack.Screen name="TenantUtilitiesVendingHistory" component={TenantUtilitiesVendingHistory} />
       <Stack.Screen name="TenantUtilitiesReportIssue" component={TenantUtilitiesReportIssue} />
+      <Stack.Screen name="TenantUtilitiesUpdateProfile" component={TenantUtilitiesUpdateProfile} />
     </Stack.Navigator>
   );
 };

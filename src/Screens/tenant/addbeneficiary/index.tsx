@@ -4,10 +4,10 @@ import { Screen, Text, Button, Header2, TextField } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
-interface TenantAddBeneficiaryProps
-  extends AppStackScreenProps<"TenantAddBeneficiary"> {}
+interface AddBeneficiaryProps
+  extends AppStackScreenProps<"AddBeneficiary"> {}
 
-export function TenantAddBeneficiary(props: TenantAddBeneficiaryProps) {
+export function AddBeneficiary(props: AddBeneficiaryProps) {
   const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);

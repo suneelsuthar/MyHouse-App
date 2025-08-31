@@ -17,7 +17,11 @@ import {
 } from "../../../assets/svg";
 import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
-type Props = AppStackScreenProps<"FacilityManagement">;
+import { AdminStackParamList } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type Props = NativeStackScreenProps<AdminStackParamList, "FacilityManagement">;
+
 export function FacilityManagement({ route }: Props) {
   const navigation = useNavigation();
   const status = route?.params?.status ?? "work_requests";
@@ -323,9 +327,7 @@ export function FacilityManagement({ route }: Props) {
                 } else if (action === "Edit") {
                   (navigation as any).navigate("FMEdit" as never);
                 } else if (action === "Generate work order") {
-                  (navigation as any).navigate(
-                    "FMGenerateWorkOrder" as never
-                  );
+                  (navigation as any).navigate("FMGenerateWorkOrder" as never);
                 } else if (action === "View work order") {
                   (navigation as any).navigate("FMViewWorkOrder" as never);
                 } else if (action === "View") {

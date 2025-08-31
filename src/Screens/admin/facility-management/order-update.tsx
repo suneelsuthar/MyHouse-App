@@ -14,9 +14,11 @@ import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import * as ImagePicker from "expo-image-picker";
-type Props = AppStackScreenProps<"FMOrderUpdate">;
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type Props = NativeStackScreenProps<AdminStackParamList, "FMOrderUpdate">;
 
 export function FMOrderUpdate({ navigation }: Props) {
   // form state

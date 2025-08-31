@@ -12,10 +12,10 @@ import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { IRentalProperty, rentalProperties } from "../../../utils/data";
 import Feather from "@expo/vector-icons/Feather";
 
-interface AdminPropertyDetailsProps
-  extends AppStackScreenProps<"AdminPropertyDetails"> {}
+interface PropertyDetailsProps
+  extends AppStackScreenProps<"PropertyDetails"> {}
 
-export function AdminVisitorReservation(props: AdminPropertyDetailsProps) {
+export function AdminVisitorReservation(props: PropertyDetailsProps) {
   const { propertyId } = props.route.params || { propertyId: "" };
   const [tab, setTab] = useState<
     "details" | "inspection" | "agents" | "fm" | "media"

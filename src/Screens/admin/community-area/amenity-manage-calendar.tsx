@@ -9,7 +9,9 @@ import {
 import { Screen, Text, Button } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 type Mode = "single" | "range";
@@ -20,9 +22,11 @@ type DayCell = {
 };
 
 export function AdminAmenityManageCalendar({
-  route,
   navigation,
-}: AppStackScreenProps<"AdminManageCalendar">) {
+}: NativeStackScreenProps<AdminStackParamList, "AdminAmenityManageCalendar">) {
+
+
+  
   const [mode, setMode] = useState<Mode>("range");
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();

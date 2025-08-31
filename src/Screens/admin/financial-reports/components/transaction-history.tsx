@@ -8,11 +8,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { RootState } from "../../../../store";
 export const TransactionHistory = () => {
-  const { user } = useAppSelector((state: RootState) => state.auth);
-
   const navigation = useNavigation();
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
   const [visible, setVisiable] = useState(false);

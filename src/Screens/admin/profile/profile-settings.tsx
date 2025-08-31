@@ -6,7 +6,7 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import { useNavigation } from "@react-navigation/native";
 
-export const ProfileSettings: React.FC = () => {
+export const AdminProfileSettings: React.FC = () => {
   const navigation = useNavigation();
 
   // ✅ States for passwords

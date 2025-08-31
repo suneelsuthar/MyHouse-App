@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { LandlordStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface LandlordRentCollectionProps extends AppStackScreenProps<"LandlordRentCollection"> {}
+export type LandlordRentCollectionProps = NativeStackScreenProps<
+  LandlordStackParamList,
+  "LandlordRentCollection"
+>;
 
 export function LandlordRentCollection(props: LandlordRentCollectionProps) {
   return (

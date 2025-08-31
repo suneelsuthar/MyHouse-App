@@ -116,7 +116,7 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
               onAction={(action, property) => {
                 if (action === "View Details" || action === "View") {
                   (navigation as any).navigate(
-                    "AdminPropertyDetails" as never,
+                    "PropertyDetails" as never,
                     { propertyId: property.propertyId } as never
                   );
                 } else if (action === "Edit") {

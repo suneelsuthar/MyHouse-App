@@ -1,10 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button, LogoutButton } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AgentStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface AgentDashboardProps extends AppStackScreenProps<"AgentDashboard"> {}
+// interface AgentDashboardProps extends AppStackScreenProps<"AgentDashboard"> {}
+export type AgentDashboardProps = NativeStackScreenProps<
+  AgentStackParamList,
+  "AgentDashboard"
+>;
 
 export function AgentDashboard(props: AgentDashboardProps) {
   return (
@@ -21,10 +26,11 @@ export function AgentDashboard(props: AgentDashboardProps) {
           </Text>
           <LogoutButton showUserInfo={true} />
         </View>
-        
+
         <View style={styles.content}>
           <Text style={styles.description}>
-            Welcome to your agent dashboard. View your performance metrics, recent activities, and quick actions.
+            Welcome to your agent dashboard. View your performance metrics,
+            recent activities, and quick actions.
           </Text>
         </View>
 
@@ -77,9 +83,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: spacing.md,
   },
 });

@@ -95,7 +95,7 @@ export function FinancialReports(props: FinancialReportsProps) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.sendMoneyBtn}
-          onPress={() => navigation.navigate("TenantSendMoney")}
+          onPress={() => navigation.navigate("SendMoney")}
         >
           <Text style={styles.sendMoneyBtnText}>Send Money</Text>
         </TouchableOpacity>

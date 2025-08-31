@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity, Image } from "react-native";
 import { Screen, Text } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
 import DropdownComponent from "../../../Components/DropDown";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = AppStackScreenProps<"AdminVisitorManagement">;
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
@@ -79,6 +79,9 @@ const visitorData = [
     textColor: "#FFF",
   },
 ];
+
+
+type Props = NativeStackScreenProps<AdminStackParamList, "AdminVisitorManagement">;
 
 export function AdminVisitorManagement({ route }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>("Active");

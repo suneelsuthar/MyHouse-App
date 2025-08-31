@@ -19,10 +19,9 @@ type DayCell = {
   inMonth: boolean;
 };
 
-export function AdminAmenityView({
-  route,
-}: AppStackScreenProps<"AdminAmenityView">) {
-  const navigation = useNavigation();
+// export function AdminAmenityView({route}: AppStackScreenProps<"AdminAmenityView">) {
+export function AdminAmenityView({ route }: any) {
+  const navigation: any = useNavigation();
   const { user } = useAppSelector((state: RootState) => state.auth);
   const data: any = route?.params?.data;
   const [monthCursor, setMonthCursor] = useState(() => {
@@ -270,7 +269,7 @@ export function AdminAmenityView({
             }
           >
             <Text
-              weight="semibold"
+              weight="semiBold"
               style={[
                 styles.addMoneyBtnText,
                 {

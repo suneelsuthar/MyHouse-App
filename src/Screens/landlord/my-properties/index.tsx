@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { LandlordStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface LandlordMyPropertiesProps extends AppStackScreenProps<"LandlordMyProperties"> {}
+export type LandlordMyPropertiesProps = NativeStackScreenProps<
+  LandlordStackParamList,
+  "LandlordMyProperties"
+>;
 
 export function LandlordMyProperties(props: LandlordMyPropertiesProps) {
   return (
@@ -18,10 +22,11 @@ export function LandlordMyProperties(props: LandlordMyPropertiesProps) {
         <Text style={styles.title} weight="bold">
           My Properties
         </Text>
-        
+
         <View style={styles.content}>
           <Text style={styles.description}>
-            Manage your property portfolio, view property details, and track occupancy status.
+            Manage your property portfolio, view property details, and track
+            occupancy status.
           </Text>
         </View>
 

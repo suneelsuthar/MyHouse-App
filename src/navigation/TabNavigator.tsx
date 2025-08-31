@@ -13,43 +13,17 @@ import { StyleSheet } from "react-native";
 // Import all screens
 import {
   TenantRentPayment,
-  TenantLeaseAgreement,
-  TenantNotifications,
-  TenantSupport,
-  TenantSettings,
   TenantAssignedProp,
-
-  // New Tenant Tab Screens
   TenantHome,
-  // TenantChat,
-  TenantWallet,
-  TenantSendMoney,
-  TenantAddBeneficiary,
-
+  Chat,
   // Agent screens
   Agent,
   AgentDashboard,
-  AgentPropertyListings,
-  AgentClientManagement,
-  AgentScheduleViewing,
-  AgentLeadManagement,
-  AgentCommissionReports,
-  AgentMarketingTools,
-  AgentDocumentManagement,
   AgentSettings,
 
   // Facility Manager screens
   FacilityManager,
   FacilityManagerDashboard,
-  FacilityMaintenanceRequests,
-  FacilityWorkOrders,
-  FacilityVendorManagement,
-  FacilityInventoryManagement,
-  FacilityReports,
-  FacilityAssetManagement,
-  FacilityPreventiveMaintenance,
-  FacilityManagerSettings,
-
   // Landlord screens
   Landlord,
   LandlordDashboard,
@@ -57,21 +31,11 @@ import {
   LandlordTenantManagement,
   LandlordRentCollection,
   LandlordExpenseTracking,
-
   // Global screens
-  GlobalScreen,
-  TermsConditionsScreen,
-  AboutUsScreen,
-  FAQScreen,
-  ContactUsScreen,
-  HelpScreen,
-  PropertyFiltersScreen,
   LandlordMaintenanceRequests,
   LandlordFinancialReports,
   LandlordPropertyAnalytics,
   LandlordSettings,
-  Chat,
-  Message,
 
   // Sub-Landlord screens
   SubLandlord,
@@ -99,7 +63,7 @@ import {
   // Import admin screens from the admin directory
   AdminDashboard,
   AdminPropertyManagement,
-  AdminPropertyDetails,
+  PropertyDetails,
   AdminAddProperty,
   AdminManageCalendar,
   AdminAssignProperties,
@@ -130,14 +94,10 @@ import {
   AdminReservationView,
   AdminAddNewAmenity,
   AdminAmenityManageCalendar,
-  AdminEmergency,
-  Profile,
-  Verify,
+  Emergency,
   AdminVisitorDetails,
   AdminGenerateVisitorRequest,
-  EditProfile,
-  ProfileSettings,
-  AdminPanicEmergency,
+  PanicEmergency,
   AdminPropertyRequests,
   AdminSimDataManagement,
   AdminManageMeters,
@@ -154,6 +114,12 @@ import {
   AdminTenantDetails,
   Commuication,
   FinancialReports,
+  SendMoney,
+  AddBeneficiary,
+  Profile,
+  Verify,
+  EditProfile,
+  ProfileSettings,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -186,6 +152,7 @@ const LandlordStack = createNativeStackNavigator<LandlordStackParamList>();
 const SubLandlordStack =
   createNativeStackNavigator<SubLandlordStackParamList>();
 const SecurityStack = createNativeStackNavigator<SecurityStackParamList>();
+const AdminStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminHomeStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminBookingStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
@@ -198,94 +165,46 @@ import { TenantUtilitiesCharges } from "../Screens/tenant/utilities/Charges";
 import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transactions";
 import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/VendingHistory";
 import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
+import { TenantUtilitiesUpdateProfile } from "../Screens/tenant/utilities";
 
 // Agent Stack Navigator
 const AgentStackNavigator = () => (
   <AgentStack.Navigator screenOptions={{ headerShown: false }}>
-    <AgentStack.Screen name="Agent" component={Agent} />
     <AgentStack.Screen name="AgentDashboard" component={AgentDashboard} />
-    <AgentStack.Screen
-      name="AgentPropertyListings"
-      component={AgentPropertyListings}
-    />
-    <AgentStack.Screen
-      name="AgentClientManagement"
-      component={AgentClientManagement}
-    />
-    <AgentStack.Screen
-      name="AgentScheduleViewing"
-      component={AgentScheduleViewing}
-    />
-    <AgentStack.Screen
-      name="AgentLeadManagement"
-      component={AgentLeadManagement}
-    />
-    <AgentStack.Screen
-      name="AgentCommissionReports"
-      component={AgentCommissionReports}
-    />
-    <AgentStack.Screen
-      name="AgentMarketingTools"
-      component={AgentMarketingTools}
-    />
-    <AgentStack.Screen
-      name="AgentDocumentManagement"
-      component={AgentDocumentManagement}
-    />
     <AgentStack.Screen name="AgentSettings" component={AgentSettings} />
   </AgentStack.Navigator>
 );
 
 // Facility Manager Stack Navigator
-const FacilityManagerStackNavigator = () => (
-  <FacilityManagerStack.Navigator screenOptions={{ headerShown: false }}>
-    <FacilityManagerStack.Screen
-      name="FacilityManager"
-      component={FacilityManager}
+const FacilityManagerStackNavigator = () => {
+  return (
+    <FacilityManagerStack.Navigator screenOptions={{ headerShown: false }}>
+      <FacilityManagerStack.Screen
+        name="FacilityManager"
+        component={FacilityManager}
+      />
+      <FacilityManagerStack.Screen
+        name="FacilityManagerDashboard"
+        component={FacilityManagerDashboard}
+      />
+    </FacilityManagerStack.Navigator>
+  );
+};
+
+// Sub-Landlord Stack Navigator
+const SubLandlordStackNavigator = () => (
+  <SubLandlordStack.Navigator screenOptions={{ headerShown: false }}>
+    <SubLandlordStack.Screen name="SubLandlord" component={SubLandlord} />
+    <SubLandlordStack.Screen
+      name="SubLandlordDashboard"
+      component={SubLandlordDashboard}
     />
-    <FacilityManagerStack.Screen
-      name="FacilityManagerDashboard"
-      component={FacilityManagerDashboard}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityMaintenanceRequests"
-      component={FacilityMaintenanceRequests}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityWorkOrders"
-      component={FacilityWorkOrders}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityVendorManagement"
-      component={FacilityVendorManagement}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityInventoryManagement"
-      component={FacilityInventoryManagement}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityReports"
-      component={FacilityReports}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityAssetManagement"
-      component={FacilityAssetManagement}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityPreventiveMaintenance"
-      component={FacilityPreventiveMaintenance}
-    />
-    <FacilityManagerStack.Screen
-      name="FacilityManagerSettings"
-      component={FacilityManagerSettings}
-    />
-  </FacilityManagerStack.Navigator>
+  </SubLandlordStack.Navigator>
 );
 
 // Landlord Stack Navigator
 const LandlordStackNavigator = () => (
   <LandlordStack.Navigator screenOptions={{ headerShown: false }}>
-    <LandlordStack.Screen name="Landlord" component={Landlord} />
     <LandlordStack.Screen
       name="LandlordDashboard"
       component={LandlordDashboard}
@@ -302,76 +221,12 @@ const LandlordStackNavigator = () => (
       name="LandlordRentCollection"
       component={LandlordRentCollection}
     />
-    <LandlordStack.Screen
-      name="LandlordExpenseTracking"
-      component={LandlordExpenseTracking}
-    />
-    <LandlordStack.Screen
-      name="LandlordMaintenanceRequests"
-      component={LandlordMaintenanceRequests}
-    />
-    <LandlordStack.Screen
-      name="LandlordFinancialReports"
-      component={LandlordFinancialReports}
-    />
-    <LandlordStack.Screen
-      name="LandlordPropertyAnalytics"
-      component={LandlordPropertyAnalytics}
-    />
-    <LandlordStack.Screen
-      name="LandlordSettings"
-      component={LandlordSettings}
-    />
   </LandlordStack.Navigator>
-);
-
-// Sub-Landlord Stack Navigator
-const SubLandlordStackNavigator = () => (
-  <SubLandlordStack.Navigator screenOptions={{ headerShown: false }}>
-    <SubLandlordStack.Screen name="SubLandlord" component={SubLandlord} />
-    <SubLandlordStack.Screen
-      name="SubLandlordDashboard"
-      component={SubLandlordDashboard}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordAssignedProperties"
-      component={SubLandlordAssignedProperties}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordTenantCommunication"
-      component={SubLandlordTenantCommunication}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordMaintenanceRequests"
-      component={SubLandlordMaintenanceRequests}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordRentCollection"
-      component={SubLandlordRentCollection}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordReports"
-      component={SubLandlordReports}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordPropertyInspections"
-      component={SubLandlordPropertyInspections}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordDocumentManagement"
-      component={SubLandlordDocumentManagement}
-    />
-    <SubLandlordStack.Screen
-      name="SubLandlordSettings"
-      component={SubLandlordSettings}
-    />
-  </SubLandlordStack.Navigator>
 );
 
 // Security Stack Navigator
 const SecurityStackNavigator = () => (
   <SecurityStack.Navigator screenOptions={{ headerShown: false }}>
-    <SecurityStack.Screen name="Security" component={Security} />
     <SecurityStack.Screen
       name="SecurityDashboard"
       component={SecurityDashboard}
@@ -384,23 +239,6 @@ const SecurityStackNavigator = () => (
       name="SecurityIncidentReports"
       component={SecurityIncidentReports}
     />
-    <SecurityStack.Screen
-      name="SecurityAccessControl"
-      component={SecurityAccessControl}
-    />
-    <SecurityStack.Screen
-      name="SecurityEmergencyContacts"
-      component={SecurityEmergencyContacts}
-    />
-    <SecurityStack.Screen name="SecurityAlerts" component={SecurityAlerts} />
-    <SecurityStack.Screen
-      name="SecurityPatrolLogs"
-      component={SecurityPatrolLogs}
-    />
-    <SecurityStack.Screen
-      name="SecuritySettings"
-      component={SecuritySettings}
-    />
   </SecurityStack.Navigator>
 );
 
@@ -409,11 +247,7 @@ const AdminHomeStackNavigator = () => (
   <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
     {/* Register cross-section Admin screens here for global access */}
-
-    <AdminHomeStack.Screen
-      name="AdminPropertyDetails"
-      component={AdminPropertyDetails}
-    />
+    <AdminHomeStack.Screen name="PropertyDetails" component={PropertyDetails} />
     <AdminHomeStack.Screen
       name="FacilityManagement"
       component={FacilityManagement}
@@ -428,15 +262,9 @@ const AdminHomeStackNavigator = () => (
       component={AdminTenantDetails}
     />
 
-    <AdminHomeStack.Screen
-      name="CommunityArea"
-      component={CommunityArea}
-    />
+    <AdminHomeStack.Screen name="CommunityArea" component={CommunityArea} />
     {/* Separate Visitor Management pages */}
-    <AdminHomeStack.Screen
-      name="VisitorRequests"
-      component={VisitorRequests}
-    />
+    <AdminHomeStack.Screen name="VisitorRequests" component={VisitorRequests} />
     <AdminHomeStack.Screen
       name="AdminVisitorsList"
       component={AdminVisitorsList}
@@ -454,32 +282,17 @@ const AdminHomeStackNavigator = () => (
       component={AdminPanicAlerts}
     />
     {/* Facility Management action pages */}
-    <AdminHomeStack.Screen
-      name="FMViewDetails"
-      component={FMViewDetails}
-    />
+    <AdminHomeStack.Screen name="FMViewDetails" component={FMViewDetails} />
     <AdminHomeStack.Screen name="FMEdit" component={FMEdit} />
     <AdminHomeStack.Screen
       name="FMGenerateWorkOrder"
       component={FMGenerateWorkOrder}
     />
-    <AdminHomeStack.Screen
-      name="FMViewWorkOrder"
-      component={FMViewWorkOrder}
-    />
+    <AdminHomeStack.Screen name="FMViewWorkOrder" component={FMViewWorkOrder} />
     {/* Facility Management Order action pages */}
-    <AdminHomeStack.Screen
-      name="FMOrderView"
-      component={FMOrderView}
-    />
-    <AdminHomeStack.Screen
-      name="FMOrderUpdate"
-      component={FMOrderUpdate}
-    />
-    <AdminHomeStack.Screen
-      name="FMOrderExport"
-      component={FMOrderExport}
-    />
+    <AdminHomeStack.Screen name="FMOrderView" component={FMOrderView} />
+    <AdminHomeStack.Screen name="FMOrderUpdate" component={FMOrderUpdate} />
+    <AdminHomeStack.Screen name="FMOrderExport" component={FMOrderExport} />
     {/* Community Area action pages */}
     <AdminHomeStack.Screen
       name="AdminAmenityView"
@@ -505,11 +318,8 @@ const AdminHomeStackNavigator = () => (
       name="AdminReservationView"
       component={AdminReservationView}
     />
-    <AdminHomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
-    <AdminHomeStack.Screen
-      name="AdminPanicEmergency"
-      component={AdminPanicEmergency}
-    />
+    <AdminHomeStack.Screen name="Emergency" component={Emergency} />
+    <AdminHomeStack.Screen name="PanicEmergency" component={PanicEmergency} />
     <AdminHomeStack.Screen name="Profile" component={Profile} />
     <AdminHomeStack.Screen name="EditProfile" component={EditProfile} />
     <AdminHomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
@@ -564,10 +374,7 @@ const AdminHomeStackNavigator = () => (
       component={ViewPropertiesGroups}
     />
     <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
-    <AdminHomeStack.Screen
-      name="Commuication"
-      component={Commuication}
-    />
+    <AdminHomeStack.Screen name="Commuication" component={Commuication} />
   </AdminHomeStack.Navigator>
 );
 
@@ -592,8 +399,8 @@ const AdminPropertiesStackNavigator = () => (
       component={AdminPropertyManagement}
     />
     <AdminPropertiesStack.Screen
-      name="AdminPropertyDetails"
-      component={AdminPropertyDetails}
+      name="PropertyDetails"
+      component={PropertyDetails}
     />
     <AdminPropertiesStack.Screen
       name="AdminPropertyServices"
@@ -645,19 +452,11 @@ const AdminWalletStackNavigator = () => (
       component={FinancialReports}
     />
 
-    <AdminWalletStack.Screen
-      name="TenantSendMoney"
-      component={TenantSendMoney}
-    />
+    <AdminWalletStack.Screen name="SendMoney" component={SendMoney} />
 
-    <AdminWalletStack.Screen
-      name="TenantAddBeneficiary"
-      component={TenantAddBeneficiary}
-    />
+    <AdminWalletStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
   </AdminWalletStack.Navigator>
 );
-
-
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
@@ -669,45 +468,30 @@ const TenantHomeStack = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="TenantHome" component={TenantHome} />
     {/* Facility Management action pages */}
-    <HomeStack.Screen
-      name="FMViewDetails"
-      component={FMViewDetails}
-    />
+    <HomeStack.Screen name="FMViewDetails" component={FMViewDetails} />
     <HomeStack.Screen name="FMEdit" component={FMEdit} />
     <HomeStack.Screen
       name="FMGenerateWorkOrder"
       component={FMGenerateWorkOrder}
     />
-    <HomeStack.Screen
-      name="FMViewWorkOrder"
-      component={FMViewWorkOrder}
-    />
+    <HomeStack.Screen name="FMViewWorkOrder" component={FMViewWorkOrder} />
     {/* Facility Management Order action pages */}
     <HomeStack.Screen name="FMOrderView" component={FMOrderView} />
-    <HomeStack.Screen
-      name="FMOrderUpdate"
-      component={FMOrderUpdate}
-    />
-    <HomeStack.Screen
-      name="FMOrderExport"
-      component={FMOrderExport}
-    />
-    <HomeStack.Screen
-      name="VisitorRequests"
-      component={VisitorRequests}
-    />
+    <HomeStack.Screen name="FMOrderUpdate" component={FMOrderUpdate} />
+    <HomeStack.Screen name="FMOrderExport" component={FMOrderExport} />
+
+    <HomeStack.Screen name="VisitorRequests" component={VisitorRequests} />
+
     <HomeStack.Screen
       name="RevokedInvitations"
       component={RevokedInvitations}
     />
+
     <HomeStack.Screen
       name="FacilityManagement"
       component={FacilityManagement}
     />
-    <HomeStack.Screen
-      name="UtilitiesSummary"
-      component={UtilitiesSummary}
-    />
+    <HomeStack.Screen name="UtilitiesSummary" component={UtilitiesSummary} />
     <HomeStack.Screen
       name="TenantUtilitiesMyMeter"
       component={TenantUtilitiesMyMeter}
@@ -725,25 +509,21 @@ const TenantHomeStack = () => (
       component={TenantUtilitiesVendingHistory}
     />
     <HomeStack.Screen
+      name="TenantUtilitiesUpdateProfile"
+      component={TenantUtilitiesUpdateProfile}
+    />
+    <HomeStack.Screen
       name="TenantUtilitiesReportIssue"
       component={TenantUtilitiesReportIssue}
     />
-    <HomeStack.Screen
-      name="CommunityArea"
-      component={CommunityArea}
-    />
+
+    <HomeStack.Screen name="CommunityArea" component={CommunityArea} />
     <HomeStack.Screen name="Analysis" component={Analysis} />
-    <HomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
-    <HomeStack.Screen
-      name="AdminPanicEmergency"
-      component={AdminPanicEmergency}
-    />
+    <HomeStack.Screen name="Emergency" component={Emergency} />
+    <HomeStack.Screen name="PanicEmergency" component={PanicEmergency} />
     <HomeStack.Screen name="TenantRentPayment" component={TenantRentPayment} />
-    <HomeStack.Screen name="TenantSendMoney" component={TenantSendMoney} />
-    <HomeStack.Screen
-      name="TenantAddBeneficiary"
-      component={TenantAddBeneficiary}
-    />
+    <HomeStack.Screen name="SendMoney" component={SendMoney} />
+    <HomeStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
     <HomeStack.Screen name="Profile" component={Profile} />
     <HomeStack.Screen name="EditProfile" component={EditProfile} />
     <HomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
@@ -1202,11 +982,11 @@ const AdminTabs = () => (
           "FMOrderUpdate",
           "FMOrderExport",
           "AdminVisitorDetails",
-          "AdminEmergency",
-          "AdminPanicEmergency",
+          "Emergency",
           "Profile",
           "EditProfile",
           "ProfileSettings",
+          "PanicEmergency",
           "AdminPropertyRequests",
           "AdminManageInspections",
           "AdminSimDataManagement",

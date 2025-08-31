@@ -117,7 +117,7 @@ const AppNavigator = () => {
       <Stack.Screen name="ContactUs" component={ContactUsScreen} />
       <Stack.Screen name="FAQ" component={FAQScreen} />
       <Stack.Screen name="AboutUs" component={AboutUsScreen} />
-
+      <Stack.Screen name="TermsConditions" component={TermsConditionsScreen} />
       <Stack.Screen name="Message" component={Message} />
     </Stack.Navigator>
   );

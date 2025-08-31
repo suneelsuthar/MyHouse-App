@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { SecurityStackParamList } from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface SecurityVisitorLogsProps extends AppStackScreenProps<"SecurityVisitorLogs"> {}
+export type SecurityVisitorLogsProps = NativeStackScreenProps<
+  SecurityStackParamList,
+  "SecurityVisitorLogs"
+>;
 
 export function SecurityVisitorLogs(props: SecurityVisitorLogsProps) {
   return (

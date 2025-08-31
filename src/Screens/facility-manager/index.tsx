@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Screen, Text, Button } from "../../Components";
-import { AppStackScreenProps } from "../../utils/interfaces";
+import { FacilityManagerStackParamList } from "../../utils/interfaces";
 import { colors, spacing } from "../../theme";
-
-interface FacilityManagerScreenProps extends AppStackScreenProps<"FacilityManager"> {}
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+// interface FacilityManagerScreenProps extends AppStackScreenProps<"FacilityManager"> {}
+export type FacilityManagerScreenProps = NativeStackScreenProps<
+  FacilityManagerStackParamList,
+  "FacilityManager"
+>;
 
 export function FacilityManager(props: FacilityManagerScreenProps) {
   const navigateToScreen = (screenName: string) => {
@@ -23,7 +27,7 @@ export function FacilityManager(props: FacilityManagerScreenProps) {
           <Text style={styles.title} weight="bold">
             Facility Manager Dashboard
           </Text>
-          
+
           <View style={styles.buttonContainer}>
             <Button
               text="Dashboard"
@@ -31,56 +35,56 @@ export function FacilityManager(props: FacilityManagerScreenProps) {
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityManagerDashboard")}
             />
-            
+
             <Button
               text="Maintenance Requests"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityMaintenanceRequests")}
             />
-            
+
             <Button
               text="Work Orders"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityWorkOrders")}
             />
-            
+
             <Button
               text="Vendor Management"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityVendorManagement")}
             />
-            
+
             <Button
               text="Inventory Management"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityInventoryManagement")}
             />
-            
+
             <Button
               text="Facility Reports"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityReports")}
             />
-            
+
             <Button
               text="Asset Management"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityAssetManagement")}
             />
-            
+
             <Button
               text="Preventive Maintenance"
               style={styles.navButton}
               textStyle={styles.buttonText}
               onPress={() => navigateToScreen("FacilityPreventiveMaintenance")}
             />
-            
+
             <Button
               text="Settings"
               style={styles.navButton}

@@ -169,6 +169,7 @@ export const TextField = forwardRef(function TextField(
     $helperStyle,
     status === "error" && { color: colors.error },
     HelperTextProps?.style,
+
   ];
 
   function focusInput() {
@@ -260,7 +261,7 @@ export const TextField = forwardRef(function TextField(
           tx={helperTx}
           txOptions={helperTxOptions}
           {...HelperTextProps}
-          style={$helperStyles}
+          style={[$helperStyles,{marginTop:adjustSize(5)}]}
         />
       )}
     </View>

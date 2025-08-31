@@ -8,7 +8,7 @@ import {
   TextField,
 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { AmenitiesIcon, ReservationsIcon } from "../../../assets/svg";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -20,7 +20,9 @@ import { ReservationsCard } from "./components/ReservationsCard";
 import SmallCustomModal from "../../../Components/SmallCustomModal";
 import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
-type Props = AppStackScreenProps<"CommunityArea">;
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type Props = NativeStackScreenProps<AdminStackParamList, "CommunityArea">;
 export function CommunityArea({ route }: Props) {
   const navigation = useNavigation();
   const status = route?.params?.tab;

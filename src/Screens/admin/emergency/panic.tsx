@@ -5,7 +5,7 @@ import { colors, typography, adjustSize, spacing } from "../../../theme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
-export const AdminPanicEmergency: React.FC = () => {
+export const PanicEmergency: React.FC = () => {
   const navigation = useNavigation();
 
   const [options, setOptions] = useState([

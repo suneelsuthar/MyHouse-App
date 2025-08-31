@@ -5,7 +5,7 @@ import { colors, typography, adjustSize } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import { useNavigation } from "@react-navigation/native";
-export const AdminEmergency: React.FC = () => {
+export const Emergency: React.FC = () => {
   const navigation = useNavigation();
   const list = [
     {
@@ -53,7 +53,7 @@ export const AdminEmergency: React.FC = () => {
           preset="reversed"
           style={styles.btn}
           textStyle={styles.btnTxt}
-          onPress={() => (navigation as any).navigate("AdminPanicEmergency")}
+          onPress={() => (navigation as any).navigate("PanicEmergency")}
         />
       </View>
     </Screen>

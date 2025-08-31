@@ -9,25 +9,24 @@ import {
   View,
 } from "react-native";
 import { Screen, Text, Header } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import {
+  AppStackScreenProps,
+  AdminStackParamList,
+} from "../../../utils/interfaces";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { IRentalProperty, rentalProperties } from "../../../utils/data";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { AdminStackParamList } from "../../../navigation/types";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import Feather from "@expo/vector-icons/Feather";
 
 type PropertyDetailsScreenRouteProp = RouteProp<
   AdminStackParamList,
-  "AdminPropertyDetails"
+  "PropertyDetails"
 >;
 
-interface AdminPropertyDetailsProps
-  extends AppStackScreenProps<"AdminPropertyDetails"> {}
-
-export function AdminPropertyDetails(props: AdminPropertyDetailsProps) {
+export function PropertyDetails() {
   const route = useRoute<PropertyDetailsScreenRouteProp>();
   const { propertyId } = route.params;
   const [approveModalVisible, setApproveModalVisible] = useState(false);

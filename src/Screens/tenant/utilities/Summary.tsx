@@ -15,28 +15,28 @@ const SummaryList = [
     title: "Client Name",
     data: "0123456****",
     btnTxt: "Update Profile",
-    path: "",
+    path: "TenantUtilitiesUpdateProfile",
   },
   {
     icon: Images.wallet2,
     title: "Wallet Ball",
     data: "N10,000.00",
     btnTxt: "Add Funds",
-    path: "",
+    path: "Wallet",
   },
   {
     icon: Images.dollar,
     title: "Outstanding Charges",
     data: "$10.00",
     btnTxt: "Pay Charges",
-    path: "",
+    path: "TenantUtilitiesCharges",
   },
   {
     icon: Images.meter,
     title: "My meter",
     data: "70.01",
     btnTxt: "Top up",
-    path: "",
+    path: "TenantUtilitiesMyMeter",
   },
 ];
 
@@ -161,7 +161,10 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
                 </View>
                 <Text style={styles.summaryListTitle}>{val.title}</Text>
                 <Text style={styles.summaryListData}>{val.data}</Text>
-                <Pressable style={styles.summaryListBtn}>
+                <Pressable
+                  style={styles.summaryListBtn}
+                  onPress={() => navigation.navigate(val.path)}
+                >
                   <Text style={styles.summaryListBtnTxt}>{val.btnTxt}</Text>
                 </Pressable>
               </View>
