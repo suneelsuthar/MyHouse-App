@@ -1,5 +1,5 @@
 export type TenantUtilitiesStackParamList = {
-  TenantUtilitiesSummary: undefined;
+  UtilitiesSummary: undefined;
   TenantUtilitiesMyMeter: undefined;
   TenantUtilitiesCharges: undefined;
   TenantUtilitiesTransactions: undefined;
@@ -18,9 +18,9 @@ export type TenantStackParamList = {
   TenantSupport: undefined;
   TenantSettings: undefined;
   TenantAssignedProp: undefined;
-  TenantFacilityManagement: { status?: string }; // Add this line
+  FacilityManagement: { status?: string }; // Add this line
   // Tenant Utilities Screens
-  TenantUtilitiesSummary: undefined;
+  UtilitiesSummary: undefined;
   TenantUtilitiesMyMeter: undefined;
   TenantUtilitiesCharges: undefined;
   TenantUtilitiesTransactions: undefined;

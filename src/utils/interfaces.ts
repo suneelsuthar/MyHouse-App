@@ -35,16 +35,16 @@ export type TenantStackParamList = {
   TenantSupport: undefined;
   TenantSettings: undefined;
   // Tenant Utilities Screens
-  TenantUtilitiesSummary: undefined;
+  UtilitiesSummary: undefined;
   TenantUtilitiesMyMeter: undefined;
   TenantUtilitiesCharges: undefined;
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
-  TenantAssignedProp:undefined;
-  TenantFacilityManagement:undefined;
-  TenantSendMoney:undefined;
-  TenantAddBeneficiary:undefined;
+  TenantAssignedProp: undefined;
+  FacilityManagement: undefined;
+  TenantSendMoney: undefined;
+  TenantAddBeneficiary: undefined;
 };
 
 // Screens specific to Admin
@@ -71,7 +71,7 @@ export type AdminStackParamList = {
     bookingType?: "reserved" | "active" | "history" | "cancelled";
   };
   AdminBookingDetails: { bookingId: string };
-  AdminFacilityManagement: {
+  FacilityManagement: {
     status: "work_requests" | "work_orders" | "completed";
   };
   AdminVisitorManagement: {
@@ -83,7 +83,7 @@ export type AdminStackParamList = {
       | "panic_alerts";
   };
   AdminTenants: undefined;
-  AdminCommunityArea: { tab: "amenities" | "reservations" };
+  CommunityArea: { tab: "amenities" | "reservations" };
   // Admin Community Area action pages
   AdminAmenityView: undefined;
   AdminAmenityEdit: undefined;
@@ -92,27 +92,27 @@ export type AdminStackParamList = {
   AdminAddNewAmenity: undefined;
   AdminReservationView: undefined;
   // Separate Visitor Management pages
-  AdminVisitorRequests: undefined;
+  VisitorRequests: undefined;
   AdminVisitorsList: undefined;
-  AdminRevokedInvitations: undefined;
+  RevokedInvitations: undefined;
   AdminAccessAlerts: undefined;
   AdminPanicAlerts: undefined;
-  AdminFinancialReports: undefined;
+  FinancialReports: undefined;
   AdminSystemSettings: undefined;
   AdminAnalytics: undefined;
   AdminAuditLogs: undefined;
   AdminBackupRestore: undefined;
-  AdminCommuication: undefined;
+  Commuication: undefined;
   // Admin Facility Management action screens
-  AdminFMViewDetails: undefined;
-  AdminFMEdit: undefined;
-  AdminFMGenerateWorkOrder: undefined;
-  AdminFMViewWorkOrder: undefined;
+  FMViewDetails: undefined;
+  FMEdit: undefined;
+  FMGenerateWorkOrder: undefined;
+  FMViewWorkOrder: undefined;
   AdminTenantDetails: undefined;
   // Admin Facility Management Order action screens
-  AdminFMOrderView: undefined;
-  AdminFMOrderUpdate: undefined;
-  AdminFMOrderExport: undefined;
+  FMOrderView: undefined;
+  FMOrderUpdate: undefined;
+  FMOrderExport: undefined;
   // Admin Emergency and Profile screens
   AdminEmergency: undefined;
   Profile: undefined;
@@ -130,7 +130,7 @@ export type AdminStackParamList = {
   AdminManageTransactions: undefined;
   AdminManagePropertyGroup: undefined;
   AdminManageVendingHistory: undefined;
-  AdminAnalysis: undefined;
+  Analysis: undefined;
   AdminUtilitiesSettings: undefined;
   ViewMeterDetails: { meter: MeterData };
   EditCreateMeter: { mode: "add" | "edit"; meterId?: string };

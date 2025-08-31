@@ -11,7 +11,7 @@ import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import AnalysisChart from "../../../../Components/AnalysisChart";
 import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicker";
-export const AdminAnalysis: React.FC = (props: any) => {
+export const Analysis: React.FC = (props: any) => {
   const [activeTab, setActiveTab] = useState("Power Consumption");
   const [selectBy, setSelectBy] = useState<string | undefined>();
   const [selectedProperty, setSelectedProperty] = useState<

@@ -17,8 +17,8 @@ import {
 } from "../../../assets/svg";
 import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
-type Props = AppStackScreenProps<"AdminFacilityManagement">;
-export function AdminFacilityManagement({ route }: Props) {
+type Props = AppStackScreenProps<"FacilityManagement">;
+export function FacilityManagement({ route }: Props) {
   const navigation = useNavigation();
   const status = route?.params?.status ?? "work_requests";
   const titleMap: Record<string, string> = {
@@ -319,30 +319,30 @@ export function AdminFacilityManagement({ route }: Props) {
               onAction={(action, property) => {
                 // Navigate to corresponding dummy pages for Work Requests actions
                 if (action === "View Details") {
-                  (navigation as any).navigate("AdminFMViewDetails" as never);
+                  (navigation as any).navigate("FMViewDetails" as never);
                 } else if (action === "Edit") {
-                  (navigation as any).navigate("AdminFMEdit" as never);
+                  (navigation as any).navigate("FMEdit" as never);
                 } else if (action === "Generate work order") {
                   (navigation as any).navigate(
-                    "AdminFMGenerateWorkOrder" as never
+                    "FMGenerateWorkOrder" as never
                   );
                 } else if (action === "View work order") {
-                  (navigation as any).navigate("AdminFMViewWorkOrder" as never);
+                  (navigation as any).navigate("FMViewWorkOrder" as never);
                 } else if (action === "View") {
                   // Orders tab: View
-                  (navigation as any).navigate("AdminFMOrderView" as never);
+                  (navigation as any).navigate("FMOrderView" as never);
                 } else if (action === "Update") {
                   // Orders tab: Update
-                  (navigation as any).navigate("AdminFMOrderUpdate" as never);
+                  (navigation as any).navigate("FMOrderUpdate" as never);
                 } else if (action === "Export") {
                   // Orders tab: Export
-                  (navigation as any).navigate("AdminFMOrderExport" as never);
+                  (navigation as any).navigate("FMOrderExport" as never);
                 } else if (action === "Chat") {
                   // Orders/Completed tab: go to Chat bottom tab and pass context
                   (navigation as any).navigate(
                     "Chat" as never,
                     {
-                      from: "AdminFacilityManagementOrders",
+                      from: "FacilityManagementOrders",
                       user: property?.requestedBy,
                       workReqNo: property?.workReqNo,
                     } as never

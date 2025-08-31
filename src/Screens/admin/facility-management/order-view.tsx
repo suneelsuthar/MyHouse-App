@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 type TabKey = "summary" | "updates";
 
-export const AdminFMOrderView = () => {
+export const FMOrderView = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("summary");
   // gallery for banner
   const slides = [Images.slide1, Images.slide2, Images.slide3];

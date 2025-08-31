@@ -12,9 +12,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
-interface AdminFinancialReportsProps
-  extends AppStackScreenProps<"AdminFinancialReports"> {}
-export function AdminFinancialReports(props: AdminFinancialReportsProps) {
+interface FinancialReportsProps
+  extends AppStackScreenProps<"FinancialReports"> {}
+export function FinancialReports(props: FinancialReportsProps) {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("My Account"); // 🔹 string state
   const { user } = useAppSelector((state: RootState) => state.auth);

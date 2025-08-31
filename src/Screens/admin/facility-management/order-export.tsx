@@ -14,11 +14,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 type TabKey = "summary" | "updates";
 
-type AdminFMOrderExportProps = {
+type FMOrderExportProps = {
   navigation: any;
 };
 
-export const AdminFMOrderExport = (props: any) => {
+export const FMOrderExport = (props: any) => {
   const [activeTab, setActiveTab] = useState<TabKey>("summary");
 
   // gallery for banner

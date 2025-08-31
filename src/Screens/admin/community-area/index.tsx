@@ -20,8 +20,8 @@ import { ReservationsCard } from "./components/ReservationsCard";
 import SmallCustomModal from "../../../Components/SmallCustomModal";
 import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
-type Props = AppStackScreenProps<"AdminCommunityArea">;
-export function AdminCommunityArea({ route }: Props) {
+type Props = AppStackScreenProps<"CommunityArea">;
+export function CommunityArea({ route }: Props) {
   const navigation = useNavigation();
   const status = route?.params?.tab;
   const titleMap: Record<string, string> = {

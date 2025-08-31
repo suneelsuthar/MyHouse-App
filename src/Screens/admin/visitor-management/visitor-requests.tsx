@@ -88,7 +88,7 @@ const visitorData = [
   },
 ];
 
-export const AdminVisitorRequests: React.FC = () => {
+export const VisitorRequests: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");

@@ -40,7 +40,7 @@ const SummaryList = [
   },
 ];
 
-export const TenantUtilitiesSummary: React.FC = ({ navigation }: any) => {
+export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
   // 🔹 Tabs
   const [activeTab] = useState("Summary");
 

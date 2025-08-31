@@ -16,9 +16,9 @@ import { Images } from "../../../assets/Images";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import * as ImagePicker from "expo-image-picker";
-type Props = AppStackScreenProps<"AdminFMOrderUpdate">;
+type Props = AppStackScreenProps<"FMOrderUpdate">;
 
-export function AdminFMOrderUpdate({ navigation }: Props) {
+export function FMOrderUpdate({ navigation }: Props) {
   // form state
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<string | null>(null);

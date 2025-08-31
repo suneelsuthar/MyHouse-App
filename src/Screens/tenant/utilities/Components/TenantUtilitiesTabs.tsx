@@ -24,7 +24,7 @@ export const TenantUtilitiesTabs: React.FC<TenantUtilitiesTabsProps> = ({
   const onTabChangeHandler = (label: string) => {
     switch (label) {
       case "Summary":
-        navigation.navigate("TenantUtilitiesSummary");
+        navigation.navigate("UtilitiesSummary");
         break;
       case "Transaction":
         navigation.navigate("TenantUtilitiesTransactions");

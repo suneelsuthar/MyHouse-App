@@ -108,22 +108,22 @@ import {
   AdminBookingDetails,
   // Property management screens are imported directly from their files
   // Other admin screens
-  AdminFacilityManagement,
+  FacilityManagement,
   AdminVisitorManagement,
   AdminTenants,
-  AdminCommunityArea,
-  AdminVisitorRequests,
+  CommunityArea,
+  VisitorRequests,
   AdminVisitorsList,
-  AdminRevokedInvitations,
+  RevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
-  AdminFMViewDetails,
-  AdminFMEdit,
-  AdminFMGenerateWorkOrder,
-  AdminFMViewWorkOrder,
-  AdminFMOrderView,
-  AdminFMOrderUpdate,
-  AdminFMOrderExport,
+  FMViewDetails,
+  FMEdit,
+  FMGenerateWorkOrder,
+  FMViewWorkOrder,
+  FMOrderView,
+  FMOrderUpdate,
+  FMOrderExport,
   AdminAmenityView,
   AdminAmenityEdit,
   AdminAmenityMakeReservation,
@@ -144,7 +144,7 @@ import {
   AdminManageTransactions,
   AdminManagePropertyGroup,
   AdminManageVendingHistory,
-  AdminAnalysis,
+  Analysis,
   AdminUtilitiesSettings,
   ViewMeterDetails,
   EditCreateMeter,
@@ -152,8 +152,8 @@ import {
   AddEditGroup,
   AdminManageBookings,
   AdminTenantDetails,
-  AdminCommuication,
-  AdminFinancialReports,
+  Commuication,
+  FinancialReports,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -192,7 +192,7 @@ const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminWalletStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
 
-import { TenantUtilitiesSummary } from "../Screens/tenant/utilities/Summary";
+import { UtilitiesSummary } from "../Screens/tenant/utilities/Summary";
 import { TenantUtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
 import { TenantUtilitiesCharges } from "../Screens/tenant/utilities/Charges";
 import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transactions";
@@ -415,8 +415,8 @@ const AdminHomeStackNavigator = () => (
       component={AdminPropertyDetails}
     />
     <AdminHomeStack.Screen
-      name="AdminFacilityManagement"
-      component={AdminFacilityManagement}
+      name="FacilityManagement"
+      component={FacilityManagement}
     />
     <AdminHomeStack.Screen
       name="AdminVisitorManagement"
@@ -429,21 +429,21 @@ const AdminHomeStackNavigator = () => (
     />
 
     <AdminHomeStack.Screen
-      name="AdminCommunityArea"
-      component={AdminCommunityArea}
+      name="CommunityArea"
+      component={CommunityArea}
     />
     {/* Separate Visitor Management pages */}
     <AdminHomeStack.Screen
-      name="AdminVisitorRequests"
-      component={AdminVisitorRequests}
+      name="VisitorRequests"
+      component={VisitorRequests}
     />
     <AdminHomeStack.Screen
       name="AdminVisitorsList"
       component={AdminVisitorsList}
     />
     <AdminHomeStack.Screen
-      name="AdminRevokedInvitations"
-      component={AdminRevokedInvitations}
+      name="RevokedInvitations"
+      component={RevokedInvitations}
     />
     <AdminHomeStack.Screen
       name="AdminAccessAlerts"
@@ -455,30 +455,30 @@ const AdminHomeStackNavigator = () => (
     />
     {/* Facility Management action pages */}
     <AdminHomeStack.Screen
-      name="AdminFMViewDetails"
-      component={AdminFMViewDetails}
+      name="FMViewDetails"
+      component={FMViewDetails}
     />
-    <AdminHomeStack.Screen name="AdminFMEdit" component={AdminFMEdit} />
+    <AdminHomeStack.Screen name="FMEdit" component={FMEdit} />
     <AdminHomeStack.Screen
-      name="AdminFMGenerateWorkOrder"
-      component={AdminFMGenerateWorkOrder}
+      name="FMGenerateWorkOrder"
+      component={FMGenerateWorkOrder}
     />
     <AdminHomeStack.Screen
-      name="AdminFMViewWorkOrder"
-      component={AdminFMViewWorkOrder}
+      name="FMViewWorkOrder"
+      component={FMViewWorkOrder}
     />
     {/* Facility Management Order action pages */}
     <AdminHomeStack.Screen
-      name="AdminFMOrderView"
-      component={AdminFMOrderView}
+      name="FMOrderView"
+      component={FMOrderView}
     />
     <AdminHomeStack.Screen
-      name="AdminFMOrderUpdate"
-      component={AdminFMOrderUpdate}
+      name="FMOrderUpdate"
+      component={FMOrderUpdate}
     />
     <AdminHomeStack.Screen
-      name="AdminFMOrderExport"
-      component={AdminFMOrderExport}
+      name="FMOrderExport"
+      component={FMOrderExport}
     />
     {/* Community Area action pages */}
     <AdminHomeStack.Screen
@@ -549,7 +549,7 @@ const AdminHomeStackNavigator = () => (
       name="AdminManageVendingHistory"
       component={AdminManageVendingHistory}
     />
-    <AdminHomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
+    <AdminHomeStack.Screen name="Analysis" component={Analysis} />
     <AdminHomeStack.Screen
       name="AdminUtilitiesSettings"
       component={AdminUtilitiesSettings}
@@ -565,8 +565,8 @@ const AdminHomeStackNavigator = () => (
     />
     <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
     <AdminHomeStack.Screen
-      name="AdminCommuication"
-      component={AdminCommuication}
+      name="Commuication"
+      component={Commuication}
     />
   </AdminHomeStack.Navigator>
 );
@@ -641,8 +641,8 @@ const AdminPropertiesStackNavigator = () => (
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminWalletStack.Screen
-      name="AdminFinancialReports"
-      component={AdminFinancialReports}
+      name="FinancialReports"
+      component={FinancialReports}
     />
 
     <AdminWalletStack.Screen
@@ -657,14 +657,7 @@ const AdminWalletStackNavigator = () => (
   </AdminWalletStack.Navigator>
 );
 
-// const AdminChatStackNavigator = () => (
-//   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
-//     <AdminChatStack.Screen
-//       name="AdminCommuication"
-//       component={AdminCommuication}
-//     />
-//   </AdminChatStack.Navigator>
-// );
+
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
@@ -677,43 +670,43 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="TenantHome" component={TenantHome} />
     {/* Facility Management action pages */}
     <HomeStack.Screen
-      name="AdminFMViewDetails"
-      component={AdminFMViewDetails}
+      name="FMViewDetails"
+      component={FMViewDetails}
     />
-    <HomeStack.Screen name="AdminFMEdit" component={AdminFMEdit} />
+    <HomeStack.Screen name="FMEdit" component={FMEdit} />
     <HomeStack.Screen
-      name="AdminFMGenerateWorkOrder"
-      component={AdminFMGenerateWorkOrder}
+      name="FMGenerateWorkOrder"
+      component={FMGenerateWorkOrder}
     />
     <HomeStack.Screen
-      name="AdminFMViewWorkOrder"
-      component={AdminFMViewWorkOrder}
+      name="FMViewWorkOrder"
+      component={FMViewWorkOrder}
     />
     {/* Facility Management Order action pages */}
-    <HomeStack.Screen name="AdminFMOrderView" component={AdminFMOrderView} />
+    <HomeStack.Screen name="FMOrderView" component={FMOrderView} />
     <HomeStack.Screen
-      name="AdminFMOrderUpdate"
-      component={AdminFMOrderUpdate}
+      name="FMOrderUpdate"
+      component={FMOrderUpdate}
     />
     <HomeStack.Screen
-      name="AdminFMOrderExport"
-      component={AdminFMOrderExport}
+      name="FMOrderExport"
+      component={FMOrderExport}
     />
     <HomeStack.Screen
-      name="AdminVisitorRequests"
-      component={AdminVisitorRequests}
+      name="VisitorRequests"
+      component={VisitorRequests}
     />
     <HomeStack.Screen
-      name="AdminRevokedInvitations"
-      component={AdminRevokedInvitations}
+      name="RevokedInvitations"
+      component={RevokedInvitations}
     />
     <HomeStack.Screen
-      name="TenantFacilityManagement"
-      component={AdminFacilityManagement}
+      name="FacilityManagement"
+      component={FacilityManagement}
     />
     <HomeStack.Screen
-      name="TenantUtilitiesSummary"
-      component={TenantUtilitiesSummary}
+      name="UtilitiesSummary"
+      component={UtilitiesSummary}
     />
     <HomeStack.Screen
       name="TenantUtilitiesMyMeter"
@@ -736,10 +729,10 @@ const TenantHomeStack = () => (
       component={TenantUtilitiesReportIssue}
     />
     <HomeStack.Screen
-      name="AdminCommunityArea"
-      component={AdminCommunityArea}
+      name="CommunityArea"
+      component={CommunityArea}
     />
-    <HomeStack.Screen name="AdminAnalysis" component={AdminAnalysis} />
+    <HomeStack.Screen name="Analysis" component={Analysis} />
     <HomeStack.Screen name="AdminEmergency" component={AdminEmergency} />
     <HomeStack.Screen
       name="AdminPanicEmergency"
@@ -755,7 +748,7 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="EditProfile" component={EditProfile} />
     <HomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
     <HomeStack.Screen name="Verify" component={Verify} />
-    <HomeStack.Screen name="AdminCommuication" component={AdminCommuication} />
+    <HomeStack.Screen name="Commuication" component={Commuication} />
   </HomeStack.Navigator>
 );
 
@@ -807,7 +800,7 @@ const TenantTabs = () => (
   >
     <Tab.Screen name="Home" component={TenantHomeStack} />
     <Tab.Screen name="Chat" component={Chat} />
-    <Tab.Screen name="Wallet" component={AdminFinancialReports} />
+    <Tab.Screen name="Wallet" component={FinancialReports} />
   </Tab.Navigator>
 );
 
@@ -1199,15 +1192,15 @@ const AdminTabs = () => (
           backgroundColor: "#292766",
         } as const;
 
-        // Hide on Facility-Management detail screens (keep visible on AdminFacilityManagement index)
+        // Hide on Facility-Management detail screens (keep visible on FacilityManagement index)
         const hideOnFacilityScreens = [
-          "AdminFMViewDetails",
-          "AdminFMEdit",
-          "AdminFMGenerateWorkOrder",
-          "AdminFMViewWorkOrder",
-          "AdminFMOrderView",
-          "AdminFMOrderUpdate",
-          "AdminFMOrderExport",
+          "FMViewDetails",
+          "FMEdit",
+          "FMGenerateWorkOrder",
+          "FMViewWorkOrder",
+          "FMOrderView",
+          "FMOrderUpdate",
+          "FMOrderExport",
           "AdminVisitorDetails",
           "AdminEmergency",
           "AdminPanicEmergency",
@@ -1221,7 +1214,7 @@ const AdminTabs = () => (
           "AdminManageTransactions",
           "AdminManagePropertyGroup",
           "AdminManageVendingHistory",
-          "AdminAnalysis",
+          "Analysis",
           "AdminUtilitiesSettings",
         ];
 

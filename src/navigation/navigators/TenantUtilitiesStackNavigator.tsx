@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TenantUtilitiesStackParamList } from "../types";
-import { TenantUtilitiesSummary } from "../../Screens/tenant/utilities/Summary";
+import { UtilitiesSummary } from "../../Screens/tenant/utilities/Summary";
 import { TenantUtilitiesMyMeter } from "../../Screens/tenant/utilities/MyMeter";
 import { TenantUtilitiesCharges } from "../../Screens/tenant/utilities/Charges";
 import { TenantUtilitiesTransactions } from "../../Screens/tenant/utilities/Transactions";
@@ -17,7 +17,7 @@ export const TenantUtilitiesStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="TenantUtilitiesSummary" component={TenantUtilitiesSummary} />
+      <Stack.Screen name="UtilitiesSummary" component={UtilitiesSummary} />
       <Stack.Screen name="TenantUtilitiesMyMeter" component={TenantUtilitiesMyMeter} />
       <Stack.Screen name="TenantUtilitiesCharges" component={TenantUtilitiesCharges} />
       <Stack.Screen name="TenantUtilitiesTransactions" component={TenantUtilitiesTransactions} />

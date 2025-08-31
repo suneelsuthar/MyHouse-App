@@ -1,13 +1,3 @@
-// import React from "react";
-// import { Screen, Text } from "../../../Components";
-
-// export const AdminFMEdit = () => {
-//   return (
-//     <Screen preset="fixed" safeAreaEdges={["top"]}>
-//       <Text text="AdminFMEdit" />
-//     </Screen>
-//   );
-// };
 import React, { useMemo, useState } from "react";
 import {
   Image,
@@ -32,7 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
 type Props = AppStackScreenProps<"AdminGenerateWorkRequests">;
 
-export function AdminFMEdit({ navigation }: Props) {
+export function FMEdit({ navigation }: Props) {
   // form state
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<string | null>(null);

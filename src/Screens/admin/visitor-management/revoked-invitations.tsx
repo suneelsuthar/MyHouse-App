@@ -78,7 +78,7 @@ const visitorData = [
   },
 ];
 
-export const AdminRevokedInvitations: React.FC = () => {
+export const RevokedInvitations: React.FC = () => {
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const navigation = useNavigation();

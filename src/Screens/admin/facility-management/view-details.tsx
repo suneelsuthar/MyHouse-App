@@ -11,7 +11,7 @@ import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 
-export const AdminFMViewDetails = () => {
+export const FMViewDetails = () => {
   const navigation = useNavigation();
   const slides = [Images.slide1, Images.slide2, Images.slide3];
   const [activeSlide, setActiveSlide] = useState(0);
