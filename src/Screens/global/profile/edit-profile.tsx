@@ -6,7 +6,7 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-export const AdminEditProfile: React.FC = () => {
+export const EditProfile: React.FC = () => {
   const navigation = useNavigation();
   // ✅ States for input fields
   const [employeeId, setEmployeeId] = useState("ID-1235567");

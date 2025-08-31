@@ -102,7 +102,7 @@ export type AdminStackParamList = {
   AdminAnalytics: undefined;
   AdminAuditLogs: undefined;
   AdminBackupRestore: undefined;
-  AdminSupportTickets: undefined;
+  AdminCommuication: undefined;
   // Admin Facility Management action screens
   AdminFMViewDetails: undefined;
   AdminFMEdit: undefined;
@@ -115,13 +115,13 @@ export type AdminStackParamList = {
   AdminFMOrderExport: undefined;
   // Admin Emergency and Profile screens
   AdminEmergency: undefined;
-  AdminProfile: undefined;
+  Profile: undefined;
   // Admin Visitor Details screen
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
   AdminGenerateVisitorRequest: undefined;
-  AdminEditProfile: undefined;
-  AdminProfileSettings: undefined;
+  EditProfile: undefined;
+  ProfileSettings: undefined;
   AdminPanicEmergency: undefined;
   AdminPropertyRequests: undefined;
   AdminManageInspections: undefined;

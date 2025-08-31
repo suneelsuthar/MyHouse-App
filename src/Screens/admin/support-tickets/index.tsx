@@ -22,10 +22,10 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 
-interface AdminSupportTicketsProps
-  extends AppStackScreenProps<"AdminSupportTickets"> {}
+interface AdminCommuicationProps
+  extends AppStackScreenProps<"AdminCommuication"> {}
 
-export function AdminSupportTickets(props: AdminSupportTicketsProps) {
+export function AdminCommuication(props: AdminCommuicationProps) {
   const navigation = useNavigation();
 
   /** ---------- STATES ---------- */

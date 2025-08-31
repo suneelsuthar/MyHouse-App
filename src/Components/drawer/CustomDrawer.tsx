@@ -797,10 +797,14 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              closeMenusAndNavigate("Admin", {
-                screen: "Home",
-                params: { screen: "AdminProfile" },
-              })
+              closeMenusAndNavigate(
+                user &&
+                  user?.role.charAt(0).toUpperCase() + user?.role.slice(1),
+                {
+                  screen: "Home",
+                  params: { screen: "Profile" },
+                }
+              )
             }
           >
             <WithLocalSvg asset={Images.user} />
