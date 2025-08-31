@@ -9,11 +9,15 @@ import { TransactionHistory } from "./components/transaction-history";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
 interface AdminFinancialReportsProps
   extends AppStackScreenProps<"AdminFinancialReports"> {}
 export function AdminFinancialReports(props: AdminFinancialReportsProps) {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("My Account"); // 🔹 string state
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const [showBalance, setShowBalance] = useState(true);
   return (
     <Screen
@@ -69,7 +73,7 @@ export function AdminFinancialReports(props: AdminFinancialReportsProps) {
                 <Text style={styles.commintBtnTxt}>Coming Soon</Text>
               </TouchableOpacity>
             </View>
-          ) : (
+          ) : user?.role === "admin" ? (
             <TouchableOpacity activeOpacity={0.2} style={styles.box}>
               <Ionicons
                 name="add-circle"
@@ -79,7 +83,7 @@ export function AdminFinancialReports(props: AdminFinancialReportsProps) {
               />
               <Text style={styles.boxTitle}>Tap to Add account</Text>
             </TouchableOpacity>
-          )}
+          ) : null}
 
           {activeTab === "My Account" ? <MyAccount /> : <TransactionHistory />}
         </ScrollView>
@@ -88,7 +92,11 @@ export function AdminFinancialReports(props: AdminFinancialReportsProps) {
         <TouchableOpacity activeOpacity={0.7} style={[styles.addMoneyBtn]}>
           <Text style={styles.addMoneyBtnText}>Add Money</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.7} style={styles.sendMoneyBtn}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.sendMoneyBtn}
+          onPress={() => navigation.navigate("TenantSendMoney")}
+        >
           <Text style={styles.sendMoneyBtnText}>Send Money</Text>
         </TouchableOpacity>
       </View>

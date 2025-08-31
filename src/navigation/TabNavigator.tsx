@@ -564,7 +564,10 @@ const AdminHomeStackNavigator = () => (
       component={ViewPropertiesGroups}
     />
     <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
-    <AdminHomeStack.Screen name="AdminCommuication" component={AdminCommuication} />
+    <AdminHomeStack.Screen
+      name="AdminCommuication"
+      component={AdminCommuication}
+    />
   </AdminHomeStack.Navigator>
 );
 
@@ -640,6 +643,16 @@ const AdminWalletStackNavigator = () => (
     <AdminWalletStack.Screen
       name="AdminFinancialReports"
       component={AdminFinancialReports}
+    />
+
+    <AdminWalletStack.Screen
+      name="TenantSendMoney"
+      component={TenantSendMoney}
+    />
+
+    <AdminWalletStack.Screen
+      name="TenantAddBeneficiary"
+      component={TenantAddBeneficiary}
     />
   </AdminWalletStack.Navigator>
 );
@@ -743,7 +756,6 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
     <HomeStack.Screen name="Verify" component={Verify} />
     <HomeStack.Screen name="AdminCommuication" component={AdminCommuication} />
-
   </HomeStack.Navigator>
 );
 
@@ -795,7 +807,7 @@ const TenantTabs = () => (
   >
     <Tab.Screen name="Home" component={TenantHomeStack} />
     <Tab.Screen name="Chat" component={Chat} />
-    <Tab.Screen name="Wallet" component={TenantWallet} />
+    <Tab.Screen name="Wallet" component={AdminFinancialReports} />
   </Tab.Navigator>
 );
 
