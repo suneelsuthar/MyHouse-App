@@ -9,7 +9,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { adjustSize, colors, typography } from "../theme";
 import { StyleSheet } from "react-native";
-
 // Import all screens
 import {
   TenantRentPayment,
@@ -17,7 +16,6 @@ import {
   TenantHome,
   Chat,
   // Agent screens
-  Agent,
   AgentDashboard,
   AgentSettings,
 
@@ -25,40 +23,21 @@ import {
   FacilityManager,
   FacilityManagerDashboard,
   // Landlord screens
-  Landlord,
   LandlordDashboard,
   LandlordMyProperties,
   LandlordTenantManagement,
   LandlordRentCollection,
-  LandlordExpenseTracking,
-  // Global screens
-  LandlordMaintenanceRequests,
-  LandlordFinancialReports,
-  LandlordPropertyAnalytics,
-  LandlordSettings,
 
   // Sub-Landlord screens
   SubLandlord,
   SubLandlordDashboard,
-  SubLandlordAssignedProperties,
-  SubLandlordTenantCommunication,
-  SubLandlordMaintenanceRequests,
-  SubLandlordRentCollection,
-  SubLandlordReports,
-  SubLandlordPropertyInspections,
-  SubLandlordDocumentManagement,
-  SubLandlordSettings,
+
 
   // Security screens
   Security,
   SecurityDashboard,
   SecurityVisitorLogs,
-  SecurityIncidentReports,
-  SecurityAccessControl,
-  SecurityEmergencyContacts,
-  SecurityAlerts,
-  SecurityPatrolLogs,
-  SecuritySettings,
+
 
   // Import admin screens from the admin directory
   AdminDashboard,
@@ -120,6 +99,7 @@ import {
   Verify,
   EditProfile,
   ProfileSettings,
+  SecurityIncidentReports,
 } from "../Screens";
 
 // Import property management screens from their respective files
@@ -158,6 +138,7 @@ const AdminBookingStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminPropertiesStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminWalletStack = createNativeStackNavigator<AdminStackParamList>();
 const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
+const TenantWalletStack = createNativeStackNavigator<TenantStackParamList>();
 
 import { UtilitiesSummary } from "../Screens/tenant/utilities/Summary";
 import { TenantUtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
@@ -445,6 +426,17 @@ const AdminPropertiesStackNavigator = () => (
   </AdminPropertiesStack.Navigator>
 );
 
+const TenantWalletStackNavigator = () => (
+  <TenantWalletStack.Navigator screenOptions={{ headerShown: false }}>
+    <TenantWalletStack.Screen
+      name="FinancialReports"
+      component={FinancialReports}
+    />
+    <TenantWalletStack.Screen name="SendMoney" component={SendMoney} />
+    <TenantWalletStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
+  </TenantWalletStack.Navigator>
+);
+
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminWalletStack.Screen
@@ -460,8 +452,29 @@ const AdminWalletStackNavigator = () => (
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
-const HomeStack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+
+import { NavigatorScreenParams } from "@react-navigation/native";
+
+// Define a param list for the Tenant Drawer
+export type TenantDrawerParamList = {
+  Tenant: NavigatorScreenParams<TenantStackParamList>;
+  TenantAssignedProp: undefined;
+  AdminVisitorDetails: { visitorId: string };
+  AdminGenerateVisitorRequest: undefined;
+  AdminAmenityMakeReservation: undefined;
+  AdminReservationView: undefined;
+  AdminAddNewAmenity: undefined;
+  AdminAmenityView: undefined;
+  Agent: undefined;
+  FacilityManager: undefined;
+  Landlord: undefined;
+  SubLandlord: undefined;
+  Security: undefined;
+  Admin: undefined;
+};
+
+const HomeStack = createNativeStackNavigator<TenantStackParamList>();
+const Drawer = createDrawerNavigator<TenantDrawerParamList>();
 
 // Home Stack Navigator for Tenant
 const TenantHomeStack = () => (
@@ -580,7 +593,7 @@ const TenantTabs = () => (
   >
     <Tab.Screen name="Home" component={TenantHomeStack} />
     <Tab.Screen name="Chat" component={Chat} />
-    <Tab.Screen name="Wallet" component={FinancialReports} />
+        <Tab.Screen name="Wallet" component={TenantWalletStackNavigator} />
   </Tab.Navigator>
 );
 

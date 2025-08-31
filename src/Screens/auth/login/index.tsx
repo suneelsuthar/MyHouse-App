@@ -7,13 +7,13 @@ import {
   ScrollView,
 } from "react-native";
 import { Button, Screen, Text, TextField } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AuthStackParamList } from "../../../utils/interfaces";
 import { adjustSize, colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectAuthLoading, selectAuthError } from "../../../store/selectors";
 import { loginUser } from "../../../store/thunks/authThunks";
 import Toast from "react-native-toast-message";
-interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
+interface LoginScreenProps extends NativeStackScreenProps<AuthStackParamList, "Login"> {}
 export function LoginScreen(props: LoginScreenProps) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const authPasswordInput = useRef<TextInput>();

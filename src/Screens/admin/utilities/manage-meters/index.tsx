@@ -26,6 +26,8 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
 import Clipboard from "@react-native-clipboard/clipboard";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -102,7 +104,7 @@ const meterData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends AppStackScreenProps<"AdminPropertyManagement"> {}
+  extends NativeStackScreenProps<AdminStackParamList, "AdminManageMeters"> {}
 export const AdminManageMeters = ({ route }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();
   const [search, setSearch] = useState("");

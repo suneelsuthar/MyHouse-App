@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { Screen, Text, Header, Button, TextField } from "../../../Components";
 import { adjustSize, colors } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import Step1, { type SelectedValue } from "./components/step1";
 import Step2 from "./components/step2";
 import Step3 from "./components/step3";
@@ -12,9 +12,11 @@ import Step6 from "./components/step6";
 import Step7 from "./components/step7";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 interface AdminAddPropertyProps
-  extends AppStackScreenProps<"AdminAddProperty"> {}
+  extends NativeStackScreenProps<AdminStackParamList, "AdminAddProperty"> {}
 
 export function AdminAddProperty(props: AdminAddPropertyProps) {
   const [currentStep, setCurrentStep] = useState<number>(-1);

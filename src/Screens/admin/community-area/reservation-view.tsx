@@ -3,7 +3,8 @@ import { ScrollView, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Screen, Text, CustomGallery, Button } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, typography } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../utils/interfaces";
 type InfoItem = {
   title: string;
   value: string;
@@ -11,8 +12,9 @@ type InfoItem = {
 export function AdminReservationView({
   route,
   navigation,
-}: AppStackScreenProps<"AdminReservationView">) {
-  const data = route?.params?.data;
+}: NativeStackScreenProps<AdminStackParamList, "AdminReservationView">) {
+
+  const data: any = route?.params?.data;
 
   const list: InfoItem[] = [
     {

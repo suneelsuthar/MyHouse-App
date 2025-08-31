@@ -27,7 +27,6 @@ import {
   Intro,
   CreateAccount,
   LoginScreen,
-  // Global screens
   GlobalScreen,
   TermsConditionsScreen,
   AboutUsScreen,
@@ -162,40 +161,13 @@ const authRoutes: any[] = [
 export const Navigation = () => {
   const navigation = useNavigation();
   const { isAuthenticated } = useAppSelector(selectNavigationState);
-  const [initialRoute, setInitialRoute] =
-    React.useState<keyof AppStackParamList>("Splash");
-  const [isLoading, setIsLoading] = React.useState(true);
 
-  // Check if it's the first app launch
-  React.useEffect(() => {
-    const checkFirstLaunch = async () => {
-      try {
-        const hasLaunched = await AsyncStorage.getItem("hasLaunched");
-
-        if (hasLaunched === "true") {
-          setInitialRoute("Splash");
-        } else {
-          setInitialRoute("Splash");
-        }
-      } catch (error) {
-        console.error("Error checking first launch:", error);
-        setInitialRoute("Splash");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkFirstLaunch();
-  }, []);
   // Determine which routes to use based on authentication state
   const routes = isAuthenticated ? userRoutes : authRoutes;
   // Show loading indicator while checking first launch
-  if (isLoading) {
-    return null;
-  }
 
   return (
-    <Stack.Navigator initialRouteName={initialRoute}>
+    <Stack.Navigator initialRouteName={"Splash"}>
       {routes?.map(({ name, component, showHeader, title }: any) => (
         <Stack.Screen
           key={name}

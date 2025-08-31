@@ -15,9 +15,11 @@ import DropdownComponent from "../../../../Components/DropDown";
 import { AppStackScreenProps } from "../../../../utils/interfaces";
 import { RentalCard } from "../../../../Components/RentalCard";
 import { rentalProperties } from "../../../../utils/data";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../../utils/interfaces";
 
 interface ViewPropertiesGroupsProps
-  extends AppStackScreenProps<"ViewPropertiesGroups"> {}
+  extends NativeStackScreenProps<AdminStackParamList, "ViewPropertiesGroups"> {}
 export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
   const navigation = useNavigation();
   const { propertyType = "rental" } = route.params || {};

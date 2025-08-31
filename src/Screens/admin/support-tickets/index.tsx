@@ -21,9 +21,11 @@ import { NewMessageIcon, HistoryIcon2 } from "../../../assets/svg";
 import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AdminStackParamList } from "../../../utils/interfaces";
 
 interface CommuicationProps
-  extends AppStackScreenProps<"Commuication"> {}
+  extends NativeStackScreenProps<AdminStackParamList, "Commuication"> {}
 
 export function Commuication(props: CommuicationProps) {
   const navigation = useNavigation();

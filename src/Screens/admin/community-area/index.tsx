@@ -8,7 +8,7 @@ import {
   TextField,
 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
-import { AdminStackParamList } from "../../../utils/interfaces";
+import { AdminStackParamList, TenantStackParamList } from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { AmenitiesIcon, ReservationsIcon } from "../../../assets/svg";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -22,10 +22,11 @@ import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = NativeStackScreenProps<AdminStackParamList, "CommunityArea">;
-export function CommunityArea({ route }: Props) {
+export type CommunityAreaProps = NativeStackScreenProps<AdminStackParamList, "CommunityArea"> | NativeStackScreenProps<TenantStackParamList, "CommunityArea">;
+
+export function CommunityArea({ route }: CommunityAreaProps) {
   const navigation = useNavigation();
-  const status = route?.params?.tab;
+    const status = (route.params as any)?.tab ?? "amenities";
   const titleMap: Record<string, string> = {
     amenities: "Amenities",
     reservations: "Reservations",

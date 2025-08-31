@@ -8,12 +8,15 @@ import {
   Image,
 } from "react-native";
 import { Screen, Text, Button, Header2 } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { TenantStackParamList } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { adjustSize, colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-interface TenantRentPaymentProps
-  extends AppStackScreenProps<"TenantRentPayment"> {}
+export type TenantRentPaymentProps = NativeStackScreenProps<
+  TenantStackParamList,
+  "TenantRentPayment"
+>;
 
 export function TenantRentPayment(props: TenantRentPaymentProps) {
   const homesPayments = [

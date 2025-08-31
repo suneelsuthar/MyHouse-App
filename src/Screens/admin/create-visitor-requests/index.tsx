@@ -7,10 +7,11 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Images } from "../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import DropdownComponent from "../../../Components/DropDown";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { rentalProperties } from "../../../utils/data";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = AppStackScreenProps<"AdminCreateVisitorRequests">;
+type Props = NativeStackScreenProps<AdminStackParamList, "AdminCreateVisitorRequests">;
 
 export function AdminCreateVisitorRequests({ route, navigation }: Props) {
   const preselectId = route?.params?.propertyId;

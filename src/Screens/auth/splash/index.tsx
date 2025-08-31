@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, View, Animated } from "react-native";
 import { Screen, Text } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AuthStackParamList } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { WithLocalSvg } from "react-native-svg/css";
 
-interface SplashScreenProps extends AppStackScreenProps<"Splash"> {}
+type SplashScreenProps = NativeStackScreenProps<AuthStackParamList, "Splash">;
 
 export function Splash(props: SplashScreenProps) {
   const bounceAnim = useRef(new Animated.Value(0)).current;

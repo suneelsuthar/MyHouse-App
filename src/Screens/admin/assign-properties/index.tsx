@@ -4,7 +4,8 @@ import { Screen, Text, Button, TextField } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import Feather from "@expo/vector-icons/Feather";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type Agent = {
   id: string;
@@ -49,7 +50,7 @@ const MOCK_AGENTS: Agent[] = [
 export function AdminAssignProperties({
   route,
   navigation,
-}: AppStackScreenProps<"AdminAssignProperties">) {
+}: NativeStackScreenProps<AdminStackParamList, "AdminAssignProperties">) {
   const assignType = route?.params?.type;
   const headerTitle = useMemo(() => {
     switch (assignType) {

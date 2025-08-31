@@ -6,8 +6,11 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-export const EditProfile: React.FC = () => {
-  const navigation = useNavigation();
+import { AppStackScreenProps } from "../../../utils/interfaces";
+
+export const EditProfile: React.FC = ({
+  navigation,
+}: AppStackScreenProps<"EditProfile">) => {
   // ✅ States for input fields
   const [employeeId, setEmployeeId] = useState("ID-1235567");
   const [fullName, setFullName] = useState("Brume Djbah");

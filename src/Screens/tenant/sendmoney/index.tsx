@@ -8,10 +8,11 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { adjustSize, colors, typography } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { Header2, Screen, Text, TextField } from "../../../Components";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 interface Transaction {
   id: string;
   type: "rent" | "deposit" | "refund" | "fee";
@@ -20,7 +21,7 @@ interface Transaction {
   status: "completed" | "pending" | "failed";
   description: string;
 }
-interface SendMoneyProps extends AppStackScreenProps<"SendMoney"> {}
+interface SendMoneyProps extends NativeStackScreenProps<AdminStackParamList, "SendMoney"> {}
 
 export function SendMoney(props: SendMoneyProps) {
   const [showBalance, setShowBalance] = useState(true);

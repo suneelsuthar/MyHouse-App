@@ -23,6 +23,8 @@ import { AppStackScreenProps } from "../../../../utils/interfaces";
 import Entypo from "@expo/vector-icons/Entypo";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -87,7 +89,7 @@ const transactionData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends AppStackScreenProps<"AdminPropertyManagement"> {}
+  extends NativeStackScreenProps<AdminStackParamList, "AdminManageTransactions"> {}
 export const AdminManageTransactions = ({
   route,
 }: AdminPropertyManagementProps) => {

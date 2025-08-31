@@ -8,10 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import { Button, Text, TextField, Screen } from "../../../Components";
-import {
-  AppStackScreenProps,
-  AppStackParamList,
-} from "../../../utils/interfaces";
+import { AuthStackParamList } from "../../../utils/interfaces";
 import { adjustSize, colors, spacing } from "../../../theme";
 import Toast from "react-native-toast-message";
 import { Images } from "../../../assets/Images";
@@ -21,10 +18,9 @@ import * as yup from "yup";
 import { WithLocalSvg } from "react-native-svg/css";
 import { authService } from "../../../services/auth.service";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import Dropdown from "../../../Components/DropDown";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
 // Define validation schema for signup
 const signupValidationSchema = yup.object().shape({
   fullName: yup.string().required("Full name is required"),
@@ -56,9 +52,9 @@ const defaultValues: SignUpFormData = {
   confirmPassword: "",
 };
 
-type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
+type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
-interface CreateAccountProps extends AppStackScreenProps<"CreateAccount"> {}
+interface CreateAccountProps extends NativeStackScreenProps<AuthStackParamList, "CreateAccount"> {}
 
 export function CreateAccount(props: CreateAccountProps) {
   const [loading, setLoading] = useState(false);

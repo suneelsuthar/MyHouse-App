@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Switch } from "react-native";
 import { Screen, Text, Button, Header2, TextField } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import {
+  AdminStackParamList,
+  AppStackScreenProps,
+  TenantStackParamList,
+} from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
-interface AddBeneficiaryProps
-  extends AppStackScreenProps<"AddBeneficiary"> {}
+export type AddBeneficiaryProps = NativeStackScreenProps<
+  TenantStackParamList,
+  "AddBeneficiary"
+> & {
+  navigation: NativeStackScreenProps<
+    AdminStackParamList,
+    "AddBeneficiary"
+  >["navigation"];
+};
 
 export function AddBeneficiary(props: AddBeneficiaryProps) {
   const [isEnabled, setIsEnabled] = useState(false);

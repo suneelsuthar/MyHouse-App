@@ -11,11 +11,12 @@ import { Text, Button } from "../../../Components"; // Assuming you have your ow
 import { colors } from "../../../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Images } from "../../../assets/Images";
-import { AppStackScreenProps } from "../../../utils/interfaces";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AuthStackParamList } from "../../../utils/interfaces";
 const { width, height } = Dimensions.get("window");
 
-export function Intro({ navigation }: AppStackScreenProps<"Intro">) {
+export function Intro({ navigation }: NativeStackScreenProps<AuthStackParamList, "Intro">) {
   const slides = [
     {
       id: 1,

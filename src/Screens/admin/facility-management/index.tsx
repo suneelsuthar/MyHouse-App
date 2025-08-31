@@ -9,7 +9,6 @@ import {
   FacilityManagementCard,
 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
 import {
   WorkRequestsIcon,
   OrdersIcon,
@@ -17,12 +16,12 @@ import {
 } from "../../../assets/svg";
 import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
-import { AdminStackParamList } from "../../../utils/interfaces";
+import { AdminStackParamList, TenantStackParamList } from "../../../utils/interfaces";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = NativeStackScreenProps<AdminStackParamList, "FacilityManagement">;
+export type FacilityManagementProps = NativeStackScreenProps<AdminStackParamList, "FacilityManagement"> | NativeStackScreenProps<TenantStackParamList, "FacilityManagement">;
 
-export function FacilityManagement({ route }: Props) {
+export function FacilityManagement({ route }: FacilityManagementProps) {
   const navigation = useNavigation();
   const status = route?.params?.status ?? "work_requests";
   const titleMap: Record<string, string> = {

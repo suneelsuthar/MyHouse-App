@@ -6,7 +6,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 import { Text, Screen, TextField } from "../../../Components";
 import DropdownComponent from "../../../Components/DropDown";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList } from "../../../utils/interfaces";
 import { RentalCard } from "../../../Components/RentalCard";
 import { rentalProperties } from "../../../utils/data";
 
@@ -14,6 +14,7 @@ import AdminPropertyServices from "./services";
 import AdminPropertyFeatures from "./features";
 import AdminPropertyRestriction from "./restriction";
 import AdminManageInspections from "./manage-inspections";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 export {
   AdminPropertyServices,
   AdminPropertyFeatures,
@@ -22,7 +23,10 @@ export {
 };
 
 interface AdminPropertyManagementProps
-  extends AppStackScreenProps<"AdminPropertyManagement"> {}
+  extends NativeStackScreenProps<
+    AdminStackParamList,
+    "AdminPropertyManagement"
+  > {}
 export function AdminPropertyManagement({
   route,
 }: AdminPropertyManagementProps) {

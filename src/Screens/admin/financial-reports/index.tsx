@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Screen, Text, Header2, CustomTabs } from "../../../Components";
-import { AppStackScreenProps } from "../../../utils/interfaces";
+import { AdminStackParamList, TenantStackParamList } from "../../../utils/interfaces";
 import { colors, spacing, adjustSize, typography } from "../../../theme";
 import { MyAccountIcon, TransactionHistoryIcon } from "../../../assets/svg";
 import { MyAccount } from "./components/my-account";
@@ -12,8 +12,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
-interface FinancialReportsProps
-  extends AppStackScreenProps<"FinancialReports"> {}
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+export type FinancialReportsProps = NativeStackScreenProps<AdminStackParamList, "FinancialReports"> | NativeStackScreenProps<TenantStackParamList, "FinancialReports">;
 export function FinancialReports(props: FinancialReportsProps) {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("My Account"); // 🔹 string state

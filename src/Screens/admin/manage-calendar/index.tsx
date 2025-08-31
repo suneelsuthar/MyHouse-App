@@ -9,8 +9,8 @@ import {
 import { Screen, Text, Button } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
-import { AppStackScreenProps } from "../../../utils/interfaces";
-
+import { AdminStackParamList } from "../../../utils/interfaces";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Mode = "single" | "range";
 
 type DayCell = {
@@ -21,7 +21,7 @@ type DayCell = {
 export function AdminManageCalendar({
   route,
   navigation,
-}: AppStackScreenProps<"AdminManageCalendar">) {
+}: NativeStackScreenProps<AdminStackParamList, "AdminManageCalendar">) {
   const [mode, setMode] = useState<Mode>("range");
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -110,7 +110,10 @@ export function AdminManageCalendar({
     setBlockedKeys((prev) => {
       const next = new Set(prev);
       for (const d of dates) {
-        const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+        const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(d.getDate()).padStart(2, "0")}`;
         if (action === "block") next.add(k);
         else next.delete(k);
       }
@@ -127,7 +130,9 @@ export function AdminManageCalendar({
       applyActionToDates(dates, action);
     } else {
       if (!startDate) return;
-      const k = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
+      const k = `${startDate.getFullYear()}-${String(
+        startDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
       const isBlocked = blockedKeys.has(k);
       applyActionToDates([startDate], isBlocked ? "reopen" : "block");
     }
@@ -169,7 +174,9 @@ export function AdminManageCalendar({
 
   const confirmText = useMemo(() => {
     if (mode === "range") {
-      return selectedAction === "reopen" ? "Confirm Reopened dates" : "Confirm Blocked Dates";
+      return selectedAction === "reopen"
+        ? "Confirm Reopened dates"
+        : "Confirm Blocked Dates";
     }
     return "Confirm Blocked Dates";
   }, [mode, selectedAction]);
@@ -318,7 +325,12 @@ export function AdminManageCalendar({
                   />
                 );
               }
-              const key = `${cell.date.getFullYear()}-${String(cell.date.getMonth() + 1).padStart(2, "0")}-${String(cell.date.getDate()).padStart(2, "0")}`;
+              const key = `${cell.date.getFullYear()}-${String(
+                cell.date.getMonth() + 1
+              ).padStart(2, "0")}-${String(cell.date.getDate()).padStart(
+                2,
+                "0"
+              )}`;
               const isBlocked = blockedKeys.has(key);
               const sel =
                 startDate && endDate
@@ -345,7 +357,10 @@ export function AdminManageCalendar({
                         styles.dayText,
                         sel && styles.dayTextSelected,
                         !sel && isBlocked && styles.dayTextBlocked,
-                        !sel && !isBlocked && isToday && styles.dayTextAvailable,
+                        !sel &&
+                          !isBlocked &&
+                          isToday &&
+                          styles.dayTextAvailable,
                       ]}
                     >
                       {cell.date.getDate()}
@@ -395,7 +410,9 @@ export function AdminManageCalendar({
             preset="reversed"
             style={styles.confirmBtn}
             textStyle={styles.confirmText}
-            disabled={mode === "range" ? selectedRange.length === 0 : !startDate}
+            disabled={
+              mode === "range" ? selectedRange.length === 0 : !startDate
+            }
             onPress={onConfirm}
           />
           <Pressable

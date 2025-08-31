@@ -19,13 +19,14 @@ export type AuthStackParamList = {
   Splash: undefined;
   Intro: undefined;
   Login: undefined;
-  CreateAccount: undefined;
+  CreateAccount: any;
   ForgotPassword: undefined;
 };
 
 // Screens specific to Tenant
 export type TenantStackParamList = {
   Tenant: undefined;
+  TenantHome: undefined;
   TenantDashboard: undefined;
   TenantProfile: undefined;
   TenantMaintenance: undefined;
@@ -34,6 +35,29 @@ export type TenantStackParamList = {
   TenantNotifications: undefined;
   TenantSupport: undefined;
   TenantSettings: undefined;
+  SendMoney: undefined;
+  AddBeneficiary: undefined;
+  FinancialReports: undefined;
+  FMViewDetails: undefined;
+  FMEdit: undefined;
+  FMGenerateWorkOrder: undefined;
+  FMViewWorkOrder: undefined;
+  FMOrderView: undefined;
+  FMOrderUpdate: undefined;
+  FMOrderExport: undefined;
+  VisitorRequests: undefined;
+  RevokedInvitations: undefined;
+  FacilityManagement: undefined;
+  TenantUtilitiesUpdateProfile: undefined;
+  CommunityArea: undefined;
+  Analysis: undefined;
+  Emergency: undefined;
+  PanicEmergency: undefined;
+  Profile: undefined;
+  EditProfile: undefined;
+  ProfileSettings: undefined;
+  Verify: undefined;
+  Commuication: undefined;
   // Tenant Utilities Screens
   UtilitiesSummary: undefined;
   TenantUtilitiesMyMeter: undefined;
@@ -42,9 +66,6 @@ export type TenantStackParamList = {
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
   TenantAssignedProp: undefined;
-  FacilityManagement: undefined;
-  SendMoney: undefined;
-  AddBeneficiary: undefined;
   FacilityManager: undefined;
   FacilityManagerDashboard: undefined;
 };
@@ -100,6 +121,8 @@ export type AdminStackParamList = {
   AdminAccessAlerts: undefined;
   AdminPanicAlerts: undefined;
   FinancialReports: undefined;
+  SendMoney: undefined;
+  AddBeneficiary: undefined;
   AdminSystemSettings: undefined;
   AdminAnalytics: undefined;
   AdminAuditLogs: undefined;
@@ -122,8 +145,8 @@ export type AdminStackParamList = {
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
   AdminGenerateVisitorRequest: undefined;
-  AdminEditProfile: undefined;
-  AdminProfileSettings: undefined;
+  EditProfile: undefined;
+  ProfileSettings: undefined;
   PanicEmergency: undefined;
   Profile: undefined;
   AdminPropertyRequests: undefined;
@@ -234,6 +257,16 @@ export type SecurityStackParamList = {
   Access: undefined;
 };
 
+export type TenantUtilitiesStackParamList = {
+  UtilitiesSummary: undefined;
+  TenantUtilitiesMyMeter: undefined;
+  TenantUtilitiesCharges: undefined;
+  TenantUtilitiesTransactions: undefined;
+  TenantUtilitiesVendingHistory: undefined;
+  TenantUtilitiesReportIssue: undefined;
+  TenantUtilitiesUpdateProfile: undefined;
+};
+
 // Global screens available to all users
 export type GlobalStackParamList = {
   Global: undefined;
@@ -244,6 +277,8 @@ export type GlobalStackParamList = {
   AboutUs: undefined;
   TermsConditions: undefined;
 };
+
+
 
 // Main app param list that combines all stacks
 export type AppStackParamList = AuthStackParamList &
