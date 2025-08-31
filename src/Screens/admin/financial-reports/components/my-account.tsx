@@ -2,10 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { Text } from "../../../../Components";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { RootState } from "../../../../store";
 export const MyAccount = () => {
-  const { user } = useAppSelector((state: RootState) => state.auth);
   const data = [
     {
       profileURL:
@@ -48,36 +45,18 @@ export const MyAccount = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>MyHomes Payments</Text>
-
-      {user?.role === "admin" && (
-        <>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Payment of Charges</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Upgrade membership plan</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Utility Payments</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Payment of Charges</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      {console.log(user)}
-      {user?.role === "tenant" && (
-        <>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Utility Payments</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
-            <Text style={styles.btnTxt}>Payment of Charges</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
+      <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
+        <Text style={styles.btnTxt}>Payment of Charges</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
+        <Text style={styles.btnTxt}>Upgrade membership plan</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
+        <Text style={styles.btnTxt}>Utility Payments</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
+        <Text style={styles.btnTxt}>Payment of Charges</Text>
+      </TouchableOpacity>
       <Text style={styles.heading}>Send to</Text>
       {data.map((val, index) => {
         return (

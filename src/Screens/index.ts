@@ -6,8 +6,7 @@ import { Home } from "./global/home";
 import { Notification } from "./global/notifications";
 import { Favourities } from "./global/favourites";
 import { BookNow } from "./global/booknow";
-import { Chat } from "./global/chat/index";
-import { Message } from "./global/chat/messages";
+import { Chat } from "./global/chat";
 
 // Global screens exports
 export * from "./global";
@@ -23,7 +22,7 @@ export * from "./global/contact-us";
 export * from "./global/help";
 export * from "./global/property-filters";
 
-// import { Tenant } from "./tenant";
+import { Tenant } from "./tenant";
 import { TenantDashboard } from "./tenant/dashboard";
 import { TenantProfile } from "./tenant/profile";
 import { TenantMaintenance } from "./tenant/maintenance";
@@ -33,11 +32,9 @@ import { TenantNotifications } from "./tenant/notifications";
 import { TenantSupport } from "./tenant/support";
 import { TenantSettings } from "./tenant/settings";
 import { TenantHome } from "./tenant/home";
-// import { TenantChat } from "./tenant/chat";
+import { TenantChat } from "./tenant/chat";
 import { TenantWallet } from "./tenant/wallet";
 import { TenantAssignedProp } from "./tenant/assignemd-properties";
-import { TenantSendMoney } from "./tenant/sendmoney";
-import { TenantAddBeneficiary } from "./tenant/addbeneficiary";
 
 import { Agent } from "./agent";
 import { AgentDashboard } from "./agent/dashboard";
@@ -88,7 +85,7 @@ import { SecurityEmergencyContacts } from "./security/emergency-contacts";
 import { SecurityAlerts } from "./security/security-alerts";
 import { SecurityPatrolLogs } from "./security/patrol-logs";
 import { SecuritySettings } from "./security/settings";
-// import { Admin  } from "./admin";
+import { Admin  } from "./admin";
 import { AdminDashboard } from "./admin/dashboard";
 import { AdminUserManagement } from "./admin/user-management";
 import { AdminPropertyManagement } from "./admin/property-management";
@@ -97,7 +94,7 @@ import { AdminSystemSettings } from "./admin/system-settings";
 import { AdminAnalytics } from "./admin/analytics";
 import { AdminAuditLogs } from "./admin/audit-logs";
 import { AdminBackupRestore } from "./admin/backup-restore";
-import { AdminCommuication } from "./admin/support-tickets";
+import { AdminSupportTickets } from "./admin/support-tickets";
 import { AdminPropertyDetails } from "./admin/property-details";
 import { AdminAddProperty } from "./admin/add-property";
 import { AdminManageCalendar } from "./admin/manage-calendar";
@@ -130,12 +127,11 @@ import { AdminAmenityManageCalendar } from "./admin/community-area/amenity-manag
 import { AdminReservationView } from "./admin/community-area/reservation-view";
 import { AdminAddNewAmenity } from "./admin/community-area/add-new-amenity";
 import { AdminEmergency } from "./admin/emergency";
-import { Profile } from "./global/profile";
+import { AdminProfile } from "./admin/profile";
 import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details";
 import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
-import { EditProfile } from "./global/profile/edit-profile";
-import { ProfileSettings } from "./global/profile/profile-settings";
-import { Verify } from "./global/profile/verify";
+import { AdminEditProfile } from "./admin/profile/edit-profile";
+import { AdminProfileSettings } from "./admin/profile/profile-settings";
 import { AdminPanicEmergency } from "./admin/emergency/panic";
 import { AdminPropertyRequests } from "./admin/property-requests";
 import { AdminManageInspections } from "./admin/manage-inspections";
@@ -160,8 +156,7 @@ export {
   Favourities,
   BookNow,
   Chat,
-  Message,
-  // Tenant,
+  Tenant,
   TenantDashboard,
   TenantProfile,
   TenantMaintenance,
@@ -171,11 +166,9 @@ export {
   TenantSupport,
   TenantSettings,
   TenantHome,
-  // TenantChat,
+  TenantChat,
   TenantWallet,
   TenantAssignedProp,
-  TenantSendMoney,
-  TenantAddBeneficiary,
   Agent,
   AgentDashboard,
   AgentPropertyListings,
@@ -225,7 +218,7 @@ export {
   SecurityAlerts,
   SecurityPatrolLogs,
   SecuritySettings,
-  // Admin,
+  Admin,
   AdminDashboard,
   AdminUserManagement,
   AdminPropertyManagement,
@@ -234,7 +227,7 @@ export {
   AdminAnalytics,
   AdminAuditLogs,
   AdminBackupRestore,
-  AdminCommuication,
+  AdminSupportTickets,
   AdminPropertyDetails,
   AdminAddProperty,
   AdminManageCalendar,
@@ -267,12 +260,11 @@ export {
   AdminReservationView,
   AdminAddNewAmenity,
   AdminEmergency,
-  Profile,
-  Verify,
+  AdminProfile,
   AdminVisitorDetails,
   AdminGenerateVisitorRequest,
-  EditProfile,
-  ProfileSettings,
+  AdminEditProfile,
+  AdminProfileSettings,
   AdminPanicEmergency,
   AdminPropertyRequests,
   AdminManageInspections,
@@ -286,5 +278,5 @@ export {
   AdminUtilitiesSettings,
   ViewMeterDetails,
   EditCreateMeter,
-  AddEditGroup,
+  AddEditGroup
 };

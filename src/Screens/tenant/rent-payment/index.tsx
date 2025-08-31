@@ -1,114 +1,37 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { Screen, Text, Button, Header2 } from "../../../Components";
+import { StyleSheet, View } from "react-native";
+import { Screen, Text, Button } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-import { adjustSize, colors, spacing } from "../../../theme";
-import { Images } from "../../../assets/Images";
-import { WithLocalSvg } from "react-native-svg/css";
-interface TenantRentPaymentProps
-  extends AppStackScreenProps<"TenantRentPayment"> {}
+import { colors, spacing } from "../../../theme";
+
+interface TenantRentPaymentProps extends AppStackScreenProps<"TenantRentPayment"> {}
 
 export function TenantRentPayment(props: TenantRentPaymentProps) {
-  const homesPayments = [
-    {
-      id: 0,
-      title: "Payment of Charges",
-      icon: Images.charges,
-    },
-
-    {
-      id: 1,
-      title: "Utility Payments",
-      icon: Images.utility,
-    },
-  ];
-  const quickPayment = [
-    {
-      id: 0,
-      title: "Airtime",
-      icon: Images.airtime,
-    },
-    {
-      id: 1,
-      title: "Data",
-      icon: Images.data,
-    },
-    {
-      id: 2,
-      title: "Public Electricity",
-      icon: Images.electricity,
-    },
-    {
-      id: 3,
-      title: "TV",
-      icon: Images.tv,
-    },
-  ];
-
-  const renderItem = ({ item }: { item: any }) => {
-    return (
-      <TouchableOpacity style={styles._card} activeOpacity={0.6}>
-        <View style={styles._cardContent}>
-          <WithLocalSvg asset={item.icon} />
-        </View>
-        <Text weight="medium" text={item.title} style={styles._title} />
-      </TouchableOpacity>
-    );
-  };
   return (
     <Screen
-      preset="fixed"
+      preset="auto"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header2 title="Payments" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles._content}
-      >
-        <View style={styles.container}>
-          <Text
-            weight="semiBold"
-            text="My HomesNG Payments"
-            style={styles._label}
-          />
-          <FlatList
-            data={homesPayments}
-            horizontal
-            contentContainerStyle={{ gap: adjustSize(15) }}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-
-          <Text
-            weight="semiBold"
-            text="Quick payments"
-            style={[styles._label, { marginTop: 50 }]}
-          />
-          <FlatList
-            data={quickPayment}
-            horizontal
-            contentContainerStyle={{ gap: adjustSize(15) }}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-
-          <Button
-            text="Send Money"
-            style={styles.backButton}
-            textStyle={styles.backButtonText}
-            onPress={() => props.navigation.navigate("TenantSendMoney")}
-          />
+      <View style={styles.container}>
+        <Text style={styles.title} weight="bold">
+          Rent Payment
+        </Text>
+        
+        <View style={styles.content}>
+          <Text style={styles.description}>
+            Make rent payments, view payment history, and manage payment methods.
+          </Text>
         </View>
-      </ScrollView>
+
+        <Button
+          text="Back to Tenant Home"
+          style={styles.backButton}
+          textStyle={styles.backButtonText}
+          onPress={() => props.navigation.goBack()}
+        />
+      </View>
     </Screen>
   );
 }
@@ -119,15 +42,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.fill,
   },
   container: {
-    padding: adjustSize(10),
+    flex: 1,
+    padding: spacing.lg,
   },
-  _content: {
-    flexGrow: 1,
-  },
-  _label: {
-    marginVertical: adjustSize(20),
-    fontSize: adjustSize(15),
+  title: {
+    fontSize: 24,
     color: colors.primary,
+    textAlign: "center",
+    marginBottom: spacing.xl,
+    marginTop: spacing.lg,
   },
   content: {
     flex: 1,
@@ -149,27 +72,6 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: colors.white,
     fontSize: 16,
-  },
-
-  _cardContent: {
-    backgroundColor: "#6369A4",
-    height: adjustSize(68),
-    width: adjustSize(68),
-    borderRadius: adjustSize(10),
-    alignItems: "center",
-    justifyContent: "center",
-    padding: adjustSize(5),
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-    elevation: 2,
-  },
-  _card: {
-    width: adjustSize(68),
-  },
-  _title: {
-    fontSize: adjustSize(12),
-    textAlign: "center",
-    lineHeight: adjustSize(16),
-    marginTop: adjustSize(10),
-    color: colors.primary,
+    fontWeight: "600",
   },
 });

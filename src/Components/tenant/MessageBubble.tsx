@@ -32,7 +32,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: '50%',
+    maxWidth: '80%',
     marginBottom: 16,
     padding: 12,
     borderRadius: 16,

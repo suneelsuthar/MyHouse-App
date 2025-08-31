@@ -41,10 +41,9 @@ export type TenantStackParamList = {
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
-  TenantAssignedProp:undefined;
-  TenantFacilityManagement:undefined;
-  TenantSendMoney:undefined;
-  TenantAddBeneficiary:undefined;
+  TenantAssignedProp: undefined;
+  TenantFacilityManagement: undefined;
+  TenantUtilitiesUpdateProfile: undefined;
 };
 
 // Screens specific to Admin
@@ -102,7 +101,7 @@ export type AdminStackParamList = {
   AdminAnalytics: undefined;
   AdminAuditLogs: undefined;
   AdminBackupRestore: undefined;
-  AdminCommuication: undefined;
+  AdminSupportTickets: undefined;
   // Admin Facility Management action screens
   AdminFMViewDetails: undefined;
   AdminFMEdit: undefined;
@@ -115,13 +114,13 @@ export type AdminStackParamList = {
   AdminFMOrderExport: undefined;
   // Admin Emergency and Profile screens
   AdminEmergency: undefined;
-  Profile: undefined;
+  AdminProfile: undefined;
   // Admin Visitor Details screen
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
   AdminGenerateVisitorRequest: undefined;
-  EditProfile: undefined;
-  ProfileSettings: undefined;
+  AdminEditProfile: undefined;
+  AdminProfileSettings: undefined;
   AdminPanicEmergency: undefined;
   AdminPropertyRequests: undefined;
   AdminManageInspections: undefined;

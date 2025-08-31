@@ -328,7 +328,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Communications",
       type: "item",
       icon: Images.communication,
-      onPress: () => closeMenusAndNavigate("AdminCommuication"),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
     },
 
     {
@@ -677,7 +680,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Message History",
-          onPress: () => closeMenusAndNavigate("AdminCommuication"),
+          onPress: () =>
+            closeMenusAndNavigate("Tenant", {
+              screen: "Chat",
+            }),
         },
       ],
     },
@@ -688,7 +694,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       type: "item",
       icon: Images.emergency,
       onPress: () =>
-        closeMenusAndNavigate("Tenant", {
+        closeMenusAndNavigate("Admin", {
           screen: "Home",
           params: { screen: "AdminEmergency" },
         }),
@@ -709,14 +715,20 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Payments",
       type: "item",
       icon: Images.wallet,
-      onPress: () => closeMenusAndNavigate("TenantRentPayment"),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Wallet",
+        }),
     },
     {
       id: 11,
       title: "Chat",
       type: "item",
       icon: Images.communication,
-      onPress: () => closeMenusAndNavigate("Chat"),
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
     },
   ];
 
@@ -788,14 +800,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              closeMenusAndNavigate(
-                user &&
-                  user?.role.charAt(0).toUpperCase() + user?.role.slice(1),
-                {
-                  screen: "Home",
-                  params: { screen: "Profile" },
-                }
-              )
+              closeMenusAndNavigate("Admin", {
+                screen: "Home",
+                params: { screen: "AdminProfile" },
+              })
             }
           >
             <WithLocalSvg asset={Images.user} />

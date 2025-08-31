@@ -5,6 +5,7 @@ export type TenantUtilitiesStackParamList = {
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
+  TenantUtilitiesUpdateProfile: undefined;
 };
 
 export type TenantStackParamList = {
@@ -26,6 +27,7 @@ export type TenantStackParamList = {
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
+  TenantUtilitiesUpdateProfile: undefined;
 };
 
 export type AdminStackParamList = {

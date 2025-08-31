@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Screen, Text, Header2 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
-import { useAppSelector } from "../../../store/hooks";
 const profileData = {
   name: "Brume Djbah",
   email: "brume.djbah@example.com",
@@ -14,12 +13,8 @@ const profileData = {
   employeeId: "EMP001",
   address: "123 Main Street, City, State 12345",
 };
-
-// Verify
-export const Profile: React.FC = () => {
-  const userRole = useAppSelector((state) => state?.auth?.user?.role);
+export const AdminProfile: React.FC = () => {
   const navigation = useNavigation();
-  console.log("=====>", userRole);
   return (
     <Screen
       preset="fixed"
@@ -32,7 +27,7 @@ export const Profile: React.FC = () => {
           style={styles.btn}
           activeOpacity={0.8}
           onPress={() =>
-            (navigation as any).navigate("EditProfile", {
+            (navigation as any).navigate("AdminEditProfile", {
               data: profileData,
             })
           }
@@ -40,28 +35,17 @@ export const Profile: React.FC = () => {
           <Text style={styles.btnTxt}>Profile </Text>
         </TouchableOpacity>
         <View style={styles.line} />
-
         <TouchableOpacity
           style={styles.btn}
           activeOpacity={0.8}
           onPress={() =>
-            (navigation as any).navigate("ProfileSettings", {
+            (navigation as any).navigate("AdminProfileSettings", {
               data: profileData,
             })
           }
         >
           <Text style={styles.btnTxt}>Settings </Text>
         </TouchableOpacity>
-
-        {userRole === "tenant" && (
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.8}
-            onPress={() => (navigation as any).navigate("Verify")}
-          >
-            <Text style={styles.btnTxt}>Verify </Text>
-          </TouchableOpacity>
-        )}
       </View>
     </Screen>
   );
