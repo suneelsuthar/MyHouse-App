@@ -84,18 +84,15 @@ export const Images = {
   mobile: require("./mobile.svg"),
   mtn: require("./mtn.svg"),
   thistory: require("./thistory.svg"),
-<<<<<<< HEAD
   electricity: require("./electricity.svg"),
   tv: require("./tv.svg"),
   utility: require("./utility.svg"),
   data: require("./data.svg"),
   charges: require("./charges.svg"),
   airtime: require("./airtime.svg"),
-=======
   person: require("./person.svg"),
   wallet2: require("./wallet-2.svg"),
   dollar: require("./dollar.svg"),
   meter: require("./meter-2.svg"),
   check: require("./check.svg"),
->>>>>>> 0336ba2d3f43a83ff0320a14ae46b72565ef36c2
 };
