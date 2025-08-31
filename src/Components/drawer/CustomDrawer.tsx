@@ -328,10 +328,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Communications",
       type: "item",
       icon: Images.communication,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Chat",
-        }),
+      onPress: () => closeMenusAndNavigate("AdminCommuication"),
     },
 
     {
@@ -680,10 +677,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Message History",
-          onPress: () =>
-            closeMenusAndNavigate("Tenant", {
-              screen: "Chat",
-            }),
+          onPress: () => closeMenusAndNavigate("AdminCommuication"),
         },
       ],
     },
@@ -722,10 +716,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Chat",
       type: "item",
       icon: Images.communication,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Chat",
-        }),
+      onPress: () => closeMenusAndNavigate("Chat"),
     },
   ];
 

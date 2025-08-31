@@ -564,6 +564,7 @@ const AdminHomeStackNavigator = () => (
       component={ViewPropertiesGroups}
     />
     <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
+    <AdminHomeStack.Screen name="AdminCommuication" component={AdminCommuication} />
   </AdminHomeStack.Navigator>
 );
 
@@ -643,14 +644,14 @@ const AdminWalletStackNavigator = () => (
   </AdminWalletStack.Navigator>
 );
 
-const AdminChatStackNavigator = () => (
-  <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
-    <AdminChatStack.Screen
-      name="AdminCommuication"
-      component={AdminCommuication}
-    />
-  </AdminChatStack.Navigator>
-);
+// const AdminChatStackNavigator = () => (
+//   <AdminChatStack.Navigator screenOptions={{ headerShown: false }}>
+//     <AdminChatStack.Screen
+//       name="AdminCommuication"
+//       component={AdminCommuication}
+//     />
+//   </AdminChatStack.Navigator>
+// );
 
 // Tab navigators for each role
 const Tab = createBottomTabNavigator();
@@ -741,6 +742,8 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="EditProfile" component={EditProfile} />
     <HomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
     <HomeStack.Screen name="Verify" component={Verify} />
+    <HomeStack.Screen name="AdminCommuication" component={AdminCommuication} />
+
   </HomeStack.Navigator>
 );
 
@@ -1271,7 +1274,7 @@ const AdminTabs = () => (
       }}
     />
     <Tab.Screen name="Wallet" component={AdminWalletStackNavigator} />
-    <Tab.Screen name="Chat" component={AdminChatStackNavigator} />
+    <Tab.Screen name="Chat" component={Chat} />
   </Tab.Navigator>
 );
 
