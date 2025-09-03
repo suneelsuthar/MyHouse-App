@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   iconWrapper: { marginBottom: adjustSize(3) },
   label: { fontSize: adjustSize(12) },
-  tabBgImage: { height: adjustSize(62), backgroundColor: "#dedff0" },
+  tabBgImage: { height: adjustSize(62), backgroundColor: "#dedfef" },
   page: {
     flex: 1,
   },

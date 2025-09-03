@@ -1,57 +1,77 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Button } from "../../../../Components";
+import { Controller } from "react-hook-form";
 import { adjustSize, colors, typography } from "../../../../theme";
 import DropdownComponent from "../../../../Components/DropDown";
 import { propertyGroups, properties, amenities } from "./reservationData"; // 👈 import data
-export default function ReservationStep1({ navigation, onPress }: any) {
-  const [propertyGroup, setPropertyGroup] = useState<string | undefined>();
-  const [property, setProperty] = useState<string | undefined>();
-  const [amenity, setAmenity] = useState<string | undefined>();
+
+export default function ReservationStep1({ control, errors, onPress }: any) {
   return (
     <View style={styles.container}>
       <View>
         {/* Property Group */}
         <Text style={styles.title}>Select Property Group</Text>
-        <DropdownComponent
-          data={propertyGroups}
-          label="Choose type"
-          placeholder="Select Property group"
-          value={propertyGroup}
-          onChangeValue={(v: string) => setPropertyGroup(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <Controller
+          control={control}
+          name="propertyGroup"
+          render={({ field: { onChange, value } }) => (
+            <DropdownComponent
+              data={propertyGroups}
+              label="Choose type"
+              placeholder="Select Property group"
+              value={value}
+              onChangeValue={onChange}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+          )}
         />
+        {errors.propertyGroup && <Text style={styles.errorText}>{errors.propertyGroup.message}</Text>}
 
         {/* Property */}
         <Text style={styles.title}>Select Property</Text>
-        <DropdownComponent
-          data={properties}
-          label="Choose type"
-          placeholder="Select Property"
-          value={property}
-          onChangeValue={(v: string) => setProperty(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <Controller
+          control={control}
+          name="property"
+          render={({ field: { onChange, value } }) => (
+            <DropdownComponent
+              data={properties}
+              label="Choose type"
+              placeholder="Select Property"
+              value={value}
+              onChangeValue={onChange}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+          )}
         />
+        {errors.property && <Text style={styles.errorText}>{errors.property.message}</Text>}
 
         {/* Amenity */}
         <Text style={styles.title}>Select Amenity</Text>
-        <DropdownComponent
-          data={amenities}
-          label="Choose type"
-          placeholder="Select Amenity"
-          value={amenity}
-          onChangeValue={(v: string) => setAmenity(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <Controller
+          control={control}
+          name="amenity"
+          render={({ field: { onChange, value } }) => (
+            <DropdownComponent
+              data={amenities}
+              label="Choose type"
+              placeholder="Select Amenity"
+              value={value}
+              onChangeValue={onChange}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+          )}
         />
+        {errors.amenity && <Text style={styles.errorText}>{errors.amenity.message}</Text>}
       </View>
       {/* Continue Button */}
       <Button
@@ -104,5 +124,11 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(50),
     marginBottom: adjustSize(20),
     height: adjustSize(49),
+  },
+  errorText: {
+    color: "red",
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.normal,
+    marginLeft: adjustSize(5),
   },
 });

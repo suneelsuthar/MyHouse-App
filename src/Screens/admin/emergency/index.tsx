@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: adjustSize(30),
-    backgroundColor: "#D51E1E",
+    // backgroundColor: "#D51E1E",
   },
   btnTxt: {
     fontSize: adjustSize(15),

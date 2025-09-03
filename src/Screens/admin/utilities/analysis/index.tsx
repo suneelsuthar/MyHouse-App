@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable, Alert } from "react-native";
 import { Screen, Text, Header2, CustomTabs } from "../../../../Components";
 import { colors, typography, adjustSize, spacing } from "../../../../theme";
 import {
@@ -7,6 +7,7 @@ import {
   PowerConsumptionIcon,
 } from "../../../../assets/svg";
 import DropdownComponent from "../../../../Components/DropDown";
+import MultiSelectDropdown from "../../../../Components/MultiSelectDropdown";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import AnalysisChart from "../../../../Components/AnalysisChart";
@@ -14,9 +15,7 @@ import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicke
 export const Analysis: React.FC = (props: any) => {
   const [activeTab, setActiveTab] = useState("Power Consumption");
   const [selectBy, setSelectBy] = useState<string | undefined>();
-  const [selectedProperty, setSelectedProperty] = useState<
-    string | undefined
-  >();
+  const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
 
   useEffect(() => {
     if (props?.route?.params?.tab === "power_consumption") {
@@ -57,8 +56,21 @@ export const Analysis: React.FC = (props: any) => {
   };
 
   const onChange = (date: Date) => {
-    if (pickerMode === "start") setStartDate(date);
-    else setEndDate(date);
+    if (pickerMode === "start") {
+      setStartDate(date);
+      if (endDate && date > endDate) {
+        setEndDate(null);
+      }
+    } else {
+      if (startDate && date < startDate) {
+        Alert.alert(
+          "Invalid Date",
+          "End date cannot be earlier than start date."
+        );
+      } else {
+        setEndDate(date);
+      }
+    }
     setShowPicker(false);
   };
 
@@ -122,9 +134,10 @@ export const Analysis: React.FC = (props: any) => {
           },
         ]}
         activeTab={activeTab}
-        onTabChange={(label) => setActiveTab(label)}
+        onTabChange={(label: string) => setActiveTab(label)}
       >
-        <ScrollView>
+        
+          <ScrollView>
           {/* First Dropdown */}
           <Text style={styles.title}>Select by</Text>
           <DropdownComponent
@@ -137,7 +150,7 @@ export const Analysis: React.FC = (props: any) => {
             value={selectBy}
             onChangeValue={(v: string) => {
               setSelectBy(v);
-              setSelectedProperty(undefined);
+              setSelectedProperties([]);
               setStartDate(null);
               setEndDate(null);
             }}
@@ -147,34 +160,32 @@ export const Analysis: React.FC = (props: any) => {
             rightIconColor={colors.primary}
           />
 
-          {/* Second Dropdown */}
           {selectBy && (
-            <>
-              <Text style={styles.title}>Select {selectBy}</Text>
-              <DropdownComponent
+            <View style={styles.multiSelectContainer}>
+              <Text style={styles.label}>
+                Select {selectBy}
+                <Text style={styles.required}>*</Text>
+              </Text>
+              <MultiSelectDropdown
                 data={[
-                  { label: `${selectBy} A`, value: `${selectBy} A` },
-                  { label: `${selectBy} B`, value: `${selectBy} B` },
-                  { label: `${selectBy} C`, value: `${selectBy} C` },
+                  { label: "Property 1", value: "1" },
+                  { label: "Property 2", value: "2" },
+                  { label: "Property 3", value: "3" },
+                  { label: "Property 4", value: "4" },
                 ]}
-                label={`Choose ${selectBy}`}
-                placeholder={`Select ${selectBy}`}
-                value={selectedProperty}
-                onChangeValue={(v: string) => {
-                  setSelectedProperty(v);
-                  setStartDate(null);
-                  setEndDate(null);
-                }}
-                dropdownStyle={styles.dropdown}
-                placeholderStyle={styles.dropdownPlaceholder}
-                selectedTextStyle={styles.dropdownSelected}
-                rightIconColor={colors.primary}
+                placeholder={`Select ${selectBy}...`}
+                selectedValues={selectedProperties}
+                onChangeSelected={setSelectedProperties}
+                showSelectedChips={!true}
+                containerStyle={styles.multiSelect}
               />
-            </>
+            </View>
           )}
 
+          {/* Date Range Picker */}
+
           {/* Power Consumption Section */}
-          {selectedProperty && (
+          {selectedProperties.length > 0 && (
             <>
               <View style={styles.line} />
               <View style={styles.section}>
@@ -264,6 +275,23 @@ const styles = StyleSheet.create({
   screenContentContainer: {
     flex: 1,
     backgroundColor: colors.fill,
+  },
+  multiSelectContainer: {
+    marginTop: 16,
+    marginHorizontal: adjustSize(10),
+  },
+  multiSelect: {
+    marginTop: 8,
+  },
+  label: {
+    fontSize: adjustSize(12),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+    marginBottom: 8,
+  },
+  required: {
+    color: colors.error,
+    marginLeft: 4,
   },
   dropdown: {
     height: adjustSize(48),
@@ -357,8 +385,9 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(10),
   },
   line: {
-    height: adjustSize(0.5),
+    height: adjustSize(0.2),
     backgroundColor: "#B0B0B0",
     marginTop: adjustSize(35),
+    opacity:0.9
   },
 });

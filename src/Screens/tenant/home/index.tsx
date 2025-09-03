@@ -21,7 +21,7 @@ const width = Dimensions.get("screen").width;
 export const TenantHome = () => {
   const navigation: any = useNavigation();
   const analyticsData = [
-    { label: "Monthly", value: "monthly" },
+    { label: "Last 7 days", value: "last_7_days" },
     { label: "Weekly", value: "weekly" },
     { label: "Daily", value: "daily" },
     { label: "Yearly", value: "yearly" },
@@ -161,7 +161,7 @@ export const TenantHome = () => {
               <DropdownComponent
                 data={analyticsData}
                 label="Select Period"
-                placeholder="Select Period"
+                placeholder="Last 7 days"
                 dropdownStyle={styles.customDropdownStyle}
                 placeholderStyle={styles.customPlaceholderStyle}
                 selectedTextStyle={styles.customSelectedTextStyle}
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 10,
+    rowGap: 15,
   },
 
   headerinfo: {
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    width: adjustSize(width / 2.6),
+    width: "48%",
     flexDirection: "column",
     justifyContent: "space-evenly",
   },

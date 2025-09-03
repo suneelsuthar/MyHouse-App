@@ -495,7 +495,7 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
   const preselectId: any = route?.params?.propertyId;
   const [name, setName] = useState("");
   const [type, setType] = useState<string | null>(null);
-  const [accessCode, setAccessCode] = useState("");
+  const [accessCode, setAccessCode] = useState("5LASKLJ49");
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
   // unified modal picker state
@@ -634,6 +634,7 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
           inputWrapperStyle={styles.inputWrapper}
           style={styles.input}
           placeholderTextColor={colors.primaryLight}
+          editable={false}
         />
 
         {/* Date/Time layout */}

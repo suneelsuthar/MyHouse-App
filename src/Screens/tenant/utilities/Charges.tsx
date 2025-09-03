@@ -28,7 +28,7 @@ export const TenantUtilitiesCharges: React.FC = ({ navigation }: any) => {
 
   return (
     <Screen
-      preset="auto"
+      preset="fiexed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}

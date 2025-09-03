@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from "react";
 import {
   View,
@@ -8,7 +7,8 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import { Text } from "../../../../Components";
+import { Controller } from "react-hook-form";
+import { Text, TextField } from "../../../../Components";
 import { adjustSize, colors, typography, spacing } from "../../../../theme";
 import DropdownComponent from "../../../../Components/DropDown";
 import { dummyData } from "./reservationData"; // 👈 import data
@@ -22,19 +22,21 @@ type Props = {
   rightBtnTitle?: string;
   backHandler?: () => void;
   rightBtnHandler?: () => void;
-  onDatesChange?: (dates: Date[]) => void; // callback for parent
+  control?: any;
+  errors?: any;
+  setValue?: any;
 };
 
 export default function ReservationCalendar({
+  control,
+  errors,
+  setValue,
   navigation,
   onPress,
   rightBtnTitle = "Next",
   backHandler,
   rightBtnHandler,
-  onDatesChange,
 }: Props) {
-  const [propertyGroup, setPropertyGroup] = useState<string | undefined>();
-  const [property, setProperty] = useState<string | undefined>();
   const [mode] = useState<Mode>("range");
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -55,6 +57,7 @@ export default function ReservationCalendar({
     [monthCursor]
   );
 
+  console.log(blockedKeys)
   // Calendar days grid
   const daysGrid: DayCell[] = useMemo(() => {
     const first = new Date(monthCursor);
@@ -110,8 +113,8 @@ export default function ReservationCalendar({
 
   // Call parent callback whenever selectedRange changes
   useEffect(() => {
-    onDatesChange?.(selectedRange);
-  }, [selectedRange]);
+    setValue?.("selectedDates", selectedRange);
+  }, [selectedRange, setValue]);
 
   // Apply block/unblock action
   const applyActionToDates = (dates: Date[]) => {
@@ -161,33 +164,44 @@ export default function ReservationCalendar({
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Property Group */}
+        {/* Capacity */}
         <Text style={styles.title}>Capacity</Text>
-        <DropdownComponent
-          data={dummyData}
-          label="Choose type"
-          placeholder="Enter Capacity"
-          value={propertyGroup}
-          onChangeValue={(v: string) => setPropertyGroup(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <Controller
+          control={control}
+          name="capacity"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              placeholder="Enter Capacity"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              // inputWrapperStyle={styles.dropdown}
+              placeholderTextColor={colors.greylight}
+              keyboardType="numeric"
+            />
+          )}
         />
-
-        {/* Property */}
+        {errors.capacity && <Text style={[styles.errorText,{marginTop:-3}]}>{errors.capacity.message}</Text>}
+        {/* Reserved For */}
         <Text style={styles.title}>Reserved For</Text>
-        <DropdownComponent
-          data={dummyData}
-          label="Choose type"
-          placeholder="Tenant"
-          value={property}
-          onChangeValue={(v: string) => setProperty(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <Controller
+          control={control}
+          name="reservedFor"
+          render={({ field: { onChange, value } }) => (
+            <DropdownComponent
+              data={dummyData}
+              label="Choose type"
+              placeholder="Tenant"
+              value={value}
+              onChangeValue={onChange}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+          )}
         />
+        {errors.reservedFor && (<Text style={styles.errorText}>{errors.reservedFor.message}</Text>)}
 
         <Text style={styles.title}>Reserve Amenity</Text>
 
@@ -262,7 +276,15 @@ export default function ReservationCalendar({
               </Pressable>
             );
           })}
+
+          {console.log(selectedRange.length)}
+           {selectedRange.length  === 0 && errors.selectedDates && (
+          <Text style={[styles.errorText, { textAlign: "center", marginTop: 10 }]}>
+            {errors.selectedDates.message}
+          </Text>
+        )}
         </View>
+       
 
         <Text weight="semiBold" style={styles.blockedTitle}>
           Selected dates
@@ -273,7 +295,9 @@ export default function ReservationCalendar({
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: spacing.xl }}
           renderItem={({ item }) => (
-            <View style={styles.pillRow}>
+            <View style={styles.pillRow}
+            
+            >
               <Text style={styles.pillText}>
                 {item
                   .toLocaleDateString(undefined, {
@@ -305,10 +329,7 @@ export default function ReservationCalendar({
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.rightBtn}
-          onPress={() => {
-            rightBtnHandler?.();
-            onDatesChange?.(selectedRange); // pass selected dates to parent
-          }}
+          onPress={rightBtnHandler}
         >
           <Text style={styles.rightBtnText}>{rightBtnTitle}</Text>
         </TouchableOpacity>
@@ -467,6 +488,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.greylight,
     marginVertical: spacing.sm,
+  },
+  errorText: {
+    color: "red",
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.normal,
+    marginLeft: adjustSize(5),
   },
   blockedTitle: {
     fontSize: adjustSize(15),

@@ -28,7 +28,7 @@ export const TenantUtilitiesTransactions: React.FC = ({ navigation }: any) => {
 
   return (
     <Screen
-      preset="auto"
+      preset="fixed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}

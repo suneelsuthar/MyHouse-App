@@ -15,8 +15,8 @@ interface FacilityManagementCardProps {
   style?: object; // ✅ custom styling (red/blue bg)
 }
 
-const OrderAction = ["View", "Update", "Export", "Chat"];
-const CompletedAction = ["View", "Export", "Chat"];
+const OrderAction = ["View", "Update"];
+const CompletedAction = ["View", "Export"];
 export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
   activeTab,
   property,
@@ -39,6 +39,8 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
     "View work order",
   ];
 
+  user?.role === "tenant" && AdminWorkRequestsAction.splice(2, 1);
+
   // user?.role === "tenant" && AdminWorkRequestsAction.splice(2, 1);
 
   let ACTIONS: string[] = [];
@@ -56,7 +58,7 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
         <View style={styles.left}>
           <Image source={{ uri: thumb }} style={styles.thumbnail} />
           <Text style={styles.requestedBy}>Requested by</Text>
-          <Text style={styles.requestedByVal} numberOfLines={1}>
+          <Text weight="medium" style={styles.requestedByVal} numberOfLines={1}>
             {property?.requestedBy}
           </Text>
           {property?.status !== "Work requests" && (
@@ -71,7 +73,7 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
           <Text style={styles.title} numberOfLines={1}>
             {property?.title}
           </Text>
-          <Text style={styles.text} numberOfLines={1}>
+          <Text weight="medium" style={styles.text} numberOfLines={1}>
             {property?.text}
           </Text>
           <View style={{ flexDirection: "row" }}>
@@ -109,10 +111,7 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
               style={[
                 styles.cardTitleVal,
                 {
-                  color:
-                    property?.status === "Work requests"
-                      ? "#D51E1E"
-                      : "#7E7E7E",
+                  color: colors.primary,
                 },
               ]}
               numberOfLines={1}
@@ -175,7 +174,9 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
                 style={styles.menuItem}
                 activeOpacity={0.6}
               >
-                <Text style={styles.menuText}>{a}</Text>
+                <Text style={styles.menuText}>
+                  {a === "Update" ? "Add Update" : a}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -239,9 +240,9 @@ const styles = StyleSheet.create({
     lineHeight: adjustSize(15),
   },
   requestedByVal: {
-    color: "#7E7E7E",
+    color: colors.black,
     fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.normal,
+    // fontFamily: typography.fonts.poppins.normal,
     textAlign: "center",
     lineHeight: adjustSize(12),
     marginTop: adjustSize(3),
@@ -259,7 +260,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#7E7E7E",
     fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.normal,
   },
   reqNoBox: {
     backgroundColor: colors.primary,

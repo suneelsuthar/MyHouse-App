@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -22,13 +22,25 @@ const formatTime = (date: Date) => {
   return `${hours}:${minStr} ${ampm}`;
 };
 
+type Props = {
+  navigation?: any;
+  rightBtnTitle?: string;
+  backHandler?: () => void;
+  rightBtnHandler?: () => void;
+  selectedDates?: Date[];
+  errors?: any;
+  setValue?: any;
+};
+
 export default function ReservationCalendarAddTime({
   navigation,
   rightBtnTitle = "Next",
   backHandler,
   selectedDates,
   rightBtnHandler,
-}: any) {
+  errors,
+  setValue,
+}: Props) {
   const [dayTimeSlots, setDayTimeSlots] = useState<
     { day: string; start: string; end: string }[]
   >([]);
@@ -74,13 +86,17 @@ export default function ReservationCalendarAddTime({
     setTimeDone(true);
   };
 
+  useEffect(() => {
+    setValue?.("timeSlots", Object.values(dayTimeSlots).flat());
+  }, [dayTimeSlots, setValue]);
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Add time slots for selected dates</Text>
 
         <FlatList
-          data={selectedDates}
+          data={selectedDates || []}
           keyExtractor={(d) => d.toISOString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: spacing.xl }}
@@ -104,7 +120,9 @@ export default function ReservationCalendarAddTime({
                     styles.daysHeader,
                     {
                       marginBottom:
-                        index === selectedDates.length - 1 ? adjustSize(10) : 0,
+                        index === (selectedDates || []).length - 1
+                          ? adjustSize(10)
+                          : 0,
                     },
                   ]}
                 >
@@ -140,6 +158,16 @@ export default function ReservationCalendarAddTime({
             <Text style={styles.emptyText}>No dates selected</Text>
           }
         />
+        {!timeDone && (
+          <Text
+            style={[
+              styles.errorText,
+              { textAlign: "center", marginVertical: 10 },
+            ]}
+          >
+            Select time slot
+          </Text>
+        )}
       </ScrollView>
 
       <View style={styles.footerRow}>
@@ -191,6 +219,21 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
     marginBottom: adjustSize(3),
     marginTop: adjustSize(5),
+  },
+  modalTitle: {
+    fontSize: adjustSize(18),
+    fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.primary,
+    marginBottom: spacing.md,
+  },
+  errorText: {
+    color: "red",
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.normal,
+    marginLeft: adjustSize(5),
+    marginTop: -40,
+    textAlign: "left",
+    alignSelf: "flex-start",
   },
 
   footerRow: {

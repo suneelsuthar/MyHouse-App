@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
+  Alert,
   Image,
   Modal,
   Platform,
@@ -20,8 +21,8 @@ import { AdminStackParamList } from "../../../utils/interfaces";
 import { rentalProperties } from "../../../utils/data";
 import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
-
-
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 type Props = NativeStackScreenProps<AdminStackParamList, "FMGenerateWorkOrder">;
 
 export function FMGenerateWorkOrder({ navigation }: Props) {
@@ -86,7 +87,10 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
     desc.trim().length > 0;
 
   const onGenerate = () => {
-    if (!canGenerate) return;
+    if (!canGenerate) {
+      Alert.alert("All fields are required", "Please fill all the fields");
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -143,7 +147,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
     if (selectedImages.length > 0) {
       return selectedImages.map((uri) => ({ uri }));
     }
-    return [Images.slide1, Images.slide2, Images.slide3];
+    return [];
   }, [selectedImages]);
 
   // Active hero image index
@@ -162,28 +166,43 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
       >
         {/* Hero image with dots */}
-        <View style={styles.heroImg}>
-          <Image
-            source={
-              gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
-            }
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="cover"
-          />
-          {/* Dots */}
-          <View style={styles.dotsRow}>
-            {gallery.map((_, i) => (
-              <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
-                <View
-                  style={[
-                    styles.dot,
-                    i === activeSlide ? styles.dotActive : styles.dotInactive,
-                  ]}
-                />
-              </TouchableOpacity>
-            ))}
+
+        {gallery.length === 0 && (
+          <Text
+            style={[
+              styles.label,
+              { marginBottom: -4, paddingHorizontal: adjustSize(10) },
+            ]}
+            weight="semiBold"
+          >
+            Upload Attachments
+          </Text>
+        )}
+        {gallery[0] && (
+          <View style={styles.heroImg}>
+            <Image
+              source={
+                gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
+              }
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+
+            {/* Dots */}
+            <View style={styles.dotsRow}>
+              {gallery.map((_, i) => (
+                <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
+                  <View
+                    style={[
+                      styles.dot,
+                      i === activeSlide ? styles.dotActive : styles.dotInactive,
+                    ]}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
         <View style={{ padding: adjustSize(10) }}>
           {/* Upload and thumbnails row */}
@@ -319,20 +338,29 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             multiline
           />
 
-          <View style={{ height: spacing.xl }} />
+          {/* <View style={{ height: spacing.xl }} /> */}
           <Button
             text={loading ? "Saving..." : "Save Changes"}
             preset="reversed"
             style={styles.generateBtn}
             textStyle={styles.generateText}
             onPress={onGenerate}
-            disabled={!canGenerate || loading}
+            // disabled={!canGenerate || loading}
           />
         </View>
       </ScrollView>
 
+      <CustomDateTimePicker
+        mode="date"
+        value={issueDate}
+        visible={pickerVisible}
+        onChange={setIssueDate}
+        onCancel={() => setPickerVisible(false)}
+        onConfirm={() => setPickerVisible(false)}
+      />
+
       {/* Date Picker Modal */}
-      <Modal
+      {/* <Modal
         visible={pickerVisible}
         transparent
         animationType="fade"
@@ -368,7 +396,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </Screen>
   );
 }
@@ -378,7 +406,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.fill,
   },
-  container: {},
+  container: {
+    paddingBottom: 50,
+    flexGrow: 1,
+  },
   heroImg: {
     height: adjustSize(228),
     borderRadius: adjustSize(0),

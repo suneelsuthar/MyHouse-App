@@ -339,8 +339,8 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: spacing.xl,
-    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.lg,
+    // paddingHorizontal: spacing.sm,
   },
   alertButton: {
     flex: 1,
@@ -351,6 +351,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: adjustSize(47),
     justifyContent: "center",
+    
   },
   alertButtonText: {
     fontSize: adjustSize(14),
@@ -361,9 +362,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     borderRadius: adjustSize(10),
-    paddingVertical: spacing.md,
-    marginLeft: spacing.sm,
     alignItems: "center",
+    height: adjustSize(47),
+    justifyContent:"center",
+
   },
   revokeButtonText: {
     fontSize: adjustSize(14),
@@ -423,7 +425,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#FF6B6B",
     borderRadius: adjustSize(10),
-    paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
     height: adjustSize(47),
@@ -442,9 +443,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     borderRadius: adjustSize(10),
-    paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
+    height:adjustSize(47),
+    
   },
   confirmButtonText: {
     fontSize: adjustSize(14),

@@ -1,5 +1,15 @@
 import * as yup from "yup";
 
+export const profileValidations = yup.object().shape({
+  fullName: yup.string().required("Full Name is required"),
+  email: yup.string().email("Invalid Email").required("Email is required"),
+  phone: yup
+    .string()
+    .required("Phone is required")
+    .matches(/^[0-9]{11}$/, "Phone must be 11 digits"),
+  address: yup.string().required("Address is required"),
+});
+
 export const userValidations = yup.object().shape({
   userName: yup.string()
     .required("Username is required")

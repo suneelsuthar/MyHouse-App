@@ -8,11 +8,14 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { RootState } from "../../../../store";
 export const TransactionHistory = () => {
   const navigation = useNavigation();
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
   const [visible, setVisiable] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const data = [
     {
       type: "send",
@@ -259,28 +262,48 @@ export const TransactionHistory = () => {
               {moment(selectedData?.date).format("h:mm a")}
             </Text>
             <Text style={styles.modalPrice}>${selectedData?.price}</Text>
-            <View style={styles.modalList}>
-              <Text style={styles.modalListTitle}>User ID:</Text>
-              <Text style={styles.modalListVal}>B1234557</Text>
-            </View>
-            <View style={styles.modalList}>
-              <Text style={styles.modalListTitle}>Booking ID: </Text>
-              <Text style={styles.modalListVal}>B1234556</Text>
-            </View>
-            <View style={styles.modalList}>
-              <Text style={styles.modalListTitle}>Activity:</Text>
-              <Text style={styles.modalListVal}>Booking</Text>
-            </View>
-            <View style={styles.modalList}>
-              <Text style={styles.modalListTitle}>Status:</Text>
-              <Text style={[styles.modalListVal, { color: "#4CAF50" }]}>
-                Successful
-              </Text>
-            </View>
-            <View style={styles.modalList}>
-              <Text style={styles.modalListTitle}>Booking ID:</Text>
-              <Text style={styles.modalListVal}>B1234556</Text>
-            </View>
+
+            {user?.role === "admin" && (
+              <>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>User ID:</Text>
+                  <Text style={styles.modalListVal}>B1234557</Text>
+                </View>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Booking ID: </Text>
+                  <Text style={styles.modalListVal}>B1234556</Text>
+                </View>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Activity:</Text>
+                  <Text style={styles.modalListVal}>Booking</Text>
+                </View>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Status:</Text>
+                  <Text style={[styles.modalListVal, { color: "#4CAF50" }]}>
+                    Successful
+                  </Text>
+                </View>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Booking ID:</Text>
+                  <Text style={styles.modalListVal}>B1234556</Text>
+                </View>
+              </>
+            )}
+
+            {user?.role !== "admin" && (
+              <>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Activity:</Text>
+                  <Text style={styles.modalListVal}>Booking</Text>
+                </View>
+                <View style={styles.modalList}>
+                  <Text style={styles.modalListTitle}>Status:</Text>
+                  <Text style={[styles.modalListVal, { color: "#4CAF50" }]}>
+                    Successful
+                  </Text>
+                </View>
+              </>
+            )}
             <View style={styles.btnMain}>
               <Button
                 text={"Download Receipt"}

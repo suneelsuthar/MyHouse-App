@@ -54,7 +54,7 @@ const BookingsChart = (props) => {
           backgroundGradientTo: colors.white,
           backgroundGradientFromOpacity: 0,
           backgroundGradientToOpacity: 0,
-          fillShadowGradientFrom: colors.white,
+          fillShadowGradientFrom: colors.fill,
           fillShadowGradientTo: colors.white,
           backgroundGradientFrom: colors.white,
           fillShadowGradientFromOpacity: 0.4,
@@ -79,6 +79,19 @@ const BookingsChart = (props) => {
         // bezier
         style={styles.chart}
       />
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingLeft: 50,
+        }}
+      >
+        <Text text="Week1" style={styles._label} />
+        <Text text="Week2" style={styles._label} />
+        <Text text="Week3" style={styles._label} />
+        <Text text="Week4" style={styles._label} />
+      </View>
     </View>
   );
 };
@@ -98,6 +111,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    backgroundColor: colors.fill,
+    position: "relative",
   },
   title: {
     fontSize: adjustSize(16),
@@ -119,5 +134,10 @@ const styles = StyleSheet.create({
   dataLabelText: {
     color: colors.white,
     fontSize: adjustSize(10),
+  },
+  _label: {
+    color: colors.grey,
+    fontSize: adjustSize(10),
+    marginTop: -24,
   },
 });

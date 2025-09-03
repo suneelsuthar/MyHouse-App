@@ -30,7 +30,7 @@ export const TenantUtilitiesVendingHistory: React.FC = ({
 
   return (
     <Screen
-      preset="auto"
+      preset="fixed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}

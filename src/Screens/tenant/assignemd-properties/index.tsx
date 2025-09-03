@@ -15,6 +15,8 @@ import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
 
 export const TenantAssignedProp = () => {
+  const [selected, setselected] = useState("");
+  console.log(selected);
   const navigation = useNavigation();
   return (
     <Screen contentContainerStyle={styles.container} safeAreaEdges={["top"]}>
@@ -40,8 +42,8 @@ export const TenantAssignedProp = () => {
             { label: "Property 3", value: "property3" },
           ]}
           label="Select Property"
-          value={"property1"}
-          onChangeValue={(v: string) => console.log(v)}
+          value={selected}
+          onChangeValue={(v: string) => setselected(v)}
           dropdownStyle={styles.dropdown}
           placeholderStyle={styles.dropdownPlaceholder}
           selectedTextStyle={styles.dropdownSelected}
@@ -50,72 +52,76 @@ export const TenantAssignedProp = () => {
           // onSelect={(value) => console.log(value)}
         />
 
-        <Text
-          text="My Property"
-          weight="semiBold"
-          style={[styles._heading, { marginVertical: 10 }]}
-        />
+        {selected && (
+          <>
+            <Text
+              text="My Property"
+              weight="semiBold"
+              style={[styles._heading, { marginVertical: 10 }]}
+            />
 
-        <View style={styles._row}>
-          <Text text="Property name:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Property name:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._row}>
-          <Text text="Property Group:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Property Group:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._row}>
-          <Text text="Unit Size:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Unit Size:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._row}>
-          <Text text="Number of Rooms:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Number of Rooms:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._row}>
-          <Text text="Flour level:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Flour level:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._row}>
-          <Text text="Unit type:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._divider} />
-        <View style={styles._row}>
-          <Text text="Electricity:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._row}>
-          <Text text="Water:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._row}>
-          <Text text="Gas:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._row}>
-          <Text text="Internet:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._row}>
-          <Text text="Maintenance Services:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._row}>
+              <Text text="Unit type:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._divider} />
+            <View style={styles._row}>
+              <Text text="Electricity:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._row}>
+              <Text text="Water:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._row}>
+              <Text text="Gas:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._row}>
+              <Text text="Internet:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._row}>
+              <Text text="Maintenance Services:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
 
-        <View style={styles._divider} />
-        <View style={styles._row}>
-          <Text text="Category:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
-        <View style={styles._row}>
-          <Text text="Price:" style={styles._lable} />
-          <Text text="lorem ipsum" style={styles._lablevalue} />
-        </View>
+            <View style={styles._divider} />
+            <View style={styles._row}>
+              <Text text="Category:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+            <View style={styles._row}>
+              <Text text="Price:" style={styles._lable} />
+              <Text text="lorem ipsum" style={styles._lablevalue} />
+            </View>
+          </>
+        )}
       </View>
     </Screen>
   );
@@ -133,7 +139,8 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(8),
     borderColor: colors.grey,
     borderWidth: adjustSize(0.4),
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0px 2px 7px rgba(0, 0, 0, 0.1)",
+    elevation: 2,
   },
   dropdownPlaceholder: {
     color: colors.textDim,
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
     paddingVertical: adjustSize(5),
   },
   _lable: {
-    fontSize: adjustSize(14),
+    fontSize: adjustSize(13),
     color: colors.primary,
   },
   _lablevalue: {
@@ -163,7 +170,7 @@ const styles = StyleSheet.create({
     color: colors.textDim,
   },
   _divider: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: adjustSize(10),
   },

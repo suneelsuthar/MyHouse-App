@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import {
   Screen,
   Text,
@@ -7,6 +7,7 @@ import {
   CustomTabs,
   SearchBar,
   FacilityManagementCard,
+  Button,
 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
 import {
@@ -16,14 +17,24 @@ import {
 } from "../../../assets/svg";
 import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
-import { AdminStackParamList, TenantStackParamList } from "../../../utils/interfaces";
+import {
+  AdminStackParamList,
+  TenantStackParamList,
+} from "../../../utils/interfaces";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
-export type FacilityManagementProps = NativeStackScreenProps<AdminStackParamList, "FacilityManagement"> | NativeStackScreenProps<TenantStackParamList, "FacilityManagement">;
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../../../assets/Images";
+export type FacilityManagementProps =
+  | NativeStackScreenProps<AdminStackParamList, "FacilityManagement">
+  | NativeStackScreenProps<TenantStackParamList, "FacilityManagement">;
 
 export function FacilityManagement({ route }: FacilityManagementProps) {
   const navigation = useNavigation();
   const status = route?.params?.status ?? "work_requests";
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
   const titleMap: Record<string, string> = {
     work_requests: "Work Requests",
     work_orders: "Orders",
@@ -76,7 +87,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
       ],
-      requestedBy: "Completed",
+      requestedBy: "Brume Djbah",
       status: "Completed",
       title: "The oak Court",
       text: "Leaking toilet in master drawing room",
@@ -127,7 +138,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
       ],
-      requestedBy: "Completed",
+      requestedBy: "Brume Djbah",
       status: "Orders",
       title: "The oak Court",
       text: "Leaking toilet in master drawing room",
@@ -178,7 +189,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
       ],
-      requestedBy: "Completed",
+      requestedBy: "Brume Djbah",
       status: "Completed",
       title: "The oak Court",
       text: "Leaking toilet in master drawing room",
@@ -229,7 +240,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
       ],
-      requestedBy: "Completed",
+      requestedBy: "Brume Djbah",
       status: "Orders",
       title: "The oak Court",
       text: "Leaking toilet in master drawing room",
@@ -272,16 +283,54 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         activeTab={activeTab}
         onTabChange={(label) => setActiveTab(label)}
       >
-        <SearchBar
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Search"
-          hideBtn={activeTab === "Completed" ? true : false}
-          onAddPress={() =>
-            (navigation as any).navigate("AdminAddProperty" as never)
-          }
-        />
+        {user?.role === "admin" && (
+          <SearchBar
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Search"
+            hideBtn={
+              user?.role === "admin" && activeTab === "Completed" // Hide for admin on "Completed" tab
+                ? true
+                : false
+
+              // Hide for non-admin unless on "Work Requests" tab
+            }
+            onAddPress={() =>
+              (navigation as any).navigate("FMGenerateWorkOrder" as never)
+            }
+          />
+        )}
+
         <View style={styles.section}>
+          {user?.role !== "admin" && activeTab === "Work Requests" && (
+            <View style={styles.dropdownContainer}>
+              <View style={{ flex: 1 }}>
+                <DropdownComponent
+                  data={[
+                    { label: "Property 1", value: "property_1" },
+                    { label: "Property 2", value: "property_2" },
+                    { label: "Property 3", value: "property_3" },
+                  ]}
+                  label="Select Period"
+                  placeholder="Select Properties"
+                  dropdownStyle={styles.customDropdownStyle}
+                  placeholderStyle={styles.customPlaceholderStyle}
+                  selectedTextStyle={styles.customSelectedTextStyle}
+                />
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.addBtn}
+                onPress={
+                  () => navigation.navigate("FMGenerateWorkOrder" as never)
+                  // navigation.navigate({  "FMGenerateWorkOrder" as never})
+                }
+                // onPress={onAddPress}
+              >
+                <WithLocalSvg asset={Images.addprop} />
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
               {activeTab === "Completed"
@@ -290,22 +339,28 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                 ? "Work Orders"
                 : "Work Requests"}
             </Text>
-            {activeTab === "Work Requests" && (
-              <View style={styles.dropdownContainer}>
-                <DropdownComponent
-                  data={[
-                    { label: "A", value: "A" },
-                    { label: "B", value: "B" },
-                    { label: "C", value: "C" },
-                  ]}
-                  label="Select Period"
-                  placeholder="Last 7 days"
-                  dropdownStyle={styles.customDropdownStyle}
-                  placeholderStyle={styles.customPlaceholderStyle}
-                  selectedTextStyle={styles.customSelectedTextStyle}
-                />
-              </View>
+            {/* 
+            {user?.role === "tenant" && activeTab === "Work Requests" && (
+              <Button
+                preset="reversed"
+                text="Generate"
+                onPress={() => {
+                  console.log("Generate");
+                }}
+                style={styles._generate_btn}
+              />
             )}
+
+            {user?.role === "admin" && activeTab !== "Completed" && (
+              <Button
+                preset="reversed"
+                text="Generate"
+                onPress={() => {
+                  console.log("Generate");
+                }}
+                style={styles._generate_btn}
+              />
+            )} */}
           </View>
           {/* ÷÷ */}
         </View>
@@ -351,11 +406,10 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                 }
               }}
               style={{
-                backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
+                backgroundColor: index % 2 === 0 ? "#dedfef" : "transparent",
               }}
             />
           )}
-          //  style={styles.list}
         />
       </CustomTabs>
     </Screen>
@@ -365,7 +419,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.fill,
+    // backgroundColor: colors.fill,
   },
   section: {
     marginHorizontal: adjustSize(10),
@@ -382,15 +436,19 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(20),
   },
   dropdownContainer: {
-    width: adjustSize(120),
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+    gap: 10,
   },
   customDropdownStyle: {
-    height: adjustSize(33),
-    borderRadius: adjustSize(100),
+    borderRadius: adjustSize(10),
     backgroundColor: "#6369A4",
+    // marginTop: adjustSize(20),
+    // marginHorizontal: adjustSize(10),
   },
   customPlaceholderStyle: {
-    fontSize: adjustSize(12),
     color: colors.white,
     fontFamily: typography.fonts.poppins.normal,
   },
@@ -402,5 +460,17 @@ const styles = StyleSheet.create({
   listContent: {
     // paddingHorizontal: adjustSize(10),
     paddingBottom: adjustSize(20),
+  },
+  _generate_btn: {
+    width: adjustSize(120),
+    minHeight: adjustSize(33),
+  },
+  addBtn: {
+    backgroundColor: colors.primary,
+    height: adjustSize(47),
+    width: adjustSize(47),
+    borderRadius: adjustSize(10),
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

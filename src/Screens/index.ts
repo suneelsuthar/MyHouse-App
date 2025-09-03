@@ -145,6 +145,7 @@ import { Profile } from "./global/profile";
 import { Verify } from "./global/profile/verify";
 import { EditProfile } from "./global/profile/edit-profile";
 import { ProfileSettings } from "./global/profile/profile-settings";
+import { MessageHistory } from "./global/message-history";
 
 export {
   Splash,
@@ -156,6 +157,7 @@ export {
   Favourities,
   BookNow,
   Chat,
+  MessageHistory,
   Message,
   // Tenant,
   TenantMaintenance,

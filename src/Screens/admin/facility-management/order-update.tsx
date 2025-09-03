@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
+  Alert,
   Image,
   Modal,
   Platform,
@@ -53,7 +54,10 @@ export function FMOrderUpdate({ navigation }: Props) {
     desc.trim().length > 0;
 
   const onGenerate = () => {
-    if (!canGenerate) return;
+    // if (!canGenerate) {
+    //   Alert.alert("All fields are required", "Please fill all the fields");
+    //   return;
+    // }
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -229,7 +233,6 @@ export function FMOrderUpdate({ navigation }: Props) {
             style={styles.generateBtn}
             textStyle={styles.generateText}
             onPress={onGenerate}
-            disabled={!canGenerate || loading}
           />
         </View>
       </ScrollView>

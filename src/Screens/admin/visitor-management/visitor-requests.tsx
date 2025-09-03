@@ -31,75 +31,77 @@ const sortOptions = [
   { label: "Status", value: "status" },
 ];
 
-const visitorData = [
-  {
-    id: 1,
-    name: "Ethan Baker",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
-  },
-  {
-    id: 2,
-    name: "Brume Djbah",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "B",
-    backgroundColor: "#292766",
-    textColor: "#FFF",
-  },
-  {
-    id: 3,
-    name: "Ethan Baker",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
-  },
-  {
-    id: 4,
-    name: "Brume Djbah",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "B",
-    backgroundColor: "#292766",
-    textColor: "#FFF",
-  },
-  {
-    id: 5,
-    name: "Ethan Baker",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
-  },
-  {
-    id: 6,
-    name: "Brume Djbah",
-    property: "Farm House",
-    status: "Pending",
-    avatar: "B",
-    backgroundColor: "#292766",
-    textColor: "#FFF",
-  },
-];
-
 export const VisitorRequests: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [visitorData, setvisitorData] = useState([
+    {
+      id: 1,
+      name: "Ethan Baker",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "E",
+      backgroundColor: "#E8E8E8",
+      textColor: "#333",
+    },
+    {
+      id: 2,
+      name: "Brume Djbah",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "B",
+      backgroundColor: "#292766",
+      textColor: "#FFF",
+    },
+    {
+      id: 3,
+      name: "Ethan Baker",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "E",
+      backgroundColor: "#E8E8E8",
+      textColor: "#333",
+    },
+    {
+      id: 4,
+      name: "Brume Djbah",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "B",
+      backgroundColor: "#292766",
+      textColor: "#FFF",
+    },
+    {
+      id: 5,
+      name: "Ethan Baker",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "E",
+      backgroundColor: "#E8E8E8",
+      textColor: "#333",
+    },
+    {
+      id: 6,
+      name: "Brume Djbah",
+      property: "Farm House",
+      status: "Pending",
+      avatar: "B",
+      backgroundColor: "#292766",
+      textColor: "#FFF",
+    },
+  ]);
   const handleVisitorPress = (visitorId: number) => {
     navigation.navigate("AdminVisitorDetails", {
       visitorId: visitorId.toString(),
     });
   };
+
+  const filterData = visitorData.filter((item) => {
+    return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   return (
     <Screen
@@ -207,6 +209,8 @@ export const VisitorRequests: React.FC = () => {
 
       <TextField
         placeholder="Search"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
         inputWrapperStyle={{
           backgroundColor: colors.white,
           margin: adjustSize(10),
@@ -220,7 +224,7 @@ export const VisitorRequests: React.FC = () => {
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
       >
-        {visitorData.map((visitor, index) => (
+        {filterData.map((visitor, index) => (
           <TouchableOpacity
             key={visitor.id}
             style={[
@@ -318,11 +322,6 @@ const styles = StyleSheet.create({
     // gap: spacing.xs,
   },
   activeTab: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
     borderBottomWidth: 3,
     borderColor: colors.primary,
   },

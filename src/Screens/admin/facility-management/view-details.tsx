@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Screen, Text, Button, Header } from "../../../Components";
 import {
   Image,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
@@ -15,6 +16,11 @@ export const FMViewDetails = () => {
   const navigation = useNavigation();
   const slides = [Images.slide1, Images.slide2, Images.slide3];
   const [activeSlide, setActiveSlide] = useState(0);
+  const [selectedImages, setSelectedImages] = useState<string[]>([
+    Images.slide1,
+    Images.slide2,
+    Images.slide3,
+  ]);
 
   return (
     <Screen
@@ -28,15 +34,15 @@ export const FMViewDetails = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Hero Image */}
-        <View style={styles.heroWrap}>
+        <View style={styles.heroImg}>
           <Image
-            source={slides[activeSlide]}
-            style={styles.heroImg}
+            source={selectedImages[activeSlide] as any}
+            style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
           />
           {/* Dots */}
           <View style={styles.dotsRow}>
-            {slides.map((_, i) => (
+            {selectedImages.map((_, i) => (
               <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
                 <View
                   style={[
@@ -49,6 +55,21 @@ export const FMViewDetails = () => {
           </View>
         </View>
 
+        {/* Thumbs */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.thumbRow}
+        >
+          {selectedImages.map((src, i) => (
+            <Pressable key={i} onPress={() => setActiveSlide(i)}>
+              <Image
+                source={src}
+                style={[styles.thumb, i === activeSlide && styles.thumbActive]}
+              />
+            </Pressable>
+          ))}
+        </ScrollView>
         {/* Details Card */}
         <View style={[styles.card, { marginTop: spacing.lg }]}>
           <Text weight="semiBold" style={styles.sectionHeading}>
@@ -65,7 +86,7 @@ export const FMViewDetails = () => {
               ["Priority:", "Lorem ipsum"],
               ["Facility Manager:", "Lorem ipsum"],
               ["Work Request No:", "Lorem ipsum"],
-              ["Property", "Lorem ipsum"],
+              ["Property:", "Lorem ipsum"],
             ] as const
           ).map(([k, v]) => (
             <View key={k} style={styles.kvRow}>
@@ -79,7 +100,7 @@ export const FMViewDetails = () => {
           <View style={{ height: spacing.lg }} />
 
           <Text weight="semiBold" style={styles.sectionHeading}>
-            Description
+            Description:
           </Text>
           <View style={{ height: spacing.xs }} />
           <Text style={styles.descText}>
@@ -201,5 +222,20 @@ const styles = StyleSheet.create({
   closeBtnText: {
     color: colors.white,
     fontFamily: typography.fonts.poppins.semiBold,
+  },
+  thumbRow: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    gap: spacing.sm,
+  },
+  thumb: {
+    width: adjustSize(60),
+    height: adjustSize(60),
+    borderRadius: adjustSize(8),
+    marginRight: spacing.sm,
+  },
+  thumbActive: {
+    borderWidth: 2,
+    borderColor: colors.primary,
   },
 });

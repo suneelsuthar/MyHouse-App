@@ -24,12 +24,14 @@ export function TenantRentPayment(props: TenantRentPaymentProps) {
       id: 0,
       title: "Payment of Charges",
       icon: Images.charges,
+      onPress: () => props.navigation.navigate("TenantUtilitiesCharges"),
     },
 
     {
       id: 1,
       title: "Utility Payments",
       icon: Images.utility,
+      onPress: () => props.navigation.navigate("TenantUtilitiesMyMeter"),
     },
   ];
   const quickPayment = [
@@ -57,7 +59,11 @@ export function TenantRentPayment(props: TenantRentPaymentProps) {
 
   const renderItem = ({ item }: { item: any }) => {
     return (
-      <TouchableOpacity style={styles._card} activeOpacity={0.6}>
+      <TouchableOpacity
+        style={styles._card}
+        activeOpacity={0.6}
+        onPress={() => item.onPress()}
+      >
         <View style={styles._cardContent}>
           <WithLocalSvg asset={item.icon} />
         </View>

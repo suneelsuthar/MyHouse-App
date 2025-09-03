@@ -358,8 +358,8 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     color: colors.white,
-    fontSize: adjustSize(15),
-    fontFamily: typography.fonts.poppins.semiBold,
+    fontSize: adjustSize(14),
+    // fontFamily: typography.fonts.poppins.medium,
   },
   modalHeading: {
     fontSize: adjustSize(15),

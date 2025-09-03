@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { StyleSheet, Modal, View, TouchableOpacity } from "react-native";
 import { Screen, Text, Button, TextField } from "../../../Components";
 import { Header } from "../../../Components";
@@ -8,10 +11,69 @@ import ReservationCalendarAddTime from "./components/ReservationCalendarAddTime"
 import { WithLocalSvg } from "react-native-svg/css";
 import { adjustSize, colors, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
+const validationSchema = yup.object().shape({
+  propertyGroup: yup.string().required("Property group is required"),
+  property: yup.string().required("Property is required"),
+  amenity: yup.string().required("Amenity is required"),
+  capacity: yup.string().required("Capacity is required"),
+  reservedFor: yup.string().required("Reserved for is required"),
+  selectedDates: yup
+    .array()
+    .min(1, "Please select at least one date")
+    .required(),
+  timeSlots: yup.array().min(1, "Please add at least one time slot").required(),
+});
+
 export function AdminAmenityMakeReservation({ navigation }: any) {
   const [step, setStep] = useState<number>(0);
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [visible, setVisiable] = useState<boolean>(false);
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+    mode: "onChange",
+  });
+
+  const selectedDates = watch("selectedDates", []);
+
+  const handleNextStep = async () => {
+    let fieldsToValidate: any[] = [];
+    if (step === 0) {
+      fieldsToValidate = ["propertyGroup", "property", "amenity"];
+    } else if (step === 1) {
+      fieldsToValidate = ["capacity", "reservedFor", "selectedDates"];
+    } else if (step === 2) {
+      fieldsToValidate = ["timeSlots"];
+    }
+    const isValid = await trigger(fieldsToValidate);
+    if (isValid) {
+      if (step < 2) {
+        setStep(step + 1);
+      } else {
+        setVisiable(true);
+      }
+    }
+  };
+
+  const handleConfirmReservation = () => {
+    setVisiable(false);
+    setStep(0);
+    setValue("propertyGroup", "");
+    setValue("property", "");
+    setValue("amenity", "");
+    setValue("capacity", "");
+    setValue("reservedFor", "");
+    setValue("selectedDates", []);
+    setValue("timeSlots", []);
+    navigation.goBack();
+  };
+
   return (
     <Screen
       preset="fixed"
@@ -21,25 +83,28 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
     >
       <Header title={"New Reservation"} />
       {step === 0 && (
-        <ReservationStep1 navigation={navigation} onPress={() => setStep(1)} />
+        <ReservationStep1
+          control={control}
+          errors={errors}
+          onPress={handleNextStep}
+        />
       )}
       {step === 1 && (
         <ReservationCalendar
-          navigation={navigation}
+          control={control}
+          errors={errors}
+          setValue={setValue}
           backHandler={() => setStep(0)}
-          rightBtnHandler={() => setStep(2)}
-          onDatesChange={(dates) => {
-            console.log("Selected dates from calendar:", dates);
-            setSelectedDates(dates); // Save dates in state
-          }}
+          rightBtnHandler={handleNextStep}
         />
       )}
       {step === 2 && (
         <ReservationCalendarAddTime
-          navigation={navigation}
-          backHandler={() => setStep(1)}
-          selectedDates={selectedDates}
-          rightBtnHandler={() => setVisiable(true)}
+          errors={errors}
+          setValue={setValue}
+          selectedDates={watch("selectedDates")}
+          backHandler={() => setStep(step - 1)}
+          rightBtnHandler={handleNextStep}
         />
       )}
       <Modal
@@ -109,10 +174,7 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
                 <Button
                   text={"Confirm Reservation"}
                   preset="reversed"
-                  onPress={() => {
-                    setVisiable(false);
-                    navigation.goBack();
-                  }}
+                  onPress={handleConfirmReservation}
                 />
               </View>
             </View>

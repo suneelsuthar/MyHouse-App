@@ -35,6 +35,7 @@ import {
   HelpScreen,
   PropertyFiltersScreen,
   Message,
+  MessageHistory
 } from "../Screens";
 
 // Create stack navigators
@@ -118,6 +119,9 @@ const AppNavigator = () => {
       <Stack.Screen name="AboutUs" component={AboutUsScreen} />
       <Stack.Screen name="TermsConditions" component={TermsConditionsScreen} />
       <Stack.Screen name="Message" component={Message} />
+      <Stack.Screen name="MessageHistory" component={MessageHistory} />
+
+      
     </Stack.Navigator>
   );
 };

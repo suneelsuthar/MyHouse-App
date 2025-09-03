@@ -27,8 +27,8 @@ export function SearchBar({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor={colors.primaryLight}
-          inputWrapperStyle={{ backgroundColor: colors.white }}
+          placeholderTextColor={colors.grey}
+          inputWrapperStyle={{ backgroundColor: colors.fill,height:adjustSize(47),borderRadius:adjustSize(10) }}
           style={styles.input}
         />
       </View>

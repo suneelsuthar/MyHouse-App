@@ -141,7 +141,7 @@ export const TenantUtilitiesMyMeter: React.FC<TenantUtilitiesMyMeterProps> = ({
 
   return (
     <Screen
-      preset="auto"
+      preset="fixed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}

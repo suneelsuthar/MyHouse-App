@@ -8,7 +8,10 @@ import {
   TextField,
 } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
-import { AdminStackParamList, TenantStackParamList } from "../../../utils/interfaces";
+import {
+  AdminStackParamList,
+  TenantStackParamList,
+} from "../../../utils/interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { AmenitiesIcon, ReservationsIcon } from "../../../assets/svg";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -22,11 +25,13 @@ import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export type CommunityAreaProps = NativeStackScreenProps<AdminStackParamList, "CommunityArea"> | NativeStackScreenProps<TenantStackParamList, "CommunityArea">;
+export type CommunityAreaProps =
+  | NativeStackScreenProps<AdminStackParamList, "CommunityArea">
+  | NativeStackScreenProps<TenantStackParamList, "CommunityArea">;
 
 export function CommunityArea({ route }: CommunityAreaProps) {
   const navigation = useNavigation();
-    const status = (route.params as any)?.tab ?? "amenities";
+  const status = (route.params as any)?.tab ?? "amenities";
   const titleMap: Record<string, string> = {
     amenities: "Amenities",
     reservations: "Reservations",
@@ -38,11 +43,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [amenityDeleteModal, setAmenityDeleteModal] = useState(false);
   const { user } = useAppSelector((state: RootState) => state.auth);
-
-  useEffect(() => {
-    setActiveTab(titleMap[status]);
-  }, [status]);
-  const data = [
+  const [data, setdata] = useState([
     {
       id: "1",
       images: [
@@ -94,8 +95,9 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       capacity: "Apartment",
       dateAdded: "15, Sep 2024",
     },
-  ];
-  const ReservationsCardData = [
+  ]);
+
+  const [ReservationsCardData, setReservationsCardData] = useState([
     {
       name: "John Doe",
       swimmingPool: "Shortlet",
@@ -176,7 +178,19 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
     },
-  ];
+  ]);
+  useEffect(() => {
+    setActiveTab(titleMap[status]);
+  }, [status]);
+
+  const filterData = data.filter((item) => {
+    return item.title.toLowerCase().includes(search.toLowerCase());
+  });
+
+
+  const filterReservationsData = ReservationsCardData.filter((item) => {
+    return item.name.toLowerCase().includes(search.toLowerCase());
+  });
   return (
     <Screen
       preset="fixed"
@@ -210,6 +224,8 @@ export function CommunityArea({ route }: CommunityAreaProps) {
                 inputWrapperStyle={{ backgroundColor: colors.fill }}
                 placeholder="Search"
                 style={styles._input}
+                value={search}
+                onChangeText={setSearch}
               />
             )}
           </View>
@@ -269,13 +285,15 @@ export function CommunityArea({ route }: CommunityAreaProps) {
                 inputWrapperStyle={{ backgroundColor: colors.white }}
                 placeholder="Search"
                 style={styles._input}
+                value={search}
+                onChangeText={setSearch}
               />
             </View>
           </View>
         )}
         {/* List */}
         <FlatList
-          data={activeTab === "Amenities" ? data : ReservationsCardData}
+          data={activeTab === "Amenities" ? filterData : filterReservationsData}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           renderItem={({ item, index }) =>

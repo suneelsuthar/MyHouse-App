@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  Linking,
 } from "react-native";
 import { Screen, Text, Button, Header } from "../../../Components";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
+import { WebView } from "react-native-webview";
 
 type TabKey = "summary" | "updates";
 
@@ -200,7 +202,11 @@ export const FMOrderView = () => {
             preset="reversed"
             style={styles.primaryBtn}
             textStyle={styles.primaryBtnText}
-            onPress={() => {}}
+            onPress={() => {
+              Linking.openURL(
+                "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d"
+              );
+            }}
           />
         </ScrollView>
       ) : (
@@ -250,7 +256,7 @@ export const FMOrderView = () => {
       )}
 
       {/* Floating chat button */}
-      <Pressable style={styles.fab} onPress={() => {}}>
+      <Pressable style={styles.fab}>
         <Ionicons
           name="chatbubble-ellipses-outline"
           size={22}

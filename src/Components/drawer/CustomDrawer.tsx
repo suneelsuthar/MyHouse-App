@@ -486,15 +486,19 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Work Requests",
           onPress: () =>
-            closeMenusAndNavigate("FacilityManagement", {
-              status: "work_requests",
+            closeMenusAndNavigate("Tenant", {
+              screen: "Home",
+              params: {
+                screen: "FacilityManagement",
+                params: { status: "work_requests" },
+              },
             }),
         },
         {
           id: 1,
           title: "Work Orders",
           onPress: () =>
-            closeMenusAndNavigate("FacilityManagement", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "FacilityManagement",
@@ -506,7 +510,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 2,
           title: "Completed",
           onPress: () =>
-            closeMenusAndNavigate("FacilityManagement", {
+            closeMenusAndNavigate("Tenant", {
               screen: "Home",
               params: {
                 screen: "FacilityManagement",
@@ -674,7 +678,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Message History",
-          onPress: () => closeMenusAndNavigate("Commuication"),
+          onPress: () => closeMenusAndNavigate("MessageHistory"),
         },
       ],
     },
@@ -730,51 +734,6 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         return []; // Return empty array for unknown roles or if user is not logged in
     }
   };
-
-  // const tenantUtilitiesItems = [
-  //   {
-  //     id: 1,
-  //     title: "Summary",
-  //     type: "item",
-  //     icon: Images.simdata,
-  //     onPress: () => closeMenusAndNavigate("UtilitiesSummary")
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "My Meter",
-  //     type: "item",
-  //     icon: Images.meters,
-  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesMyMeter")
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Charges",
-  //     type: "item",
-  //     icon: Images.managetrans,
-  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesCharges")
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Transactions",
-  //     type: "item",
-  //     icon: Images.managegroups,
-  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesTransactions")
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Vending History",
-  //     type: "item",
-  //     icon: Images.managehistory,
-  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesVendingHistory")
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Report an Issue",
-  //     type: "item",
-  //     icon: Images.settings,
-  //     onPress: () => closeMenusAndNavigate("TenantUtilitiesReportIssue")
-  //   }
-  // ];
 
   const items = getItemsForRole();
 

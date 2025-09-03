@@ -141,7 +141,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
   // --- UI ---
   return (
     <Screen
-      preset="auto"
+      preset="fixed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}

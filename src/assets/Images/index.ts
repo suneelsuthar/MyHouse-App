@@ -95,4 +95,6 @@ export const Images = {
   airtime: require("./airtime.svg"),
   data: require("./data.svg"),
   charges: require("./charges.svg"),
+  upgrade: require("./upgrade.svg"),
+  boost: require("./boost.svg"),
 };

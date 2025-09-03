@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  Linking,
 } from "react-native";
 import { Screen, Text, Button, Header } from "../../../Components";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
@@ -194,7 +195,11 @@ export const FMViewWorkOrder = () => {
             preset="reversed"
             style={styles.primaryBtn}
             textStyle={styles.primaryBtnText}
-            onPress={() => {}}
+            onPress={() => {
+              Linking.openURL(
+                "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d"
+              );
+            }}
           />
         </ScrollView>
       ) : (
@@ -397,7 +402,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: spacing.lg,
-    bottom: adjustSize(90),
+    bottom: adjustSize(40),
     width: adjustSize(48),
     height: adjustSize(48),
     borderRadius: adjustSize(24),
