@@ -24,9 +24,6 @@ type DayCell = {
 export function AdminAmenityManageCalendar({
   navigation,
 }: NativeStackScreenProps<AdminStackParamList, "AdminAmenityManageCalendar">) {
-
-
-  
   const [mode, setMode] = useState<Mode>("range");
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -39,7 +36,15 @@ export function AdminAmenityManageCalendar({
   const [selectedAction, setSelectedAction] = useState<
     "block" | "reopen" | null
   >(null);
-  const [blockedKeys, setBlockedKeys] = useState<Set<string>>(new Set());
+  const [blockedKeys, setBlockedKeys] = useState<Set<string>>(
+    new Set([
+      "2025-09-10",
+      "2025-09-15",
+      "2025-09-20",
+      "2025-09-25",
+      "2025-09-30",
+    ])
+  );
 
   const monthTitle = useMemo(() => {
     return monthCursor.toLocaleString(undefined, {
@@ -76,7 +81,32 @@ export function AdminAmenityManageCalendar({
     return x >= Math.min(s, e) && x <= Math.max(s, e);
   };
 
+  const isDateDisabled = (d: Date) => {
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+    return blockedKeys.has(key);
+  };
+
+  const getDateKey = (d: Date) => {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+
   const toggleDay = (d: Date) => {
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+
+    // Don't allow selecting disabled dates
+    if (blockedKeys.has(key)) {
+      return;
+    }
+
     if (mode === "single") {
       setStartDate(d);
       setEndDate(d);
@@ -84,12 +114,35 @@ export function AdminAmenityManageCalendar({
     }
     // range mode
     if (!startDate || (startDate && endDate)) {
+      // Don't allow starting a range on a disabled date
+      if (isDateDisabled(d)) return;
       setStartDate(d);
       setEndDate(null);
     } else if (startDate && !endDate) {
-      if (isSameDay(startDate, d)) {
+      // Don't allow ending a range on a disabled date
+      if (isDateDisabled(d)) return;
+
+      // Ensure the range doesn't include any disabled dates
+      const start = startDate < d ? startDate : d;
+      const end = startDate < d ? d : startDate;
+      let hasDisabledDate = false;
+
+      // Check all dates in the range
+      const current = new Date(start);
+      while (current <= end) {
+        if (isDateDisabled(current)) {
+          hasDisabledDate = true;
+          break;
+        }
+        current.setDate(current.getDate() + 1);
+      }
+
+      if (hasDisabledDate) {
+        // If there are disabled dates in the range, just select the single date
+        setStartDate(d);
         setEndDate(d);
       } else {
+        // Only set end date if the range is valid
         setEndDate(d);
       }
     }
@@ -350,6 +403,7 @@ export function AdminAmenityManageCalendar({
                   key={idx}
                   onPress={() => toggleDay(cell.date)}
                   style={[styles.dayCell]}
+                  disabled={isBlocked}
                 >
                   <View
                     style={[
@@ -361,7 +415,7 @@ export function AdminAmenityManageCalendar({
                       style={[
                         styles.dayText,
                         sel && styles.dayTextSelected,
-                        !sel && isBlocked && styles.dayTextBlocked,
+                        isBlocked && styles.dayTextBlocked,
                         !sel &&
                           !isBlocked &&
                           isToday &&
@@ -471,14 +525,14 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   segmentText: {
-    fontSize: adjustSize(10),
+    fontSize: adjustSize(12),
     color: colors.primary,
     textAlign: "center",
     fontFamily: typography.fonts.poppins.normal,
   },
   segmentTextActive: {
     color: colors.white,
-    fontSize: adjustSize(10),
+    fontSize: adjustSize(12),
     fontFamily: typography.fonts.poppins.normal,
   },
   sectionTitle: {
@@ -639,6 +693,10 @@ const styles = StyleSheet.create({
   },
   dayTextBlocked: {
     color: "#E53935",
+    textDecorationLine: "line-through",
+  },
+  disabledDate: {
+    opacity: 0.6,
   },
   dayTextFaded: {
     color: colors.greylight,

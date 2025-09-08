@@ -6,10 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Modal,
+  TextInput,
 } from "react-native";
-import { Screen, Header } from "../../../../Components";
-import { adjustSize, colors, typography } from "../../../../theme";
+import { Screen, Header, Button } from "../../../../Components";
+import { adjustSize, colors, typography, spacing } from "../../../../theme";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+// import Clipboard from "@react-native-clipboard/clipboard";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 
 type DetailRowProps = {
@@ -44,7 +48,23 @@ const ViewMeterDetails = () => {
   const route = useRoute<ViewMeterDetailsScreenRouteProp>();
   const { meter } = route.params;
   const [isEnabled, setIsEnabled] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [temperToken, setTemperToken] = useState("1234 5678 9101 1121");
+
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const copyToClipboard = () => {
+    // Clipboard.setString(temperToken);
+    setIsModalVisible(false);
+  };
+
+  const handleClearTemper = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   const handleRecharge = () => {
     console.log("Recharge button pressed");
@@ -100,9 +120,9 @@ const ViewMeterDetails = () => {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Manage</Text>
-                    <View style={styles.manageRow}>
+          <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Clear Temper</Text>
-            <ActionButton label="Clear" onPress={() => {}} />
+            <ActionButton label="Clear" onPress={handleClearTemper} />
           </View>
           <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Send token</Text>
@@ -153,6 +173,45 @@ const ViewMeterDetails = () => {
           </View>
         </View>
       </ScrollView>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleCloseModal}
+            >
+              <Ionicons name="close-circle" size={24} color={colors.error} />
+            </TouchableOpacity>
+            <Text style={styles.modalText}>Clear Temper</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={temperToken}
+                editable={false}
+              />
+              <TouchableOpacity onPress={copyToClipboard}>
+                <Ionicons
+                  name="copy-outline"
+                  size={24}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            </View>
+            <Button
+              text="Copy"
+              preset="reversed"
+              onPress={copyToClipboard}
+              style={styles.copyButton}
+            />
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 };
@@ -196,6 +255,67 @@ const styles = StyleSheet.create({
   manageLabel: {
     fontSize: adjustSize(14),
     color: colors.primary,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalView: {
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+  },
+  modalText: {
+    fontSize: adjustSize(16),
+    fontWeight: "bold",
+    marginBottom: 15,
+    textAlign: "center",
+    color: colors.primary,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.grey,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    width: "100%",
+  },
+  input: {
+    flex: 1,
+    fontSize: adjustSize(16),
+    color: colors.text,
+    height: adjustSize(47),
+  },
+  copyButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    width: "100%",
+    alignItems: "center",
+  },
+  copyButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
   actionButton: {
     backgroundColor: colors.primary,

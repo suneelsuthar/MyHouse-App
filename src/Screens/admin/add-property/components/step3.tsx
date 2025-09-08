@@ -262,6 +262,8 @@ const Step3: React.FC<Step3Props> = ({
 const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: adjustSize(15),
+    lineHeight: adjustSize(18),
+
     color: colors.primary,
     marginTop: adjustSize(12),
     marginBottom: adjustSize(10),

@@ -1,482 +1,16 @@
-// import React, { useState } from "react";
-// import {
-//   StyleSheet,
-//   View,
-//   ScrollView,
-//   TouchableOpacity,
-//   Alert,
-//   Modal,
-//   Text,
-// } from "react-native";
-// import { NativeStackScreenProps } from "@react-navigation/native-stack";
-// import { AdminStackParamList } from "../../../utils/interfaces";
-// import { colors, spacing, typography, adjustSize } from "../../../theme";
-// import { Header, Screen, TextField } from "../../../Components";
-// import DropdownComponent from "../../../Components/DropDown";
-// import DateTimePicker from "@react-native-community/datetimepicker";
-// import { WithLocalSvg } from "react-native-svg/css";
-// import { Images } from "../../../assets/Images";
-
-// const typeOptions = [
-//   { label: "Guest", value: "guest" },
-//   { label: "Contractor", value: "contractor" },
-//   { label: "Delivery", value: "delivery" },
-//   { label: "Service Provider", value: "service_provider" },
-//   { label: "Visitor", value: "visitor" },
-// ];
-
-// const propertyOptions = [
-//   { label: "Farm House A", value: "farm_house_a" },
-//   { label: "Farm House B", value: "farm_house_b" },
-//   { label: "Town House 1", value: "town_house_1" },
-//   { label: "Town House 2", value: "town_house_2" },
-//   { label: "Villa 1", value: "villa_1" },
-//   { label: "Villa 2", value: "villa_2" },
-// ];
-
-// const propertyGroupOptions = [
-//   { label: "Farm Houses", value: "farm_houses" },
-//   { label: "Town Houses", value: "town_houses" },
-//   { label: "Villas", value: "villas" },
-//   { label: "Apartments", value: "apartments" },
-// ];
-
-// const accessCodeOptions = [
-//   { label: "Temporary Access", value: "temp_access" },
-//   { label: "Full Access", value: "full_access" },
-//   { label: "Limited Access", value: "limited_access" },
-//   { label: "Emergency Access", value: "emergency_access" },
-// ];
-
-// export const AdminGenerateVisitorRequest: React.FC<Props> = ({
-//   navigation,
-// }) => {
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     type: "",
-//     accessCode: "",
-//     property: "",
-//     propertyGroup: "",
-//   });
-
-//   const [fromDate, setFromDate] = useState<Date | null>(null);
-//   const [toDate, setToDate] = useState<Date | null>(null);
-//   const [showFromPicker, setShowFromPicker] = useState(false);
-//   const [showToPicker, setShowToPicker] = useState(false);
-//   const [pickerStep, setPickerStep] = useState<"date" | "time">("date");
-//   const [tempDate, setTempDate] = useState(new Date());
-
-//   const handleInputChange = (field: string, value: string) => {
-//     setFormData((prev) => ({ ...prev, [field]: value }));
-//   };
-
-//   const handleDateTimeChange = (event: any, selectedDate?: Date) => {
-//     if (selectedDate) {
-//       setTempDate(selectedDate);
-//     }
-//   };
-
-//   const handleDateNext = () => {
-//     setPickerStep("time");
-//   };
-
-//   const handleTimeConfirm = () => {
-//     if (showFromPicker) {
-//       setFromDate(tempDate);
-//       setShowFromPicker(false);
-//     } else if (showToPicker) {
-//       setToDate(tempDate);
-//       setShowToPicker(false);
-//     }
-//     setPickerStep("date");
-//   };
-
-//   const handleModalCancel = () => {
-//     setShowFromPicker(false);
-//     setShowToPicker(false);
-//     setPickerStep("date");
-//   };
-
-//   const openDatePicker = (isFrom: boolean) => {
-//     if (isFrom) {
-//       setTempDate(fromDate || new Date());
-//       setShowFromPicker(true);
-//     } else {
-//       setTempDate(toDate || new Date());
-//       setShowToPicker(true);
-//     }
-//     setPickerStep("date");
-//   };
-
-//   const formatDate = (date: Date) => {
-//     return date.toLocaleDateString("en-US", {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//     });
-//   };
-
-//   const formatDateTime = (date: Date) => {
-//     const dateStr = date.toLocaleDateString("en-US", {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//     });
-//     const timeStr = date.toLocaleTimeString("en-US", {
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//     return `${dateStr} ${timeStr}`;
-//   };
-
-//   const formatTime = (date: Date) => {
-//     return date.toLocaleTimeString("en-US", {
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//   };
-
-//   const handleGenerate = () => {
-//     // Validate required fields
-//     if (!formData.name.trim()) {
-//       Alert.alert("Error", "Please enter visitor name");
-//       return;
-//     }
-//     if (!formData.type) {
-//       Alert.alert("Error", "Please select visitor type");
-//       return;
-//     }
-//     if (!formData.accessCode) {
-//       Alert.alert("Error", "Please select access code");
-//       return;
-//     }
-//     if (!formData.property) {
-//       Alert.alert("Error", "Please select property");
-//       return;
-//     }
-//     if (!formData.propertyGroup) {
-//       Alert.alert("Error", "Please select property group");
-//       return;
-//     }
-
-//     Alert.alert("Success", "Visitor request has been generated successfully!", [
-//       {
-//         text: "OK",
-//         onPress: () => navigation.goBack(),
-//       },
-//     ]);
-//   };
-
-//   return (
-//     <Screen
-//       preset="fixed"
-//       safeAreaEdges={["top"]}
-//       contentContainerStyle={styles.container}
-//     >
-//       <Header title="Generate Visitor Request" />
-
-//       <ScrollView
-//         style={styles.content}
-//         showsVerticalScrollIndicator={false}
-//         contentContainerStyle={styles.scrollContent}
-//       >
-//         {/* Name Field */}
-//         <View style={styles.fieldContainer}>
-//           <Text style={styles.label}>Name*</Text>
-//           <TextField
-//             placeholder="Enter name"
-//             value={formData.name}
-//             onChangeText={(text) => handleInputChange("name", text)}
-//             inputWrapperStyle={styles.textInput}
-//           />
-//         </View>
-
-//         {/* Type Field */}
-//         <View style={styles.fieldContainer}>
-//           <Text style={styles.label}>Type*</Text>
-//           <DropdownComponent
-//             data={typeOptions}
-//             value={formData.type}
-//             onChangeValue={(value) => handleInputChange("type", value)}
-//             placeholder="Choose type"
-//             dropdownStyle={styles.dropdown}
-//             placeholderStyle={styles.dropdownPlaceholder}
-//             selectedTextStyle={styles.dropdownSelected}
-//             rightIconColor={colors.primary}
-//           />
-//         </View>
-
-//         {/* Access Code Field */}
-//         <View style={styles.fieldContainer}>
-//           <Text style={styles.label}>Access Code*</Text>
-//           <DropdownComponent
-//             data={accessCodeOptions}
-//             value={formData.accessCode}
-//             onChangeValue={(value) => handleInputChange("accessCode", value)}
-//             placeholder="Choose type"
-//             dropdownStyle={styles.dropdown}
-//             placeholderStyle={styles.dropdownPlaceholder}
-//             selectedTextStyle={styles.dropdownSelected}
-//             rightIconColor={colors.primary}
-//           />
-//         </View>
-
-//         {/* Date Fields */}
-//         <View style={styles.dateRow}>
-//           <View style={styles.dateField}>
-//             <Text style={styles.label}>From*</Text>
-//             <TouchableOpacity
-//               style={styles.dateButton}
-//               onPress={() => openDatePicker(true)}
-//             >
-//               <Text
-//                 style={[styles.dateText, !fromDate && styles.placeholderText]}
-//               >
-//                 {fromDate ? formatDate(fromDate) : "Select D & T"}
-//               </Text>
-//               <WithLocalSvg asset={Images.calendar} />
-//             </TouchableOpacity>
-//           </View>
-
-//           <View style={styles.dateField}>
-//             <Text style={styles.label}>To*</Text>
-//             <TouchableOpacity
-//               style={styles.dateButton}
-//               onPress={() => openDatePicker(false)}
-//             >
-//               <Text
-//                 style={[styles.dateText, !toDate && styles.placeholderText]}
-//               >
-//                 {toDate ? formatDate(toDate) : "Select D & T"}
-//               </Text>
-//               <WithLocalSvg asset={Images.calendar} />
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-
-//         {/* Property Field */}
-//         <View style={styles.fieldContainer}>
-//           <Text style={styles.label}>Property*</Text>
-//           <DropdownComponent
-//             data={propertyOptions}
-//             value={formData.property}
-//             onChangeValue={(value) => handleInputChange("property", value)}
-//             placeholder="Select property"
-//             dropdownStyle={styles.dropdown}
-//             placeholderStyle={styles.dropdownPlaceholder}
-//             selectedTextStyle={styles.dropdownSelected}
-//             rightIconColor={colors.primary}
-//           />
-//         </View>
-
-//         {/* Property Group Field */}
-//         <View style={styles.fieldContainer}>
-//           <Text style={styles.label}>Property Group*</Text>
-//           <DropdownComponent
-//             data={propertyGroupOptions}
-//             value={formData.propertyGroup}
-//             onChangeValue={(value) => handleInputChange("propertyGroup", value)}
-//             placeholder="Select property"
-//             dropdownStyle={styles.dropdown}
-//             placeholderStyle={styles.dropdownPlaceholder}
-//             selectedTextStyle={styles.dropdownSelected}
-//             rightIconColor={colors.primary}
-//           />
-//         </View>
-
-//         {/* Generate Button */}
-//         <TouchableOpacity
-//           style={styles.generateButton}
-//           onPress={handleGenerate}
-//         >
-//           <Text style={styles.generateButtonText}>Generate</Text>
-//         </TouchableOpacity>
-//       </ScrollView>
-
-//       {/* Date & Time Picker Modal */}
-//       <Modal
-//         visible={showFromPicker || showToPicker}
-//         transparent={true}
-//         animationType="slide"
-//         onRequestClose={handleModalCancel}
-//       >
-//         <View style={styles.modalOverlay}>
-//           <View style={styles.modalContent}>
-//             <View style={styles.modalHeader}>
-//               <TouchableOpacity onPress={handleModalCancel}>
-//                 <Text style={styles.modalCancelText}>Cancel</Text>
-//               </TouchableOpacity>
-//               <Text style={styles.modalTitle}>
-//                 {pickerStep === "date"
-//                   ? showFromPicker
-//                     ? "Select From Date"
-//                     : "Select To Date"
-//                   : showFromPicker
-//                   ? "Select From Time"
-//                   : "Select To Time"}
-//               </Text>
-//               <TouchableOpacity
-//                 onPress={
-//                   pickerStep === "date" ? handleDateNext : handleTimeConfirm
-//                 }
-//               >
-//                 <Text style={styles.modalDoneText}>
-//                   {pickerStep === "date" ? "Next" : "Done"}
-//                 </Text>
-//               </TouchableOpacity>
-//             </View>
-//             <DateTimePicker
-//               value={tempDate}
-//               mode={pickerStep}
-//               display="spinner"
-//               onChange={handleDateTimeChange}
-//               style={styles.datePicker}
-//             />
-//           </View>
-//         </View>
-//       </Modal>
-//     </Screen>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   content: {
-//     flex: 1,
-//     paddingHorizontal: spacing.lg,
-//   },
-//   scrollContent: {
-//     paddingBottom: spacing.xl,
-//   },
-//   fieldContainer: {
-//     marginBottom: spacing.lg,
-//   },
-//   label: {
-//     fontSize: adjustSize(12),
-//     color: colors.primary,
-//     fontFamily: typography.fonts.poppins.medium,
-//     marginBottom: spacing.sm,
-//   },
-//   textInput: {
-//     borderRadius: adjustSize(12),
-//     borderWidth: 1,
-//     borderColor: colors.border,
-//     paddingHorizontal: spacing.md,
-//     height: adjustSize(50),
-//   },
-//   dropdown: {
-//     backgroundColor: colors.fill,
-//     borderRadius: adjustSize(12),
-//     borderWidth: 1,
-//     borderColor: colors.border,
-//     paddingHorizontal: spacing.md,
-//     height: adjustSize(50),
-//     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-//     elevation: 2,
-//   },
-//   dropdownPlaceholder: {
-//     fontSize: adjustSize(14),
-//     color: colors.grey,
-//     fontFamily: typography.fonts.poppins.normal,
-//   },
-//   dropdownSelected: {
-//     fontSize: adjustSize(14),
-//     color: colors.primary,
-//     fontFamily: typography.fonts.poppins.normal,
-//   },
-//   dateRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     marginBottom: spacing.lg,
-//   },
-//   dateField: {
-//     flex: 1,
-//     marginHorizontal: spacing.xs,
-//   },
-//   dateButton: {
-//     backgroundColor: colors.fill,
-//     borderRadius: adjustSize(12),
-//     borderWidth: 1,
-//     borderColor: colors.border,
-//     paddingHorizontal: spacing.md,
-//     height: adjustSize(50),
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-//     elevation: 2,
-//   },
-//   dateText: {
-//     fontSize: adjustSize(14),
-//     color: colors.primary,
-//     fontFamily: typography.fonts.poppins.normal,
-//   },
-//   placeholderText: {
-//     color: colors.textDim,
-//     opacity: 0.6,
-//   },
-//   generateButton: {
-//     backgroundColor: colors.primary,
-//     borderRadius: adjustSize(12),
-//     paddingVertical: spacing.md,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     marginTop: spacing.xl,
-//     height: adjustSize(50),
-//   },
-//   generateButtonText: {
-//     fontSize: adjustSize(16),
-//     color: colors.white,
-//     fontFamily: typography.fonts.poppins.semiBold,
-//   },
-//   modalOverlay: {
-//     flex: 1,
-//     backgroundColor: "rgba(0, 0, 0, 0.5)",
-//     justifyContent: "flex-end",
-//   },
-//   modalContent: {
-//     backgroundColor: colors.white,
-//     borderTopLeftRadius: adjustSize(20),
-//     borderTopRightRadius: adjustSize(20),
-//     paddingBottom: spacing.xl,
-//   },
-//   modalHeader: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     paddingHorizontal: spacing.lg,
-//     paddingVertical: spacing.md,
-//     borderBottomWidth: 1,
-//     borderBottomColor: colors.border,
-//   },
-//   modalTitle: {
-//     fontSize: adjustSize(16),
-//     color: colors.primary,
-//     fontFamily: typography.fonts.poppins.semiBold,
-//   },
-//   modalCancelText: {
-//     fontSize: adjustSize(14),
-//     color: colors.textDim,
-//     fontFamily: typography.fonts.poppins.medium,
-//   },
-//   modalDoneText: {
-//     fontSize: adjustSize(14),
-//     color: colors.primary,
-//     fontFamily: typography.fonts.poppins.semiBold,
-//   },
-//   datePicker: {
-//     backgroundColor: colors.white,
-//   },
-// });
-
 import React, { useMemo, useState } from "react";
-import { StyleSheet, View, Pressable, Modal, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Modal,
+  Platform,
+  Alert,
+} from "react-native";
 import { Screen, Text, Button, TextField } from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 import { Images } from "../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import DropdownComponent from "../../../Components/DropDown";
@@ -502,7 +36,6 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
   const [pickerVisible, setPickerVisible] = useState(false);
   const [pickerStep, setPickerStep] = useState<"date" | "time">("date");
   const [activeTarget, setActiveTarget] = useState<"from" | "to">("from");
-  const [tempDate, setTempDate] = useState<Date>(new Date());
   const [propertyId, setPropertyId] = useState<string | null>(
     preselectId ?? null
   );
@@ -530,11 +63,69 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
     []
   );
 
-  const fmt = (d: Date | null) => (d ? d.toLocaleDateString() : "Select Date");
-  const fmtTime = (d: Date | null) =>
-    d
-      ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      : "--:-- --";
+  const formatDate = (date: Date | null): string => {
+    if (!date) return "Select Date";
+    try {
+      // Ensure we have a proper Date object
+      const d = date instanceof Date ? date : new Date(date);
+
+      // Check if date is valid
+      if (isNaN(d.getTime())) {
+        console.warn("Invalid date received:", date);
+        return "Invalid Date";
+      }
+
+      const day = d.getDate().toString().padStart(2, "0");
+      // Use a fixed list of month names for consistency
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const month = monthNames[d.getMonth()];
+      const year = d.getFullYear();
+      return `${month} ${day}, ${year}`;
+    } catch (e) {
+      console.error("Error formatting date:", e, "Date value:", date);
+      return "Invalid Date";
+    }
+  };
+
+  const formatTime = (date: Date | null): string => {
+    if (!date) return "--:-- --";
+    try {
+      // Ensure we have a proper Date object
+      const d = date instanceof Date ? date : new Date(date);
+
+      // Check if date is valid
+      if (isNaN(d.getTime())) {
+        console.warn("Invalid time received:", date);
+        return "--:-- --";
+      }
+
+      let hours = d.getHours();
+      const minutes = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      return `${hours}:${minutes} ${ampm}`;
+    } catch (e) {
+      console.error("Error formatting time:", e, "Time value:", date);
+      return "--:-- --";
+    }
+  };
+
+  const fmt = formatDate;
+  const fmtTime = formatTime;
 
   const canSubmit =
     name.trim().length > 0 &&
@@ -567,10 +158,7 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
     step: "date" | "time" = "date"
   ) => {
     setActiveTarget(target);
-    setPickerStep(step);
-    const base =
-      target === "from" ? fromDate ?? new Date() : toDate ?? new Date();
-    setTempDate(base);
+    // setPickerStep(step);
     setPickerVisible(true);
   };
 
@@ -578,10 +166,33 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
     setPickerVisible(false);
   };
 
-  const confirmPicker = () => {
-    if (activeTarget === "from") setFromDate(tempDate);
-    else setToDate(tempDate);
-    setPickerVisible(false);
+  const handleDateChange = (date: Date) => {
+    try {
+      // Ensure we have a proper Date object
+      const newDate = date instanceof Date ? new Date(date) : new Date(date);
+
+      if (isNaN(newDate.getTime())) {
+        console.warn("Invalid date received in handleDateChange:", date);
+        return;
+      }
+
+      if (activeTarget === "from") {
+        setFromDate(newDate);
+      } else {
+        // Validate that toDate is after fromDate
+        if (fromDate && newDate < fromDate) {
+          Alert.alert("Invalid Date", "End date must be after start date");
+          return;
+        }
+        setToDate(newDate);
+      }
+
+      // If we just set the date, move to time picker
+
+      setPickerVisible(false);
+    } catch (e) {
+      console.error("Error in handleDateChange:", e, "Date value:", date);
+    }
   };
 
   return (
@@ -657,8 +268,13 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
                         color: fromDate ? colors.primary : colors.primaryLight,
                       },
                     ]}
+                    onPress={() => {
+                      console.log("From date value:", fromDate);
+                      console.log("Formatted:", fmt(fromDate));
+                      console.log("Type:", typeof fromDate);
+                    }}
                   >
-                    {fmt(fromDate)}
+                    {fromDate ? fmt(fromDate) : "Select Date"}
                   </Text>
                   <WithLocalSvg asset={Images.calendar} />
                 </Pressable>
@@ -679,8 +295,12 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
                         color: fromDate ? colors.primary : colors.primaryLight,
                       },
                     ]}
+                    onPress={() => {
+                      console.log("From time value:", fromDate);
+                      console.log("Formatted time:", fmtTime(fromDate));
+                    }}
                   >
-                    {fmtTime(fromDate)}
+                    {fromDate ? fmtTime(fromDate) : "--:-- --"}
                   </Text>
                   <WithLocalSvg asset={Images.clock} />
                 </Pressable>
@@ -702,8 +322,13 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
                       styles.dtText,
                       { color: toDate ? colors.primary : colors.primaryLight },
                     ]}
+                    onPress={() => {
+                      console.log("To date value:", toDate);
+                      console.log("Formatted:", fmt(toDate));
+                      console.log("Type:", typeof toDate);
+                    }}
                   >
-                    {fmt(toDate)}
+                    {toDate ? fmt(toDate) : "Select Date"}
                   </Text>
                   <WithLocalSvg asset={Images.calendar} />
                 </Pressable>
@@ -722,8 +347,12 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
                       styles.dtText,
                       { color: toDate ? colors.primary : colors.primaryLight },
                     ]}
+                    onPress={() => {
+                      console.log("To time value:", toDate);
+                      console.log("Formatted time:", fmtTime(toDate));
+                    }}
                   >
-                    {fmtTime(toDate)}
+                    {toDate ? fmtTime(toDate) : "--:-- --"}
                   </Text>
                   <WithLocalSvg asset={Images.clock} />
                 </Pressable>
@@ -899,57 +528,39 @@ export function AdminGenerateVisitorRequest({ route, navigation }: Props) {
         />
       </View>
 
-      {/* Modal Date & Time Picker */}
-      <Modal
+      {/* Custom Date & Time Picker */}
+      <CustomDateTimePicker
+        mode={"date"}
+        value={(() => {
+          // Get the appropriate date based on active target
+          const targetDate = activeTarget === "from" ? fromDate : toDate;
+
+          // If we have a valid date, return it, otherwise return current date
+          if (targetDate) {
+            // Ensure we return a new Date object to prevent reference issues
+            return new Date(targetDate);
+          }
+
+          // For 'to' date, default to 1 hour from now if fromDate exists
+          if (activeTarget === "to" && fromDate) {
+            const oneHourLater = new Date(fromDate);
+            oneHourLater.setHours(oneHourLater.getHours() + 1);
+            return oneHourLater;
+          }
+
+          // Default to current time
+          return new Date();
+        })()}
         visible={pickerVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={cancelPicker}
-      >
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalCard}>
-            <Text weight="semiBold" style={styles.modalTitle}>
-              {pickerStep === "date" ? "Select Date" : "Select Time"}
-            </Text>
-
-            <View style={styles.modalPickerWrap}>
-              <DateTimePicker
-                value={tempDate}
-                mode={pickerStep}
-                display={Platform.OS === "ios" ? "spinner" : "default"}
-                onChange={(_, d) => {
-                  if (!d) return;
-                  setTempDate(d);
-                }}
-              />
-            </View>
-
-            <View style={styles.modalActions}>
-              <Button
-                text="Cancel"
-                preset="default"
-                style={styles.modalBtn}
-                onPress={cancelPicker}
-              />
-              {pickerStep === "date" ? (
-                <Button
-                  text={Platform.OS === "ios" ? "Next" : "Next"}
-                  preset="reversed"
-                  style={styles.modalBtn}
-                  onPress={() => setPickerStep("time")}
-                />
-              ) : (
-                <Button
-                  text="Done"
-                  preset="reversed"
-                  style={styles.modalBtn}
-                  onPress={confirmPicker}
-                />
-              )}
-            </View>
-          </View>
-        </View>
-      </Modal>
+        onChange={(date: Date) => {
+          // Ensure we have a proper Date object
+          const newDate =
+            date instanceof Date ? new Date(date) : new Date(date);
+          handleDateChange(newDate);
+        }}
+        onCancel={cancelPicker}
+        onConfirm={() => {}} // Not used, but required by the component
+      />
     </Screen>
   );
 }

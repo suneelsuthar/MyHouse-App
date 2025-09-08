@@ -278,8 +278,6 @@ export type GlobalStackParamList = {
   TermsConditions: undefined;
 };
 
-
-
 // Main app param list that combines all stacks
 export type AppStackParamList = AuthStackParamList &
   TenantStackParamList &

@@ -154,7 +154,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title={"Add new Amenity"} />
+      <Header title={"Add New Amenities"} />
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={{ paddingBottom: adjustSize(0) }}
@@ -391,7 +391,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             <DateTimePicker
               value={tempDate}
               mode="time"
-              display="default"
+              display="spinner"
               is24Hour={false}
               onChange={onChange}
             />

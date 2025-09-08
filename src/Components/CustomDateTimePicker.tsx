@@ -81,7 +81,7 @@ export const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = ({
       <DateTimePicker
         value={tempDate}
         mode={mode}
-        display="default"
+        display="spinner"
         onChange={handleAndroidChange}
       />
     )

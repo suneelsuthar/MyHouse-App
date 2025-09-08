@@ -32,12 +32,10 @@ import {
   SubLandlord,
   SubLandlordDashboard,
 
-
   // Security screens
   Security,
   SecurityDashboard,
   SecurityVisitorLogs,
-
 
   // Import admin screens from the admin directory
   AdminDashboard,
@@ -433,7 +431,10 @@ const TenantWalletStackNavigator = () => (
       component={FinancialReports}
     />
     <TenantWalletStack.Screen name="SendMoney" component={SendMoney} />
-    <TenantWalletStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
+    <TenantWalletStack.Screen
+      name="AddBeneficiary"
+      component={AddBeneficiary}
+    />
   </TenantWalletStack.Navigator>
 );
 
@@ -593,7 +594,7 @@ const TenantTabs = () => (
   >
     <Tab.Screen name="Home" component={TenantHomeStack} />
     <Tab.Screen name="Chat" component={Chat} />
-        <Tab.Screen name="Wallet" component={TenantWalletStackNavigator} />
+    <Tab.Screen name="Wallet" component={TenantWalletStackNavigator} />
   </Tab.Navigator>
 );
 

@@ -119,9 +119,9 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
           <View style={styles.qrPlaceholder}>
             <WithLocalSvg asset={Images.visitorcode} color={colors.primary} />
           </View>
-          <TouchableOpacity style={styles.downloadButton} onPress={handleShare}>
+          {/* <TouchableOpacity style={styles.downloadButton} onPress={handleShare}>
             <Text style={styles.downloadText}>Download QR Code</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
             <Text style={styles.shareText}>Share</Text>
           </TouchableOpacity>
@@ -130,31 +130,32 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
         {/* Visitor Information */}
         <View style={styles.section}>
           <InfoRow label="Name" value={visitorData.name} />
-          <InfoRow label="Type" value={visitorData.type} />
-          <InfoRow label="Property Group" value={visitorData.propertyGroup} />
           <InfoRow label="Access Code" value={visitorData.accessCode} />
+          <InfoRow label="Property" value={visitorData.property} />
+          <InfoRow label="Property Group" value={visitorData.propertyGroup} />
+          <InfoRow label="Type" value={visitorData.type} />
         </View>
 
         <View style={styles.section}>
-          <InfoRow label="From Date-Time" value={visitorData.fromDateTime} />
-          <InfoRow label="To Date- Time" value={visitorData.toDateTime} />
+          <InfoRow label="From" value={visitorData.fromDateTime} />
+          <InfoRow label="To" value={visitorData.toDateTime} />
         </View>
 
         <View style={styles.section}>
           <InfoRow label="Requested By" value={visitorData.requestedBy} />
           <InfoRow
-            label="Check-In Date & Time"
+            label="Check-In"
             value={visitorData.checkInDateTime}
           />
           <InfoRow
-            label="Check-Out Date & Time"
+            label="Check-Out"
             value={visitorData.checkOutDateTime}
           />
         </View>
 
-        <View style={[styles.section, { borderBottomWidth: 0 }]}>
+        {/* <View style={[styles.section, { borderBottomWidth: 0 }]}>
           <InfoRow label="Property" value={visitorData.property} />
-        </View>
+        </View> */}
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
@@ -197,14 +198,14 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
                 style={styles.cancelButton}
                 onPress={() => setRevokeModalVisible(false)}
               >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>Yes</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.confirmButton}
                 onPress={confirmRevoke}
               >
-                <Text style={styles.confirmButtonText}>Yes</Text>
+                <Text style={styles.confirmButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

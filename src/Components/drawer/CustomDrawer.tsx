@@ -737,12 +737,25 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
   const items = getItemsForRole();
 
+  // Google Ads placeholder component
+  const GoogleAdsPlaceholder = () => (
+    <View style={styles.adsContainer}>
+      <View style={styles.adsPlaceholder}>
+        <Text weight="semiBold" style={styles.adsText}>
+          Google Ads
+        </Text>
+        <Text style={styles.adsSubtext}>Advertisement Space</Text>
+      </View>
+    </View>
+  );
+
   return (
     <DrawerContentScrollView
       {...props}
       style={{ backgroundColor: colors.primary }}
     >
       <View style={styles.container}>
+        {/* Google Ads Placeholder */}
         <View style={styles.header}>
           <TouchableOpacity
             activeOpacity={0.5}
@@ -877,6 +890,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <Text weight="semiBold" text="Logout" style={styles.menuText} />
         </TouchableOpacity>
       </View>
+      <GoogleAdsPlaceholder />
+
     </DrawerContentScrollView>
   );
 }
@@ -887,6 +902,29 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 16,
     backgroundColor: colors.primary,
+  },
+  adsContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 8,
+  },
+  adsPlaceholder: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderStyle: 'dashed',
+  },
+  adsText: {
+    color: colors.white,
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  adsSubtext: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 12,
   },
 
   menuItem: {

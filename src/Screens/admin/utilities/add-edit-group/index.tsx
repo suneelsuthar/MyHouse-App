@@ -121,7 +121,7 @@ export const AddEditGroup: React.FC = () => {
             onChangeSelected={(values) =>
               handleInputChange("selectedProperties", values)
             }
-            placeholder="Search properties"
+            placeholder="Search & Select"
             containerStyle={styles.dropdownContainer}
           />
           <View style={styles.selectedProperties}>

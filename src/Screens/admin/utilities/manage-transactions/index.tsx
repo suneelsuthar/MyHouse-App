@@ -45,7 +45,7 @@ const transactionData = [
     id: "1",
     date: "20 Feb , 2025",
     amount: "₦ 15,00,000",
-    type: "Utility Bill Payment",
+    type: "Electric",
     status: "Active",
     token: "T0001",
     units: "250Kwh",
@@ -54,7 +54,7 @@ const transactionData = [
     id: "2",
     date: "20 Feb , 2025",
     amount: "₦ 15,00,000",
-    type: "Utility Bill Payment",
+    type: "Electric",
     status: "Active",
     token: "T0001",
     units: "250Kwh",
@@ -63,7 +63,7 @@ const transactionData = [
     id: "3",
     date: "20 Feb , 2025",
     amount: "₦ 15,00,000",
-    type: "Utility Bill Payment",
+    type: "Electric",
     status: "Active",
     token: "T0001",
     units: "250Kwh",
@@ -72,7 +72,7 @@ const transactionData = [
     id: "4",
     date: "20 Feb , 2025",
     amount: "₦ 15,00,000",
-    type: "Utility Bill Payment",
+    type: "Electric",
     status: "Active",
     token: "T0001",
     units: "250Kwh",
@@ -81,7 +81,7 @@ const transactionData = [
     id: "5",
     date: "20 Feb , 2025",
     amount: "₦ 15,00,000",
-    type: "Utility Bill Payment",
+    type: "Electric",
     status: "Active",
     token: "T0001",
     units: "250Kwh",
@@ -89,7 +89,10 @@ const transactionData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<AdminStackParamList, "AdminManageTransactions"> {}
+  extends NativeStackScreenProps<
+    AdminStackParamList,
+    "AdminManageTransactions"
+  > {}
 export const AdminManageTransactions = ({
   route,
 }: AdminPropertyManagementProps) => {
@@ -187,12 +190,19 @@ export const AdminManageTransactions = ({
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <View style={styles._card}>
+          <TouchableOpacity
+            style={styles._card}
+            activeOpacity={0.5}
+            onLongPress={() => {
+              setDropdownVisible(null);
+              setIsModalVisible(true);
+            }}
+          >
             <WithLocalSvg asset={Images.thistory} />
             <View style={styles._cardinfo}>
               <Text text="20 Feb , 2025" style={styles._date} />
               <Text weight="semiBold" text="15,00,000" style={styles._price} />
-              <Text text="Utility Bill Payment" style={styles._type} />
+              <Text text={item.type} style={styles._type} />
             </View>
             <TouchableOpacity
               style={styles.menuButton}
@@ -233,7 +243,7 @@ export const AdminManageTransactions = ({
                 </TouchableOpacity>
               </View>
             )}
-          </View>
+          </TouchableOpacity>
         )}
       />
       <Modal
@@ -302,11 +312,18 @@ export const AdminManageTransactions = ({
               <Text text="MTR34556" style={styles._rowvalue} />
             </View>
 
-            <Button
-              text="Download Receipt"
-              preset="reversed"
-              style={styles.copyButton}
-            />
+            <View style={[styles._row, { gap: 10 }]}>
+              <Button
+                text="Download"
+                preset="reversed"
+                style={styles.copyButton}
+              />
+              <Button
+                text="Share"
+                preset="reversed"
+                style={styles.copyButton}
+              />
+            </View>
           </View>
         </View>
       </Modal>
@@ -558,9 +575,10 @@ const styles = StyleSheet.create({
     height: adjustSize(47),
   },
   copyButton: {
-    width: "90%",
-    margin: adjustSize(20),
+    // width: "90%",
+    marginVertical: adjustSize(20),
     alignSelf: "center",
+    flex: 1,
   },
   _card: {
     borderBottomWidth: 0.6,

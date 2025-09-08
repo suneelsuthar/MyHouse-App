@@ -52,6 +52,8 @@ export const RentalCard: React.FC<RentalCardProps> = ({
       ? ACTIONS_MANAGE
       : ACTIONS_GROUP;
 
+      console.log("===sdf==========>", type);
+
   return (
     <View style={{ position: "relative" }}>
       <View style={styles.container}>

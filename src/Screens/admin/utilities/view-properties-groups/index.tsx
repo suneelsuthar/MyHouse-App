@@ -106,6 +106,14 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
         </View>
 
         {/* Properties List */}
+
+        {/* navigation.navigate("Admin", {
+            screen: "Properties",
+            params: {
+              screen: "PropertyDetails",
+              params: { propertyId: property.propertyId },
+            },
+          }); */}
         <FlatList
           data={rentalProperties}
           keyExtractor={(item) => item.id}
@@ -116,6 +124,9 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
               property={item}
               type={"group"}
               onAction={(action, property) => {
+                {
+                  console.log("===========+>", action);
+                }
                 if (action === "View Details" || action === "View") {
                   (navigation as any).navigate(
                     "PropertyDetails" as never,

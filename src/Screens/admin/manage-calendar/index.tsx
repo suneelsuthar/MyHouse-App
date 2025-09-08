@@ -205,6 +205,7 @@ export function AdminManageCalendar({
                 style={[
                   styles.segmentText,
                   mode === "single" && styles.segmentTextActive,
+                  {},
                 ]}
               >
                 Select Single Date

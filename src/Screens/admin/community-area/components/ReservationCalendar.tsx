@@ -45,7 +45,15 @@ export default function ReservationCalendar({
   });
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [blockedKeys, setBlockedKeys] = useState<Set<string>>(new Set());
+  const [blockedKeys, setBlockedKeys] = useState<Set<string>>(new Set([
+    // Add some sample unavailable dates (format: 'YYYY-MM-DD')
+    '2025-09-15',
+    '2025-09-16',
+    '2025-09-22',
+    '2025-09-23',
+    '2025-09-29',
+    '2025-09-30',
+  ]));
 
   // Month title
   const monthTitle = useMemo(
@@ -86,6 +94,12 @@ export default function ReservationCalendar({
 
   // Toggle day selection
   const toggleDay = (d: Date) => {
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if (blockedKeys.has(key)) {
+      // Don't allow selection of unavailable dates
+      return;
+    }
+    
     if (!startDate || (startDate && endDate)) {
       setStartDate(d);
       setEndDate(null);
@@ -260,13 +274,17 @@ export default function ReservationCalendar({
                 style={[styles.dayCell]}
               >
                 <View
-                  style={[sel && styles.daySelected, isEdge && styles.dayEdge]}
+                  style={[
+                    sel && styles.daySelected, 
+                    isEdge && styles.dayEdge,
+                    isBlocked && styles.unavailableDateContainer
+                  ]}
                 >
                   <Text
                     style={[
                       styles.dayText,
                       sel && styles.dayTextSelected,
-                      !sel && isBlocked && styles.dayTextBlocked,
+                      isBlocked && styles.unavailableDateText,
                       !sel && !isBlocked && isToday && styles.dayTextAvailable,
                     ]}
                   >
@@ -338,8 +356,56 @@ export default function ReservationCalendar({
   );
 }
 
-// Styles remain the same as your original component
+// Styles for the component
 const styles = StyleSheet.create({
+  availabilityContainer: {
+    backgroundColor: colors.fill,
+    borderRadius: adjustSize(10),
+    padding: adjustSize(12),
+    marginBottom: adjustSize(15),
+  },
+  sectionTitle: {
+    color: colors.primary,
+    fontSize: adjustSize(13),
+    fontFamily: typography.fonts.poppins.semiBold,
+    marginBottom: adjustSize(10),
+  },
+  availabilityGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  availabilityRow: {
+    width: '48%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: adjustSize(8),
+  },
+  availabilityDay: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  availabilityTime: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  unavailableDay: {
+    color: colors.error,
+  },
+  unavailableTime: {
+    color: colors.error,
+    textDecorationLine: 'line-through',
+  },
+  unavailableDateContainer: {
+    borderRadius: adjustSize(4),
+  },
+  unavailableDateText: {
+    color: colors.error,
+    textDecorationLine: 'line-through',
+    textDecorationColor: colors.error,
+  },
   container: {
     flex: 1,
     paddingHorizontal: adjustSize(10),

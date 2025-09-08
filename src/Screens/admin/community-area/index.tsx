@@ -245,10 +245,16 @@ export function CommunityArea({ route }: CommunityAreaProps) {
               </TouchableOpacity>
             )
           ) : (
+
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles._addbtn}
-              onPress={() => (navigation as any).navigate("AdminAddNewAmenity")}
+              onPress={() =>
+                activeTab === "Amenities"
+                  ? (navigation as any).navigate("AdminAddNewAmenity")
+                  : (navigation as any).navigate("AdminAmenityMakeReservation", {
+                      data: data,
+                    })}
             >
               <WithLocalSvg asset={Images.addprop} />
             </TouchableOpacity>
