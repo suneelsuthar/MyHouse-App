@@ -13,8 +13,6 @@ import { StyleSheet } from "react-native";
 import {
   TenantRentPayment,
   TenantAssignedProp,
-  TenantHome,
-  Chat,
   // Agent screens
   AgentDashboard,
   AgentSettings,
@@ -22,6 +20,9 @@ import {
   // Facility Manager screens
   FacilityManager,
   FacilityManagerDashboard,
+  AddTeamMember,
+  SelectPropGroup,
+  ViewTeam,
   // Landlord screens
   LandlordDashboard,
   LandlordMyProperties,
@@ -98,7 +99,16 @@ import {
   EditProfile,
   ProfileSettings,
   SecurityIncidentReports,
+  AgentAssignedProp,
+  AgentHome,
 } from "../Screens";
+
+import { AgentDrawerParamList } from "./types/agent";
+import {
+  ViewAssignedDetails,
+  AssignedAgent,
+  RenegotiateCommission,
+} from "../Screens/agent/assigned-properties";
 
 // Import property management screens from their respective files
 import AdminPropertyServices from "../Screens/admin/property-management/services";
@@ -109,21 +119,20 @@ import InspectionDetails from "../Screens/admin/property-management/inspection-d
 
 import {
   TenantStackParamList,
-  AgentStackParamList,
   FacilityManagerStackParamList,
   LandlordStackParamList,
   SubLandlordStackParamList,
   SecurityStackParamList,
   AdminStackParamList,
+  AgentStackParamList,
 } from "../utils/interfaces";
+import { CustomDrawerContent } from "../Components/drawer/CustomDrawer";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../assets/Images";
 import { View } from "react-native";
-import { CustomDrawerContent } from "../Components/drawer/CustomDrawer";
 
 // Create stack navigators for each role
 const TenantStack = createNativeStackNavigator<TenantStackParamList>();
-const AgentStack = createNativeStackNavigator<AgentStackParamList>();
 const FacilityManagerStack =
   createNativeStackNavigator<FacilityManagerStackParamList>();
 const LandlordStack = createNativeStackNavigator<LandlordStackParamList>();
@@ -145,26 +154,211 @@ import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transac
 import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/VendingHistory";
 import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
 import { TenantUtilitiesUpdateProfile } from "../Screens/tenant/utilities";
+import { Chat } from "../Screens/global/chat";
+import { TenantHome } from "../Screens/tenant/home";
+
+// Import agent screens
+
+// Create stack navigators with proper typing
+const AgentStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentHomeStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentPropertiesStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentClientsStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentLeadsStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentReportsStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentBookingStack = createNativeStackNavigator<AgentStackParamList>();
+const AgentHomeStackNavigator = () => {
+  return (
+    <AgentHomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentHomeStack.Screen name="AgentHome" component={AgentTabs} />
+      {/* <AgentHomeStack.Screen
+        name="PropertyDetails"
+        component={PropertyDetails as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="AdminTenantDetails"
+        component={AdminTenantDetails as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="AdminVisitorDetails"
+        component={AdminVisitorDetails as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="AdminGenerateVisitorRequest"
+        component={AdminGenerateVisitorRequest as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="Profile"
+        component={Profile as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="EditProfile"
+        component={EditProfile as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="FacilityManagement"
+        component={FacilityManagement as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="CommunityArea"
+        component={CommunityArea as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="Emergency"
+        component={Emergency as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="FinancialReports"
+        component={FinancialReports as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="SendMoney"
+        component={SendMoney as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="AddBeneficiary"
+        component={AddBeneficiary as React.ComponentType<any>}
+      />
+      <AgentHomeStack.Screen
+        name="Commuication"
+        component={Commuication as React.ComponentType<any>}
+      /> */}
+    </AgentHomeStack.Navigator>
+  );
+};
+
+const AgentPropertiesStackNavigator = () => {
+  return (
+    <AgentPropertiesStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentPropertiesStack.Screen
+        name="Profile"
+        component={Profile as React.ComponentType<any>}
+      />
+      <AgentPropertiesStack.Screen
+        name="EditProfile"
+        component={EditProfile as React.ComponentType<any>}
+      />
+    </AgentPropertiesStack.Navigator>
+  );
+};
+
+const AgentClientsStackNavigator = () => {
+  return (
+    <AgentClientsStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentClientsStack.Screen name="Profile" component={Profile} />
+    </AgentClientsStack.Navigator>
+  );
+};
+
+const AgentLeadsStackNavigator = () => {
+  return (
+    <AgentLeadsStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentLeadsStack.Screen
+        name="AdminGenerateVisitorRequest"
+        component={AdminGenerateVisitorRequest as React.ComponentType<any>}
+      />
+    </AgentLeadsStack.Navigator>
+  );
+};
+
+const AgentReportsStackNavigator = () => {
+  return (
+    <AgentReportsStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentReportsStack.Screen
+        name="AdminVisitorDetails"
+        component={AdminVisitorDetails as React.ComponentType<any>}
+      />
+      <AgentReportsStack.Screen
+        name="AdminGenerateVisitorRequest"
+        component={AdminGenerateVisitorRequest as React.ComponentType<any>}
+      />
+    </AgentReportsStack.Navigator>
+  );
+};
 
 // Agent Stack Navigator
-const AgentStackNavigator = () => (
-  <AgentStack.Navigator screenOptions={{ headerShown: false }}>
-    <AgentStack.Screen name="AgentDashboard" component={AgentDashboard} />
-    <AgentStack.Screen name="AgentSettings" component={AgentSettings} />
-  </AgentStack.Navigator>
-);
+const AgentStackNavigator = () => {
+  return (
+    <AgentStack.Navigator screenOptions={{ headerShown: false }}>
+      <AgentStack.Screen name="Agent" component={AgentTabs} />
+      <AgentStack.Screen
+        name="AgentSettings"
+        component={AgentSettings as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="PropertyDetails"
+        component={PropertyDetails as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="AdminTenantDetails"
+        component={AdminTenantDetails as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="AdminVisitorDetails"
+        component={AdminVisitorDetails as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="AdminGenerateVisitorRequest"
+        component={AdminGenerateVisitorRequest as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="Profile"
+        component={Profile as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="EditProfile"
+        component={EditProfile as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="FacilityManagement"
+        component={FacilityManagement as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="CommunityArea"
+        component={CommunityArea as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="Emergency"
+        component={Emergency as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="FinancialReports"
+        component={FinancialReports as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="SendMoney"
+        component={SendMoney as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="AddBeneficiary"
+        component={AddBeneficiary as React.ComponentType<any>}
+      />
+      <AgentStack.Screen
+        name="Commuication"
+        component={Commuication as React.ComponentType<any>}
+      />
+    </AgentStack.Navigator>
+  );
+};
+
+// Create the stack navigator with proper typing
 
 // Facility Manager Stack Navigator
 const FacilityManagerStackNavigator = () => {
   return (
     <FacilityManagerStack.Navigator screenOptions={{ headerShown: false }}>
       <FacilityManagerStack.Screen
-        name="FacilityManager"
-        component={FacilityManager}
-      />
-      <FacilityManagerStack.Screen
         name="FacilityManagerDashboard"
         component={FacilityManagerDashboard}
+      />
+      <FacilityManagerStack.Screen name="ViewTeamMember" component={ViewTeam} />
+      <FacilityManagerStack.Screen
+        name="AddTeamMember"
+        component={AddTeamMember}
+      />
+      <FacilityManagerStack.Screen
+        name="SelectPropertyGroup"
+        component={SelectPropGroup}
       />
     </FacilityManagerStack.Navigator>
   );
@@ -475,7 +669,7 @@ export type TenantDrawerParamList = {
 };
 
 const HomeStack = createNativeStackNavigator<TenantStackParamList>();
-const Drawer = createDrawerNavigator<TenantDrawerParamList>();
+const Drawer = createDrawerNavigator<AgentDrawerParamList>();
 
 // Home Stack Navigator for Tenant
 const TenantHomeStack = () => (
@@ -545,6 +739,19 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="Commuication" component={Commuication} />
   </HomeStack.Navigator>
 );
+
+// const AgentBookingStackNavigator = () => (
+//   <AgentBookingStack.Navigator screenOptions={{ headerShown: false }}>
+//     <AgentBookingStack.Screen
+//       name="AgentBooking"
+//       component={AdminBookingStack}
+//     />
+//     <AgentBookingStack.Screen
+//       name="AgentBookingDetails"
+//       component={AgentBookingDetails}
+//     />
+//   </AgentBookingStack.Navigator>
+// );
 
 // Tenant Tab Navigator (internal tabs)
 const TenantTabs = () => (
@@ -641,6 +848,12 @@ export const AgentTabNavigator = () => (
     )}
   >
     <Drawer.Screen name="Agent" component={AgentTabs} />
+    <Drawer.Screen name="ViewAssignedDetails" component={ViewAssignedDetails} />
+    <Drawer.Screen name="AssignedAgent" component={AssignedAgent} />
+    <Drawer.Screen
+      name="RenegotiateCommission"
+      component={RenegotiateCommission}
+    />
   </Drawer.Navigator>
 );
 
@@ -703,46 +916,127 @@ export const AdminTabNavigator = () => (
   </Drawer.Navigator>
 );
 
+// Import agent screens
+
 // Agent Tab Navigator (internal tabs)
 const AgentTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName: keyof typeof Ionicons.glyphMap;
-
-        switch (route.name) {
-          case "Dashboard":
-            iconName = focused ? "grid" : "grid-outline";
-            break;
-          case "Properties":
-            iconName = focused ? "business" : "business-outline";
-            break;
-          case "Clients":
-            iconName = focused ? "people" : "people-outline";
-            break;
-          case "Leads":
-            iconName = focused ? "trending-up" : "trending-up-outline";
-            break;
-          case "Reports":
-            iconName = focused ? "bar-chart" : "bar-chart-outline";
-            break;
-          default:
-            iconName = "grid-outline";
-        }
-
-        return <Ionicons name={iconName} size={size} color={color} />;
+      tabBarStyle: {
+        backgroundColor: colors.primary,
       },
-      tabBarActiveTintColor: colors.primary,
-      tabBarInactiveTintColor: colors.textDim,
+      tabBarLabelStyle: {
+        fontFamily: typography.fonts.poppins.medium,
+      },
+      tabBarIcon: ({ focused, color, size }) => {
+        switch (route.name) {
+          case "Home":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.homeIocn} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Booking":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.booknow} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+
+          case "Properties":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.manageprop} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Wallet":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.wallet} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Chat":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.chat} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          default:
+            return null;
+        }
+      },
+      tabBarActiveTintColor: colors.white,
+      tabBarInactiveTintColor: colors.white,
       headerShown: false,
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Dashboard" component={AgentStackNavigator} />
-    <Tab.Screen name="Properties" component={AgentStackNavigator} />
-    <Tab.Screen name="Clients" component={AgentStackNavigator} />
-    <Tab.Screen name="Leads" component={AgentStackNavigator} />
-    <Tab.Screen name="Reports" component={AgentStackNavigator} />
+    <Tab.Screen
+      name="Home"
+      component={AgentHome}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View>
+            <WithLocalSvg asset={Images.homeIocn} />
+            {focused && <View style={styles._indicator} />}
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Booking"
+      component={AdminBookingStackNavigator}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View>
+            <WithLocalSvg asset={Images.booknow} />
+            {focused && <View style={styles._indicator} />}
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Properties"
+      component={AgentAssignedProp}
+      options={{
+        tabBarLabel: "My Properties",
+        tabBarIcon: ({ focused }) => (
+          <View>
+            <WithLocalSvg asset={Images.manageprop} />
+            {focused && <View style={styles._indicator} />}
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Wallet"
+      component={AdminWalletStackNavigator}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View>
+            <WithLocalSvg asset={Images.wallet} />
+            {focused && <View style={styles._indicator} />}
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Chat"
+      component={Chat}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View>
+            <WithLocalSvg asset={Images.chat} />
+            {focused && <View style={styles._indicator} />}
+          </View>
+        ),
+      }}
+    />
   </Tab.Navigator>
 );
 
@@ -750,42 +1044,103 @@ const AgentTabs = () => (
 const FacilityManagerTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName: keyof typeof Ionicons.glyphMap;
-
-        switch (route.name) {
-          case "Dashboard":
-            iconName = focused ? "grid" : "grid-outline";
-            break;
-          case "Maintenance":
-            iconName = focused ? "build" : "build-outline";
-            break;
-          case "Work Orders":
-            iconName = focused ? "clipboard" : "clipboard-outline";
-            break;
-          case "Inventory":
-            iconName = focused ? "cube" : "cube-outline";
-            break;
-          case "Reports":
-            iconName = focused ? "bar-chart" : "bar-chart-outline";
-            break;
-          default:
-            iconName = "grid-outline";
-        }
-
-        return <Ionicons name={iconName} size={size} color={color} />;
+      tabBarStyle: {
+        backgroundColor: "#292766",
       },
-      tabBarActiveTintColor: colors.primary,
-      tabBarInactiveTintColor: colors.textDim,
+      tabBarLabelStyle: {
+        fontFamily: typography.fonts.poppins.medium,
+      },
+      tabBarIcon: ({ focused, color, size }) => {
+        switch (route.name) {
+          case "Home":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.homeIocn} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+
+          case "Properties":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.manageprop} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+            ``;
+          case "FacilityManagement":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.facilitymanag} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          case "Chat":
+            return (
+              <View>
+                <WithLocalSvg asset={Images.chat} />
+                {focused && <View style={styles._indicator} />}
+              </View>
+            );
+          default:
+            return null;
+        }
+      },
+      tabBarActiveTintColor: colors.white,
+      tabBarInactiveTintColor: colors.white,
       headerShown: false,
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Dashboard" component={FacilityManagerStackNavigator} />
-    <Tab.Screen name="Maintenance" component={FacilityManagerStackNavigator} />
-    <Tab.Screen name="Work Orders" component={FacilityManagerStackNavigator} />
-    <Tab.Screen name="Inventory" component={FacilityManagerStackNavigator} />
-    <Tab.Screen name="Reports" component={FacilityManagerStackNavigator} />
+    <Tab.Screen
+      name="Home"
+      component={FacilityManagerStackNavigator}
+      options={({ route }) => {
+        const routeName =
+          getFocusedRouteNameFromRoute(route) ?? "FacilityManagerDashboard";
+        const baseTabBarStyle = {
+          backgroundColor: "#292766",
+        } as const;
+
+        return { tabBarStyle: baseTabBarStyle } as const;
+      }}
+    />
+
+    <Tab.Screen
+      name="Properties"
+      component={AdminPropertiesStackNavigator}
+      options={({ route }) => {
+        const routeName =
+          getFocusedRouteNameFromRoute(route) ?? "AdminPropertyManagement";
+        // Base tab bar style for Admin tabs
+        const baseTabBarStyle = {
+          backgroundColor: "#292766",
+        } as const;
+        // Hide tab bar on Add Property and other full-screen property flows
+        if (
+          routeName === "AdminAddProperty" ||
+          routeName === "AdminManageCalendar" ||
+          routeName === "AdminAssignProperties" ||
+          routeName === "AdminGenerateWorkRequests" ||
+          routeName === "AdminTenantDetails" ||
+          routeName === "AdminCreateVisitorRequests"
+        ) {
+          return {
+            title: "Assigned Properties",
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          };
+        }
+        return {
+          title: "Assigned Properties",
+          tabBarStyle: baseTabBarStyle,
+        };
+      }}
+    />
+    <Tab.Screen
+      name="FacilityManagement"
+      component={AdminWalletStackNavigator}
+    />
+    <Tab.Screen name="Chat" component={Chat} />
   </Tab.Navigator>
 );
 

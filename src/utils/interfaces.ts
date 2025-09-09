@@ -177,7 +177,10 @@ export type AdminStackParamList = {
 
 // Screens specific to Agent
 export type AgentStackParamList = {
+  // Main screens
   Agent: undefined;
+  AgentTabs: undefined;
+  AgentHome: undefined;
   AgentDashboard: undefined;
   AgentPropertyListings: undefined;
   AgentClientManagement: undefined;
@@ -187,15 +190,37 @@ export type AgentStackParamList = {
   AgentMarketingTools: undefined;
   AgentDocumentManagement: undefined;
   AgentSettings: undefined;
+
+  // Shared property screens
+  PropertyDetails: { id: string };
+  AdminTenantDetails: { id: string };
+  AdminVisitorDetails: { id: string };
+  AdminGenerateVisitorRequest: { id?: string };
+
+  // Profile screens
+  Profile: { userId: string };
+  EditProfile: { userId: string };
+
+  // Other shared screens
+  FacilityManagement: { status: "work_requests" | "work_orders" | "completed" };
+  CommunityArea: { tab: "amenities" | "reservations" };
+  Emergency: undefined;
+  FinancialReports: undefined;
+  SendMoney: undefined;
+  AddBeneficiary: undefined;
+  Commuication: undefined;
+
+  // Add other shared screens as needed
 };
 
 // Screens specific to Facility Manager
 export type FacilityManagerStackParamList = {
   FacilityManager: undefined;
   FacilityManagerDashboard: undefined;
-  FacilityWorkOrders: undefined;
-  FacilityVendorManagement: undefined;
-  FacilityInventoryManagement: undefined;
+  TeamList: undefined;
+  SelectPropertyGroup: undefined;
+  ViewTeamMember: undefined;
+  AddTeamMember:undefined;
   FacilityReports: undefined;
   FacilityAssetManagement: undefined;
   FacilityPreventiveMaintenance: undefined;

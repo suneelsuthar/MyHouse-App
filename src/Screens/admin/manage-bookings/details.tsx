@@ -166,6 +166,7 @@ export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
             <Text style={styles.kvKey}>Agent Code:</Text>
             <Text style={styles.kvVal}>123456</Text>
           </View>
+          <View style={styles.divider} />
 
           <Text weight="semiBold" style={styles.sectionTitle}>
             Guest Details

@@ -35,7 +35,7 @@ import {
   HelpScreen,
   PropertyFiltersScreen,
   Message,
-  MessageHistory
+  MessageHistory,
 } from "../Screens";
 
 // Create stack navigators
@@ -61,6 +61,7 @@ const AppNavigator = () => {
   }
 
   const getNavigator = () => {
+    console.log("======userRole==++>", userRole);
     switch (userRole) {
       case "admin":
         return AdminTabNavigator;
@@ -120,8 +121,6 @@ const AppNavigator = () => {
       <Stack.Screen name="TermsConditions" component={TermsConditionsScreen} />
       <Stack.Screen name="Message" component={Message} />
       <Stack.Screen name="MessageHistory" component={MessageHistory} />
-
-      
     </Stack.Navigator>
   );
 };

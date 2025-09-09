@@ -37,6 +37,9 @@ import { AgentLeadManagement } from "./agent/lead-management";
 import { AgentCommissionReports } from "./agent/commission-reports";
 import { AgentMarketingTools } from "./agent/marketing-tools";
 import { AgentDocumentManagement } from "./agent/document-management";
+import { AgentAssignedProp } from "./agent/assigned-properties";
+import { AgentHome } from "./agent/home";
+
 import { AgentSettings } from "./agent/settings";
 import { FacilityManager } from "./facility-manager";
 import { FacilityManagerDashboard } from "./facility-manager/dashboard";
@@ -48,6 +51,10 @@ import { FacilityReports } from "./facility-manager/facility-reports";
 import { FacilityAssetManagement } from "./facility-manager/asset-management";
 import { FacilityPreventiveMaintenance } from "./facility-manager/preventive-maintenance";
 import { FacilityManagerSettings } from "./facility-manager/settings";
+import { AddTeamMember } from "./facility-manager/team/add-team";
+import { SelectPropGroup } from "./facility-manager/team/select-prop-group";
+import { ViewTeam } from "./facility-manager/team/view-team";
+
 import { Landlord } from "./landlord";
 import { LandlordDashboard } from "./landlord/dashboard";
 import { LandlordMyProperties } from "./landlord/my-properties";
@@ -166,6 +173,7 @@ export {
   TenantHome,
   TenantAssignedProp,
   Agent,
+  AgentHome,
   AgentDashboard,
   AgentPropertyListings,
   AgentClientManagement,
@@ -175,7 +183,11 @@ export {
   AgentMarketingTools,
   AgentDocumentManagement,
   AgentSettings,
+  AgentAssignedProp,
   FacilityManager,
+  AddTeamMember,
+  SelectPropGroup,
+  ViewTeam,
   FacilityManagerDashboard,
   FacilityMaintenanceRequests,
   FacilityWorkOrders,

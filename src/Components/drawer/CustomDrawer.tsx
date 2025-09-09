@@ -724,12 +724,422 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
   ];
 
+  const agentItems = [
+    {
+      id: 0,
+      title: "Dashboard",
+      type: "item",
+      icon: Images.dashborad,
+      onPress: () =>
+        closeMenusAndNavigate("Agent", {
+          screen: "Home",
+          params: { screen: "AgentHome" },
+        }),
+    },
+    {
+      id: 1,
+      title: "View Assigned Details",
+      type: "item",
+      icon: Images.propreq,
+      onPress: () => closeMenusAndNavigate("ViewAssignedDetails"),
+    },
+    {
+      id: 2,
+      title: "Assigned Agent",
+      type: "item",
+      icon: Images.user,
+      onPress: () => closeMenusAndNavigate("AssignedAgent"),
+    },
+    {
+      id: 3,
+      title: "Renegotiate Commission",
+      type: "item",
+      icon: Images.managetrans,
+      onPress: () => closeMenusAndNavigate("RenegotiateCommission"),
+    },
+  ];
+
+  const facilityManagerItems = [
+    {
+      id: 0,
+      title: "Dashboard",
+      type: "item",
+      icon: Images.dashborad,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminDashboard" },
+        }),
+    },
+    {
+      id: 1,
+      title: "Assigned Properties",
+      type: "dropdown",
+      icon: Images.manageprop,
+      menueItems: [
+        {
+          id: 0,
+          title: "Add Property",
+          // onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { screen: "AdminPropertyManagement" },
+            }),
+        },
+        {
+          id: 1,
+          title: "Property List",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyManagement",
+                params: { propertyType: "managed" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Property Groups",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminPropertyRequests",
+              },
+            }),
+        },
+      ],
+    },
+
+    {
+      id: 2,
+      title: "Facility Management",
+      type: "dropdown",
+      icon: Images.facilitymanag,
+      menueItems: [
+        {
+          id: 0,
+          title: "Work Requests",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "FacilityManagement",
+                params: { status: "work_requests" },
+              },
+            }),
+        },
+        {
+          id: 1,
+          title: "Work Orders",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "FacilityManagement",
+                params: { status: "work_orders" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Completed",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "FacilityManagement",
+                params: { status: "completed" },
+              },
+            }),
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Team",
+      type: "dropdown",
+      icon: Images.managebooking,
+      menueItems: [
+        {
+          id: 0,
+          title: "View Team",
+          onPress: () => closeMenusAndNavigate("ViewTeamMember"),
+        },
+
+        {
+          id: 1,
+          title: "Add Team Member",
+          onPress: () => closeMenusAndNavigate("AddTeamMember"),
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: "Tenants",
+      type: "dropdown",
+      icon: Images.tenants,
+      menueItems: [
+        {
+          id: 0,
+          title: "Tenant List",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "AdminTenants" },
+            }),
+        },
+        {
+          id: 1,
+          title: "Requests",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "AdminTenants" },
+            }),
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: "Visitor Management",
+      type: "item",
+      icon: Images.visitormanagement,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "VisitorRequests" },
+        }),
+    },
+
+    {
+      id: 6,
+      title: "Community Area",
+      type: "dropdown",
+      icon: Images.community,
+      nestedItems: [
+        {
+          id: 0,
+          title: "Amenities",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "CommunityArea",
+                params: { tab: "amenities" },
+              },
+            }),
+        },
+        {
+          id: 1,
+          title: "Reservations",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "CommunityArea",
+                params: { tab: "reservations" },
+              },
+            }),
+        },
+      ],
+    },
+
+    {
+      id: 7,
+      title: "Communications",
+      type: "dropdown",
+      icon: Images.communication,
+      nestedItems: [
+        {
+          id: 0,
+          title: "New Message",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "MessageHistory" },
+            }),
+        },
+        {
+          id: 1,
+          title: "Message History",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "MessageHistory" },
+            }),
+        },
+      ],
+    },
+
+    {
+      id: 8,
+      title: "Wallet",
+      type: "item",
+      icon: Images.wallet,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Wallet",
+        }),
+    },
+
+    {
+      id: 9,
+      title: "Payments",
+      type: "item",
+      icon: Images.emergency,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "Emergency" },
+        }),
+    },
+
+    {
+      id: 10,
+      title: "Emergency",
+      type: "item",
+      icon: Images.emergency,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "Emergency" },
+        }),
+    },
+    {
+      id: 11,
+      title: "Chat",
+      type: "item",
+      icon: Images.chat,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Chat",
+        }),
+    },
+  ];
+
+  const facilityManagerUtilitiesItems = [
+    {
+      id: 0,
+      title: "Summary",
+      type: "item",
+      icon: Images.simdata,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminSimDataManagement" },
+        }),
+    },
+    {
+      id: 1,
+      title: "Manage Meters",
+      type: "item",
+      icon: Images.meters,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageMeters" },
+        }),
+    },
+    {
+      id: 2,
+      title: "Manage Charges",
+      type: "item",
+      icon: Images.managetrans,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageTransactions" },
+        }),
+    },
+
+    {
+      id: 3,
+      title: "Manage Transactions",
+      type: "item",
+      icon: Images.managetrans,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageTransactions" },
+        }),
+    },
+
+    {
+      id: 4,
+      title: "Vending History",
+      type: "item",
+      icon: Images.managehistory,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageVendingHistory" },
+        }),
+    },
+    {
+      id: 5,
+      title: "Manage Issues",
+      type: "item",
+      icon: Images.managehistory,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminManageVendingHistory" },
+        }),
+    },
+    {
+      id: 6,
+      title: "Analysis",
+      type: "dropdown",
+      icon: Images.analysis,
+      menueItems: [
+        {
+          id: 0,
+          title: "Power Consumption",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "Analysis" },
+            }),
+        },
+        {
+          id: 0,
+          title: "Vending History",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: { screen: "Analysis" },
+            }),
+        },
+      ],
+    },
+    {
+      id: 7,
+      title: "Settings",
+      type: "item",
+      icon: Images.settings,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminUtilitiesSettings" },
+        }),
+    },
+  ];
+
   const getItemsForRole = () => {
     switch (user?.role) {
       case "admin":
         return active === 0 ? propertiesItems : utilitesItems;
       case "tenant":
         return tenantItems;
+      case "agent":
+        return agentItems;
+      case "facility_manager":
+        return active === 0
+          ? facilityManagerItems
+          : facilityManagerUtilitiesItems;
       default:
         return []; // Return empty array for unknown roles or if user is not logged in
     }
@@ -782,32 +1192,33 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
         {/* tabs */}
 
-        {user?.role === "admin" && (
-          <View style={styles.tab_row}>
-            <TouchableOpacity
-              onPress={() => setactive(0)}
-              activeOpacity={0.6}
-              style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
-            >
-              <Text
-                weight="medium"
-                text={"Properties"}
-                style={[active === 0 ? styles.active_text : styles.tabtext]}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setactive(1)}
-              activeOpacity={0.6}
-              style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
-            >
-              <Text
-                weight="medium"
-                text="Utilities"
-                style={[active === 1 ? styles.active_text : styles.tabtext]}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
+        {user?.role === "admin" ||
+          (user?.role === "facility_manager" && (
+            <View style={styles.tab_row}>
+              <TouchableOpacity
+                onPress={() => setactive(0)}
+                activeOpacity={0.6}
+                style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
+              >
+                <Text
+                  weight="medium"
+                  text={"Properties"}
+                  style={[active === 0 ? styles.active_text : styles.tabtext]}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setactive(1)}
+                activeOpacity={0.6}
+                style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
+              >
+                <Text
+                  weight="medium"
+                  text="Utilities"
+                  style={[active === 1 ? styles.active_text : styles.tabtext]}
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
 
         {items.map((val, i) => {
           return (
@@ -891,7 +1302,6 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         </TouchableOpacity>
       </View>
       <GoogleAdsPlaceholder />
-
     </DrawerContentScrollView>
   );
 }
@@ -908,14 +1318,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   adsPlaceholder: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 8,
     padding: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    borderStyle: 'dashed',
+    borderColor: "rgba(255, 255, 255, 0.2)",
+    borderStyle: "dashed",
   },
   adsText: {
     color: colors.white,
@@ -923,7 +1333,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   adsSubtext: {
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: "rgba(255, 255, 255, 0.7)",
     fontSize: 12,
   },
 

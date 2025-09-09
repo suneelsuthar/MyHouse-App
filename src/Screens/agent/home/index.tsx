@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -18,10 +18,10 @@ import BookingsChart from "../../../Components/BookingChart";
 
 const width = Dimensions.get("screen").width;
 
-export const FacilityManagerDashboard = () => {
-  const navigation = useNavigation();
+export const AgentHome = () => {
+  const navigation: any = useNavigation();
   const analyticsData = [
-    { label: "Monthly", value: "monthly" },
+    { label: "Last 7 days", value: "last_7_days" },
     { label: "Weekly", value: "weekly" },
     { label: "Daily", value: "daily" },
     { label: "Yearly", value: "yearly" },
@@ -105,7 +105,7 @@ export const FacilityManagerDashboard = () => {
           activeOpacity={0.5}
           onPress={() =>
             (navigation as any)
-              .getParent?.("AdminDrawer")
+              .getParent?.("TenantDrawer")
               ?.dispatch(DrawerActions.openDrawer())
           }
         >
@@ -116,7 +116,7 @@ export const FacilityManagerDashboard = () => {
           <Text weight="semiBold" style={styles.username}>
             Brume Djbah
           </Text>
-          <Text style={styles.role}>Admin</Text>
+          <Text style={styles.role}>Agent</Text>
         </View>
         <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
           <WithLocalSvg asset={Images.notofication} />
@@ -129,31 +129,24 @@ export const FacilityManagerDashboard = () => {
         {/* Quick Actions */}
         <View style={styles.section}>
           <View style={styles.quickActions}>
-            <TouchableOpacity 
-              style={styles._card} 
-              activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminPropertyRequests")}
-            >
-              <WithLocalSvg asset={Images.propreq} />
-              <Text text="Property Requests" style={styles._card_text} />
+            <TouchableOpacity style={styles._card}>
+              <WithLocalSvg asset={Images.upgrade} />
+              <Text text="Upgrade Subscription" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles._card} 
-              activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminManageBookings")}
-            >
-              <WithLocalSvg asset={Images.managebooking} />
-              <Text text="Manage Bookings" style={styles._card_text} />
+            <TouchableOpacity style={styles._card}>
+              <WithLocalSvg asset={Images.boost} />
+              <Text text="Boost Property" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles._card} 
-              activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminManageInspections")}
-            >
-              <WithLocalSvg asset={Images.manageins} />
-              <Text text="Manage Inspections" style={styles._card_text} />
+            <TouchableOpacity style={styles._card}>
+              <WithLocalSvg asset={Images.makepayment} />
+              <Text text="Make Payment" style={styles._card_text} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles._card}>
+              <WithLocalSvg asset={Images.kyc} />
+              <Text text="KYC" style={styles._card_text} />
             </TouchableOpacity>
           </View>
         </View>
@@ -168,7 +161,7 @@ export const FacilityManagerDashboard = () => {
               <DropdownComponent
                 data={analyticsData}
                 label="Select Period"
-                placeholder="Select Period"
+                placeholder="Last 7 days"
                 dropdownStyle={styles.customDropdownStyle}
                 placeholderStyle={styles.customPlaceholderStyle}
                 selectedTextStyle={styles.customSelectedTextStyle}
@@ -180,11 +173,12 @@ export const FacilityManagerDashboard = () => {
 
         <Button
           preset="reversed"
-          text="No. of Properties Listed"
+          text="No. of properties listed"
           style={{
             width: "95%",
             alignSelf: "center",
           }}
+          onPress={() => navigation.navigate("TenantAssignedProp")}
         />
         {/* PROPERTIES CARD */}
         <View style={styles.propertiesSection}>
@@ -271,7 +265,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 10,
+    rowGap: 15,
   },
 
   headerinfo: {
@@ -297,7 +291,7 @@ const styles = StyleSheet.create({
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    width: adjustSize(width / 4),
+    width: "48%",
     flexDirection: "column",
     justifyContent: "space-evenly",
   },
@@ -305,7 +299,6 @@ const styles = StyleSheet.create({
   _card_text: {
     color: colors.white,
     fontSize: adjustSize(14),
-    textAlign: "center",
   },
   _seciton_row: {
     flexDirection: "row",
@@ -315,14 +308,12 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dropdownContainer: {
-    width: adjustSize(120),
+    width: adjustSize(130),
   },
   customDropdownStyle: {
     height: adjustSize(40),
     borderRadius: adjustSize(100),
     backgroundColor: colors.primary,
-    width: adjustSize(125),
-    marginRight: adjustSize(20),
   },
   customPlaceholderStyle: {
     fontSize: adjustSize(12),
