@@ -1002,11 +1002,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Emergency",
       type: "item",
       icon: Images.emergency,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Home",
-          params: { screen: "Emergency" },
-        }),
+      onPress: () => closeMenusAndNavigate("Emergency"),
     },
     {
       id: 11,
