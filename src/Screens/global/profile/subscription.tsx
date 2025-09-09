@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Screen, Text, Button } from "../../../Components";
-import { AppStackScreenProps ,FacilityManagerStackParamList} from "../../../utils/interfaces";
+import {
+  AppStackScreenProps,
+  FacilityManagerStackParamList,
+} from "../../../utils/interfaces";
 import { colors, spacing } from "../../../theme";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface ViewTeamProps extends NativeStackScreenProps<FacilityManagerStackParamList,"ViewTeamMember"> {}
-
-export function ViewTeam(props: ViewTeamProps) {
+export const Subscription: React.FC = () => {
   return (
     <Screen
       preset="auto"
@@ -17,23 +17,12 @@ export function ViewTeam(props: ViewTeamProps) {
     >
       <View style={styles.container}>
         <Text style={styles.title} weight="bold">
-          View Team Member
+          View Subscription
         </Text>
-
-        <View style={styles.content}>
-          <Text style={styles.description}>View team member details.</Text>
-        </View>
-
-        <Button
-          text="Back to Team List"
-          style={styles.backButton}
-          textStyle={styles.backButtonText}
-          onPress={() => props.navigation.goBack()}
-        />
       </View>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   screenContentContainer: {

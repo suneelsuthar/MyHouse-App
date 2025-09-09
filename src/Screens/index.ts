@@ -132,6 +132,7 @@ import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details"
 import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
 import { AdminEditProfile } from "./admin/profile/edit-profile";
 import { AdminProfileSettings } from "./admin/profile/profile-settings";
+
 import { PanicEmergency } from "./admin/emergency/panic";
 import { AdminPropertyRequests } from "./admin/property-requests";
 import { AdminManageInspections } from "./admin/manage-inspections";
@@ -153,7 +154,8 @@ import { Verify } from "./global/profile/verify";
 import { EditProfile } from "./global/profile/edit-profile";
 import { ProfileSettings } from "./global/profile/profile-settings";
 import { MessageHistory } from "./global/message-history";
-
+import { Reviews } from "./global/profile/reviews";
+import { Subscription } from "./global/profile/subscription";
 export {
   Splash,
   Intro,
@@ -293,4 +295,6 @@ export {
   Verify,
   EditProfile,
   ProfileSettings,
+  Reviews,
+  Subscription,
 };

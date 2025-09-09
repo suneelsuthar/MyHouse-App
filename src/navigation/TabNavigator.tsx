@@ -101,6 +101,8 @@ import {
   SecurityIncidentReports,
   AgentAssignedProp,
   AgentHome,
+  Subscription,
+  Reviews,
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -360,6 +362,26 @@ const FacilityManagerStackNavigator = () => {
         name="SelectPropertyGroup"
         component={SelectPropGroup}
       />
+      <FacilityManagerStack.Screen name="Emergency" component={Emergency} />
+      <FacilityManagerStack.Screen
+        name="PanicEmergency"
+        component={PanicEmergency}
+      />
+      <FacilityManagerStack.Screen name="Profile" component={Profile} />
+      <FacilityManagerStack.Screen name="EditProfile" component={EditProfile} />
+      <FacilityManagerStack.Screen
+        name="ProfileSettings"
+        component={ProfileSettings}
+      />
+      <FacilityManagerStack.Screen
+        name="Subscription"
+        component={Subscription}
+      />
+         <FacilityManagerStack.Screen
+        name="Verify"
+        component={Verify}
+      />
+      <FacilityManagerStack.Screen name="Reviews" component={Reviews} />
     </FacilityManagerStack.Navigator>
   );
 };

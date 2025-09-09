@@ -220,11 +220,19 @@ export type FacilityManagerStackParamList = {
   TeamList: undefined;
   SelectPropertyGroup: undefined;
   ViewTeamMember: undefined;
-  AddTeamMember:undefined;
+  AddTeamMember: undefined;
   FacilityReports: undefined;
   FacilityAssetManagement: undefined;
   FacilityPreventiveMaintenance: undefined;
   FacilityManagerSettings: undefined;
+  Emergency: undefined;
+  PanicEmergency: undefined;
+  Profile: undefined;
+  EditProfile: undefined;
+  ProfileSettings: undefined;
+  Subscription: undefined;
+  Reviews: undefined;
+  Verify: undefined;
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<

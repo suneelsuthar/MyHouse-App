@@ -1170,9 +1170,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              closeMenusAndNavigate("Admin", {
+              closeMenusAndNavigate("Profile", {
                 screen: "Home",
-                params: { screen: "AdminProfile" },
               })
             }
           >

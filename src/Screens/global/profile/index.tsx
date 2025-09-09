@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Screen, Text, Header2 } from "../../../Components";
+import { StyleSheet, View, TouchableOpacity, ScrollView } from "react-native";
+import { Screen, Text, Header2, Button } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { useAppSelector } from "../../../store/hooks";
@@ -53,16 +53,42 @@ export const Profile: React.FC = () => {
           <Text style={styles.btnTxt}>Settings </Text>
         </TouchableOpacity>
 
-        {userRole === "tenant" && (
+        {userRole === "facility_manager" && (
           <TouchableOpacity
             style={styles.btn}
             activeOpacity={0.8}
-            onPress={() => (navigation as any).navigate("Verify")}
+            onPress={() => (navigation as any).navigate("Subscription")}
           >
-            <Text style={styles.btnTxt}>Verify </Text>
+            <Text style={styles.btnTxt}>Subscription </Text>
+          </TouchableOpacity>
+        )}
+
+        {userRole === "tenant" ||
+          (userRole === "facility_manager" && (
+            <TouchableOpacity
+              style={styles.btn}
+              activeOpacity={0.8}
+              onPress={() => (navigation as any).navigate("Verify")}
+            >
+              <Text style={styles.btnTxt}>Verify </Text>
+            </TouchableOpacity>
+          ))}
+
+        {userRole === "facility_manager" && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() => (navigation as any).navigate("Reviews")}
+          >
+            <Text style={styles.btnTxt}>Reviews </Text>
           </TouchableOpacity>
         )}
       </View>
+      <Button
+        preset="reversed"
+        text="Upgrade Subscription Plan"
+        style={styles._upgradebtn}
+      />
     </Screen>
   );
 };
@@ -72,11 +98,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.fill,
   },
+  _upgradebtn: {
+    position: "absolute",
+    bottom: 10,
+    width: "95%",
+    alignSelf: "center",
+  },
   box: {
     backgroundColor: colors.white,
     marginHorizontal: adjustSize(10),
     borderRadius: adjustSize(10),
     marginTop: adjustSize(20),
+    // flex: 1,
   },
   line: {
     height: adjustSize(0.5),
