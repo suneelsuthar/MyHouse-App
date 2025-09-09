@@ -1,11 +1,13 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
-import { Text } from "../../../../Components";
+import { Button, Text } from "../../../../Components";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { RootState } from "../../../../store";
+import { useNavigation } from "@react-navigation/native";
 export const MyAccount = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
+  const navigation: any = useNavigation();
   const data = [
     {
       profileURL:
@@ -66,7 +68,6 @@ export const MyAccount = () => {
         </>
       )}
 
-      {console.log(user)}
       {user?.role === "tenant" && (
         <>
           <TouchableOpacity activeOpacity={0.2} style={styles.btn}>
@@ -78,10 +79,22 @@ export const MyAccount = () => {
         </>
       )}
 
+      {user?.role === "facility_manager" && (
+        <Button
+          preset="reversed"
+          text="Upgrade Subscription Plan"
+          style={{ marginVertical: 10 }}
+          onPress={() => navigation.navigate("Subscription")}
+        />
+      )}
+
       <Text style={styles.heading}>Send to</Text>
+
       {data.map((val, index) => {
         return (
-          <TouchableOpacity key={index} activeOpacity={0.3} style={styles.list}>
+          <TouchableOpacity key={index} activeOpacity={0.3} style={styles.list}
+          
+          >
             <Image source={{ uri: val.profileURL }} style={styles.thumbnail} />
             <View>
               <Text style={styles.name}>{val.name}</Text>

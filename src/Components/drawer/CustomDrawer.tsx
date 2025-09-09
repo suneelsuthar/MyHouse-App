@@ -979,10 +979,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Wallet",
       type: "item",
       icon: Images.wallet,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Wallet",
-        }),
+      onPress: () => closeMenusAndNavigate("FinancialReports"),
     },
 
     {

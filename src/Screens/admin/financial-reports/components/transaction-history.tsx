@@ -144,7 +144,11 @@ export const TransactionHistory = () => {
       {data.map((item, index) => {
         const isMenuVisible = visibleMenuIndex === index;
         return (
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedData(item);
+              setVisiable(true);
+            }}
             key={index}
             style={[
               styles.card,
@@ -224,7 +228,7 @@ export const TransactionHistory = () => {
                 </View>
               </>
             )}
-          </View>
+          </TouchableOpacity>
         );
       })}
       <Modal

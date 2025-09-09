@@ -236,6 +236,7 @@ export type FacilityManagerStackParamList = {
   RentPayment: undefined;
   SendMoney: undefined;
   AddBeneficiary: undefined;
+  FinancialReports:undefined
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<
