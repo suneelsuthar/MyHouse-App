@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
   },
   customSelectedTextStyle: {
     fontSize: adjustSize(12),
-    color: colors.grey,
+    color: colors.white,
     fontFamily: typography.fonts.poppins.normal,
   },
   card: {

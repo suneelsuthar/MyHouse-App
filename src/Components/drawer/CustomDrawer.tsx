@@ -924,7 +924,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Amenities",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("FacilityManager", {
               screen: "Home",
               params: {
                 screen: "CommunityArea",
@@ -936,7 +936,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 1,
           title: "Reservations",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("FacilityManager", {
               screen: "Home",
               params: {
                 screen: "CommunityArea",

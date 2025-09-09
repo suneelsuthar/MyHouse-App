@@ -22,7 +22,7 @@ type DayCell = {
 // export function AdminAmenityView({route}: AppStackScreenProps<"AdminAmenityView">) {
 export function AdminAmenityView({ route }: any) {
   const navigation: any = useNavigation();
-  const { user } = useAppSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: any) => state.auth);
   const data: any = route?.params?.data;
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
@@ -261,7 +261,9 @@ export function AdminAmenityView({ route }: any) {
               styles.addMoneyBtn,
               {
                 backgroundColor:
-                  user?.role !== "tenant" ? colors.fill : colors.primary,
+                  user?.role !== "tenant" || user?.role !== "facility_manager"
+                    ? colors.primary
+                    : colors.fill,
               },
             ]}
             onPress={() =>
@@ -274,7 +276,9 @@ export function AdminAmenityView({ route }: any) {
                 styles.addMoneyBtnText,
                 {
                   color:
-                    user?.role !== "tenant" ? colors.primary : colors.white,
+                    user?.role !== "tenant" || user?.role !== "facility_manager"
+                      ? colors.white
+                      : colors.primary,
                 },
               ]}
             >
@@ -282,19 +286,20 @@ export function AdminAmenityView({ route }: any) {
             </Text>
           </TouchableOpacity>
 
-          {user?.role !== "tenant" && (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.sendMoneyBtn}
-              onPress={() =>
-                (navigation as any).navigate("AdminAmenityManageCalendar")
-              }
-            >
-              <Text weight="semiBold" style={styles.sendMoneyBtnText}>
-                Manage Calendar
-              </Text>
-            </TouchableOpacity>
-          )}
+          {user?.role !== "tenant" ||
+            (user?.role !== "facility_manager" && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.sendMoneyBtn}
+                onPress={() =>
+                  (navigation as any).navigate("AdminAmenityManageCalendar")
+                }
+              >
+                <Text weight="semiBold" style={styles.sendMoneyBtnText}>
+                  Manage Calendar
+                </Text>
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
     </Screen>

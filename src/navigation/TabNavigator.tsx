@@ -404,6 +404,31 @@ const FacilityManagerStackNavigator = () => {
         name="TenantsRequests"
         component={TenantsRequests}
       />
+    <FacilityManagerStack.Screen name="CommunityArea" component={CommunityArea} />
+    <FacilityManagerStack.Screen
+      name="AdminAmenityView"
+      component={AdminAmenityView}
+    />
+    <FacilityManagerStack.Screen
+      name="AdminAmenityEdit"
+      component={AdminAmenityEdit}
+    />
+    <FacilityManagerStack.Screen
+      name="AdminAmenityMakeReservation"
+      component={AdminAmenityMakeReservation}
+    />
+    <FacilityManagerStack.Screen
+      name="AdminAmenityManageCalendar"
+      component={AdminAmenityManageCalendar}
+    />
+    <FacilityManagerStack.Screen
+      name="AdminAddNewAmenity"
+      component={AdminAddNewAmenity}
+    />
+    <FacilityManagerStack.Screen
+      name="AdminReservationView"
+      component={AdminReservationView}
+    />
     </FacilityManagerStack.Navigator>
   );
 };

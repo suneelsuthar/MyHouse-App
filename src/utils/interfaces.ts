@@ -240,7 +240,14 @@ export type FacilityManagerStackParamList = {
   Commuication: undefined;
   Tenants: undefined;
   TenantDetails: undefined;
-  TenantsRequests:undefined
+  TenantsRequests: undefined;
+  CommunityArea: undefined;
+  AdminAmenityView: undefined;
+  AdminAmenityEdit: undefined;
+  AdminAmenityMakeReservation: undefined;
+  AdminAmenityManageCalendar: undefined;
+  AdminAddNewAmenity: undefined;
+  AdminReservationView: undefined;
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<
