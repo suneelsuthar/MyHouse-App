@@ -5,7 +5,7 @@ export type AgentStackParamList = {
   AgentSettings: undefined;
   // Shared screens
   PropertyDetails: { id: string };
-  AdminTenantDetails: { id: string };
+  TenantDetails: { id: string };
   AdminVisitorDetails: { id: string };
   AdminGenerateVisitorRequest: { id?: string };
   Profile: { userId: string };

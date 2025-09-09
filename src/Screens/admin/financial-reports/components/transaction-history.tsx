@@ -215,10 +215,8 @@ export const TransactionHistory = () => {
                         setVisibleMenuIndex(null);
                         setSelectedData(item);
                         setVisiable(true);
-                        // (navigation as any).navigate("AdminTenantDetails");
                         // onAction?.(a, item);
                       }}
-                      // AdminTenantDetails
                       style={styles.menuItem}
                       activeOpacity={0.6}
                     >

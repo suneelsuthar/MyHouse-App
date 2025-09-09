@@ -105,7 +105,7 @@ export type AdminStackParamList = {
       | "access_alerts"
       | "panic_alerts";
   };
-  AdminTenants: undefined;
+  Tenants: undefined;
   CommunityArea: { tab: "amenities" | "reservations" };
   // Admin Community Area action pages
   AdminAmenityView: undefined;
@@ -133,7 +133,7 @@ export type AdminStackParamList = {
   FMEdit: undefined;
   FMGenerateWorkOrder: undefined;
   FMViewWorkOrder: undefined;
-  AdminTenantDetails: undefined;
+  TenantDetails: undefined;
   // Admin Facility Management Order action screens
   FMOrderView: undefined;
   FMOrderUpdate: undefined;
@@ -193,7 +193,7 @@ export type AgentStackParamList = {
 
   // Shared property screens
   PropertyDetails: { id: string };
-  AdminTenantDetails: { id: string };
+  TenantDetails: { id: string };
   AdminVisitorDetails: { id: string };
   AdminGenerateVisitorRequest: { id?: string };
 
@@ -236,8 +236,11 @@ export type FacilityManagerStackParamList = {
   RentPayment: undefined;
   SendMoney: undefined;
   AddBeneficiary: undefined;
-  FinancialReports:undefined;
-  Commuication:undefined
+  FinancialReports: undefined;
+  Commuication: undefined;
+  Tenants: undefined;
+  TenantDetails: undefined;
+  TenantsRequests:undefined
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<

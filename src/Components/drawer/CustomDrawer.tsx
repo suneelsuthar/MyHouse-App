@@ -287,7 +287,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminTenants" },
+          params: { screen: "Tenants" },
         }),
     },
     {
@@ -886,18 +886,18 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Tenant List",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("FacilityManager", {
               screen: "Home",
-              params: { screen: "AdminTenants" },
+              params: { screen: "Tenants" },
             }),
         },
         {
           id: 1,
           title: "Requests",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("FacilityManager", {
               screen: "Home",
-              params: { screen: "AdminTenants" },
+              params: { screen: "TenantsRequests" },
             }),
         },
       ],

@@ -12,7 +12,7 @@ import { Screen, Text, Button, TextField } from "../../../../Components";
 import { Header } from "../../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
 
-export function AdminTenantDetails({ navigation }: any) {
+export function TenantDetails({ navigation }: any) {
   return (
     <Screen
       preset="auto"

@@ -52,7 +52,8 @@ import {
   // Other admin screens
   FacilityManagement,
   AdminVisitorManagement,
-  AdminTenants,
+  Tenants,
+  TenantsRequests,
   CommunityArea,
   VisitorRequests,
   AdminVisitorsList,
@@ -89,7 +90,7 @@ import {
   ViewPropertiesGroups,
   AddEditGroup,
   AdminManageBookings,
-  AdminTenantDetails,
+  TenantDetails,
   Commuication,
   FinancialReports,
   SendMoney,
@@ -177,10 +178,7 @@ const AgentHomeStackNavigator = () => {
         name="PropertyDetails"
         component={PropertyDetails as React.ComponentType<any>}
       />
-      <AgentHomeStack.Screen
-        name="AdminTenantDetails"
-        component={AdminTenantDetails as React.ComponentType<any>}
-      />
+   
       <AgentHomeStack.Screen
         name="AdminVisitorDetails"
         component={AdminVisitorDetails as React.ComponentType<any>}
@@ -292,8 +290,8 @@ const AgentStackNavigator = () => {
         component={PropertyDetails as React.ComponentType<any>}
       />
       <AgentStack.Screen
-        name="AdminTenantDetails"
-        component={AdminTenantDetails as React.ComponentType<any>}
+        name="TenantDetails"
+        component={TenantDetails as React.ComponentType<any>}
       />
       <AgentStack.Screen
         name="AdminVisitorDetails"
@@ -396,6 +394,16 @@ const FacilityManagerStackNavigator = () => {
         name="Commuication"
         component={Commuication}
       />
+
+      <FacilityManagerStack.Screen name="Tenants" component={Tenants} />
+      <FacilityManagerStack.Screen
+        name="TenantDetails"
+        component={TenantDetails}
+      />
+      <FacilityManagerStack.Screen
+        name="TenantsRequests"
+        component={TenantsRequests}
+      />
     </FacilityManagerStack.Navigator>
   );
 };
@@ -465,11 +473,8 @@ const AdminHomeStackNavigator = () => (
       name="AdminVisitorManagement"
       component={AdminVisitorManagement}
     />
-    <AdminHomeStack.Screen name="AdminTenants" component={AdminTenants} />
-    <AdminHomeStack.Screen
-      name="AdminTenantDetails"
-      component={AdminTenantDetails}
-    />
+    <AdminHomeStack.Screen name="Tenants" component={Tenants} />
+    <AdminHomeStack.Screen name="TenantDetails" component={TenantDetails} />
 
     <AdminHomeStack.Screen name="CommunityArea" component={CommunityArea} />
     {/* Separate Visitor Management pages */}
@@ -1158,7 +1163,7 @@ const FacilityManagerTabs = () => (
           routeName === "AdminManageCalendar" ||
           routeName === "AdminAssignProperties" ||
           routeName === "AdminGenerateWorkRequests" ||
-          routeName === "AdminTenantDetails" ||
+          routeName === "TenantDetails" ||
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {
@@ -1449,7 +1454,7 @@ const AdminTabs = () => (
           routeName === "AdminManageCalendar" ||
           routeName === "AdminAssignProperties" ||
           routeName === "AdminGenerateWorkRequests" ||
-          routeName === "AdminTenantDetails" ||
+          routeName === "TenantDetails" ||
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {

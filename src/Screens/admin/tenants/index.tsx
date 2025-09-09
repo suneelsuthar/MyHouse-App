@@ -110,7 +110,7 @@ export const data = [
   },
 ];
 
-export function AdminTenants() {
+export function Tenants() {
   const navigation = useNavigation();
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
 
@@ -227,8 +227,7 @@ export function AdminTenants() {
                         key={a}
                         onPress={() => {
                           setVisibleMenuIndex(null);
-                          // Navigate to AdminTenantDetails screen
-                          (navigation as any).navigate("AdminTenantDetails", {
+                          (navigation as any).navigate("TenantDetails", {
                             params: {
                               tenantId: index.toString(),
                               tenantName: item.name,

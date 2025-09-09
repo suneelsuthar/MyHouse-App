@@ -105,14 +105,16 @@ import { AdminManageBookings } from "./admin/manage-bookings";
 import { FacilityManagement } from "./admin/facility-management";
 import { AdminBookingDetails } from "./admin/manage-bookings/details";
 import { AdminVisitorManagement } from "./admin/visitor-management";
-import { AdminTenants } from "./admin/tenants";
+import { Tenants } from "./admin/tenants";
+import { TenantsRequests } from "./admin/tenants/tenent-requests";
+
 import { CommunityArea } from "./admin/community-area";
 import { VisitorRequests } from "./admin/visitor-management/visitor-requests";
 import { AdminVisitorsList } from "./admin/visitor-management/visitors-list";
 import { RevokedInvitations } from "./admin/visitor-management/revoked-invitations";
 import { AdminAccessAlerts } from "./admin/visitor-management/access-alerts";
 import { AdminPanicAlerts } from "./admin/visitor-management/panic-alerts";
-import { AdminTenantDetails } from "./admin/tenants/tenant-details";
+import { TenantDetails } from "./admin/tenants/tenant-details";
 import { FMViewDetails } from "./admin/facility-management/view-details";
 import { FMEdit } from "./admin/facility-management/edit";
 import { FMGenerateWorkOrder } from "./admin/facility-management/generate-work-order";
@@ -248,14 +250,15 @@ export {
   AdminBookingDetails,
   FacilityManagement,
   AdminVisitorManagement,
-  AdminTenants,
+  Tenants,
+  TenantsRequests,
   CommunityArea,
   VisitorRequests,
   AdminVisitorsList,
   RevokedInvitations,
   AdminAccessAlerts,
   AdminPanicAlerts,
-  AdminTenantDetails,
+  TenantDetails,
   FMViewDetails,
   FMEdit,
   FMGenerateWorkOrder,
