@@ -23,7 +23,7 @@ export * from "./global/help";
 export * from "./global/property-filters";
 
 import { TenantMaintenance } from "./tenant/maintenance";
-import { TenantRentPayment } from "./tenant/rent-payment";
+import { RentPayment } from "./tenant/rent-payment";
 import { TenantNotifications } from "./tenant/notifications";
 import { TenantHome } from "./tenant/home";
 import { TenantAssignedProp } from "./tenant/assignemd-properties";
@@ -170,7 +170,7 @@ export {
   Message,
   // Tenant,
   TenantMaintenance,
-  TenantRentPayment,
+  RentPayment,
   TenantNotifications,
   TenantHome,
   TenantAssignedProp,

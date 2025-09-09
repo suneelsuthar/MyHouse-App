@@ -13,12 +13,17 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { adjustSize, colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-export type TenantRentPaymentProps = NativeStackScreenProps<
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
+export type RentPaymentProps = NativeStackScreenProps<
   TenantStackParamList,
-  "TenantRentPayment"
+  "RentPayment"
 >;
 
-export function TenantRentPayment(props: TenantRentPaymentProps) {
+export function RentPayment(props: RentPaymentProps) {
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
+  let homesPaymentsdata = [];
   const homesPayments = [
     {
       id: 0,
@@ -34,26 +39,47 @@ export function TenantRentPayment(props: TenantRentPaymentProps) {
       onPress: () => props.navigation.navigate("TenantUtilitiesMyMeter"),
     },
   ];
+
+  const facility_homes = [
+    {
+      id: 0,
+      title: "Upgrade Subscription Plan",
+      icon: Images.upgrade,
+      onPress: () => props.navigation.navigate("Subscription" as any),
+    },
+  ];
+  if (user?.role === "facility_manager") {
+    homesPaymentsdata = facility_homes;
+  } else {
+    homesPaymentsdata = homesPayments;
+  }
+
+  // user?.role === "facility_manager" ? homesPaymentsdata =facility_homes
+
   const quickPayment = [
     {
       id: 0,
       title: "Airtime",
       icon: Images.airtime,
+      onPress: () => null,
     },
     {
       id: 1,
       title: "Data",
       icon: Images.data,
+      onPress: () => null,
     },
     {
       id: 2,
       title: "Public Electricity",
       icon: Images.electricity,
+      onPress: () => null,
     },
     {
       id: 3,
       title: "TV",
       icon: Images.tv,
+      onPress: () => null,
     },
   ];
 
@@ -90,7 +116,7 @@ export function TenantRentPayment(props: TenantRentPaymentProps) {
             style={styles._label}
           />
           <FlatList
-            data={homesPayments}
+            data={homesPaymentsdata}
             horizontal
             contentContainerStyle={{ gap: adjustSize(15) }}
             renderItem={renderItem}

@@ -710,7 +710,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Payments",
       type: "item",
       icon: Images.wallet,
-      onPress: () => closeMenusAndNavigate("TenantRentPayment"),
+      onPress: () => closeMenusAndNavigate("RentPayment"),
     },
     {
       id: 11,
@@ -991,9 +991,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       type: "item",
       icon: Images.emergency,
       onPress: () =>
-        closeMenusAndNavigate("Admin", {
+        closeMenusAndNavigate("FacilityManager", {
           screen: "Home",
-          params: { screen: "Emergency" },
+          params: { screen: "RentPayment" },
         }),
     },
 

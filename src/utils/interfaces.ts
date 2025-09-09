@@ -30,7 +30,7 @@ export type TenantStackParamList = {
   TenantDashboard: undefined;
   TenantProfile: undefined;
   TenantMaintenance: undefined;
-  TenantRentPayment: undefined;
+  RentPayment: undefined;
   TenantLeaseAgreement: undefined;
   TenantNotifications: undefined;
   TenantSupport: undefined;
@@ -233,6 +233,9 @@ export type FacilityManagerStackParamList = {
   Subscription: undefined;
   Reviews: undefined;
   Verify: undefined;
+  RentPayment: undefined;
+  SendMoney: undefined;
+  AddBeneficiary: undefined;
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<

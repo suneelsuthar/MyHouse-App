@@ -11,7 +11,7 @@ import { adjustSize, colors, typography } from "../theme";
 import { StyleSheet } from "react-native";
 // Import all screens
 import {
-  TenantRentPayment,
+  RentPayment,
   TenantAssignedProp,
   // Agent screens
   AgentDashboard,
@@ -377,11 +377,15 @@ const FacilityManagerStackNavigator = () => {
         name="Subscription"
         component={Subscription}
       />
-         <FacilityManagerStack.Screen
-        name="Verify"
-        component={Verify}
-      />
+      <FacilityManagerStack.Screen name="Verify" component={Verify} />
+
       <FacilityManagerStack.Screen name="Reviews" component={Reviews} />
+      <FacilityManagerStack.Screen name="RentPayment" component={RentPayment} />
+      <FacilityManagerStack.Screen name="SendMoney" component={SendMoney} />
+      <FacilityManagerStack.Screen
+        name="AddBeneficiary"
+        component={AddBeneficiary}
+      />
     </FacilityManagerStack.Navigator>
   );
 };
@@ -751,7 +755,7 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="Analysis" component={Analysis} />
     <HomeStack.Screen name="Emergency" component={Emergency} />
     <HomeStack.Screen name="PanicEmergency" component={PanicEmergency} />
-    <HomeStack.Screen name="TenantRentPayment" component={TenantRentPayment} />
+    <HomeStack.Screen name="RentPayment" component={RentPayment} />
     <HomeStack.Screen name="SendMoney" component={SendMoney} />
     <HomeStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
     <HomeStack.Screen name="Profile" component={Profile} />
