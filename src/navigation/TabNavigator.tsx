@@ -391,6 +391,11 @@ const FacilityManagerStackNavigator = () => {
         name="FinancialReports"
         component={FinancialReports}
       />
+
+      <FacilityManagerStack.Screen
+        name="Commuication"
+        component={Commuication}
+      />
     </FacilityManagerStack.Navigator>
   );
 };

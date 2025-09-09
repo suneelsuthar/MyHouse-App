@@ -957,16 +957,16 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "New Message",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Commuication", {
               screen: "Home",
-              params: { screen: "MessageHistory" },
+              params: { screen: "NewMessage" },
             }),
         },
         {
           id: 1,
           title: "Message History",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Commuication", {
               screen: "Home",
               params: { screen: "MessageHistory" },
             }),
