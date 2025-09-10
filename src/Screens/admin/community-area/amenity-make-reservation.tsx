@@ -81,7 +81,7 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title={"Add New Reservation"} />
+      <Header title={"New Reservation"} />
       {step === 0 && (
         <ReservationStep1
           control={control}

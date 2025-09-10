@@ -18,7 +18,7 @@ interface Transaction {
   comment: string;
 }
 
-export const TenantUtilitiesChargesList: React.FC = () => {
+export const UtilitiesChargesList: React.FC = () => {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [payNowModal, setPayNowModal] = useState(false);

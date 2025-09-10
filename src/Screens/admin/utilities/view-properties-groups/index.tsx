@@ -32,28 +32,15 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
     >
       <Header title="View Property Groups" />
       <ScrollView>
-        <View style={styles._topbar}>
-          <Text
-            text="Occupancy Rate:"
-            weight="semiBold"
-            style={{ color: colors.white, fontSize: adjustSize(14) }}
-          />
-          <Text
-            text="12/31"
-            weight="semiBold"
-            style={{ color: colors.white, fontSize: adjustSize(14) }}
-          />
-        </View>
-
         <View style={styles._row}>
           <View style={styles._card}>
             <Text text="12" style={styles._num} />
-            <Text text="Occupied" style={styles._text} />
+            <Text text="Total Occupied" style={styles._text} />
           </View>
 
           <View style={styles._card}>
             <Text text="12" style={styles._num} />
-            <Text text="Un-occupied" style={styles._text} />
+            <Text text="Total Unoccupied" style={styles._text} />
           </View>
         </View>
         {/* Header */}
@@ -75,7 +62,7 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
             activeOpacity={0.7}
             style={styles._addbtn}
             onPress={() =>
-              (navigation as any).navigate("AdminAddProperty" as never)
+              (navigation as any).navigate("AddEditGroup" as never)
             }
           >
             <WithLocalSvg asset={Images.addprop} />

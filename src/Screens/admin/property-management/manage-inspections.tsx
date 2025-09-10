@@ -117,6 +117,9 @@ export default function AdminManageInspections() {
             style={[
               styles.card,
               dropdownVisible === item.id && styles.cardWithDropdown,
+              {
+                backgroundColor: index % 2 === 0 ? colors.white : "#f2f2f2",
+              },
             ]}
             activeOpacity={0.8}
           >
@@ -358,7 +361,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   propertyGroupLabel: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(14),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
     marginTop: adjustSize(15),

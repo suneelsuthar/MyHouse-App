@@ -60,8 +60,8 @@ export type TenantStackParamList = {
   Commuication: undefined;
   // Tenant Utilities Screens
   UtilitiesSummary: undefined;
-  TenantUtilitiesMyMeter: undefined;
-  TenantUtilitiesCharges: undefined;
+  UtilitiesMyMeter: undefined;
+  UtilitiesCharges: undefined;
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;
@@ -139,8 +139,9 @@ export type AdminStackParamList = {
   FMOrderUpdate: undefined;
   FMOrderExport: undefined;
   // Admin Emergency and Profile screens
-  Emergency: undefined;
+  Analytics: undefined;
   AdminProfile: undefined;
+  AdminWallet: undefined;
   // Admin Visitor Details screen
   AdminVisitorDetails: { visitorId: string };
   // Admin Generate Visitor Request screen
@@ -152,8 +153,8 @@ export type AdminStackParamList = {
   AdminPropertyRequests: undefined;
   AdminManageInspections: undefined;
   AdminSimDataManagement: undefined;
-  AdminManageMeters: undefined;
-  AdminManageTransactions: undefined;
+  ManageMeters: undefined;
+  ManageTransactions: undefined;
   AdminManagePropertyGroup: undefined;
   AdminManageVendingHistory: undefined;
   Analysis: undefined;
@@ -248,6 +249,13 @@ export type FacilityManagerStackParamList = {
   AdminAmenityManageCalendar: undefined;
   AdminAddNewAmenity: undefined;
   AdminReservationView: undefined;
+  Analysis: undefined;
+  ManageMeters: undefined;
+  UtilitiesSummary: undefined;
+  UtilitiesMyMeter: undefined;
+  ViewMeterDetails: undefined;
+  ManageTransactions: undefined;
+  UtilitiesCharges: undefined;
 };
 
 export type FacilityManagerDashboardProps = NativeStackScreenProps<
@@ -307,8 +315,8 @@ export type SecurityStackParamList = {
 
 export type TenantUtilitiesStackParamList = {
   UtilitiesSummary: undefined;
-  TenantUtilitiesMyMeter: undefined;
-  TenantUtilitiesCharges: undefined;
+  UtilitiesMyMeter: undefined;
+  UtilitiesCharges: undefined;
   TenantUtilitiesTransactions: undefined;
   TenantUtilitiesVendingHistory: undefined;
   TenantUtilitiesReportIssue: undefined;

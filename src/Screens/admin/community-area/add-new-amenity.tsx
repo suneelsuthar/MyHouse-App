@@ -361,7 +361,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             </View>
           )}
           <Button
-            text={loading ? "Adding ..." : "Add Amenity"}
+            text={loading ? "Adding ..." : "Submit"}
             preset="reversed"
             style={[styles.btn]}
             disabled={!isFormValid}

@@ -7,20 +7,46 @@ import {
   TouchableOpacity,
   Pressable,
   View,
+  Dimensions,
+  PanResponder,
+  Animated,
 } from "react-native";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
+import { Ionicons } from "@expo/vector-icons";
 
 export const FMViewDetails = () => {
   const navigation = useNavigation();
-  const slides = [Images.slide1, Images.slide2, Images.slide3];
+  const { width } = Dimensions.get('window');
+  const scrollX = React.useRef(new Animated.Value(0)).current;
   const [activeSlide, setActiveSlide] = useState(0);
-  const [selectedImages, setSelectedImages] = useState<string[]>([
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [selectedImages] = useState<string[]>([
     Images.slide1,
     Images.slide2,
     Images.slide3,
   ]);
+
+  const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets.";
+  const maxDescriptionLength = 150;
+  const displayDescription = showFullDescription 
+    ? description 
+    : `${description.substring(0, maxDescriptionLength)}...`;
+
+  const panResponder = React.useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderRelease: (_, { dx }) => {
+        if (Math.abs(dx) > 50) {
+          const nextIndex = dx > 0 
+            ? Math.max(0, activeSlide - 1) 
+            : Math.min(selectedImages.length - 1, activeSlide + 1);
+          setActiveSlide(nextIndex);
+        }
+      },
+    })
+  ).current;
 
   return (
     <Screen
@@ -33,17 +59,40 @@ export const FMViewDetails = () => {
       <Header title="View Work Requests" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Hero Image */}
-        <View style={styles.heroImg}>
-          <Image
-            source={selectedImages[activeSlide] as any}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="cover"
-          />
-          {/* Dots */}
-          <View style={styles.dotsRow}>
+        {/* Hero Image Carousel */}
+        <View style={styles.carouselContainer}>
+          <Animated.ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              { useNativeDriver: false }
+            )}
+            onMomentumScrollEnd={(e) => {
+              const slide = Math.round(e.nativeEvent.contentOffset.x / width);
+              setActiveSlide(slide);
+            }}
+            {...panResponder.panHandlers}
+          >
+            {selectedImages.map((image, index) => (
+              <Image
+                key={index}
+                source={image as any}
+                style={[styles.heroImg, { width }]}
+                resizeMode="cover"
+              />
+            ))}
+          </Animated.ScrollView>
+         
+          {/* Dots Indicator */}
+          <View style={styles.dotsContainer}>
             {selectedImages.map((_, i) => (
-              <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
+              <TouchableOpacity 
+                key={i} 
+                onPress={() => setActiveSlide(i)}
+                style={styles.dotContainer}
+              >
                 <View
                   style={[
                     styles.dot,
@@ -104,13 +153,15 @@ export const FMViewDetails = () => {
           </Text>
           <View style={{ height: spacing.xs }} />
           <Text style={styles.descText}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets.
+            {displayDescription}
+            {description.length > maxDescriptionLength && (
+              <Text 
+                style={styles.viewMoreText}
+                onPress={() => setShowFullDescription(!showFullDescription)}
+              >
+                {showFullDescription ? ' Show Less' : ' View More'}
+              </Text>
+            )}
           </Text>
         </View>
 
@@ -156,22 +207,54 @@ const styles = StyleSheet.create({
   heroWrap: {
     // borderRadius: adjustSize(12),
   },
-  heroImg: {
-    width: "100%",
+  carouselContainer: {
+    position: 'relative',
     height: adjustSize(304),
   },
-  dotsRow: {
-    position: "absolute",
-    bottom: adjustSize(10),
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: adjustSize(6),
+  heroImg: {
+    width: '100%',
+    height: '100%',
+  },
+  dotsContainer: {
+    position: 'absolute',
+    bottom: adjustSize(16),
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dotContainer: {
+    padding: adjustSize(4),
   },
   dot: {
     width: adjustSize(8),
     height: adjustSize(8),
     borderRadius: adjustSize(4),
+    marginHorizontal: adjustSize(2),
+  },
+  arrowButton: {
+    position: 'absolute',
+    top: '50%',
+    width: adjustSize(40),
+    height: adjustSize(40),
+    borderRadius: adjustSize(20),
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  arrowLeft: {
+    left: adjustSize(10),
+  },
+  arrowRight: {
+    right: adjustSize(10),
+  },
+  viewMoreText: {
+    color: colors.primary,
+    fontWeight: '600',
+    marginTop: spacing.xs,
+    textDecorationLine:"underline"
   },
   dotActive: {
     backgroundColor: colors.primary,

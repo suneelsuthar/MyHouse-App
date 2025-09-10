@@ -6,6 +6,7 @@ import {
   StyleProp,
   TextStyle,
   ViewStyle,
+  Image
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -15,6 +16,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 interface DropdownItem {
   label: string;
   value: string;
+  icon?: React.ReactNode;
 }
 
 // Props type (if you want to pass data or label dynamically)
@@ -99,6 +101,24 @@ export default function DropdownComponent({
         fontFamily: typography.fonts.poppins.normal,
         fontSize: adjustSize(14),
       }}
+      renderItem={(item: DropdownItem, selected) => (
+        <View style={styles.item}>
+          {'image' in item && item.image ? (
+            <Image
+              source={item.image}
+              style={styles.dropdownImage}
+              resizeMode="contain"
+            />
+          ) : item.icon ? (
+            <View style={{ marginRight: 8 }}>
+              {item.icon}
+            </View>
+          ) : null}
+          <Text style={styles.itemText}>
+            {item.label}
+          </Text>
+        </View>
+      )}
       onBlur={() => setIsFocus(false)}
       onChange={(item: DropdownItem) => {
         if (onChangeValue) {
@@ -148,5 +168,22 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  itemText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#292766',
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  dropdownImage: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
   },
 });

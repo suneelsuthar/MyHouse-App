@@ -126,6 +126,28 @@ export default function InspectionDetails(props: any) {
             <Button preset="reversed" text="Download" style={styles._btn} />
           </View>
         )}
+
+        {props.route.params.type === "Details" && (
+          <>
+        <View style={styles.divider} />
+
+
+          <View style={styles._footerrow}>
+
+            <Button preset="reversed" text="Mark As Approved" style={styles._btn} />
+            <Button preset="default" text="Reject"
+            textStyle={{
+              color:"#fd0d0d"
+            }}
+            style={[styles._btn,{
+              // backgroundColor:colors.error,
+              borderColor:"#fd0d0d",
+              marginRight:8
+
+            }]} />
+          </View>
+          </>
+        )}
       </ScrollView>
     </Screen>
   );

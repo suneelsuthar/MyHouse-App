@@ -51,7 +51,7 @@ export const Images = {
   residentials: require("./home.svg"),
   commercial: require("./manageprop.svg"),
   residentialsIcon: require("./residentials.svg"),
-  commercialIcon: require("./commercial.svg"),
+  commercialIcon: require("./commercialIcon.svg"),
   remove: require("./remove.svg"),
   clock: require("./clock.svg"),
   addmore: require("./addmore.svg"),
@@ -97,4 +97,8 @@ export const Images = {
   charges: require("./charges.svg"),
   upgrade: require("./upgrade.svg"),
   boost: require("./boost.svg"),
+  logo_1: require("./logo_1.png"),
+  fire: require("./fire.png"),
+  police: require("./police.png"),
+  ambulance: require("./ambulance.svg"),
 };

@@ -56,7 +56,7 @@ export function AdminPropertyManagement({
         </TouchableOpacity>
         <View style={styles.headerinfo}>
           <Text weight="semiBold" style={styles.username}>
-            Manage Properties
+            {propertyType === "rental" ? "Rental Properties" : "Managed Properties"}
           </Text>
         </View>
         <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
@@ -67,7 +67,7 @@ export function AdminPropertyManagement({
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Rental Ptoperties
+         {propertyType === "rental" ? "Rental Properties" : "Managed Properties"}
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -127,7 +127,7 @@ export function AdminPropertyManagement({
               } else if (action === "Edit") {
                 (navigation as any).navigate(
                   "AdminAddProperty" as never,
-                  { propertyId: property.propertyId } as never
+                  { propertyId: property.propertyId,mode:"edit" } as never
                 );
               } else if (action === "Manage Calendar") {
                 (navigation as any).navigate(
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   customDropdownStyle: {
     height: adjustSize(33),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   customPlaceholderStyle: {
     fontSize: adjustSize(12),

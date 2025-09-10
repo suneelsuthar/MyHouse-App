@@ -5,7 +5,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  TextInput,
 } from "react-native";
+import Slider from "@react-native-community/slider";
 import { Text, TextField, Button } from "./index";
 import { adjustSize, colors, typography } from "../theme";
 import CustomModal from "./CustomModal";
@@ -45,7 +47,13 @@ interface Props {
   initialConfig?: DiscountConfig;
 }
 
-type DetailKind = "earlyBird" | "lastMinute" | "tripLength" | null;
+type DetailKind =
+  | "weekly"
+  | "monthly"
+  | "earlyBird"
+  | "lastMinute"
+  | "tripLength"
+  | null;
 
 const OfferDiscountModal: React.FC<Props> = ({
   visible,
@@ -59,8 +67,8 @@ const OfferDiscountModal: React.FC<Props> = ({
     !!initialConfig?.moreEnabled
   );
   const [detailOpen, setDetailOpen] = useState<DetailKind>(null);
-  // controlled value just to trigger visual state; we reset to null after selection so it looks like placeholder
   const [tripSelectValue, setTripSelectValue] = useState<string | null>(null);
+  const [basePrice, setBasePrice] = useState(100); // Default base price, can be passed as prop
 
   const durationOptions = useMemo(
     () => ["1 Day", "2 Days", "3 Days", "4 Days", "5 Days"],
@@ -72,6 +80,8 @@ const OfferDiscountModal: React.FC<Props> = ({
     setCfg((c) => ({ ...c, [key]: v } as DiscountConfig));
 
   const canSaveSub = useMemo(() => {
+    if (detailOpen === "weekly") return !!cfg.weeklyNights;
+    if (detailOpen === "monthly") return !!cfg.monthlyNights;
     if (detailOpen === "earlyBird")
       return !!cfg.earlyBirdPercent && !!cfg.earlyBirdMonths;
     if (detailOpen === "lastMinute")
@@ -81,40 +91,216 @@ const OfferDiscountModal: React.FC<Props> = ({
   }, [detailOpen, cfg]);
 
   const saveAndClose = () => {
-    onSubmit({ ...cfg, moreEnabled: showMoreRows });
+    setDetailOpen(null);
   };
 
   return (
     <CustomModal visible={visible} onClose={onClose} title={title}>
       {/* Top rows */}
       <ScrollView style={{ height: Dimensions.get("window").height * 0.8 }}>
-        <RowWithAction
-          label="Weekly Discount"
-          placeholder="For 7 Nights"
-          value={cfg.weeklyNights || ""}
-          enabled={!!cfg.weeklyNights}
-          onPress={() =>
-            setCfg((c) => ({
-              ...c,
-              weeklyNights: c.weeklyNights ? undefined : "For 7 Nights",
-            }))
-          }
-          onChangeText={(t) => setCfg((c) => ({ ...c, weeklyNights: t }))}
-        />
+        <View>
+          <RowWithAction
+            label="Weekly Discount"
+            placeholder="For 7 Nights"
+            value={
+              cfg.weeklyNights ? `For 7 Nights (${cfg.weeklyNights}%)` : ""
+            }
+            enabled={!!cfg.weeklyNights}
+            onPress={() => {
+              const isEnabled = !!cfg.weeklyNights;
+              setCfg((c) => ({
+                ...c,
+                weeklyNights: isEnabled ? undefined : "",
+              }));
+              if (!isEnabled) setDetailOpen("weekly");
+            }}
+            onChangeText={() => {}}
+          />
+          {detailOpen === "weekly" && (
+            <DetailCard
+              title="Weekly Discount"
+              subtitle="Offer a discount for weekly stays"
+            >
+              <View style={styles.discountContainer}>
+                <View style={styles.priceRow}>
+                  <Text style={styles.priceLabel}>Discounted price:</Text>
+                  <Text style={styles.discountedPrice}>
+                  ₦
+                    {(
+                      basePrice *
+                      (1 - (Number(cfg.weeklyNights) || 0) / 100)
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+                <View style={styles.priceContainer}>
+                  <Text
+                    weight="medium"
+                    text="Set Discount"
+                    style={{ color: colors.white, fontSize: adjustSize(10) }}
+                  />
+                  <View
+                    style={[styles.priceRow, { margin: 0, marginBottom: 0 }]}
+                  >
+                    <Text
+                      weight="medium"
+                      text="Discounted Amount:"
+                      style={{
+                        color: colors.white,
+                        fontSize: adjustSize(10),
+                        marginRight: 5,
+                      }}
+                    />
 
-        <RowWithAction
-          label="Monthly Discount"
-          placeholder="For 29 Nights"
-          value={cfg.monthlyNights || ""}
-          enabled={!!cfg.monthlyNights}
-          onPress={() =>
-            setCfg((c) => ({
-              ...c,
-              monthlyNights: c.monthlyNights ? undefined : "For 29 Nights",
-            }))
-          }
-          onChangeText={(t) => setCfg((c) => ({ ...c, monthlyNights: t }))}
-        />
+                    <Text style={[styles.priceValue, { color: colors.white }]}>
+                      ₦
+                      {(
+                        basePrice *
+                        (1 - (Number(cfg.weeklyNights) || 0) / 100)
+                      ).toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.sliderContainer}>
+                  <Text style={styles.discountLabel}>0%</Text>
+
+                  <Slider
+                    style={styles.slider}
+                    minimumValue={0}
+                    maximumValue={100}
+                    step={1}
+                    value={Number(cfg.weeklyNights) || 0}
+                    onValueChange={(value) =>
+                      setCfg((c) => ({
+                        ...c,
+                        weeklyNights: String(Math.round(value)),
+                      }))
+                    }
+                    minimumTrackTintColor={colors.primary}
+                    maximumTrackTintColor={"#B0B0B0"}
+                    thumbTintColor={colors.primary}
+                    tapToSeek={true}
+                  />
+                  <Text style={styles.discountLabel}>100%</Text>
+
+                  <View style={[styles.discountLabels, { marginLeft: 10 }]}>
+                    <Text style={styles.discountValue}>
+                      {cfg.weeklyNights || 0}%
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <ActionRow
+                onCancel={saveAndClose}
+                onSave={saveAndClose}
+                saveText="Save"
+                disabled={!cfg.weeklyNights}
+              />
+            </DetailCard>
+          )}
+        </View>
+
+        <View style={{ marginTop: adjustSize(10) }}>
+          <RowWithAction
+            label="Monthly Discount"
+            placeholder="For 29 Nights"
+            value={
+              cfg.monthlyNights ? `For 29 Nights (${cfg.monthlyNights}%)` : ""
+            }
+            enabled={!!cfg.monthlyNights}
+            onPress={() => {
+              const isEnabled = !!cfg.monthlyNights;
+              setCfg((c) => ({
+                ...c,
+                monthlyNights: isEnabled ? undefined : "",
+              }));
+              if (isEnabled) {
+                setDetailOpen(null);
+              } else {
+                setDetailOpen("monthly");
+              }
+            }}
+            onChangeText={() => {}}
+          />
+          {detailOpen === "monthly" && (
+            <DetailCard
+              title="Monthly Discount"
+              subtitle="Offer a discount for monthly stays"
+            >
+              <View style={styles.discountContainer}>
+                <View style={styles.priceRow}>
+                  <Text style={styles.priceLabel}>Discounted price:</Text>
+                  <Text style={styles.discountedPrice}>
+                  ₦
+                    {(
+                      basePrice *
+                      (1 - (Number(cfg.monthlyNights) || 0) / 100)
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+                <View style={styles.priceContainer}>
+                  <Text
+                    weight="medium"
+                    text="Set Discount"
+                    style={{ color: colors.white, fontSize: adjustSize(10) }}
+                  />
+                  <View
+                    style={[styles.priceRow, { margin: 0, marginBottom: 0 }]}
+                  >
+                    <Text
+                      weight="medium"
+                      text="Discounted Amount:"
+                      style={{
+                        color: colors.white,
+                        fontSize: adjustSize(10),
+                        marginRight: 5,
+                      }}
+                    />
+                    <Text style={[styles.priceValue, { color: colors.white }]}>
+                    ₦
+                      {basePrice -
+                        (
+                          basePrice *
+                          (1 - (Number(cfg.monthlyNights) || 0) / 100)
+                        )}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.sliderContainer}>
+                  <Text style={styles.discountLabel}>0%</Text>
+                  <Slider
+                    style={styles.slider}
+                    minimumValue={0}
+                    maximumValue={100}
+                    step={1}
+                    value={Number(cfg.monthlyNights) || 0}
+                    onValueChange={(value) =>
+                      setCfg((c) => ({
+                        ...c,
+                        monthlyNights: String(Math.round(value)),
+                      }))
+                    }
+                    minimumTrackTintColor={colors.primary}
+                    maximumTrackTintColor={"#B0B0B0"}
+                    thumbTintColor={colors.primary}
+                    tapToSeek={true}
+                  />
+                  <Text style={styles.discountLabel}>100%</Text>
+                  <View style={[styles.discountLabels, { marginLeft: 10 }]}>
+                    <Text style={styles.discountValue}>
+                      {cfg.monthlyNights || 0}%
+                    </Text>
+                  </View>
+                </View>
+                </View>
+              <ActionRow
+                onCancel={saveAndClose}
+                onSave={saveAndClose}
+                saveText="Save"
+                disabled={!cfg.monthlyNights}
+              />
+            </DetailCard>
+          )}
+        </View>
 
         {/* More Discount row - non-editable field, but with add/remove action */}
         <RowWithAction
@@ -167,7 +353,9 @@ const OfferDiscountModal: React.FC<Props> = ({
             <RowWithAction
               label="Early Bird Discount"
               placeholder="Add Discount"
-              value={cfg.earlyBirdEnabled ? "Added" : ""}
+              value={cfg.earlyBirdEnabled && cfg.earlyBirdPercent && cfg.earlyBirdMonths 
+                ? `Early Bird Discount (${cfg.earlyBirdPercent}% for ${cfg.earlyBirdMonths} ${parseInt(cfg.earlyBirdMonths) === 1 ? 'Month' : 'Months'})` 
+                : cfg.earlyBirdEnabled ? "Added" : ""}
               enabled={!!cfg.earlyBirdEnabled}
               editable={false}
               onPress={() => {
@@ -202,7 +390,7 @@ const OfferDiscountModal: React.FC<Props> = ({
                   }
                 />
                 <ActionRow
-                  onCancel={onClose}
+                  onCancel={saveAndClose}
                   onSave={saveAndClose}
                   saveText="Save Discount"
                   disabled={!canSaveSub}
@@ -214,7 +402,9 @@ const OfferDiscountModal: React.FC<Props> = ({
               label="Last Minute Discount"
               editable={false}
               placeholder="Add Discount"
-              value={cfg.lastMinuteEnabled ? "Added" : ""}
+              value={cfg.lastMinuteEnabled && cfg.lastMinutePercent && cfg.lastMinuteDays 
+                ? `Last Minute Discount (${cfg.lastMinutePercent}% for ${cfg.lastMinuteDays} ${parseInt(cfg.lastMinuteDays) === 1 ? 'Day' : 'Days'})` 
+                : cfg.lastMinuteEnabled ? "Added" : ""}
               enabled={!!cfg.lastMinuteEnabled}
               onPress={() => {
                 const next = !cfg.lastMinuteEnabled;
@@ -260,7 +450,9 @@ const OfferDiscountModal: React.FC<Props> = ({
               label="Trip Length Discount"
               editable={false}
               placeholder="Add Discount"
-              value={cfg.tripLengthEnabled ? "Added" : ""}
+              value={cfg.tripLengthEnabled && cfg.tripLengthPercent && cfg.tripLengthDurations?.length 
+                ? `Trip Length Discount (${cfg.tripLengthPercent}% for ${cfg.tripLengthDurations.join(', ')} ${cfg.tripLengthDurations.length === 1 ? 'Night' : 'Nights'})` 
+                : cfg.tripLengthEnabled ? "Added" : ""}
               enabled={!!cfg.tripLengthEnabled}
               onPress={() => {
                 const next = !cfg.tripLengthEnabled;
@@ -429,15 +621,7 @@ const DetailCard = ({
   title: string;
   subtitle: string;
   children: React.ReactNode;
-}) => (
-  <View style={styles.detailCard}>
-    <Text weight="semiBold" style={styles.detailTitle}>
-      {title}
-    </Text>
-    <Text style={styles.detailSubtitle}>{subtitle}</Text>
-    {children}
-  </View>
-);
+}) => <View style={styles.detailCard}>{children}</View>;
 
 const ActionRow = ({
   onCancel,
@@ -466,6 +650,7 @@ const ActionRow = ({
           borderColor: colors.primary,
           borderWidth: 1,
           backgroundColor: colors.fill,
+          height: adjustSize(41),
         }}
       />
     </View>
@@ -475,6 +660,9 @@ const ActionRow = ({
         preset="reversed"
         onPress={onSave}
         disabled={disabled}
+        style={{
+          height: adjustSize(41),
+        }}
       />
     </View>
   </View>
@@ -534,37 +722,99 @@ const styles = StyleSheet.create({
     borderColor: colors.grey,
   },
   detailTitle: {
-    color: colors.primary,
     textAlign: "center",
     fontSize: adjustSize(14),
-  },
-  detailSubtitle: {
     color: colors.grey,
-    textAlign: "center",
-    marginTop: adjustSize(6),
-    marginBottom: adjustSize(10),
-    fontSize: adjustSize(12),
   },
   detailLabel: {
     color: colors.primary,
-    marginTop: adjustSize(8),
-    marginBottom: adjustSize(6),
-    fontSize: adjustSize(14),
+    fontSize: adjustSize(12),
+    marginBottom: adjustSize(4),
+  },
+  detailSubtitle: {
+    color: colors.grey,
+    fontSize: adjustSize(12),
+    textAlign: "center",
+    marginBottom: adjustSize(16),
+  },
+  discountContainer: {
+    marginVertical: adjustSize(16),
+    paddingHorizontal: adjustSize(8),
+  },
+  priceContainer: {
+    backgroundColor: "#6369A4",
+    borderRadius: 8,
+    paddingHorizontal: adjustSize(10),
+    paddingVertical: adjustSize(5),
+    marginBottom: adjustSize(16),
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  priceRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: adjustSize(8),
+  },
+  priceLabel: {
+    fontSize: adjustSize(13),
+    color: colors.primary,
+  },
+  priceValue: {
+    fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.primary,
+    paddingLeft: 5,
+  },
+  discountedPrice: {
+    fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.primary,
+    paddingLeft: 5,
+  },
+  slider: {
+    // width: "100%",
+    height: 48,
+    flex: 1,
+  },
+  discountLabels: {
+    flexDirection: "row",
+    backgroundColor: colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    height: adjustSize(23),
+    width: adjustSize(32),
+    borderRadius: 5,
+  },
+  discountLabel: {
+    fontSize: adjustSize(12),
+    color: colors.grey,
+  },
+  chip: {
+    paddingHorizontal: adjustSize(12),
+    paddingVertical: adjustSize(6),
+    borderRadius: 100,
+    // borderWidth: 1,
+    // borderColor: colors.primary,
+    marginRight: adjustSize(8),
+    marginBottom: adjustSize(8),
+  },
+  chipSelected: {
+    backgroundColor: colors.primary,
   },
   chipsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: adjustSize(8),
-    marginVertical: adjustSize(10),
+    marginVertical: adjustSize(16),
   },
-  chip: {
-    paddingVertical: adjustSize(6),
-    paddingHorizontal: adjustSize(10),
-    borderRadius: adjustSize(16),
-    backgroundColor: colors.fill,
+  sliderContainer: {
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
   },
-  chipSelected: {
-    backgroundColor: colors.primaryLight,
+  discountValue: {
+    textAlign: "center",
+    fontSize: adjustSize(12),
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.medium,
   },
   chipSelectedRow: {
     flexDirection: "row",

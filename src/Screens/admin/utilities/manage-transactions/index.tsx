@@ -91,9 +91,9 @@ const transactionData = [
 interface AdminPropertyManagementProps
   extends NativeStackScreenProps<
     AdminStackParamList,
-    "AdminManageTransactions"
+    "ManageTransactions"
   > {}
-export const AdminManageTransactions = ({
+export const ManageTransactions = ({
   route,
 }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();

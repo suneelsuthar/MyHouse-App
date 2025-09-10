@@ -124,7 +124,7 @@ export default function AdminPropertyServices() {
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Manage Amenities
+          Manage Services
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent

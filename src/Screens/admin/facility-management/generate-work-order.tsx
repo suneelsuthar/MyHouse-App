@@ -226,12 +226,12 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             </ScrollView>
           </View>
 
-          <Text
+          {/* <Text
             style={[styles.label, { fontSize: adjustSize(15) }]}
             weight="semiBold"
           >
             Edit Work Request:
-          </Text>
+          </Text> */}
 
           {/* Title */}
           <Text style={styles.label} weight="semiBold">

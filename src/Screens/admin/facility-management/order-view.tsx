@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -7,6 +7,10 @@ import {
   View,
   Pressable,
   Linking,
+  Dimensions,
+  Animated,
+  Platform,
+  FlatList,
 } from "react-native";
 import { Screen, Text, Button, Header } from "../../../Components";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
@@ -21,6 +25,8 @@ export const FMOrderView = () => {
   // gallery for banner
   const slides = [Images.slide1, Images.slide2, Images.slide3];
   const [activeSlide, setActiveSlide] = useState(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const { width } = Dimensions.get('window');
   const gallery = slides; // could be dynamic later
 
   const details: Array<[string, string]> = useMemo(
@@ -47,6 +53,27 @@ export const FMOrderView = () => {
       })),
     []
   );
+
+  // Handle scroll animation for the banner
+  const onScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: false }
+  );
+
+  // Handle scroll end to update active slide
+  const onScrollEnd = (e: any) => {
+    const slide = Math.round(e.nativeEvent.contentOffset.x / width);
+    setActiveSlide(slide);
+  };
+
+  // Handle dot press to navigate to specific slide
+  const goToSlide = (index: number) => {
+    setActiveSlide(index);
+    flatListRef.current?.scrollToIndex({ index, animated: true });
+  };
+
+  // Create a ref for the FlatList
+  const flatListRef = useRef<FlatList>(null);
 
   return (
     <Screen
@@ -120,27 +147,47 @@ export const FMOrderView = () => {
 
       {activeTab === "summary" ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Banner with dots */}
-          <View style={styles.heroWrap}>
-            <Image
-              source={
-                gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
-              }
-              style={styles.heroImg}
-              resizeMode="cover"
+          {/* Banner with Swipeable Carousel */}
+          <View style={styles.bannerContainer}>
+            <Animated.FlatList
+              ref={flatListRef}
+              data={gallery}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={onScroll}
+              onMomentumScrollEnd={onScrollEnd}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Image 
+                  source={item} 
+                  style={[styles.bannerImage, { width }]} 
+                  resizeMode="cover"
+                />
+              )}
+              getItemLayout={(data, index) => ({
+                length: width,
+                offset: width * index,
+                index,
+              })}
             />
-            <View style={styles.dotsRow}>
-              {gallery.map((_, i) => (
-                <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
-                  <View
+            
+            {/* Dot Indicators */}
+            {gallery.length > 1 && (
+              <View style={styles.dotsContainer}>
+                {gallery.map((_, index) => (
+                  <TouchableOpacity
+                    key={index}
                     style={[
                       styles.dot,
-                      i === activeSlide ? styles.dotActive : styles.dotInactive,
+                      index === activeSlide ? styles.activeDot : styles.inactiveDot,
                     ]}
+                    onPress={() => goToSlide(index)}
+                    activeOpacity={0.7}
                   />
-                </TouchableOpacity>
-              ))}
-            </View>
+                ))}
+              </View>
+            )}
           </View>
 
           {/* Thumbs */}
@@ -292,19 +339,24 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
     fontSize: adjustSize(12),
   },
-  heroWrap: {
-    position: "relative",
+  bannerContainer: {
+    height: 220,
+    width: '100%',
+    position: 'relative',
+    backgroundColor: colors.background,
   },
-  heroImg: {
-    width: "100%",
-    height: adjustSize(232),
+  bannerImage: {
+    height: 220,
+    width: '100%',
   },
-  dotsRow: {
-    position: "absolute",
-    bottom: adjustSize(10),
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
+  dotsContainer: {
+    position: 'absolute',
+    bottom: 16,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     gap: adjustSize(6),
   },
   dot: {
@@ -312,8 +364,12 @@ const styles = StyleSheet.create({
     height: adjustSize(8),
     borderRadius: adjustSize(4),
   },
-  dotActive: {
-    backgroundColor: colors.primary,
+  activeDot: {
+    backgroundColor: colors.white,
+    width: 20,
+  },
+  inactiveDot: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
   dotInactive: {
     backgroundColor: colors.white,

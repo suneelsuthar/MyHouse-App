@@ -89,7 +89,10 @@ const transactionData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<AdminStackParamList, "AdminManageVendingHistory"> {}
+  extends NativeStackScreenProps<
+    AdminStackParamList,
+    "AdminManageVendingHistory"
+  > {}
 export const AdminManageVendingHistory = ({
   route,
 }: AdminPropertyManagementProps) => {
@@ -99,7 +102,7 @@ export const AdminManageVendingHistory = ({
     useState<TrnasData[]>(transactionData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-
+  const [type, settype] = useState("view");
   // Handle search functionality
   const filteredTransactions = transactionList.filter(
     (transaction) =>
@@ -163,7 +166,7 @@ export const AdminManageVendingHistory = ({
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-              Vending History
+             Vending History
             </Text>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
@@ -236,6 +239,7 @@ export const AdminManageVendingHistory = ({
                   <TouchableOpacity
                     style={styles.menuItem}
                     onPress={() => {
+                      settype("view")
                       setDropdownVisible(null);
                       setIsModalVisible(true);
                     }}
@@ -246,6 +250,7 @@ export const AdminManageVendingHistory = ({
                   <TouchableOpacity
                     style={styles.menuItem}
                     onPress={() => {
+                      settype("download")
                       setDropdownVisible(null);
                       setIsModalVisible(true);
                     }}
@@ -276,7 +281,10 @@ export const AdminManageVendingHistory = ({
                 color={colors.error}
               />
             </TouchableOpacity>
-            <Text style={styles.modalText}>Vending Information</Text>
+            <Text style={styles.modalText}>
+            {type === "view" ? "Vending Information" : "Vending Receipt"}
+              {/* Vending Information */}
+              </Text>
             <Text
               text="On February 20, 2025 at 09:06 am"
               style={styles._subtitle}
@@ -319,16 +327,32 @@ export const AdminManageVendingHistory = ({
               <Text text="B1234556" style={styles._rowvalue} />
             </View>
 
-            <View style={styles._row}>
+            <View style={[styles._row,{
+              marginBottom: type === "view" ? 20 : 10
+            }]}>
               <Text text="Meter Number:" style={styles._rowlabel} />
               <Text text="MTR34556" style={styles._rowvalue} />
             </View>
 
-            <Button
-              text="Download Receipt"
-              preset="reversed"
-              style={styles.copyButton}
-            />
+            {type === "download" && 
+             
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 10,
+                gap: 10,
+              }}
+            >
+              <Button
+                text="Download Receipt"
+                preset="reversed"
+                style={{ flex: 1 }}
+              />
+
+              <Button text="Share" preset="reversed" style={{ flex: 1 }} />
+            </View>}
           </View>
         </View>
       </Modal>

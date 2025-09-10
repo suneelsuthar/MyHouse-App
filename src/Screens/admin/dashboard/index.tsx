@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   _welcomtext: {
-    color: colors.grey,
+    color: colors.black,
     fontSize: adjustSize(10),
     lineHeight: adjustSize(12),
   },
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    width: adjustSize(width / 4),
+    width: adjustSize(width / 3.7),
     flexDirection: "column",
     justifyContent: "space-evenly",
   },

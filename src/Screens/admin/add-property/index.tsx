@@ -79,6 +79,8 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
     alert("Saved");
     // TODO: wire up final save/submit
   };
+
+  // console.log(props.route.params?.mode)
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -86,7 +88,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
       safeAreaEdges={["top", "bottom"]}
     >
       <Header
-        title={currentStep < 0 ? "Add New Property" : steps[currentStep].title}
+        title={currentStep < 0 ? (props.route.params?.mode==="edit" ? "Edit Property" : "Add New Property") : steps[currentStep].title}
         leftAccessory={
           <TouchableOpacity
             activeOpacity={0.6}

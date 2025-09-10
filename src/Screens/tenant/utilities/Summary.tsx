@@ -29,14 +29,14 @@ const SummaryList = [
     title: "Outstanding Charges",
     data: "$10.00",
     btnTxt: "Pay Charges",
-    path: "TenantUtilitiesCharges",
+    path: "UtilitiesCharges",
   },
   {
     icon: Images.meter,
     title: "My meter",
     data: "70.01",
     btnTxt: "Top up",
-    path: "TenantUtilitiesMyMeter",
+    path: "UtilitiesMyMeter",
   },
 ];
 

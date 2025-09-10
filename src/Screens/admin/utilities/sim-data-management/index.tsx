@@ -61,7 +61,7 @@ export const AdminSimDataManagement: React.FC = () => {
             weight="semiBold"
             style={{ fontSize: adjustSize(15), color: colors.primary }}
           >
-            Analysis
+            Sim Data Management
           </Text>
         }
         rightAccessory={

@@ -89,6 +89,7 @@ export function AddBeneficiary(props: AddBeneficiaryProps) {
             ios_backgroundColor="#B0B0B0"
             onValueChange={toggleSwitch}
             value={isEnabled}
+            style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
           />
         </View>
       </View>

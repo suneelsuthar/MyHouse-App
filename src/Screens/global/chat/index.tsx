@@ -60,6 +60,7 @@ export function Chat() {
           onValueChange={onChange}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
     );

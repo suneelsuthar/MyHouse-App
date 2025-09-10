@@ -5,7 +5,7 @@ import { adjustSize, colors } from "../../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../../assets/Images";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 type ResidentialSubtype = "shortlet" | "medium" | "long";
 type CommercialSubtype = "retail" | "office";
 
@@ -57,7 +57,8 @@ export const Step1: React.FC<Step1Props> = ({ mode, value, onChange }) => {
           style={styles.cardHeader}
         >
           <View style={styles.headerLeft}>
-            <WithLocalSvg asset={Images.residentialsIcon} />
+            {/* <WithLocalSvg asset={Images.residentiasIcon} /> */}
+            <FontAwesome name="bank" size={15} color={colors.black}/>
             <Text weight="medium" style={styles.cardTitle}>
               Residential
             </Text>
@@ -108,7 +109,7 @@ export const Step1: React.FC<Step1Props> = ({ mode, value, onChange }) => {
           style={styles.cardHeader}
         >
           <View style={styles.headerLeft}>
-            <WithLocalSvg asset={Images.commercialIcon} />
+            <WithLocalSvg  asset={Images.commercialIcon} />
             <Text weight="medium" style={styles.cardTitle}>
               Commercial
             </Text>

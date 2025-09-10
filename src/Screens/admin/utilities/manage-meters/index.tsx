@@ -27,7 +27,9 @@ import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { useAppSelector } from "../../../../store/hooks";
+import { RootState } from "../../../../store";
+import { TenantUtilitiesTabs } from "../../../tenant/utilities/Components/TenantUtilitiesTabs";
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -104,14 +106,15 @@ const meterData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<AdminStackParamList, "AdminManageMeters"> {}
-export const AdminManageMeters = ({ route }: AdminPropertyManagementProps) => {
+  extends NativeStackScreenProps<AdminStackParamList, "ManageMeters"> {}
+export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();
   const [search, setSearch] = useState("");
   const [meterList, setMeterList] = useState<MeterData[]>(meterData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMeter, setSelectedMeter] = useState<MeterData | null>(null);
   const [temperToken, setTemperToken] = useState("1234 5678 9101 1121"); // Dummy token
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const copyToClipboard = () => {
     // Clipboard.setString(temperToken);
@@ -183,103 +186,115 @@ export const AdminManageMeters = ({ route }: AdminPropertyManagementProps) => {
       />
 
       {/* Recent Notifications */}
-      <View style={styles.section}>
-        <View style={styles._seciton_row}>
-          <Text weight="semiBold" style={styles.sectionTitle}>
-            Manage Meters
-          </Text>
-          <View style={styles.dropdownContainer}>
-            <DropdownComponent
-              data={[
-                { label: "A", value: "A" },
-                { label: "B", value: "B" },
-                { label: "C", value: "C" },
-              ]}
-              label="Select Period"
-              placeholder="Sort by"
-              dropdownStyle={styles.customDropdownStyle}
-              placeholderStyle={styles.customPlaceholderStyle}
-              selectedTextStyle={styles.customSelectedTextStyle}
-            />
-          </View>
-        </View>
-        {/* ÷÷ */}
-      </View>
 
-      {/* Search Bar */}
-      <View style={styles._searchrow}>
-        <View style={styles._inputview}>
-          <TextField
-            placeholderTextColor={colors.primaryLight}
-            // inputWrapperStyle={{ backgroundColor: colors.white }}
-            placeholder="Search"
-            style={styles._input}
-            value={search}
-            onChangeText={(text) => setSearch(text as string)}
-          />
-        </View>
-
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles._addbtn}
-          onPress={handleAddMeter}
-        >
-          <WithLocalSvg asset={Images.addprop} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Meters List */}
-      <FlatList
-        data={filteredMeters}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <MeterCard
-            data={item}
-            onPress={(mode) => handleViewMeter(item)}
-            onEdit={(mode) => handleEditMeter(item)}
-            onClearTember={() => handleClearTember(item)}
-          />
-        )}
-      />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={handleCloseModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={handleCloseModal}
-            >
-              <Ionicons name="close-circle" size={24} color={colors.error} />
-            </TouchableOpacity>
-            <Text style={styles.modalText}>Clear Temper</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                value={temperToken}
-                editable={false}
-              />
-              <TouchableOpacity onPress={copyToClipboard}>
-                <Ionicons
-                  name="copy-outline"
-                  size={24}
-                  color={colors.primary}
+      <TenantUtilitiesTabs activeTab={"Manage Meters"} navigation={navigation}>
+        <>
+          <View style={styles.section}>
+            <View style={styles._seciton_row}>
+              <Text weight="semiBold" style={styles.sectionTitle}>
+                Manage Meters
+              </Text>
+              <View style={styles.dropdownContainer}>
+                <DropdownComponent
+                  data={[
+                    { label: "One", value: "one" },
+                    { label: "Two", value: "two" },
+                    { label: "Three", value: "three" },
+                  ]}
+                  label="Property Group"
+                  placeholder="Property Group"
+                  dropdownStyle={styles.customDropdownStyle}
+                  placeholderStyle={styles.customPlaceholderStyle}
+                  selectedTextStyle={styles.customSelectedTextStyle}
                 />
-              </TouchableOpacity>
+              </View>
             </View>
-            <Button
-              text="Copy"
-              preset="reversed"
-              onPress={copyToClipboard}
-              style={styles.copyButton}
-            />
+            {/* ÷÷ */}
           </View>
-        </View>
-      </Modal>
+
+          {/* Search Bar */}
+          <View style={styles._searchrow}>
+            <View style={styles._inputview}>
+              <TextField
+                placeholderTextColor={colors.primaryLight}
+                // inputWrapperStyle={{ backgroundColor: colors.white }}
+                placeholder="Search"
+                style={styles._input}
+                value={search}
+                onChangeText={(text) => setSearch(text as string)}
+              />
+            </View>
+
+            {user?.role !== "facility_manager" && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles._addbtn}
+                onPress={handleAddMeter}
+              >
+                <WithLocalSvg asset={Images.addprop} />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Meters List */}
+          <FlatList
+            data={filteredMeters}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <MeterCard
+                data={item}
+                onPress={(mode) => handleViewMeter(item)}
+                onEdit={(mode) => handleEditMeter(item)}
+                onClearTember={() => handleClearTember(item)}
+              />
+            )}
+          />
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={isModalVisible}
+            onRequestClose={handleCloseModal}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={handleCloseModal}
+                >
+                  <Ionicons
+                    name="close-circle"
+                    size={24}
+                    color={colors.error}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.modalText}>Clear Tamper</Text>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    value={temperToken}
+                    editable={false}
+                  />
+                  <TouchableOpacity onPress={copyToClipboard}>
+                    <Ionicons
+                      name="copy-outline"
+                      size={24}
+                      color={colors.primary}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Button
+                  text="Copy"
+                  preset="reversed"
+                  onPress={copyToClipboard}
+                  style={styles.copyButton}
+                />
+              </View>
+            </View>
+          </Modal>
+        </>
+      </TenantUtilitiesTabs>
     </Screen>
   );
 };
@@ -337,7 +352,7 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dropdownContainer: {
-    width: adjustSize(120),
+    width: adjustSize(150),
   },
   customDropdownStyle: {
     height: adjustSize(33),

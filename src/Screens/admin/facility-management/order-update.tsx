@@ -192,7 +192,7 @@ export function FMOrderUpdate({ navigation }: Props) {
 
           {/* Issue date */}
           <Text style={styles.label} weight="medium">
-            Upload Images
+          Upload attachments
           </Text>
           <Pressable
             onPress={() => pickImages()}

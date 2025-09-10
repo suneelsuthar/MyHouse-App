@@ -133,7 +133,7 @@ export const AdminManagePropertyGroup = ({
         }
         centerAccessory={
           <Text
-            text="Manage Property Groups"
+            text="Property Groups"
             weight="semiBold"
             style={{ fontSize: adjustSize(15), color: colors.primary }}
           />

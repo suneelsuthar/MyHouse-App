@@ -81,6 +81,7 @@ const ToggleRow = ({
         onValueChange={onChange}
         trackColor={{ false: colors.greylight, true: colors.primary }}
         thumbColor={colors.white}
+        style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
       />
     </View>
   );
@@ -610,13 +611,13 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   boxBtnText: {
-    color: colors.primaryLight,
+    color: colors.primary,
     fontSize: adjustSize(16),
   } as TextStyle,
   countValue: {
     width: adjustSize(30),
     textAlign: "center",
-    color: colors.primaryLight,
+    color: colors.primary,
     fontSize: adjustSize(14),
   },
 

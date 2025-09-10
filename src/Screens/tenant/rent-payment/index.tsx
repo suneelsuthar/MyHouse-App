@@ -29,14 +29,14 @@ export function RentPayment(props: RentPaymentProps) {
       id: 0,
       title: "Payment of Charges",
       icon: Images.charges,
-      onPress: () => props.navigation.navigate("TenantUtilitiesCharges"),
+      onPress: () => props.navigation.navigate("UtilitiesCharges"),
     },
 
     {
       id: 1,
       title: "Utility Payments",
       icon: Images.utility,
-      onPress: () => props.navigation.navigate("TenantUtilitiesMyMeter"),
+      onPress: () => props.navigation.navigate("UtilitiesMyMeter"),
     },
   ];
 

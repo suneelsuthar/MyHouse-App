@@ -139,8 +139,8 @@ import { PanicEmergency } from "./admin/emergency/panic";
 import { AdminPropertyRequests } from "./admin/property-requests";
 import { AdminManageInspections } from "./admin/manage-inspections";
 import { AdminSimDataManagement } from "./admin/utilities/sim-data-management";
-import { AdminManageMeters } from "./admin/utilities/manage-meters";
-import { AdminManageTransactions } from "./admin/utilities/manage-transactions";
+import { ManageMeters } from "./admin/utilities/manage-meters";
+import { ManageTransactions } from "./admin/utilities/manage-transactions";
 import { AdminManagePropertyGroup } from "./admin/utilities/manage-property-group";
 import { AdminManageVendingHistory } from "./admin/utilities/manage-vending-history";
 import { Analysis } from "./admin/utilities/analysis";
@@ -282,8 +282,8 @@ export {
   AdminPropertyRequests,
   AdminManageInspections,
   AdminSimDataManagement,
-  AdminManageMeters,
-  AdminManageTransactions,
+  ManageMeters,
+  ManageTransactions,
   AdminManagePropertyGroup,
   ViewPropertiesGroups,
   AdminManageVendingHistory,

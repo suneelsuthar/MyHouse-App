@@ -4,7 +4,7 @@ import { Screen, Text, Header2, TextField } from "../../../Components";
 import { colors, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
 import { TenantUtilitiesTabs } from "./Components/TenantUtilitiesTabs";
-import { TenantUtilitiesChargesList } from "./Components//TenantUtilitiesChargesList";
+import { UtilitiesChargesList } from "./Components/TenantUtilitiesChargesList";
 // 🔹 Static dropdown data
 const typeOptions = [
   { label: "Property", value: "Property" },
@@ -18,7 +18,7 @@ const sortOptions = [
   { label: "C", value: "C" },
 ];
 
-export const TenantUtilitiesCharges: React.FC = ({ navigation }: any) => {
+export const UtilitiesCharges: React.FC = ({ navigation }: any) => {
   // 🔹 Tabs
   const [activeTab] = useState("Charges");
 
@@ -77,7 +77,7 @@ export const TenantUtilitiesCharges: React.FC = ({ navigation }: any) => {
               placeholder="Search"
             />
           </View>
-          <TenantUtilitiesChargesList />
+          <UtilitiesChargesList />
         </ScrollView>
       </TenantUtilitiesTabs>
     </Screen>

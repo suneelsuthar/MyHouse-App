@@ -7,11 +7,14 @@ import {
   ViewStyle,
   TextStyle,
   Switch,
+  Image,
+  ImageSourcePropType
 } from "react-native";
 import { Text } from "../../../../Components";
 import DropdownComponent from "../../../../Components/DropDown";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { useNavigation } from "@react-navigation/native";
+import { Images } from "../../../../assets/Images";
 type Step3Props = {
   initialServices?: string[];
   initialSelectedServices?: string[];
@@ -19,19 +22,28 @@ type Step3Props = {
   mode?: string;
 };
 
-const DEFAULT_SERVICES = [
-  "Wardrobe",
-  "Air conditioner",
-  "Wifi",
-  "Heater",
-  "TV",
-  "Kitchen",
-  "Parking",
-  "Washer",
-  "Dryer",
-  "Microwave",
-  "Refrigerator",
-  "Gym",
+
+interface ServiceItem {
+  label: string;
+  value: string;
+  image: ImageSourcePropType;
+}
+
+
+
+const DEFAULT_SERVICES: ServiceItem[] = [
+  { label: "Wardrobe", value: "Wardrobe", image: Images.logo_1 },
+  { label: "Air conditioner", value: "Air conditioner", image: Images.logo_1 },
+  { label: "Wifi", value: "Wifi", image: Images.logo_1 },
+  { label: "Heater", value: "Heater", image: Images.logo_1 },
+  { label: "TV", value: "TV", image: Images.logo_1 },
+  { label: "Kitchen", value: "Kitchen", image: Images.logo_1 },
+  { label: "Parking", value: "Parking", image: Images.logo_1 },
+  { label: "Washer", value: "Washer", image: Images.logo_1 },
+  { label: "Dryer", value: "Dryer", image: Images.logo_1 },
+  { label: "Microwave", value: "Microwave", image: Images.logo_1 },
+  { label: "Refrigerator", value: "Refrigerator", image: Images.logo_1 },
+  { label: "Gym", value: "Gym", image: Images.logo_1 },
 ];
 
 const DEFAULT_RESTRICTIONS = [
@@ -48,7 +60,7 @@ const Step3: React.FC<Step3Props> = ({
   initialRestrictions = DEFAULT_RESTRICTIONS,
 }) => {
   // Services
-  const [allServices] = useState<string[]>(initialServices);
+  const [allServices] = useState<ServiceItem[]>(DEFAULT_SERVICES);
   const [selectedServices, setSelectedServices] = useState<string[]>(
     initialSelectedServices
   );
@@ -92,7 +104,7 @@ const Step3: React.FC<Step3Props> = ({
       </Text>
 
       <DropdownComponent
-        data={allServices.map((s) => ({ label: s, value: s }))}
+        data={allServices}
         value={serviceValue}
         onChangeValue={(val) => {
           setServiceValue(null);
@@ -125,23 +137,34 @@ const Step3: React.FC<Step3Props> = ({
 
       {selectedServices.length > 0 && (
         <View style={styles.chipsRow}>
-          {selectedServices.map((s) => (
-            <View key={s} style={styles.chip}>
-              <Text style={styles.chipText}>{s}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setSelectedServices((prev) => prev.filter((x) => x !== s))
-                }
-                style={styles.chipClose}
-                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-              >
-                {/* Using a simple X since AntDesign import was removed */}
-                <Text style={{ color: colors.white, fontSize: adjustSize(12) }}>
-                  ×
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+          {selectedServices.map((serviceValue) => {
+            const service = allServices.find(s => s.value === serviceValue);
+            if (!service) return null;
+            
+            return (
+              <View key={service.value} style={styles.chip}>
+                <View style={styles.chipContent}>
+                  <Image 
+                    source={service.image} 
+                    style={styles.serviceImage} 
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.chipText}>{service.label}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    setSelectedServices((prev) => prev.filter((x) => x !== service.value))
+                  }
+                  style={styles.chipClose}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Text style={{ color: colors.white, fontSize: adjustSize(12) }}>
+                    ×
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         </View>
       )}
 
@@ -196,6 +219,7 @@ const Step3: React.FC<Step3Props> = ({
               title: "Assign Agent",
             } as never)
           }
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
       <View style={styles.toggleRow}>
@@ -212,6 +236,7 @@ const Step3: React.FC<Step3Props> = ({
               setAssignPrimaryAgent(false);
             }
           }}
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
 
@@ -235,6 +260,7 @@ const Step3: React.FC<Step3Props> = ({
               title: "Assign Facility Manager",
             } as never)
           }
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
       <View style={styles.toggleRow}>
@@ -251,6 +277,7 @@ const Step3: React.FC<Step3Props> = ({
               setAllowFacilityManagerRequest(false);
             }
           }}
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
 
@@ -277,20 +304,32 @@ const styles = StyleSheet.create({
   },
 
   chip: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: adjustSize(20),
-    paddingVertical: adjustSize(6),
-    paddingLeft: adjustSize(12),
-    paddingRight: adjustSize(8),
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  chipContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  serviceImage: {
+    width: 20,
+    height: 20,
+    marginRight: 6,
+    borderRadius:5
+    // tintColor: colors.white,
   },
   chipText: {
     color: colors.white,
     fontSize: adjustSize(12),
-  } as TextStyle,
+  },
   chipClose: {
-    marginLeft: adjustSize(8),
+    marginLeft: 4,
     width: adjustSize(16),
     height: adjustSize(16),
     borderRadius: adjustSize(8),

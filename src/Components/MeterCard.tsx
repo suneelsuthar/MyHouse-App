@@ -7,10 +7,12 @@ import {
   Easing,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { AdminStackParamList } from "../navigation/types";
 import { adjustSize, colors, typography } from "../theme";
 import { Text } from "./Text";
 import Entypo from "@expo/vector-icons/Entypo";
+import { useAppSelector } from "../store/hooks";
+import { RootState } from "../store";
+
 type MeterData = {
   id: string;
   meterName: string;
@@ -60,6 +62,7 @@ export const MeterCard: React.FC<MeterCardProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuAnimation = useRef(new Animated.Value(0)).current;
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const menuScale = menuAnimation.interpolate({
     inputRange: [0, 1],
@@ -196,26 +199,28 @@ export const MeterCard: React.FC<MeterCardProps> = ({
           >
             <Text style={styles.menuText}>View</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              setMenuVisible(false);
-              onEdit("edit", data);
-            }}
-          >
-            <Text style={styles.menuText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              setMenuVisible(false);
-              onClearTember?.(data);
-            }}
-          >
-            <Text style={[styles.menuText]}>
-              Clear temper
-            </Text>
-          </TouchableOpacity>
+          {user?.role !== "facility_manager" && (
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                setMenuVisible(false);
+                onEdit("edit", data);
+              }}
+            >
+              <Text style={styles.menuText}>Update</Text>
+            </TouchableOpacity>
+          )}
+          {user?.role !== "facility_manager" && (
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                setMenuVisible(false);
+                onClearTember?.(data);
+              }}
+            >
+              <Text style={[styles.menuText]}>Clear Tamper</Text>
+            </TouchableOpacity>
+          )}
         </Animated.View>
       )}
     </View>

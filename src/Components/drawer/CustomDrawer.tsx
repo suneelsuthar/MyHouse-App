@@ -396,23 +396,23 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminManageMeters" },
+          params: { screen: "ManageMeters" },
         }),
     },
     {
       id: 3,
-      title: "Manage Transactions",
+      title: "Transactions",
       type: "item",
       icon: Images.managetrans,
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminManageTransactions" },
+          params: { screen: "ManageTransactions" },
         }),
     },
     {
       id: 4,
-      title: "Manage property group",
+      title: "Property Groups",
       type: "item",
       icon: Images.managegroups,
       onPress: () =>
@@ -423,7 +423,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
     {
       id: 5,
-      title: "Manage Vending History",
+      title: "Vending History",
       type: "item",
       icon: Images.managehistory,
       onPress: () =>
@@ -432,16 +432,55 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           params: { screen: "AdminManageVendingHistory" },
         }),
     },
+    // {
+    //   id: 6,
+    //   title: "Analysis",
+    //   type: "dropdown",
+    //   icon: Images.analysis,
+    //   onPress: () =>
+    //     closeMenusAndNavigate("Admin", {
+    //       screen: "Home",
+    //       params: { screen: "Analysis" },
+    //     }),
+
+    // },
     {
       id: 6,
       title: "Analysis",
-      type: "item",
+      type: "dropdown",
       icon: Images.analysis,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Home",
-          params: { screen: "Analysis" },
-        }),
+      menueItems: [
+        {
+          id: 1,
+          title: "Power Consumption",
+          type: "item",
+          icon: Images.simdata,
+
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "Analysis",
+                params: { tab: "power_consumption" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Vending History",
+          type: "item",
+          icon: Images.simdata,
+
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "Analysis",
+                params: { tab: "vending_history" },
+              },
+            }),
+        },
+      ],
     },
     {
       id: 7,
@@ -597,7 +636,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           icon: Images.managetrans,
           onPress: () =>
             closeMenusAndNavigate("Home", {
-              screen: "TenantUtilitiesCharges",
+              screen: "UtilitiesCharges",
             }),
         },
         {
@@ -1031,9 +1070,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       type: "item",
       icon: Images.meters,
       onPress: () =>
-        closeMenusAndNavigate("Admin", {
+        closeMenusAndNavigate("FacilityManager", {
           screen: "Home",
-          params: { screen: "AdminManageMeters" },
+          params: { screen: "ManageMeters" },
         }),
     },
     {
@@ -1042,9 +1081,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       type: "item",
       icon: Images.managetrans,
       onPress: () =>
-        closeMenusAndNavigate("Admin", {
+        closeMenusAndNavigate("FacilityManager", {
           screen: "Home",
-          params: { screen: "AdminManageTransactions" },
+          params: { screen: "UtilitiesCharges" },
         }),
     },
 
@@ -1056,7 +1095,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminManageTransactions" },
+          params: { screen: "ManageTransactions" },
         }),
     },
 
@@ -1092,18 +1131,18 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           id: 0,
           title: "Power Consumption",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Analysis", {
               screen: "Home",
-              params: { screen: "Analysis" },
+              params: { screen: "Analysis", tab: "power_consumption" },
             }),
         },
         {
           id: 0,
           title: "Vending History",
           onPress: () =>
-            closeMenusAndNavigate("Admin", {
+            closeMenusAndNavigate("Analysis", {
               screen: "Home",
-              params: { screen: "Analysis" },
+              params: { screen: "Analysis", tab: "vending_history" },
             }),
         },
       ],
@@ -1184,33 +1223,59 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
         {/* tabs */}
 
-        {user?.role === "admin" ||
-          (user?.role === "facility_manager" && (
-            <View style={styles.tab_row}>
-              <TouchableOpacity
-                onPress={() => setactive(0)}
-                activeOpacity={0.6}
-                style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
-              >
-                <Text
-                  weight="medium"
-                  text={"Properties"}
-                  style={[active === 0 ? styles.active_text : styles.tabtext]}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setactive(1)}
-                activeOpacity={0.6}
-                style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
-              >
-                <Text
-                  weight="medium"
-                  text="Utilities"
-                  style={[active === 1 ? styles.active_text : styles.tabtext]}
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
+        {user?.role === "admin" && (
+          <View style={styles.tab_row}>
+            <TouchableOpacity
+              onPress={() => setactive(0)}
+              activeOpacity={0.6}
+              style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text={"Properties"}
+                style={[active === 0 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setactive(1)}
+              activeOpacity={0.6}
+              style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text="Utilities"
+                style={[active === 1 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {user?.role === "facility_manager" && (
+          <View style={styles.tab_row}>
+            <TouchableOpacity
+              onPress={() => setactive(0)}
+              activeOpacity={0.6}
+              style={[active === 0 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text={"Properties"}
+                style={[active === 0 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setactive(1)}
+              activeOpacity={0.6}
+              style={[active === 1 ? styles.active_tabitem : styles._tabitem]}
+            >
+              <Text
+                weight="medium"
+                text="Utilities"
+                style={[active === 1 ? styles.active_text : styles.tabtext]}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {items.map((val, i) => {
           return (

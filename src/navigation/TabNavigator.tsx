@@ -79,8 +79,8 @@ import {
   PanicEmergency,
   AdminPropertyRequests,
   AdminSimDataManagement,
-  AdminManageMeters,
-  AdminManageTransactions,
+  ManageMeters,
+  ManageTransactions,
   AdminManagePropertyGroup,
   AdminManageVendingHistory,
   Analysis,
@@ -119,6 +119,7 @@ import AdminPropertyFeatures from "../Screens/admin/property-management/features
 import AdminPropertyRestriction from "../Screens/admin/property-management/restriction";
 import AdminManageInspections from "../Screens/admin/property-management/manage-inspections";
 import InspectionDetails from "../Screens/admin/property-management/inspection-details";
+import { AdminWallet } from "../Screens/admin/wallet/AdminWallet";
 
 import {
   TenantStackParamList,
@@ -151,8 +152,8 @@ const AdminChatStack = createNativeStackNavigator<AdminStackParamList>();
 const TenantWalletStack = createNativeStackNavigator<TenantStackParamList>();
 
 import { UtilitiesSummary } from "../Screens/tenant/utilities/Summary";
-import { TenantUtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
-import { TenantUtilitiesCharges } from "../Screens/tenant/utilities/Charges";
+import { UtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
+import { UtilitiesCharges } from "../Screens/tenant/utilities/Charges";
 import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transactions";
 import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/VendingHistory";
 import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
@@ -404,31 +405,64 @@ const FacilityManagerStackNavigator = () => {
         name="TenantsRequests"
         component={TenantsRequests}
       />
-    <FacilityManagerStack.Screen name="CommunityArea" component={CommunityArea} />
-    <FacilityManagerStack.Screen
-      name="AdminAmenityView"
-      component={AdminAmenityView}
-    />
-    <FacilityManagerStack.Screen
-      name="AdminAmenityEdit"
-      component={AdminAmenityEdit}
-    />
-    <FacilityManagerStack.Screen
-      name="AdminAmenityMakeReservation"
-      component={AdminAmenityMakeReservation}
-    />
-    <FacilityManagerStack.Screen
-      name="AdminAmenityManageCalendar"
-      component={AdminAmenityManageCalendar}
-    />
-    <FacilityManagerStack.Screen
-      name="AdminAddNewAmenity"
-      component={AdminAddNewAmenity}
-    />
-    <FacilityManagerStack.Screen
-      name="AdminReservationView"
-      component={AdminReservationView}
-    />
+      <FacilityManagerStack.Screen
+        name="CommunityArea"
+        component={CommunityArea}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminAmenityView"
+        component={AdminAmenityView}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminAmenityEdit"
+        component={AdminAmenityEdit}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminAmenityMakeReservation"
+        component={AdminAmenityMakeReservation}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminAmenityManageCalendar"
+        component={AdminAmenityManageCalendar}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminAddNewAmenity"
+        component={AdminAddNewAmenity}
+      />
+      <FacilityManagerStack.Screen
+        name="AdminReservationView"
+        component={AdminReservationView}
+      />
+
+      <FacilityManagerStack.Screen name="Analysis" component={Analysis} />
+      <FacilityManagerStack.Screen
+        name="ManageMeters"
+        component={ManageMeters}
+      />
+
+      <FacilityManagerStack.Screen
+        name="UtilitiesSummary"
+        component={UtilitiesSummary}
+      />
+      <FacilityManagerStack.Screen
+        name="UtilitiesMyMeter"
+        component={UtilitiesMyMeter}
+      />
+
+      <FacilityManagerStack.Screen
+        name="ViewMeterDetails"
+        component={ViewMeterDetails}
+      />
+
+      <FacilityManagerStack.Screen
+        name="ManageTransactions"
+        component={ManageTransactions}
+      />
+
+      <FacilityManagerStack.Screen
+        name="UtilitiesCharges"
+        component={UtilitiesCharges}
+      />
     </FacilityManagerStack.Navigator>
   );
 };
@@ -582,13 +616,10 @@ const AdminHomeStackNavigator = () => (
       name="AdminSimDataManagement"
       component={AdminSimDataManagement}
     />
+    <AdminHomeStack.Screen name="ManageMeters" component={ManageMeters} />
     <AdminHomeStack.Screen
-      name="AdminManageMeters"
-      component={AdminManageMeters}
-    />
-    <AdminHomeStack.Screen
-      name="AdminManageTransactions"
-      component={AdminManageTransactions}
+      name="ManageTransactions"
+      component={ManageTransactions}
     />
     <AdminHomeStack.Screen
       name="AdminManagePropertyGroup"
@@ -700,13 +731,12 @@ const TenantWalletStackNavigator = () => (
 
 const AdminWalletStackNavigator = () => (
   <AdminWalletStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminWalletStack.Screen name="AdminWallet" component={AdminWallet} />
     <AdminWalletStack.Screen
       name="FinancialReports"
       component={FinancialReports}
     />
-
     <AdminWalletStack.Screen name="SendMoney" component={SendMoney} />
-
     <AdminWalletStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
   </AdminWalletStack.Navigator>
 );
@@ -766,14 +796,8 @@ const TenantHomeStack = () => (
       component={FacilityManagement}
     />
     <HomeStack.Screen name="UtilitiesSummary" component={UtilitiesSummary} />
-    <HomeStack.Screen
-      name="TenantUtilitiesMyMeter"
-      component={TenantUtilitiesMyMeter}
-    />
-    <HomeStack.Screen
-      name="TenantUtilitiesCharges"
-      component={TenantUtilitiesCharges}
-    />
+    <HomeStack.Screen name="UtilitiesMyMeter" component={UtilitiesMyMeter} />
+    <HomeStack.Screen name="UtilitiesCharges" component={UtilitiesCharges} />
     <HomeStack.Screen
       name="TenantUtilitiesTransactions"
       component={TenantUtilitiesTransactions}
@@ -1345,9 +1369,11 @@ const AdminTabs = () => (
     screenOptions={({ route }) => ({
       tabBarStyle: {
         backgroundColor: "#292766",
+        height: 55,
       },
       tabBarLabelStyle: {
         fontFamily: typography.fonts.poppins.medium,
+        marginBottom: 3,
       },
       tabBarIcon: ({ focused, color, size }) => {
         switch (route.name) {
@@ -1405,6 +1431,7 @@ const AdminTabs = () => (
           getFocusedRouteNameFromRoute(route) ?? "AdminDashboard";
         const baseTabBarStyle = {
           backgroundColor: "#292766",
+          height: 55,
         } as const;
 
         // Hide on Facility-Management detail screens (keep visible on FacilityManagement index)
@@ -1425,8 +1452,8 @@ const AdminTabs = () => (
           "AdminPropertyRequests",
           "AdminManageInspections",
           "AdminSimDataManagement",
-          "AdminManageMeters",
-          "AdminManageTransactions",
+          "ManageMeters",
+          "ManageTransactions",
           "AdminManagePropertyGroup",
           "AdminManageVendingHistory",
           "Analysis",
@@ -1450,6 +1477,7 @@ const AdminTabs = () => (
           getFocusedRouteNameFromRoute(route) ?? "AdminManageBookings";
         const baseTabBarStyle = {
           backgroundColor: "#292766",
+          height: 55,
         } as const;
         if (routeName === "AdminBookingDetails") {
           return {
@@ -1472,6 +1500,7 @@ const AdminTabs = () => (
         // Base tab bar style for Admin tabs
         const baseTabBarStyle = {
           backgroundColor: "#292766",
+          height: 55,
         } as const;
         // Hide tab bar on Add Property and other full-screen property flows
         if (

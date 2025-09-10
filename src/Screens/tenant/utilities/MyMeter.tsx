@@ -32,16 +32,16 @@ interface MeterDetail {
 
 // 🔹 Props type (adjust according to your navigation setup)
 type RootStackParamList = {
-  TenantUtilitiesMyMeter: undefined;
+  UtilitiesMyMeter: undefined;
   // add other screens if needed
 };
 
-type TenantUtilitiesMyMeterProps = {
+type UtilitiesMyMeterProps = {
   navigation: NativeStackNavigationProp<
     RootStackParamList,
-    "TenantUtilitiesMyMeter"
+    "UtilitiesMyMeter"
   >;
-  route: RouteProp<RootStackParamList, "TenantUtilitiesMyMeter">;
+  route: RouteProp<RootStackParamList, "UtilitiesMyMeter">;
 };
 
 const formatAmount = (num: number) =>
@@ -104,7 +104,7 @@ const AccountDetailRow: React.FC<{ title: string; value: string }> = ({
   );
 };
 
-export const TenantUtilitiesMyMeter: React.FC<TenantUtilitiesMyMeterProps> = ({
+export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
   navigation,
 }) => {
   // 🔹 Tabs

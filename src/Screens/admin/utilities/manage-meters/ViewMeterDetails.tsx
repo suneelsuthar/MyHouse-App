@@ -44,7 +44,7 @@ type ViewMeterDetailsScreenRouteProp = RouteProp<
   "ViewMeterDetails"
 >;
 
-const ViewMeterDetails = () => {
+const ViewMeterDetails = (props: any) => {
   const route = useRoute<ViewMeterDetailsScreenRouteProp>();
   const { meter } = route.params;
   const [isEnabled, setIsEnabled] = useState(false);
@@ -121,7 +121,7 @@ const ViewMeterDetails = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Manage</Text>
           <View style={styles.manageRow}>
-            <Text style={styles.manageLabel}>Clear Temper</Text>
+            <Text style={styles.manageLabel}>Clear Tamper</Text>
             <ActionButton label="Clear" onPress={handleClearTemper} />
           </View>
           <View style={styles.manageRow}>
@@ -135,11 +135,12 @@ const ViewMeterDetails = () => {
           <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Switch</Text>
             <Switch
-              trackColor={{ false: colors.white, true: colors.primary }}
-              thumbColor={colors.white}
+              trackColor={{ false: colors.primaryLight, true: colors.primary }}
+              thumbColor={colors.primary}
               ios_backgroundColor="#B0B0B0"
               onValueChange={toggleSwitch}
               value={isEnabled}
+              style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
             />
           </View>
         </View>
@@ -165,7 +166,12 @@ const ViewMeterDetails = () => {
 
           <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Transactions</Text>
-            <ActionButton label="View" onPress={() => {}} />
+            <ActionButton
+              label="View"
+              onPress={() => {
+                props.navigation.navigate("ManageTransactions");
+              }}
+            />
           </View>
           <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Logs</Text>
@@ -188,7 +194,7 @@ const ViewMeterDetails = () => {
             >
               <Ionicons name="close-circle" size={24} color={colors.error} />
             </TouchableOpacity>
-            <Text style={styles.modalText}>Clear Temper</Text>
+            <Text style={styles.modalText}>Clear Tamper</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}

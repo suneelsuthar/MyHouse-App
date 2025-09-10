@@ -81,7 +81,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header title={isEditMode ? "Edit Meter" : "Add Meter"} />
+      <Header title={isEditMode ? "Update Meter" : "Add Meter"} />
 
       <ScrollView
         style={styles.content}
@@ -92,9 +92,10 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
           <Text style={styles.label}>Meter ID</Text>
           <TextField
             placeholder="lorem ipsum"
-            value={formData.meterId}
+            value={isEditMode ? "MTR001" : formData.meterId}
             onChangeText={(text) => handleInputChange("meterId", text)}
             inputWrapperStyle={styles.textInput}
+            editable={!isEditMode}
           />
         </View>
 
@@ -114,7 +115,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
             data={manufacturerOptions}
             value={formData.manufacturer}
             onChangeValue={(value) => handleInputChange("manufacturer", value)}
-            placeholder="lorem ipsum"
+            placeholder="Select Manufacturer"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -124,13 +125,23 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
 
         <View style={styles.fieldContainer}>
           <Text style={styles.label}>Phase Number</Text>
-          <TextField
-            placeholder="lorem ipsum"
+          <DropdownComponent
+            data={[
+              { label: "Phase 1", value: "phase_1" },
+              { label: "Phase 2", value: "phase_2" },
+              { label: "Phase 3", value: "phase_3" },
+            ]}
             value={formData.phaseNumber}
-            onChangeText={(text) => handleInputChange("phaseNumber", text)}
-            inputWrapperStyle={styles.textInput}
+            onChangeValue={(value) => handleInputChange("phaseNumber", value)}
+            placeholder="Select Phase Number"
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
+
+        
 
         <View style={styles.fieldContainer}>
           <Text style={styles.label}>Property Group</Text>
@@ -138,7 +149,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
             data={propertyGroupOptions}
             value={formData.propertyGroup}
             onChangeValue={(value) => handleInputChange("propertyGroup", value)}
-            placeholder="lorem ipsum"
+            placeholder="Select Property Group"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -152,7 +163,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
             data={propertyOptions}
             value={formData.property}
             onChangeValue={(value) => handleInputChange("property", value)}
-            placeholder="lorem ipsum"
+            placeholder="Select Property"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -197,7 +208,7 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(12),
     borderWidth: 1,
     borderColor: colors.border,
-    paddingHorizontal: spacing.md,
+    // paddingHorizontal: spacing.md,
     height: adjustSize(50),
     backgroundColor: colors.white,
   },
@@ -227,6 +238,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: spacing.xl,
     height: adjustSize(50),
+    marginBottom:20
   },
   addButtonText: {
     fontSize: adjustSize(16),
