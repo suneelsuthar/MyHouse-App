@@ -21,7 +21,7 @@ export const Verify: React.FC = () => {
           activeOpacity={0.5}
           onPress={() =>
             (navigation as any)
-              .getParent?.("AdminDrawer")
+              .getParent?.("FacilityManagerDrawer")
               ?.dispatch(DrawerActions.openDrawer())
           }
         >

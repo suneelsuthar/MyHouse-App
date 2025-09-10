@@ -158,6 +158,7 @@ import { ProfileSettings } from "./global/profile/profile-settings";
 import { MessageHistory } from "./global/message-history";
 import { Reviews } from "./global/profile/reviews";
 import { Subscription } from "./global/profile/subscription";
+import { SelectSubscriptionplans } from "./global/profile/components/SelectSubscriptionplans";
 export {
   Splash,
   Intro,
@@ -300,4 +301,5 @@ export {
   ProfileSettings,
   Reviews,
   Subscription,
+  SelectSubscriptionplans
 };

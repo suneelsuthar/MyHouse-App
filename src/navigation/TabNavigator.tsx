@@ -104,6 +104,7 @@ import {
   AgentHome,
   Subscription,
   Reviews,
+  SelectSubscriptionplans
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -375,6 +376,10 @@ const FacilityManagerStackNavigator = () => {
       <FacilityManagerStack.Screen
         name="Subscription"
         component={Subscription}
+      />
+       <FacilityManagerStack.Screen
+        name="SelectSubscriptionplans"
+        component={SelectSubscriptionplans}
       />
       <FacilityManagerStack.Screen name="Verify" component={Verify} />
 
