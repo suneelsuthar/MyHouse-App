@@ -97,4 +97,6 @@ export const Images = {
   charges: require("./charges.svg"),
   upgrade: require("./upgrade.svg"),
   boost: require("./boost.svg"),
+  userIcon3: require("./user-icon-3.svg"),
+  check2: require("./check-2.svg"),
 };

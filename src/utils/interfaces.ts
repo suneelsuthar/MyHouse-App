@@ -231,6 +231,7 @@ export type FacilityManagerStackParamList = {
   EditProfile: undefined;
   ProfileSettings: undefined;
   Subscription: undefined;
+  SelectSubscriptionplans: undefined;
   Reviews: undefined;
   Verify: undefined;
   RentPayment: undefined;

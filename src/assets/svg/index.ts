@@ -18,6 +18,8 @@ import TransactionIcon from "./TransactionIcon";
 import MyMeterIcon from "./MyMeterIcon";
 import ChargesIcon from "./ChargesIcon";
 import ReportIssueIcon from "./ReportIssueIcon";
+import SubscriptionPlansIcon from "./SubscriptionPlansIcon";
+import MembershipPlansIcon from "./MembershipPlansIcon";
 export {
   HistoryIcon,
   HomeIcon,
@@ -38,4 +40,6 @@ export {
   MyMeterIcon,
   ChargesIcon,
   ReportIssueIcon,
+  SubscriptionPlansIcon,
+  MembershipPlansIcon
 };
