@@ -56,7 +56,9 @@ export function AdminPropertyManagement({
         </TouchableOpacity>
         <View style={styles.headerinfo}>
           <Text weight="semiBold" style={styles.username}>
-            {propertyType === "rental" ? "Rental Properties" : "Managed Properties"}
+            {propertyType === "rental"
+              ? "Rental Properties"
+              : "Managed Properties"}
           </Text>
         </View>
         <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
@@ -67,7 +69,9 @@ export function AdminPropertyManagement({
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-         {propertyType === "rental" ? "Rental Properties" : "Managed Properties"}
+            {propertyType === "rental"
+              ? "Rental Properties"
+              : "Managed Properties"}
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -103,7 +107,9 @@ export function AdminPropertyManagement({
           activeOpacity={0.7}
           style={styles._addbtn}
           onPress={() =>
-            (navigation as any).navigate("AdminAddProperty" as never)
+            (navigation as any).navigate("AdminAddProperty", {
+              type: "fm",
+            })
           }
         >
           <WithLocalSvg asset={Images.addprop} />
@@ -127,7 +133,7 @@ export function AdminPropertyManagement({
               } else if (action === "Edit") {
                 (navigation as any).navigate(
                   "AdminAddProperty" as never,
-                  { propertyId: property.propertyId,mode:"edit" } as never
+                  { propertyId: property.propertyId, mode: "edit" } as never
                 );
               } else if (action === "Manage Calendar") {
                 (navigation as any).navigate(

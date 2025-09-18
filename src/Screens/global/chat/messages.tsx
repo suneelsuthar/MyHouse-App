@@ -24,7 +24,7 @@ interface IMessage {
   avatar: string; // 👈 added avatar
 }
 
-export const Message = () => {
+export const Message = (props:any) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<IMessage[]>([
     {
@@ -116,8 +116,15 @@ export const Message = () => {
       contentContainerStyle={styles.container}
     >
       {/* Header */}
+
+      
       <View style={styles.header}>
         <View style={styles.headerLeft}>
+          <TouchableOpacity activeOpacity={0.5} onPress={() =>props.navigation.goBack()}
+            style={{marginRight:5}}
+            >
+            <Ionicons name="arrow-back" size={20} color={colors.primary} />
+          </TouchableOpacity>
           <View style={styles.avatar}>
             <Ionicons name="person" size={20} color={colors.white} />
           </View>

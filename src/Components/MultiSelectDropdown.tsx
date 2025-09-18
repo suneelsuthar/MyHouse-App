@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ViewStyle,
   TextStyle,
+  StyleProp,
+  ScrollView,
 } from "react-native";
 import { Text, TextField } from "./index";
 import { adjustSize, colors, typography } from "../theme";
@@ -20,6 +22,8 @@ interface MultiSelectDropdownProps {
   containerStyle?: ViewStyle;
   maxDropdownHeight?: number;
   showSelectedChips?: boolean;
+  multiSelect?: boolean;
+  itemStyle?: StyleProp<ViewStyle>;
 }
 
 export default function MultiSelectDropdown({
@@ -30,23 +34,39 @@ export default function MultiSelectDropdown({
   containerStyle,
   maxDropdownHeight = 200,
   showSelectedChips,
+  multiSelect = true,
+  itemStyle,
 }: MultiSelectDropdownProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q
-      ? data.filter(
-          (d) =>
-            d.label.toLowerCase().includes(q) &&
-            !selectedValues.includes(d.value)
-        )
-      : data.filter((d) => !selectedValues.includes(d.value));
-  }, [query, data, selectedValues]);
+    // In single select mode, we want to show all options when searching
+    const items = multiSelect
+      ? data.filter((d) => !selectedValues.includes(d.value))
+      : data;
+
+    return q ? items.filter((d) => d.label.toLowerCase().includes(q)) : items;
+  }, [query, data, selectedValues, multiSelect]);
+
+  // Get the selected item for display in single select mode
+  const selectedItem = useMemo(() => {
+    if (!multiSelect && selectedValues.length > 0) {
+      return data.find((item) => item.value === selectedValues[0])?.label || "";
+    }
+    return "";
+  }, [selectedValues, data, multiSelect]);
 
   const add = (v: string) => {
-    if (!selectedValues.includes(v)) onChangeSelected([...selectedValues, v]);
+    if (multiSelect) {
+      if (!selectedValues.includes(v)) {
+        onChangeSelected([...selectedValues, v]);
+      }
+    } else {
+      onChangeSelected([v]);
+      setOpen(false);
+    }
     setQuery("");
   };
 
@@ -64,12 +84,24 @@ export default function MultiSelectDropdown({
       <View style={{ position: "relative" }}>
         <TextField
           placeholder={placeholder}
-          value={query}
+          value={!multiSelect && selectedItem ? selectedItem : query}
           onChangeText={(t) => {
             setQuery(t);
             if (!open) setOpen(true);
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={() => {
+            if (multiSelect || !selectedItem) {
+              setOpen(true);
+            }
+          }}
+          onPressIn={() => {
+            if (!multiSelect && selectedItem) {
+              // Clear selection when clicking on input in single select mode
+              onChangeSelected([]);
+              setQuery("");
+            }
+            if (!open) setOpen(true);
+          }}
         />
         <TouchableOpacity
           onPress={() => setOpen((s) => !s)}
@@ -107,21 +139,35 @@ export default function MultiSelectDropdown({
             { maxHeight: adjustSize(maxDropdownHeight) },
           ]}
         >
-          {filtered.length > 0 ? (
-            filtered.map((item) => (
-              <TouchableOpacity
-                key={item.value}
-                style={styles.dropdownItem}
-                onPress={() => add(item.value)}
-              >
-                <Text style={styles.dropdownItemText}>{item.label}</Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <View style={styles.noResults}>
-              <Text style={styles.noResultsText}>No properties found</Text>
-            </View>
-          )}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {filtered.length > 0 ? (
+              filtered.map((item) => (
+                <TouchableOpacity
+                  key={item.value}
+                  style={[
+                    styles.dropdownItem,
+                    itemStyle,
+                    selectedValues.includes(item.value) && styles.selectedItem,
+                  ]}
+                  onPress={() => add(item.value)}
+                >
+                  <Text
+                    style={[
+                      styles.dropdownItemText,
+                      selectedValues.includes(item.value) &&
+                        styles.selectedItemText,
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.noResults}>
+                <Text style={styles.noResultsText}>No properties found</Text>
+              </View>
+            )}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -200,5 +246,12 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: adjustSize(14),
     opacity: 0.7,
+  },
+  selectedItem: {
+    backgroundColor: colors.primaryLight,
+  },
+  selectedItemText: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
   },
 });

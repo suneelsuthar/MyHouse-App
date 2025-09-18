@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { Screen, Text, Header, Button, TextField } from "../../../Components";
+import {
+  Screen,
+  Text,
+  Header,
+  Button,
+  TextField,
+  CustomModal,
+} from "../../../../src/Components";
 import { adjustSize, colors } from "../../../theme";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import Step1, { type SelectedValue } from "./components/step1";
@@ -25,6 +32,69 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
     kind: "commercial",
     subType: "retail",
   });
+
+  // Facility Manager form state and modal visibility
+  const [isFMModalVisible, setIsFMModalVisible] = useState(false);
+  const [facilityManagerData, setFacilityManagerData] = useState({
+    propertyName: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    units: 1,
+  });
+
+  // Handle input change for Facility Manager form
+  const handleFacilityInputChange = (
+    field: keyof typeof facilityManagerData,
+    value: string | number
+  ) => {
+    setFacilityManagerData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Handle unit increment
+  const handleIncrement = () => {
+    setFacilityManagerData((prev) => ({
+      ...prev,
+      units: prev.units + 1,
+    }));
+  };
+
+  // Handle unit decrement
+  const handleDecrement = () => {
+    if (facilityManagerData.units > 1) {
+      setFacilityManagerData((prev) => ({
+        ...prev,
+        units: prev.units - 1,
+      }));
+    }
+  };
+
+  // Handle form submission
+  const handleFacilitySubmit = () => {
+    console.log("Facility Manager Data:", facilityManagerData);
+    // Add your form submission logic here
+
+    // Close the modal after submission
+    setIsFMModalVisible(false);
+
+    // Reset the form if needed
+    // setFacilityManagerData({
+    //   propertyName: "",
+    //   address: "",
+    //   city: "",
+    //   state: "",
+    //   country: "",
+    //   units: 1,
+    // });
+  };
+
+  {
+    console.log(props.route.params?.type);
+  }
 
   // const steps = [
   //   { id: 0, title: "Your Details" },
@@ -88,7 +158,13 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
       safeAreaEdges={["top", "bottom"]}
     >
       <Header
-        title={currentStep < 0 ? (props.route.params?.mode==="edit" ? "Edit Property" : "Add New Property") : steps[currentStep].title}
+        title={
+          currentStep < 0
+            ? props.route.params?.mode === "edit"
+              ? "Edit Property"
+              : "Add New Property"
+            : steps[currentStep].title
+        }
         leftAccessory={
           <TouchableOpacity
             activeOpacity={0.6}
@@ -142,58 +218,97 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                 text="Who are you listing this property as?"
               />
 
-              <View style={styles._row}>
-                <TouchableOpacity
-                  onPress={() => settype("Landlord")}
-                  activeOpacity={0.7}
-                  style={
-                    type === "Landlord" ? styles.active_card : styles._card
-                  }
-                >
-                  <MaterialCommunityIcons
-                    name="bank"
-                    size={adjustSize(34)}
-                    color={type === "Landlord" ? colors.white : colors.primary}
-                  />
-                  <Text
-                    weight="semiBold"
-                    text="Landlord"
+              {props.route.params?.type !== "fm" ? (
+                <View style={styles._row}>
+                  <TouchableOpacity
+                    onPress={() => settype("Landlord")}
+                    activeOpacity={0.7}
                     style={
-                      type === "Landlord"
-                        ? styles.active_card_title
-                        : styles._card_title
+                      type === "Landlord" ? styles.active_card : styles._card
                     }
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => settype("Property Manager")}
-                  style={
-                    type === "Property Manager"
-                      ? styles.active_card
-                      : styles._card
-                  }
-                >
-                  <FontAwesome5
-                    name="user-nurse"
-                    size={adjustSize(34)}
-                    color={
-                      type === "Property Manager"
-                        ? colors.white
-                        : colors.primary
-                    }
-                  />
-                  <Text
-                    weight="semiBold"
-                    text="Property Manager"
+                  >
+                    <MaterialCommunityIcons
+                      name="bank"
+                      size={adjustSize(34)}
+                      color={
+                        type === "Landlord" ? colors.white : colors.primary
+                      }
+                    />
+                    <Text
+                      weight="semiBold"
+                      text="Landlord"
+                      style={
+                        type === "Landlord"
+                          ? styles.active_card_title
+                          : styles._card_title
+                      }
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => settype("Property Manager")}
                     style={
                       type === "Property Manager"
-                        ? styles.active_card_title
-                        : styles._card_title
+                        ? styles.active_card
+                        : styles._card
                     }
-                  />
-                </TouchableOpacity>
-              </View>
+                  >
+                    <FontAwesome5
+                      name="user-nurse"
+                      size={adjustSize(34)}
+                      color={
+                        type === "Property Manager"
+                          ? colors.white
+                          : colors.primary
+                      }
+                    />
+                    <Text
+                      weight="semiBold"
+                      text="Property Manager"
+                      style={
+                        type === "Property Manager"
+                          ? styles.active_card_title
+                          : styles._card_title
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={styles._row}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      settype("Facility Manager");
+                      setIsFMModalVisible(true);
+                    }}
+                    activeOpacity={0.7}
+                    style={
+                      type === "Facility Manager"
+                        ? styles.active_card
+                        : styles._card
+                    }
+                  >
+                    <FontAwesome5
+                      name="user-nurse"
+                      size={adjustSize(34)}
+                      color={
+                        type === "Facility Manager"
+                          ? colors.white
+                          : colors.primary
+                      }
+                    />
+                    <Text
+                      weight="semiBold"
+                      text="Facility Manager"
+                      style={
+                        type === "Facility Manager"
+                          ? styles.active_card_title
+                          : styles._card_title
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+
               {type === "Property Manager" && (
                 <View>
                   <Text
@@ -242,6 +357,142 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                   />
                 </View>
               )}
+
+              {/* Facility Manager Modal */}
+              <CustomModal
+                visible={isFMModalVisible}
+                onClose={() => setIsFMModalVisible(false)}
+                title="Facility Manager Details"
+              >
+                <View style={{ padding: adjustSize(10) }}>
+                  <Text
+                    style={{ fontSize: adjustSize(14), marginBottom: 10 }}
+                    weight="semiBold"
+                    text="Property or Estate Details"
+                  />
+
+                  <Text
+                    text="Enter Property Name"
+                    weight="medium"
+                    style={styles._label}
+                  />
+                  <TextField
+                    placeholder="Enter Property Name"
+                    inputWrapperStyle={styles._input}
+                    value={facilityManagerData.propertyName}
+                    onChangeText={(text) =>
+                      handleFacilityInputChange("propertyName", text)
+                    }
+                  />
+
+                  <Text text="Location" weight="medium" style={styles._label} />
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.locaitonbutn}
+                    onPress={() => {
+                      // TODO: Implement current location functionality
+                    }}
+                  >
+                    <Text
+                      weight="medium"
+                      style={styles.locaitonbutntext}
+                      text="Use Current Location"
+                    />
+                  </TouchableOpacity>
+
+                  <Text
+                    text="Or"
+                    weight="medium"
+                    style={[styles._label, { textAlign: "center" }]}
+                  />
+                  <TextField
+                    placeholder="Enter address"
+                    inputWrapperStyle={styles._input}
+                    value={facilityManagerData.address}
+                    onChangeText={(text) =>
+                      handleFacilityInputChange("address", text)
+                    }
+                  />
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View style={{ width: "48%" }}>
+                      <Text text="City" weight="medium" style={styles._label} />
+                      <TextField
+                        placeholder="Enter City"
+                        inputWrapperStyle={styles._input}
+                        value={facilityManagerData.city}
+                        onChangeText={(text) =>
+                          handleFacilityInputChange("city", text)
+                        }
+                      />
+                    </View>
+                    <View style={{ width: "48%" }}>
+                      <Text
+                        text="State"
+                        weight="medium"
+                        style={styles._label}
+                      />
+                      <TextField
+                        placeholder="Enter State"
+                        inputWrapperStyle={styles._input}
+                        value={facilityManagerData.state}
+                        onChangeText={(text) =>
+                          handleFacilityInputChange("state", text)
+                        }
+                      />
+                    </View>
+                  </View>
+
+                  <Text text="Country" weight="medium" style={styles._label} />
+                  <TextField
+                    placeholder="Enter Country"
+                    inputWrapperStyle={styles._input}
+                    value={facilityManagerData.country}
+                    onChangeText={(text) =>
+                      handleFacilityInputChange("country", text)
+                    }
+                  />
+
+                  <View style={{ marginBottom: adjustSize(20) }}>
+                    <Text
+                      text="Number of Units"
+                      weight="medium"
+                      style={styles._label}
+                    />
+                    <View style={styles.counterrow}>
+                      <TouchableOpacity
+                        style={styles.counterButton}
+                        onPress={handleDecrement}
+                        activeOpacity={0.7}
+                      >
+                        <Text style={styles.counterButtonText}>-</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.counterText}>
+                        {facilityManagerData.units}
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.counterButton}
+                        onPress={handleIncrement}
+                        activeOpacity={0.7}
+                      >
+                        <Text style={styles.counterButtonText}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <Button
+                    text="Submit"
+                    preset="reversed"
+                    onPress={handleFacilitySubmit}
+                    style={{ marginTop: adjustSize(10) }}
+                  />
+                </View>
+              </CustomModal>
             </View>
           )}
 
@@ -421,5 +672,56 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: colors.grey,
     backgroundColor: colors.white,
+  },
+  locaitonbutn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: adjustSize(5),
+    backgroundColor: colors.primary,
+    padding: adjustSize(5),
+    borderRadius: adjustSize(5),
+    borderWidth: 1,
+    borderColor: colors.grey,
+    height: adjustSize(40),
+    width: 200,
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  locaitonbutntext: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+    fontWeight: "medium",
+  },
+  counterrow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    gap: 15,
+    borderWidth: 1,
+    alignSelf: "flex-start",
+    padding: 5,
+    borderRadius: 5,
+    borderColor: colors.primary,
+  },
+  counterButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    backgroundColor: colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  counterButtonText: {
+    color: colors.white,
+    fontSize: 18,
+    fontWeight: "bold",
+    // lineHeight: 24,
+  },
+  counterText: {
+    fontSize: 18,
+    fontWeight: "600",
+    minWidth: 40,
+    textAlign: "center",
   },
 });

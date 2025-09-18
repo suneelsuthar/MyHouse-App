@@ -104,7 +104,7 @@ import {
   AgentHome,
   Subscription,
   Reviews,
-  SelectSubscriptionplans
+  SelectSubscriptionplans,
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -377,7 +377,7 @@ const FacilityManagerStackNavigator = () => {
         name="Subscription"
         component={Subscription}
       />
-       <FacilityManagerStack.Screen
+      <FacilityManagerStack.Screen
         name="SelectSubscriptionplans"
         component={SelectSubscriptionplans}
       />
@@ -1008,6 +1008,7 @@ export const AdminTabNavigator = () => (
     )}
   >
     <Drawer.Screen name="Admin" component={AdminTabs} />
+    <Drawer.Screen name="AdminAddProperty" component={AdminAddProperty} />
   </Drawer.Navigator>
 );
 
@@ -1203,11 +1204,10 @@ const FacilityManagerTabs = () => (
 
     <Tab.Screen
       name="Properties"
-      component={AdminPropertiesStackNavigator}
+      component={null}
       options={({ route }) => {
         const routeName =
           getFocusedRouteNameFromRoute(route) ?? "AdminPropertyManagement";
-        // Base tab bar style for Admin tabs
         const baseTabBarStyle = {
           backgroundColor: "#292766",
         } as const;
@@ -1374,11 +1374,10 @@ const AdminTabs = () => (
     screenOptions={({ route }) => ({
       tabBarStyle: {
         backgroundColor: "#292766",
-        height: 55,
       },
       tabBarLabelStyle: {
         fontFamily: typography.fonts.poppins.medium,
-        marginBottom: 3,
+        // marginBottom: 3,
       },
       tabBarIcon: ({ focused, color, size }) => {
         switch (route.name) {
@@ -1436,7 +1435,7 @@ const AdminTabs = () => (
           getFocusedRouteNameFromRoute(route) ?? "AdminDashboard";
         const baseTabBarStyle = {
           backgroundColor: "#292766",
-          height: 55,
+          // height: 55,
         } as const;
 
         // Hide on Facility-Management detail screens (keep visible on FacilityManagement index)

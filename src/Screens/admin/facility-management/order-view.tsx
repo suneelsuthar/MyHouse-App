@@ -69,7 +69,11 @@ export const FMOrderView = () => {
   // Handle dot press to navigate to specific slide
   const goToSlide = (index: number) => {
     setActiveSlide(index);
-    flatListRef.current?.scrollToIndex({ index, animated: true });
+    flatListRef.current?.scrollToIndex({ 
+      index, 
+      animated: true,
+      viewPosition: 0.5 // Center the item in the view
+    });
   };
 
   // Create a ref for the FlatList
@@ -158,6 +162,12 @@ export const FMOrderView = () => {
               onScroll={onScroll}
               onMomentumScrollEnd={onScrollEnd}
               keyExtractor={(_, index) => index.toString()}
+              initialScrollIndex={activeSlide}
+              getItemLayout={(data, index) => ({
+                length: width,
+                offset: width * index,
+                index,
+              })}
               renderItem={({ item }) => (
                 <Image 
                   source={item} 
@@ -165,11 +175,6 @@ export const FMOrderView = () => {
                   resizeMode="cover"
                 />
               )}
-              getItemLayout={(data, index) => ({
-                length: width,
-                offset: width * index,
-                index,
-              })}
             />
             
             {/* Dot Indicators */}
@@ -197,7 +202,16 @@ export const FMOrderView = () => {
             contentContainerStyle={styles.thumbRow}
           >
             {gallery.map((src, i) => (
-              <Pressable key={i} onPress={() => setActiveSlide(i)}>
+              <Pressable 
+                key={i} 
+                onPress={() => {
+                  setActiveSlide(i);
+                  flatListRef.current?.scrollToIndex({
+                    index: i,
+                    animated: true,
+                    viewPosition: 0.5 // Center the item in the view
+                  });
+                }}>
                 <Image
                   source={src}
                   style={[

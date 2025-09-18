@@ -272,12 +272,12 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAssignFacilityManager}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
+          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
           onChange={() => {
             if (!assignFacilityManager) {
               setAllowFacilityManagerRequest(false);
             }
           }}
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
         />
       </View>
 

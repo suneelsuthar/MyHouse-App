@@ -173,7 +173,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
 
         <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
           <Text style={styles.addButtonText}>
-            {isEditMode ? "Save" : "Add"}
+            {isEditMode ? "Update Meter" : "Add Meter"}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   addButtonText: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     color: colors.white,
-    fontFamily: typography.fonts.poppins.semiBold,
+    fontFamily: typography.fonts.poppins.medium,
   },
 });

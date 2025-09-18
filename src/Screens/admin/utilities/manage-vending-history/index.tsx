@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import * as Print from "expo-print";
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 import {
   View,
   StyleSheet,
@@ -7,6 +10,9 @@ import {
   Modal,
   TextInput,
   ScrollView,
+  Share,
+  Alert,
+  Platform,
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
@@ -101,8 +107,11 @@ export const AdminManageVendingHistory = ({
   const [transactionList, setTransactionList] =
     useState<TrnasData[]>(transactionData);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [type, settype] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<TrnasData | null>(null);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-  const [type, settype] = useState("view");
   // Handle search functionality
   const filteredTransactions = transactionList.filter(
     (transaction) =>
@@ -113,9 +122,184 @@ export const AdminManageVendingHistory = ({
         transaction.type.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const handleCloseModal = () => {
+    const handleCloseModal = () => {
     setIsModalVisible(false);
   };
+
+  const showToastMessage = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
+    // You can implement a toast notification here if needed
+   ;
+  };
+
+  const generateReceiptHTML = (transaction: TrnasData) => {
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              max-width: 400px;
+              margin: 0 auto;
+            }
+            .header {
+              text-align: center;
+              margin-bottom: 20px;
+            }
+            .title {
+              font-size: 24px;
+              font-weight: bold;
+              color: #333;
+            }
+            .divider {
+              height: 1px;
+              background-color: #eee;
+              margin: 15px 0;
+            }
+            .row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 8px;
+            }
+            .label {
+              color: #666;
+            }
+            .value {
+              font-weight: 600;
+            }
+            .total {
+              font-size: 18px;
+              font-weight: bold;
+              margin: 20px 0;
+              display: flex;
+              justify-content: space-between;
+            }
+            .footer {
+              margin-top: 30px;
+              text-align: center;
+              color: #666;
+              font-size: 14px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="title">Vending Receipt</div>
+            <div>${new Date().toLocaleDateString()}</div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="details">
+            <div class="row">
+              <span class="label">Transaction ID:</span>
+              <span class="value">${transaction.id}</span>
+            </div>
+            <div class="row">
+              <span class="label">Date:</span>
+              <span class="value">${transaction.date}</span>
+            </div>
+            <div class="row">
+              <span class="label">Amount:</span>
+              <span class="value">${transaction.amount}</span>
+            </div>
+            <div class="row">
+              <span class="label">Token:</span>
+              <span class="value">${transaction.token}</span>
+            </div>
+            <div class="row">
+              <span class="label">Units:</span>
+              <span class="value">${transaction.units}</span>
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="total">
+            <span>Total Amount: </span>
+            <span>${transaction.amount}</span>
+          </div>
+          
+          <div class="footer">
+            Thank you for using our service!<br>
+            For any inquiries, please contact support@example.com
+          </div>
+        </body>
+      </html>
+    `;
+  };
+
+  const generateAndSharePDF = async (action: "share" | "download" = "download") => {
+    if (!selectedTransaction) return;
+
+    try {
+      // Set the appropriate loading state
+      if (action === "share") {
+        setIsSharing(true);
+      } else {
+        setIsDownloading(true);
+      }
+
+      const html = generateReceiptHTML(selectedTransaction);
+
+      // Generate PDF
+      const { uri } = await Print.printToFileAsync({
+        html,
+        base64: false,
+        width: 612, // 8.5in in points (72 dpi)
+        height: 792, // 11in in points (72 dpi)
+      });
+
+      // Small delay to ensure the PDF is fully generated
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (action === "share") {
+        try {
+          await Share.share({
+            title: 'Vending Receipt',
+            message: 'Here is your vending receipt',
+            url: `file://${uri}`,
+          });
+          showToastMessage("Receipt shared successfully!");
+        } catch (error) {
+          showToastMessage("Sharing was cancelled", "error");
+          throw error; // Re-throw to prevent modal from closing on cancel
+        }
+      } else {
+        // For download, we'll use the system's save dialog
+        await Share.share({
+          title: 'Save Vending Receipt',
+          message: 'Save your vending receipt',
+          url: `file://${uri}`,
+        });
+        showToastMessage("Receipt is ready to be saved!");
+      }
+      
+      // Close the modal after successful operation
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("Error handling PDF:", error);
+      showToastMessage(
+        `Failed to ${action} receipt. Please try again.`,
+        "error"
+      );
+    } finally {
+      // Reset the appropriate loading state
+      if (action === "share") {
+        setIsSharing(false);
+      } else {
+        setIsDownloading(false);
+      }
+    }
+  };
+
+  const handleDownloadReceipt = () => generateAndSharePDF("download");
+  const handleShareReceipt = () => generateAndSharePDF("share");
 
   return (
     <Screen
@@ -250,12 +434,13 @@ export const AdminManageVendingHistory = ({
                   <TouchableOpacity
                     style={styles.menuItem}
                     onPress={() => {
-                      settype("download")
+                      setSelectedTransaction(item);
+                      settype("download");
                       setDropdownVisible(null);
                       setIsModalVisible(true);
                     }}
                   >
-                    <Text style={[styles.menuText]}>Download</Text>
+                    <Text style={styles.menuText}>Download</Text>
                   </TouchableOpacity>
                 </View>
               )}
@@ -346,12 +531,20 @@ export const AdminManageVendingHistory = ({
               }}
             >
               <Button
-                text="Download Receipt"
+                text={isDownloading ? "Processing..." : "Download Receipt"}
                 preset="reversed"
                 style={{ flex: 1 }}
+                onPress={handleDownloadReceipt}
+                disabled={isDownloading}
               />
 
-              <Button text="Share" preset="reversed" style={{ flex: 1 }} />
+              <Button 
+                text={isSharing ? "Sharing..." : "Share"} 
+                preset="reversed" 
+                style={{ flex: 1 }} 
+                onPress={handleShareReceipt}
+                disabled={isSharing}
+              />
             </View>}
           </View>
         </View>

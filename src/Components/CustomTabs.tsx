@@ -64,6 +64,7 @@ export function CustomTabs({
                           ? typography.fonts.poppins.semiBold
                           : typography.fonts.poppins.normal,
                         color: isActive ? colors.primary : colors.white,
+                        fontSize: adjustSize(14),
                       },
                     ]}
                   >
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   iconWrapper: { marginBottom: adjustSize(3) },
-  label: { fontSize: adjustSize(12) },
+  label: { fontSize: adjustSize(14) },
   tabBgImage: { height: adjustSize(62), backgroundColor: "#dedfef" },
   page: {
     flex: 1,

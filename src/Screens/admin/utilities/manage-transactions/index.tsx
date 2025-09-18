@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import * as Print from "expo-print";
+import { shareAsync } from "expo-sharing";
+import * as FileSystem from 'expo-file-system';
 import {
   View,
   StyleSheet,
@@ -6,6 +9,9 @@ import {
   FlatList,
   Modal,
   TextInput,
+  Alert,
+  Platform,
+  Share
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
@@ -89,22 +95,329 @@ const transactionData = [
 ];
 
 interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<
-    AdminStackParamList,
-    "ManageTransactions"
-  > {}
-export const ManageTransactions = ({
-  route,
-}: AdminPropertyManagementProps) => {
+  extends NativeStackScreenProps<AdminStackParamList, "ManageTransactions"> {}
+export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();
   const [search, setSearch] = useState("");
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<TrnasData | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [transactionList, setTransactionList] =
     useState<TrnasData[]>(transactionData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const [actionType, setActionType] = useState<string>("");
+  const generateReceiptHTML = (transaction: any) => {
+    // Format date for receipt
+    const receiptDate = new Date().toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body { 
+              font-family: Arial, sans-serif; 
+              padding: 25px;
+              color: #333;
+              max-width: 800px;
+              margin: 0 auto;
+            }
+            .header { 
+              text-align: center; 
+              margin-bottom: 25px;
+              padding-bottom: 15px;
+              border-bottom: 2px solid #f0f0f0;
+            }
+            .logo {
+              font-size: 24px;
+              font-weight: bold;
+              color: #2c3e50;
+              margin-bottom: 5px;
+            }
+            .title { 
+              font-size: 20px; 
+              font-weight: bold; 
+              margin: 15px 0 5px;
+              color: #2c3e50;
+            }
+            .receipt-number {
+              color: #7f8c8d;
+              margin-bottom: 20px;
+              font-size: 14px;
+            }
+            .section {
+              margin: 20px 0;
+            }
+            .section-title {
+              font-weight: bold;
+              font-size: 16px;
+              margin-bottom: 10px;
+              color: #2c3e50;
+              border-bottom: 1px solid #eee;
+              padding-bottom: 5px;
+            }
+            .row { 
+              display: flex; 
+              justify-content: space-between; 
+              margin: 8px 0;
+              font-size: 14px;
+            }
+            .label { 
+              color: #7f8c8d;
+              min-width: 180px;
+            }
+            .value { 
+              font-weight: 500;
+              text-align: right;
+              flex: 1;
+            }
+            .divider { 
+              border-top: 1px dashed #ddd; 
+              margin: 20px 0;
+            }
+            .total {
+              font-size: 18px;
+              font-weight: bold;
+              color: #2c3e50;
+              margin: 15px 0;
+            }
+            .footer { 
+              margin-top: 40px; 
+              text-align: center; 
+              color: #7f8c8d; 
+              font-size: 12px;
+              border-top: 1px solid #eee;
+              padding-top: 15px;
+            }
+            .status {
+              display: inline-block;
+              padding: 4px 10px;
+              border-radius: 4px;
+              font-weight: 500;
+              font-size: 12px;
+              margin-left: 10px;
+            }
+            .status-paid {
+              background-color: #d4edda;
+              color: #155724;
+            }
+            .signature {
+              margin-top: 40px;
+              text-align: right;
+            }
+            .signature-line {
+              display: inline-block;
+              width: 200px;
+              border-top: 1px solid #333;
+              margin-top: 30px;
+              padding-top: 5px;
+              text-align: center;
+              font-size: 12px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">MyHomes</div>
+            <div>123 Property Street, City, Country</div>
+            <div>Phone: (123) 456-7890 | Email: info@myhomes.app</div>
+            
+            <div class="title">TRANSACTION RECEIPT</div>
+            <div class="receipt-number">Receipt #${"TXN123456"} | ${"20 Feb , 2025"}</div>
+          </div>
+          
+          <div class="section">
+            <div class="row">
+              <span class="label">Transaction ID:</span>
+              <span class="value">${"TXN123456"}</span>
+            </div>
+            <div class="row">
+              <span class="label">Transaction Date:</span>
+              <span class="value">${"20 Feb , 2025"}</span>
+            </div>
+            <div class="row">
+              <span class="label">Transaction Type:</span>
+              <span class="value">${"Electric"}</span>
+            </div>
+            <div class="row">
+              <span class="label">Status:</span>
+              <span class="value">
+                ${"Paid"}
+                <span class="status status-paid">PAID</span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="section">
+            <div class="section-title">Payment Details</div>
+            <div class="row">
+              <span class="label">Amount Paid:</span>
+              <span class="value">₦ ${"₦ 15,00,000"}</span>
+            </div>
+            <div class="row">
+              <span class="label">Payment Method:</span>
+              <span class="value">Credit/Debit Card</span>
+            </div>
+            <div class="row">
+              <span class="label">Reference Number:</span>
+              <span class="value">REF-${Math.floor(
+                100000 + Math.random() * 900000
+              )}</span>
+            </div>
+          </div>
+          
+          <div class="section">
+            <div class="section-title">Utility Information</div>
+            <div class="row">
+              <span class="label">Utility Type:</span>
+              <span class="value">${"Electric"}</span>
+            </div>
+            
+           
+          </div>
+          
+          <div class="section">
+            <div class="section-title">Property & Tenant</div>
+            <div class="row">
+              <span class="label">Tenant Name:</span>
+              <span class="value">John Doe</span>
+            </div>
+            <div class="row">
+              <span class="label">Property Group:</span>
+              <span class="value">Apartment</span>
+            </div>
+            <div class="row">
+              <span class="label">Property ID:</span>
+              <span class="value">PROP-${Math.floor(
+                1000 + Math.random() * 9000
+              )}</span>
+            </div>
+            <div class="row">
+              <span class="label">Meter Number:</span>
+              <span class="value">MTR-${Math.floor(
+                10000 + Math.random() * 90000
+              )}</span>
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="total">
+            <span>Total Amount: </span>
+            <span>₦ ${"₦ 15,00,000"}</span>
+          </div>
+          
+          <div class="signature">
+            <div class="signature-line">Authorized Signature</div>
+          </div>
+          
+          <div class="footer">
+            Thank you for choosing MyHomes!
+            <br>
+            For any inquiries, please contact support@myhomes.app or call (123) 456-7890
+            <br><br>
+            This is an automated receipt. No signature required.
+            <br>
+            Generated on 20 Feb , 2025
+          </div>
+        </body>
+      </html>
+    `;
+  };
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<"success" | "error">("success");
+
+  const showToastMessage = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000); // Hide after 3 seconds
+  };
+
+  const generateAndSharePDF = async (
+    action: "share" | "download" = "download"
+  ) => {
+    try {
+      // Set the appropriate loading state
+      if (action === "share") {
+        setIsSharing(true);
+      } else {
+        setIsDownloading(true);
+      }
+
+      const html = generateReceiptHTML(selectedTransaction);
+
+      // Generate PDF
+      const { uri } = await Print.printToFileAsync({
+        html,
+        base64: false,
+        width: 612, // 8.5in in points (72 dpi)
+        height: 792, // 11in in points (72 dpi)
+      });
+
+      // Small delay to ensure the PDF is fully generated
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (action === "share") {
+        try {
+          await Share.share({
+            title: 'Transaction Receipt',
+            message: 'Here is your transaction receipt',
+            url: `file://${uri}`,
+          });
+          
+          showToastMessage("Receipt shared successfully!");
+        } catch (shareError) {
+          console.error('Error sharing:', shareError);
+          showToastMessage("Failed to share receipt. Please try again.", "error");
+        }
+      } else {
+        // For download, we'll use the system's save dialog
+        await Share.share({
+          title: 'Save Transaction Receipt',
+          message: 'Save your transaction receipt',
+          url: `file://${uri}`,
+        });
+        showToastMessage("Receipt is ready to be saved!");
+      }
+    } catch (error) {
+      console.error("Error handling PDF:", error);
+      showToastMessage(
+        `Failed to ${action} receipt. Please try again.`,
+        "error"
+      );
+    } finally {
+      // Reset the appropriate loading state
+      if (action === "share") {
+        setIsSharing(false);
+      } else {
+        setIsDownloading(false);
+      }
+    }
+  };
+
+  const handleDownloadReceipt = () => generateAndSharePDF("download");
+  const handleShareReceipt = () => generateAndSharePDF("share");
 
   // Handle search functionality
-  const filteredTransactions = transactionList.filter(
+  const filteredTransactions = transactionData.filter(
     (transaction) =>
       transaction.date.toLowerCase().includes(search.toLowerCase()) ||
       (transaction.amount &&
@@ -227,6 +540,7 @@ export const ManageTransactions = ({
                   onPress={() => {
                     setDropdownVisible(null);
                     setIsModalVisible(true);
+                    setActionType("view");
                   }}
                 >
                   <Text style={styles.menuText}>View Details</Text>
@@ -235,6 +549,7 @@ export const ManageTransactions = ({
                 <TouchableOpacity
                   style={styles.menuItem}
                   onPress={() => {
+                    setActionType("download");
                     setDropdownVisible(null);
                     setIsModalVisible(true);
                   }}
@@ -278,9 +593,12 @@ export const ManageTransactions = ({
             />
 
             <View style={styles._divider} />
-            <View style={styles._row}>
-              <Text text="Token: " style={styles._rowlabel} />
-              <Text text="T0001" style={styles._rowvalue} />
+            <View style={[styles._row, { marginBottom: 10 }]}>
+              <Text text="Transaction ID: " style={styles._rowlabel} />
+              <Text
+                text="TXN123456"
+                style={[styles._rowvalue, { fontFamily: "Poppins-Medium" }]}
+              />
             </View>
             <View style={styles._row}>
               <Text text="Units: " style={styles._rowlabel} />
@@ -288,7 +606,7 @@ export const ManageTransactions = ({
             </View>
 
             <View style={styles._row}>
-              <Text text="Utility Type:" style={styles._rowlabel} />
+              <Text text="Transaction Type:" style={styles._rowlabel} />
               <Text text="Electric" style={styles._rowvalue} />
             </View>
 
@@ -312,18 +630,47 @@ export const ManageTransactions = ({
               <Text text="MTR34556" style={styles._rowvalue} />
             </View>
 
-            <View style={[styles._row, { gap: 10 }]}>
-              <Button
-                text="Download"
-                preset="reversed"
-                style={styles.copyButton}
-              />
-              <Button
-                text="Share"
-                preset="reversed"
-                style={styles.copyButton}
-              />
+            <View
+              style={[
+                styles._row,
+                {
+                  marginBottom: actionType === "download" ? 0 : 30,
+                },
+              ]}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  text="Token "
+                  style={[styles._rowlabel, { marginRight: 5 }]}
+                />
+                {/* <Text text="T0001" style={[styles._rowvalue, { fontFamily: 'Poppins-Medium' }]} /> */}
+              </View>
+              <TouchableOpacity style={styles.copyIcon}>
+                <Ionicons
+                  name="copy-outline"
+                  size={20}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
             </View>
+            {actionType === "download" && (
+              <View style={[styles._row, { gap: 10 }]}>
+                <Button
+                  text={isDownloading ? "Generating..." : "Download"}
+                  preset="reversed"
+                  style={styles.copyButton}
+                  onPress={handleDownloadReceipt}
+                  disabled={isDownloading || isSharing}
+                />
+                <Button
+                  text={isSharing ? "Preparing..." : "Share"}
+                  preset="reversed"
+                  style={styles.copyButton}
+                  onPress={handleShareReceipt}
+                  disabled={isSharing || isDownloading}
+                />
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -400,8 +747,9 @@ const styles = StyleSheet.create({
   },
   _searchrow: {
     flexDirection: "row",
-    marginHorizontal: adjustSize(10),
-    marginVertical: adjustSize(15),
+    justifyContent: "space-between",
+    marginVertical: 5,
+    alignItems: "center",
   },
   _addbtn: {
     backgroundColor: colors.primary,
@@ -671,5 +1019,33 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     textAlign: "center",
     paddingVertical: adjustSize(5),
+  },
+  copyIcon: {
+    padding: adjustSize(4),
+    borderRadius: adjustSize(8),
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: adjustSize(10),
+  },
+  toastContainer: {
+    position: "absolute",
+    left: 20,
+    right: 20,
+    padding: 15,
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 1000,
+  },
+  toastText: {
+    color: "white",
+    fontSize: adjustSize(14),
+    fontWeight: "500",
   },
 });

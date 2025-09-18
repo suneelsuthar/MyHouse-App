@@ -154,7 +154,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title={"Add New Amenities"} />
+      <Header title={"New Reservation"} />
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={{ paddingBottom: adjustSize(0) }}

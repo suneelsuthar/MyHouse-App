@@ -73,7 +73,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
     setAlertModalVisible(false);
     Alert.alert(
       "Security Alerted",
-      "Security has been notified about this visitor."
+      "Security has been cancelled about this visitor."
     );
   };
 
@@ -143,14 +143,8 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
 
         <View style={styles.section}>
           <InfoRow label="Requested By" value={visitorData.requestedBy} />
-          <InfoRow
-            label="Check-In"
-            value={visitorData.checkInDateTime}
-          />
-          <InfoRow
-            label="Check-Out"
-            value={visitorData.checkOutDateTime}
-          />
+          <InfoRow label="Check-In" value={visitorData.checkInDateTime} />
+          <InfoRow label="Check-Out" value={visitorData.checkOutDateTime} />
         </View>
 
         {/* <View style={[styles.section, { borderBottomWidth: 0 }]}>
@@ -236,7 +230,13 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.cancelButton}
-                onPress={() => setAlertModalVisible(false)}
+                onPress={() => {
+                  setAlertModalVisible(false);
+                  Alert.alert(
+                    "Security Alerted",
+                    "Security has been alerted about this visitor."
+                  );
+                }}
               >
                 <Text style={styles.alertCancelButtonText}>Alert</Text>
               </TouchableOpacity>
@@ -352,7 +352,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: adjustSize(47),
     justifyContent: "center",
-    
   },
   alertButtonText: {
     fontSize: adjustSize(14),
@@ -365,8 +364,7 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(10),
     alignItems: "center",
     height: adjustSize(47),
-    justifyContent:"center",
-
+    justifyContent: "center",
   },
   revokeButtonText: {
     fontSize: adjustSize(14),
@@ -446,8 +444,7 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(10),
     alignItems: "center",
     justifyContent: "center",
-    height:adjustSize(47),
-    
+    height: adjustSize(47),
   },
   confirmButtonText: {
     fontSize: adjustSize(14),

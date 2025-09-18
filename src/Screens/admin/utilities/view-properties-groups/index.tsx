@@ -62,7 +62,9 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
             activeOpacity={0.7}
             style={styles._addbtn}
             onPress={() =>
-              (navigation as any).navigate("AddEditGroup" as never)
+              (navigation as any).navigate("AdminAddProperty", {
+                type: "fm",
+              })
             }
           >
             <WithLocalSvg asset={Images.addprop} />

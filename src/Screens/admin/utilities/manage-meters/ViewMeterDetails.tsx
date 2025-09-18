@@ -135,12 +135,12 @@ const ViewMeterDetails = (props: any) => {
           <View style={styles.manageRow}>
             <Text style={styles.manageLabel}>Switch</Text>
             <Switch
-              trackColor={{ false: colors.primaryLight, true: colors.primary }}
-              thumbColor={colors.primary}
               ios_backgroundColor="#B0B0B0"
+              trackColor={{ false: colors.greylight, true: colors.primary }}
+              thumbColor={colors.white}
               onValueChange={toggleSwitch}
               value={isEnabled}
-              style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+              style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
             />
           </View>
         </View>
@@ -326,8 +326,8 @@ const styles = StyleSheet.create({
   actionButton: {
     backgroundColor: colors.primary,
     borderRadius: adjustSize(5),
-    height: adjustSize(28),
-    minWidth: adjustSize(114),
+    height: adjustSize(32),
+    minWidth: adjustSize(80),
     justifyContent: "center",
     alignItems: "center",
   },

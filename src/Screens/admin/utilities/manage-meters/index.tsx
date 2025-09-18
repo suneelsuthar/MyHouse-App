@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   StyleSheet,
@@ -30,6 +30,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useAppSelector } from "../../../../store/hooks";
 import { RootState } from "../../../../store";
 import { TenantUtilitiesTabs } from "../../../tenant/utilities/Components/TenantUtilitiesTabs";
+import MultiSelectDropdown from "../../../../Components/MultiSelectDropdown";
+import MultiSelect from "../../community-area/components/MutliSelect";
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
   goBack: () => void;
@@ -107,6 +109,17 @@ const meterData = [
 
 interface AdminPropertyManagementProps
   extends NativeStackScreenProps<AdminStackParamList, "ManageMeters"> {}
+// Define sort options type
+type SortOption = string; // Will be 'a', 'b', 'c', etc.
+
+// Define property group type
+type PropertyGroup = "all" | "residential" | "commercial" | "industrial";
+
+// Generate alphabet array for sorting
+const alphabet = Array.from({ length: 3 }, (_, i) =>
+  String.fromCharCode(65 + i)
+);
+
 export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();
   const [search, setSearch] = useState("");
@@ -116,20 +129,56 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
   const [temperToken, setTemperToken] = useState("1234 5678 9101 1121"); // Dummy token
   const { user } = useAppSelector((state: RootState) => state.auth);
 
+  // State for sort and filter
+  const [sortBy, setSortBy] = useState<SortOption>("all");
+  const [propertyGroup, setPropertyGroup] = useState<PropertyGroup>("all");
   const copyToClipboard = () => {
     // Clipboard.setString(temperToken);
     setIsModalVisible(false);
   };
 
-  // Handle search functionality
-  const filteredMeters = meterList.filter(
-    (meter) =>
-      meter.meterName.toLowerCase().includes(search.toLowerCase()) ||
-      (meter.meterId &&
-        meter.meterId.toLowerCase().includes(search.toLowerCase())) ||
-      (meter.tenent &&
-        meter.tenent.toLowerCase().includes(search.toLowerCase()))
-  );
+  // Handle search and filter functionality
+  const filteredMeters = useMemo(() => {
+    let result = [...meterList];
+
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase();
+      result = result.filter(
+        (meter) =>
+          meter.meterName.toLowerCase().includes(searchLower) ||
+          (meter.meterId &&
+            meter.meterId.toLowerCase().includes(searchLower)) ||
+          (meter.tenent && meter.tenent.toLowerCase().includes(searchLower))
+      );
+    }
+
+    // Apply property group filter
+    if (propertyGroup !== "all") {
+      // This is a simplified example - adjust the filtering logic based on your actual data structure
+      // For now, we'll just filter by the first letter of the property group name
+      // You should replace this with your actual property group filtering logic
+      const groupFirstLetter = propertyGroup.charAt(0).toUpperCase();
+      result = result.filter((meter) => {
+        // This assumes propertyId starts with a letter indicating the property group
+        // Adjust this logic based on your actual data structure
+        return (
+          meter.propertyId &&
+          meter.propertyId.toString().toUpperCase().startsWith(groupFirstLetter)
+        );
+      });
+    }
+
+    // Apply alphabetical filter if a letter is selected
+    if (sortBy && sortBy !== "all") {
+      result = result.filter(
+        (meter) =>
+          meter.meterName.charAt(0).toUpperCase() === sortBy.toUpperCase()
+      );
+    }
+
+    return result;
+  }, [meterList, search, sortBy, propertyGroup]);
 
   const handleAddMeter = () => {
     navigation.navigate("EditCreateMeter", { mode: "add" });
@@ -187,7 +236,7 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
 
       {/* Recent Notifications */}
 
-      <TenantUtilitiesTabs activeTab={"Manage Meters"} navigation={navigation}>
+      {/* <TenantUtilitiesTabs activeTab={"Manage Meters"} navigation={navigation}> */}
         <>
           <View style={styles.section}>
             <View style={styles._seciton_row}>
@@ -197,17 +246,43 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
               <View style={styles.dropdownContainer}>
                 <DropdownComponent
                   data={[
-                    { label: "One", value: "one" },
-                    { label: "Two", value: "two" },
-                    { label: "Three", value: "three" },
+                    { label: "All", value: "all" },
+                    ...alphabet.map((letter) => ({
+                      label: letter,
+                      value: letter.toLowerCase(),
+                    })),
                   ]}
-                  label="Property Group"
-                  placeholder="Property Group"
+                  label="Sort By"
+                  placeholder="Sort By"
                   dropdownStyle={styles.customDropdownStyle}
                   placeholderStyle={styles.customPlaceholderStyle}
                   selectedTextStyle={styles.customSelectedTextStyle}
+                  value={sortBy}
+                  onChangeValue={(val: string) => setSortBy(val as SortOption)}
                 />
               </View>
+            </View>
+            <View style={[styles.dropdownContainer, { width: "100%" }]}>
+              <DropdownComponent
+                data={[
+                  { label: "All Groups", value: "all" },
+                  { label: "Residential", value: "residential" },
+                  { label: "Commercial", value: "commercial" },
+                  { label: "Industrial", value: "industrial" },
+                ]}
+                label="Select Property Group"
+                placeholder="Property Group"
+                dropdownStyle={[
+                  styles.customDropdownStyle,
+                  { height: adjustSize(50), borderRadius: adjustSize(10) },
+                ]}
+                placeholderStyle={styles.customPlaceholderStyle}
+                selectedTextStyle={styles.customSelectedTextStyle}
+                value={propertyGroup}
+                onChangeValue={(val: string) =>
+                  setPropertyGroup(val as PropertyGroup)
+                }
+              />
             </View>
             {/* ÷÷ */}
           </View>
@@ -217,7 +292,6 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
             <View style={styles._inputview}>
               <TextField
                 placeholderTextColor={colors.primaryLight}
-                // inputWrapperStyle={{ backgroundColor: colors.white }}
                 placeholder="Search"
                 style={styles._input}
                 value={search}
@@ -294,7 +368,7 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
             </View>
           </Modal>
         </>
-      </TenantUtilitiesTabs>
+      {/* </TenantUtilitiesTabs> */}
     </Screen>
   );
 };
@@ -352,7 +426,7 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dropdownContainer: {
-    width: adjustSize(150),
+    width: adjustSize(110),
   },
   customDropdownStyle: {
     height: adjustSize(33),

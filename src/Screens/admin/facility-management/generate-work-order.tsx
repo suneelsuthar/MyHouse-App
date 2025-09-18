@@ -16,7 +16,6 @@ import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import DropdownComponent from "../../../Components/DropDown";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import { rentalProperties } from "../../../utils/data";
 import * as ImagePicker from "expo-image-picker";
@@ -160,7 +159,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header title="Generate Work Request" />
+      <Header title="Generate Work Order" />
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -249,6 +248,40 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
           <Text style={styles.label} weight="medium">
             Issue date
           </Text>
+          <Pressable disabled  style={[styles.dtButton,{opacity: 0.8}]}>
+            <Text
+              style={[
+                styles.dtText,
+                { color: issueDate ? colors.primary : colors.primaryLight },
+              ]}
+            >
+              {fmtDate(new Date())}
+            </Text>
+            <WithLocalSvg asset={Images.calendar} />
+          </Pressable>
+
+            {/* Issue date */}
+           
+
+          {/* Priority */}
+          <Text style={styles.label} weight="semiBold">
+            Priority
+          </Text>
+          
+          <DropdownComponent
+            data={priorityOptions}
+            placeholder="Select"
+            value={priority ?? undefined}
+            onChangeValue={(v: string) => setPriority(v)}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+
+<Text style={styles.label} weight="medium">
+            Due date
+          </Text>
           <Pressable onPress={openIssuePicker} style={styles.dtButton}>
             <Text
               style={[
@@ -260,21 +293,6 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             </Text>
             <WithLocalSvg asset={Images.calendar} />
           </Pressable>
-
-          {/* Priority */}
-          <Text style={styles.label} weight="semiBold">
-            Priority
-          </Text>
-          <DropdownComponent
-            data={priorityOptions}
-            placeholder="Select"
-            value={priority ?? undefined}
-            onChangeValue={(v: string) => setPriority(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
 
           {/* Category */}
           <Text style={styles.label} weight="semiBold">

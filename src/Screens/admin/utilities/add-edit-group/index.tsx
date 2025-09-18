@@ -96,7 +96,7 @@ export const AddEditGroup: React.FC = () => {
           />
         </View>
 
-        <View style={styles.formGroup}>
+        {/* <View style={styles.formGroup}>
           <Text style={styles.label}>Property Group Id*</Text>
           <TextField
             placeholder="Enter group ID"
@@ -105,7 +105,7 @@ export const AddEditGroup: React.FC = () => {
             containerStyle={styles.input}
             editable={mode === "add"}
           />
-        </View>
+        </View> */}
 
         {/* Add more form fields as needed */}
 

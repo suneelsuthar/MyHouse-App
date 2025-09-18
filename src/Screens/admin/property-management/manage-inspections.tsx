@@ -238,8 +238,7 @@ export default function AdminManageInspections() {
             </Text>
 
             <Text style={styles.modalMessage}>
-              Are you sure you want to {actionType} this inspection property
-              (Greenwood Villa)??
+              {`Are you sure you want to ${actionType} this inspection property \n(Greenwood Villa)?`}
             </Text>
 
             <View style={styles.modalButtons}>

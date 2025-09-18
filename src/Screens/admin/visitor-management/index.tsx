@@ -296,6 +296,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
     
+    
   },
   tabText: {
     fontSize: adjustSize(12),

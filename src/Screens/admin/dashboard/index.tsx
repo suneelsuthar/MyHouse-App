@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    width: adjustSize(width / 3.7),
+    width: adjustSize(106),
     flexDirection: "column",
     justifyContent: "space-evenly",
   },

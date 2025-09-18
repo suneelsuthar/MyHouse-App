@@ -15,12 +15,12 @@ import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
 import DropdownComponent from "../../../Components/DropDown";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import { rentalProperties } from "../../../utils/data";
 import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 
 type Props = NativeStackScreenProps<AdminStackParamList, "FMEdit">;
 
@@ -38,7 +38,7 @@ export function FMEdit({ navigation }: Props) {
 
   // date modal
   const [pickerVisible, setPickerVisible] = useState(false);
-  const [tempDate, setTempDate] = useState<Date>(new Date());
+  const [tempDate, setTempDate] = useState<Date | null>(null);
   // compute start of today once per render
   const todayStart = useMemo(() => {
     const d = new Date();
@@ -156,7 +156,7 @@ export function FMEdit({ navigation }: Props) {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header title="Edit Work Requests" />
+      {/* <Header title="Edit Work Requests" /> */}
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -237,7 +237,7 @@ export function FMEdit({ navigation }: Props) {
                 { color: issueDate ? colors.primary : colors.primaryLight },
               ]}
             >
-              {fmtDate(issueDate)}
+              {fmtDate(tempDate)}
             </Text>
             <WithLocalSvg asset={Images.calendar} />
           </Pressable>
@@ -334,7 +334,7 @@ export function FMEdit({ navigation }: Props) {
       </ScrollView>
 
       {/* Date Picker Modal */}
-      <Modal
+      {/* <Modal
         visible={pickerVisible}
         transparent
         animationType="fade"
@@ -370,7 +370,18 @@ export function FMEdit({ navigation }: Props) {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
+      <CustomDateTimePicker
+        mode="date"
+        value={tempDate}
+        visible={pickerVisible}
+        onChange={tempDate => setTempDate(tempDate)}
+        onCancel={() => setPickerVisible(false)}
+        onConfirm={() => {
+          setIssueDate(tempDate);
+          // setShowPicker(false);
+        }}
+      />  
     </Screen>
   );
 }

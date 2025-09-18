@@ -63,6 +63,7 @@ const OfferDiscountModal: React.FC<Props> = ({
   initialConfig,
 }) => {
   const [cfg, setCfg] = useState<DiscountConfig>(initialConfig || {});
+  const [tempConfig, setTempConfig] = useState<Partial<DiscountConfig>>({});
   const [showMoreRows, setShowMoreRows] = useState<boolean>(
     !!initialConfig?.moreEnabled
   );
@@ -91,6 +92,44 @@ const OfferDiscountModal: React.FC<Props> = ({
   }, [detailOpen, cfg]);
 
   const saveAndClose = () => {
+    if (detailOpen === 'weekly') {
+      setCfg(c => ({
+        ...c,
+        weeklyNights: tempConfig.weeklyNights || c.weeklyNights || ''
+      }));
+    } else if (detailOpen === 'monthly') {
+      setCfg(c => ({
+        ...c,
+        monthlyNights: tempConfig.monthlyNights || c.monthlyNights || ''
+      }));
+    } else if (detailOpen === 'earlyBird') {
+      setCfg(c => ({
+        ...c,
+        earlyBirdEnabled: true,
+        earlyBirdPercent: tempConfig.earlyBirdPercent || c.earlyBirdPercent || '10',
+        earlyBirdMonths: tempConfig.earlyBirdMonths || c.earlyBirdMonths || '1'
+      }));
+    } else if (detailOpen === 'lastMinute') {
+      setCfg(c => ({
+        ...c,
+        lastMinuteEnabled: true,
+        lastMinutePercent: tempConfig.lastMinutePercent || c.lastMinutePercent || '10',
+        lastMinuteDays: tempConfig.lastMinuteDays || c.lastMinuteDays || '1'
+      }));
+    } else if (detailOpen === 'tripLength') {
+      setCfg(c => ({
+        ...c,
+        tripLengthEnabled: true,
+        tripLengthPercent: tempConfig.tripLengthPercent || c.tripLengthPercent || '10',
+        tripLengthDurations: tempConfig.tripLengthDurations || c.tripLengthDurations || ['7 Days']
+      }));
+    }
+    setTempConfig({});
+    setDetailOpen(null);
+  };
+
+  const handleCancel = () => {
+    setTempConfig({});
     setDetailOpen(null);
   };
 
@@ -108,11 +147,11 @@ const OfferDiscountModal: React.FC<Props> = ({
             enabled={!!cfg.weeklyNights}
             onPress={() => {
               const isEnabled = !!cfg.weeklyNights;
-              setCfg((c) => ({
-                ...c,
-                weeklyNights: isEnabled ? undefined : "",
-              }));
-              if (!isEnabled) setDetailOpen("weekly");
+              if (isEnabled) {
+                setCfg(c => ({ ...c, weeklyNights: undefined }));
+              } else {
+                setDetailOpen("weekly");
+              }
             }}
             onChangeText={() => {}}
           />
@@ -125,10 +164,10 @@ const OfferDiscountModal: React.FC<Props> = ({
                 <View style={styles.priceRow}>
                   <Text style={styles.priceLabel}>Discounted price:</Text>
                   <Text style={styles.discountedPrice}>
-                  ₦
+                    ₦
                     {(
                       basePrice *
-                      (1 - (Number(cfg.weeklyNights) || 0) / 100)
+                      (1 - (Number(tempConfig.weeklyNights) || 0) / 100)
                     ).toFixed(2)}
                   </Text>
                 </View>
@@ -155,7 +194,7 @@ const OfferDiscountModal: React.FC<Props> = ({
                       ₦
                       {(
                         basePrice *
-                        (1 - (Number(cfg.weeklyNights) || 0) / 100)
+                        (1 - (Number(tempConfig.weeklyNights) || 0) / 100)
                       ).toFixed(2)}
                     </Text>
                   </View>
@@ -168,11 +207,17 @@ const OfferDiscountModal: React.FC<Props> = ({
                     minimumValue={0}
                     maximumValue={100}
                     step={1}
-                    value={Number(cfg.weeklyNights) || 0}
+                    value={Number(
+                      detailOpen === 'weekly'
+                        ? (tempConfig.weeklyNights !== undefined
+                            ? tempConfig.weeklyNights
+                            : cfg.weeklyNights || 0)
+                        : (cfg.weeklyNights || 0)
+                    )}
                     onValueChange={(value) =>
-                      setCfg((c) => ({
-                        ...c,
-                        weeklyNights: String(Math.round(value)),
+                      setTempConfig(t => ({
+                        ...t,
+                        weeklyNights: String(Math.round(value))
                       }))
                     }
                     minimumTrackTintColor={colors.primary}
@@ -184,16 +229,16 @@ const OfferDiscountModal: React.FC<Props> = ({
 
                   <View style={[styles.discountLabels, { marginLeft: 10 }]}>
                     <Text style={styles.discountValue}>
-                      {cfg.weeklyNights || 0}%
+                      {tempConfig.weeklyNights || 0}%
                     </Text>
                   </View>
                 </View>
               </View>
               <ActionRow
-                onCancel={saveAndClose}
+                onCancel={handleCancel}
                 onSave={saveAndClose}
                 saveText="Save"
-                disabled={!cfg.weeklyNights}
+                disabled={false}
               />
             </DetailCard>
           )}
@@ -209,12 +254,8 @@ const OfferDiscountModal: React.FC<Props> = ({
             enabled={!!cfg.monthlyNights}
             onPress={() => {
               const isEnabled = !!cfg.monthlyNights;
-              setCfg((c) => ({
-                ...c,
-                monthlyNights: isEnabled ? undefined : "",
-              }));
               if (isEnabled) {
-                setDetailOpen(null);
+                setCfg(c => ({ ...c, monthlyNights: undefined }));
               } else {
                 setDetailOpen("monthly");
               }
@@ -230,10 +271,10 @@ const OfferDiscountModal: React.FC<Props> = ({
                 <View style={styles.priceRow}>
                   <Text style={styles.priceLabel}>Discounted price:</Text>
                   <Text style={styles.discountedPrice}>
-                  ₦
+                    ₦
                     {(
                       basePrice *
-                      (1 - (Number(cfg.monthlyNights) || 0) / 100)
+                      (1 - (Number(tempConfig.monthlyNights) || 0) / 100)
                     ).toFixed(2)}
                   </Text>
                 </View>
@@ -256,12 +297,10 @@ const OfferDiscountModal: React.FC<Props> = ({
                       }}
                     />
                     <Text style={[styles.priceValue, { color: colors.white }]}>
-                    ₦
+                      ₦
                       {basePrice -
-                        (
-                          basePrice *
-                          (1 - (Number(cfg.monthlyNights) || 0) / 100)
-                        )}
+                        basePrice *
+                          (1 - (Number(tempConfig.monthlyNights) || 0) / 100)}
                     </Text>
                   </View>
                 </View>
@@ -272,11 +311,17 @@ const OfferDiscountModal: React.FC<Props> = ({
                     minimumValue={0}
                     maximumValue={100}
                     step={1}
-                    value={Number(cfg.monthlyNights) || 0}
+                    value={Number(
+                      detailOpen === 'monthly'
+                        ? (tempConfig.monthlyNights !== undefined
+                            ? tempConfig.monthlyNights
+                            : cfg.monthlyNights || 0)
+                        : (cfg.monthlyNights || 0)
+                    )}
                     onValueChange={(value) =>
-                      setCfg((c) => ({
-                        ...c,
-                        monthlyNights: String(Math.round(value)),
+                      setTempConfig(t => ({
+                        ...t,
+                        monthlyNights: String(Math.round(value))
                       }))
                     }
                     minimumTrackTintColor={colors.primary}
@@ -287,16 +332,16 @@ const OfferDiscountModal: React.FC<Props> = ({
                   <Text style={styles.discountLabel}>100%</Text>
                   <View style={[styles.discountLabels, { marginLeft: 10 }]}>
                     <Text style={styles.discountValue}>
-                      {cfg.monthlyNights || 0}%
+                      {tempConfig.monthlyNights || 0}%
                     </Text>
                   </View>
                 </View>
-                </View>
+              </View>
               <ActionRow
-                onCancel={saveAndClose}
+                onCancel={handleCancel}
                 onSave={saveAndClose}
                 saveText="Save"
-                disabled={!cfg.monthlyNights}
+                disabled={!canSaveSub}
               />
             </DetailCard>
           )}
@@ -353,16 +398,34 @@ const OfferDiscountModal: React.FC<Props> = ({
             <RowWithAction
               label="Early Bird Discount"
               placeholder="Add Discount"
-              value={cfg.earlyBirdEnabled && cfg.earlyBirdPercent && cfg.earlyBirdMonths 
-                ? `Early Bird Discount (${cfg.earlyBirdPercent}% for ${cfg.earlyBirdMonths} ${parseInt(cfg.earlyBirdMonths) === 1 ? 'Month' : 'Months'})` 
-                : cfg.earlyBirdEnabled ? "Added" : ""}
+              value={
+                cfg.earlyBirdEnabled &&
+                cfg.earlyBirdPercent &&
+                cfg.earlyBirdMonths
+                  ? `Early Bird Discount (${cfg.earlyBirdPercent}% for ${
+                      cfg.earlyBirdMonths
+                    } ${
+                      parseInt(cfg.earlyBirdMonths) === 1 ? "Month" : "Months"
+                    })`
+                  : ""
+              }
               enabled={!!cfg.earlyBirdEnabled}
               editable={false}
               onPress={() => {
-                const next = !cfg.earlyBirdEnabled;
-                toggle("earlyBirdEnabled", next);
-                if (next) setDetailOpen("earlyBird");
-                else if (detailOpen === "earlyBird") setDetailOpen(null);
+                if (cfg.earlyBirdEnabled) {
+                  setCfg(c => ({
+                    ...c,
+                    earlyBirdEnabled: false,
+                    earlyBirdPercent: undefined,
+                    earlyBirdMonths: undefined
+                  }));
+                } else {
+                  setTempConfig({
+                    earlyBirdPercent: cfg.earlyBirdPercent || '10',
+                    earlyBirdMonths: cfg.earlyBirdMonths || '1'
+                  });
+                  setDetailOpen("earlyBird");
+                }
               }}
               onChangeText={() => {}}
             />
@@ -371,29 +434,45 @@ const OfferDiscountModal: React.FC<Props> = ({
                 title="Early Bird Discount"
                 subtitle="Attract early bookings by offering discounts when guests book far in advance."
               >
+                <Text
+                  weight="semiBold"
+                  style={{ textAlign: "center", paddingVertical: 4 }}
+                >
+                  Early Bird Discount
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "grey",
+                    marginBottom: 10,
+                  }}
+                >
+                  Attract early bookings by offering discounts when guests book
+                  far in advance.
+                </Text>
                 <Text style={styles.detailLabel}>Number of Months</Text>
                 <TextField
                   placeholder="0"
                   keyboardType="numeric"
-                  value={cfg.earlyBirdMonths || ""}
+                  value={tempConfig.earlyBirdMonths || ""}
                   onChangeText={(t) =>
-                    setCfg((c) => ({ ...c, earlyBirdMonths: t }))
+                    setTempConfig(prev => ({ ...prev, earlyBirdMonths: t }))
                   }
                 />
                 <Text style={styles.detailLabel}>Discount Percentage</Text>
                 <TextField
                   placeholder="Enter Discount"
                   keyboardType="numeric"
-                  value={cfg.earlyBirdPercent || ""}
+                  value={tempConfig.earlyBirdPercent || ""}
                   onChangeText={(t) =>
-                    setCfg((c) => ({ ...c, earlyBirdPercent: t }))
+                    setTempConfig(prev => ({ ...prev, earlyBirdPercent: t }))
                   }
                 />
                 <ActionRow
-                  onCancel={saveAndClose}
+                  onCancel={handleCancel}
                   onSave={saveAndClose}
                   saveText="Save Discount"
-                  disabled={!canSaveSub}
+                  disabled={false}
                 />
               </DetailCard>
             )}
@@ -402,15 +481,31 @@ const OfferDiscountModal: React.FC<Props> = ({
               label="Last Minute Discount"
               editable={false}
               placeholder="Add Discount"
-              value={cfg.lastMinuteEnabled && cfg.lastMinutePercent && cfg.lastMinuteDays 
-                ? `Last Minute Discount (${cfg.lastMinutePercent}% for ${cfg.lastMinuteDays} ${parseInt(cfg.lastMinuteDays) === 1 ? 'Day' : 'Days'})` 
-                : cfg.lastMinuteEnabled ? "Added" : ""}
+              value={
+                cfg.lastMinuteEnabled &&
+                cfg.lastMinutePercent &&
+                cfg.lastMinuteDays
+                  ? `Last Minute Discount (${cfg.lastMinutePercent}% for ${
+                      cfg.lastMinuteDays
+                    } ${parseInt(cfg.lastMinuteDays) === 1 ? "Day" : "Days"})`
+                  : ""
+              }
               enabled={!!cfg.lastMinuteEnabled}
               onPress={() => {
-                const next = !cfg.lastMinuteEnabled;
-                toggle("lastMinuteEnabled", next);
-                if (next) setDetailOpen("lastMinute");
-                else if (detailOpen === "lastMinute") setDetailOpen(null);
+                if (cfg.lastMinuteEnabled) {
+                  setCfg(c => ({
+                    ...c,
+                    lastMinuteEnabled: false,
+                    lastMinutePercent: undefined,
+                    lastMinuteDays: undefined
+                  }));
+                } else {
+                  setTempConfig({
+                    lastMinutePercent: cfg.lastMinutePercent || '10',
+                    lastMinuteDays: cfg.lastMinuteDays || '1'
+                  });
+                  setDetailOpen("lastMinute");
+                }
               }}
               onChangeText={() => {}}
             />
@@ -419,29 +514,45 @@ const OfferDiscountModal: React.FC<Props> = ({
                 title="Last Minute Discount"
                 subtitle="Fill your calendar by offering discounts when guests book closer to their arrival date."
               >
+                <Text
+                  weight="semiBold"
+                  style={{ textAlign: "center", paddingVertical: 4 }}
+                >
+                  Last Minute Discount
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "grey",
+                    marginBottom: 10,
+                  }}
+                >
+                  Fill your calendar by offering discounts when guests book
+                  closer to their arrival date.
+                </Text>
                 <Text style={styles.detailLabel}>Number of Days</Text>
                 <TextField
                   placeholder="0"
                   keyboardType="numeric"
-                  value={cfg.lastMinuteDays || ""}
+                  value={tempConfig.lastMinuteDays || ""}
                   onChangeText={(t) =>
-                    setCfg((c) => ({ ...c, lastMinuteDays: t }))
+                    setTempConfig(prev => ({ ...prev, lastMinuteDays: t }))
                   }
                 />
                 <Text style={styles.detailLabel}>Discount Percentage</Text>
                 <TextField
                   placeholder="Enter Discount"
                   keyboardType="numeric"
-                  value={cfg.lastMinutePercent || ""}
+                  value={tempConfig.lastMinutePercent || ""}
                   onChangeText={(t) =>
-                    setCfg((c) => ({ ...c, lastMinutePercent: t }))
+                    setTempConfig(prev => ({ ...prev, lastMinutePercent: t }))
                   }
                 />
                 <ActionRow
-                  onCancel={onClose}
+                  onCancel={handleCancel}
                   onSave={saveAndClose}
                   saveText="Save Discount"
-                  disabled={!canSaveSub}
+                  disabled={false}
                 />
               </DetailCard>
             )}
@@ -450,15 +561,33 @@ const OfferDiscountModal: React.FC<Props> = ({
               label="Trip Length Discount"
               editable={false}
               placeholder="Add Discount"
-              value={cfg.tripLengthEnabled && cfg.tripLengthPercent && cfg.tripLengthDurations?.length 
-                ? `Trip Length Discount (${cfg.tripLengthPercent}% for ${cfg.tripLengthDurations.join(', ')} ${cfg.tripLengthDurations.length === 1 ? 'Night' : 'Nights'})` 
-                : cfg.tripLengthEnabled ? "Added" : ""}
+              value={
+                cfg.tripLengthEnabled &&
+                cfg.tripLengthPercent &&
+                cfg.tripLengthDurations?.length
+                  ? `Trip Length Discount (${
+                      cfg.tripLengthPercent
+                    }% for ${cfg.tripLengthDurations.join(", ")} ${
+                      cfg.tripLengthDurations.length === 1 ? "Night" : "Nights"
+                    })`
+                  : ""
+              }
               enabled={!!cfg.tripLengthEnabled}
               onPress={() => {
-                const next = !cfg.tripLengthEnabled;
-                toggle("tripLengthEnabled", next);
-                if (next) setDetailOpen("tripLength");
-                else if (detailOpen === "tripLength") setDetailOpen(null);
+                if (cfg.tripLengthEnabled) {
+                  setCfg(c => ({
+                    ...c,
+                    tripLengthEnabled: false,
+                    tripLengthPercent: undefined,
+                    tripLengthDurations: undefined
+                  }));
+                } else {
+                  setTempConfig({
+                    tripLengthPercent: cfg.tripLengthPercent || '10',
+                    tripLengthDurations: cfg.tripLengthDurations || ['7 Days']
+                  });
+                  setDetailOpen("tripLength");
+                }
               }}
               onChangeText={() => {}}
             />
@@ -467,6 +596,21 @@ const OfferDiscountModal: React.FC<Props> = ({
                 title="Trip Length Discount"
                 subtitle="Offer discounts based on the length of a booking."
               >
+                <Text
+                  weight="semiBold"
+                  style={{ textAlign: "center", paddingVertical: 4 }}
+                >
+                  Trip Length Discount
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "grey",
+                    marginBottom: 10,
+                  }}
+                >
+                  Offer discounts based on the length of a booking.
+                </Text>
                 <Text style={styles.detailLabel}>
                   Select Duration (Days and/or Weeks)
                 </Text>
@@ -545,7 +689,7 @@ const OfferDiscountModal: React.FC<Props> = ({
                   onCancel={onClose}
                   onSave={saveAndClose}
                   saveText="Save Discount"
-                  disabled={!canSaveSub}
+                  disabled={false}
                 />
               </DetailCard>
             )}
@@ -587,7 +731,7 @@ const RowWithAction = ({
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
-          editable={editable}
+          editable={false}
         />
       </View>
       {actionMode === "plusMinus" ? (

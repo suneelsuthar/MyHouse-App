@@ -14,10 +14,11 @@ import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import * as ImagePicker from "expo-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CustomDateTimePicker } from "../../../Components/DateTimePickerModal";
+
 
 type Props = NativeStackScreenProps<AdminStackParamList, "FMOrderUpdate">;
 
@@ -34,8 +35,8 @@ export function FMOrderUpdate({ navigation }: Props) {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   // date modal
-  const [pickerVisible, setPickerVisible] = useState(false);
-  const [tempDate, setTempDate] = useState<Date>(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+  const [tempDate, setTempDate] = useState<Date>(null);
   // compute start of today once per render
   const todayStart = useMemo(() => {
     const d = new Date();
@@ -70,15 +71,14 @@ export function FMOrderUpdate({ navigation }: Props) {
     // ensure not earlier than today
     const clamped = base < todayStart ? todayStart : base;
     setTempDate(clamped);
-    setPickerVisible(true);
+    setShowPicker(true);
   };
 
-  const cancelPicker = () => setPickerVisible(false);
-  const confirmPicker = () => {
+  const handleDateChange = (date: Date) => {
     // clamp to today if somehow earlier
-    const finalDate = tempDate < todayStart ? todayStart : tempDate;
-    setIssueDate(finalDate);
-    setPickerVisible(false);
+    // const finalDate = date < todayStart ? todayStart : date;
+    // setIssueDate(finalDate);
+    setTempDate(date);
   };
 
   const pickImages = async () => {
@@ -151,7 +151,8 @@ export function FMOrderUpdate({ navigation }: Props) {
           </Text>
           <TextField
             placeholder="Order Number"
-            value={title}
+            value={"Aba1klj23"}
+            editable={false}
             onChangeText={setTitle}
             inputWrapperStyle={styles.inputWrapper}
             style={styles.input}
@@ -165,10 +166,10 @@ export function FMOrderUpdate({ navigation }: Props) {
             <Text
               style={[
                 styles.dtText,
-                { color: issueDate ? colors.primary : colors.primaryLight },
+                { color: tempDate ? colors.primary : colors.primaryLight },
               ]}
             >
-              {fmtDate(issueDate)}
+              {fmtDate(tempDate)}
             </Text>
             <WithLocalSvg asset={Images.calendar} />
           </Pressable>
@@ -237,44 +238,15 @@ export function FMOrderUpdate({ navigation }: Props) {
         </View>
       </ScrollView>
 
-      {/* Date Picker Modal */}
-      <Modal
-        visible={pickerVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={cancelPicker}
-      >
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalCard}>
-            <Text weight="semiBold" style={styles.modalTitle}>
-              Select Date
-            </Text>
-            <View style={styles.modalPickerWrap}>
-              <DateTimePicker
-                value={tempDate}
-                mode="date"
-                display={Platform.OS === "ios" ? "spinner" : "default"}
-                minimumDate={todayStart}
-                onChange={(_, d) => d && setTempDate(d)}
-              />
-            </View>
-            <View style={styles.modalActions}>
-              <Button
-                text="Cancel"
-                preset="default"
-                style={styles.modalBtn}
-                onPress={cancelPicker}
-              />
-              <Button
-                text="Done"
-                preset="reversed"
-                style={styles.modalBtn}
-                onPress={confirmPicker}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/* Custom Date Picker */}
+      <CustomDateTimePicker
+        mode="date"
+        value={tempDate}
+        visible={showPicker}
+        minimumDate={todayStart}
+        onCancel={() => setShowPicker(false)}
+        onConfirm={handleDateChange}
+      />
     </Screen>
   );
 }

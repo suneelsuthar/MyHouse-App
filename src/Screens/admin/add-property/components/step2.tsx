@@ -77,11 +77,12 @@ const ToggleRow = ({
         {label}
       </Text>
       <Switch
+      
         value={value}
         onValueChange={onChange}
         trackColor={{ false: colors.greylight, true: colors.primary }}
         thumbColor={colors.white}
-        style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+        style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
       />
     </View>
   );
@@ -355,6 +356,7 @@ const Step2: React.FC<Step2Props> = ({ mode }) => {
         <ToggleRow
           label="Do you have other charges to add?"
           value={hasOtherCharges}
+          
           onChange={(v) => {
             setHasOtherCharges(v);
             if (v) setChargesModalVisible(true);
