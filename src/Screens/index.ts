@@ -134,7 +134,7 @@ import { AdminVisitorDetails } from "./admin/visitor-management/visitor-details"
 import { AdminGenerateVisitorRequest } from "./admin/visitor-management/generate-visitor-request";
 import { AdminEditProfile } from "./admin/profile/edit-profile";
 import { AdminProfileSettings } from "./admin/profile/profile-settings";
-
+import { AdminSignAgreement } from "./admin/sign-agreement";
 import { PanicEmergency } from "./admin/emergency/panic";
 import { AdminPropertyRequests } from "./admin/property-requests";
 import { AdminManageInspections } from "./admin/manage-inspections";
@@ -249,6 +249,7 @@ export {
   AdminCreateVisitorRequests,
   AdminManageBookings,
   AdminBookingDetails,
+  AdminSignAgreement,
   FacilityManagement,
   AdminVisitorManagement,
   Tenants,

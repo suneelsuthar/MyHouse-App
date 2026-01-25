@@ -13,7 +13,10 @@ import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -23,7 +26,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectAuthLoading, selectAuthError } from "../../../store/selectors";
 import { loginUser } from "../../../store/thunks/authThunks";
 import Toast from "react-native-toast-message";
-interface LoginScreenProps extends NativeStackScreenProps<AuthStackParamList, "Login"> {}
+interface LoginScreenProps
+  extends NativeStackScreenProps<AuthStackParamList, "Login"> {}
 export function LoginScreen(props: LoginScreenProps) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const authPasswordInput = useRef<TextInput>();
@@ -80,7 +84,7 @@ export function LoginScreen(props: LoginScreenProps) {
           text1: "Login Successful",
           text2: `Welcome back! Logged in as ${result.payload.user.role}`,
         });
-        
+
         // Navigation will be handled automatically by the AppNavigator
         // when isAuthenticated becomes true in the Redux store
       } else {
@@ -108,7 +112,7 @@ export function LoginScreen(props: LoginScreenProps) {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles._logoview}>
-            <WithLocalSvg asset={Images.logo} style={{ marginBottom: 10 }} />
+            <WithLocalSvg asset={Images.logo} style={{ marginBottom: 20 }} />
             <WithLocalSvg asset={Images.sublogo} />
           </View>
           <View style={styles._divider} />
@@ -122,7 +126,7 @@ export function LoginScreen(props: LoginScreenProps) {
           </Text>
 
           <Text style={styles._notetext} weight="medium">
-            Don’t have an account?
+            Don’t have an account?{" "}
             <Text
               onPress={() => props.navigation.navigate("CreateAccount")}
               style={styles._register}
@@ -132,9 +136,7 @@ export function LoginScreen(props: LoginScreenProps) {
           </Text>
 
           <View style={styles._dropdownview}>
-            <Text style={styles._roleLabel} weight="medium">
-              Select Role
-            </Text>
+            
             <View style={styles._roleDropdown}>
               <Dropdown
                 dropdownStyle={styles._dropdownInner}
@@ -143,6 +145,7 @@ export function LoginScreen(props: LoginScreenProps) {
                 data={roleOptions}
                 placeholder="Choose your role"
                 value={selectedRole}
+                rightIconColor="#292766"
                 onChangeValue={(val: string) => {
                   setSelectedRole(val);
                 }}
@@ -156,12 +159,15 @@ export function LoginScreen(props: LoginScreenProps) {
               <TextField
                 value={value}
                 onChangeText={(value) => onChange(value)}
-                onBlur={onBlur}
+                // onBlur={onBlur}
                 autoCapitalize="none"
                 autoComplete="email"
+                borderColor="white"
                 autoCorrect={false}
                 keyboardType="email-address"
                 placeholder="Email"
+                style={{ color: "white" }}
+                placeholderTextColor={"#B0B0B0"}
                 helper={errors.email?.message}
                 status={errors.email ? "error" : undefined}
                 LeftAccessory={() => (
@@ -189,14 +195,16 @@ export function LoginScreen(props: LoginScreenProps) {
               <TextField
                 value={value}
                 onChangeText={(value) => onChange(value)}
-                onBlur={onBlur}
                 autoCapitalize="none"
+                borderColor="white"
                 autoComplete="password"
+                placeholderTextColor={"#B0B0B0"}
                 autoCorrect={false}
                 secureTextEntry={isAuthPasswordHidden}
                 placeholder="Password"
                 containerStyle={styles.textField}
                 helper={errors.password?.message}
+                style={{ color: "white" }}
                 status={errors.password ? "error" : undefined}
                 LeftAccessory={() => (
                   <WithLocalSvg
@@ -229,10 +237,11 @@ export function LoginScreen(props: LoginScreenProps) {
             disabled={!isFormValid || isLoading}
             onPress={handleSubmit(login)}
             text={isLoading ? "Logging in..." : "Login"}
+            textStyle={{ color: "#292766" }}
             style={[
               !isFormValid && styles.disabledButton,
               {
-                backgroundColor: isFormValid ? colors.primary : colors.border,
+                backgroundColor: isFormValid ? colors.white : colors.border,
               },
             ]}
           />
@@ -253,20 +262,55 @@ export function LoginScreen(props: LoginScreenProps) {
                 <MaterialCommunityIcons
                   name="checkbox-marked-outline"
                   size={24}
-                  color={colors.primary}
+                  color={colors.white}
                 />
               ) : (
                 <MaterialCommunityIcons
                   name="checkbox-blank-outline"
                   size={24}
-                  color="black"
+                  color={colors.white}
                 />
               )}
             </TouchableOpacity>
 
-            <Text text="Keep me logged in" />
+            <Text text="Keep me logged in" style={{ color: "white" }} />
           </View>
-          <View style={{ marginBottom: 50 }} />
+          <Text text="OR" style={styles._ortext} />
+
+          <Button
+            preset="reversed"
+            disabled={!isFormValid || isLoading}
+            onPress={handleSubmit(login)}
+            text={"Continue with Google"}
+            textStyle={{ color: "#292766A3",paddingLeft:20 }}
+            LeftAccessory={() => <WithLocalSvg asset={Images.googleicon} />}
+            style={[
+              !isFormValid && styles.disabledButton,
+              {
+                backgroundColor: isFormValid ? colors.white : colors.border,
+                marginVertical: 10,
+                marginBottom: 30,
+                justifyContent: "flex-start",
+              },
+            ]}
+          />
+
+          <Button
+            preset="reversed"
+            disabled={!isFormValid || isLoading}
+            onPress={handleSubmit(login)}
+            text={"Continue with Facebook"}
+            textStyle={{ color: "#292766A3" ,paddingLeft:20}}
+            LeftAccessory={() => <WithLocalSvg asset={Images.facebook} />}
+            style={[
+              !isFormValid && styles.disabledButton,
+              {
+                backgroundColor: isFormValid ? colors.white : colors.border,
+                marginBottom: 50,
+                justifyContent: "flex-start",
+              },
+            ]}
+          />
         </ScrollView>
       </Screen>
     </>
@@ -281,18 +325,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     lineHeight: 32,
-    color: colors.primary,
+    color: colors.white,
   },
   _heading_light: {
     textAlign: "center",
     fontSize: 24,
     lineHeight: 32,
-    color: "#29276680",
+    color: "#fff",
     marginVertical: 5,
   },
 
   textField: {
-    marginVertical: spacing.md,
+    // backgroundColor: "red",
+    // marginTop: 20,
+    // marginBottom:20
   },
 
   enterDetails: {
@@ -301,8 +347,9 @@ const styles = StyleSheet.create({
   },
   screenContentContainer: {
     flex: 1,
-    marginHorizontal: spacing.md,
+    paddingHorizontal: spacing.md,
     paddingTop: 70,
+    backgroundColor: "#292766",
   },
   _logoview: {
     alignSelf: "center",
@@ -315,9 +362,11 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   _ortext: {
-    fontSize: 16,
+    fontSize: adjustSize(14),
     paddingHorizontal: spacing.sm,
-    color: colors.primaryLight,
+    textAlign: "center",
+    color: "#B0B0B0",
+    // color: colors.primaryLight,
   },
   tapButton: {
     borderRadius: 16,
@@ -339,18 +388,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   _divider: {
-    borderBottomWidth: 1,
-    borderColor: "#B0B0B0",
+    borderBottomWidth: 0.5,
+    borderColor: "#737373",
     marginVertical: 25,
   },
   _notetext: {
     textAlign: "center",
-    color: colors.primary,
+    color: colors.white,
     fontSize: 14,
     marginBottom: 20,
   },
   _register: {
     color: "#B0B0B0",
+    textDecorationLine: "underline",
   },
   _row: {
     flexDirection: "row",
@@ -373,14 +423,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 8,
-    backgroundColor: "#292766A3",
+    backgroundColor: "#FFFFFF",
     height: adjustSize(49),
   },
   _placeholderStyle: {
-    color: "#6C757D",
+    color: "#292766",
   },
   _selectedTextStyle: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: "#292766",
   },
 });

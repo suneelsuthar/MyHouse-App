@@ -12,7 +12,7 @@ import { colors, adjustSize, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
-import DropdownComponent from "../../../Components/DropDown";
+ 
 
 export function Chat() {
   const navigation: any = useNavigation();
@@ -114,12 +114,7 @@ export function Chat() {
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={() => navigation.navigate("Message")}
-      style={[
-        styles.chatItem,
-        {
-          backgroundColor: index % 2 === 0 ? "transparent" : "#dedff0",
-        },
-      ]}
+      style={styles.chatCard}
     >
       <Image source={{ uri: item.avatar }} style={styles.avatar} />
       <View style={styles.info}>
@@ -128,9 +123,7 @@ export function Chat() {
           <Text
             style={[
               styles.date,
-              {
-                color: index % 2 === 0 ? "#B0B0B0" : "#FFFFFF",
-              },
+              { color: "#737373" },
             ]}
           >
             {item.date}
@@ -148,24 +141,30 @@ export function Chat() {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header2 title="Chat" />
-      <DropdownComponent
-        placeholder="Filter by type"
-        data={[
+      <Header2 title="Chat"  />
+      <View style={styles.tabsRow}>
+        {[
           { label: "All", value: "all" },
           { label: "Property", value: "property" },
           { label: "Support", value: "support" },
-        ]}
-        dropdownStyle={{
-          marginHorizontal: adjustSize(10),
-          backgroundColor: colors.primary,
-          marginTop: adjustSize(10),
-        }}
-        onChangeValue={(value) => setSelectedType(value)}
-        value={selectedType}
-      />
+        ].map((t) => (
+          <TouchableOpacity
+            key={t.value}
+            onPress={() => setSelectedType(t.value)}
+            style={[styles.tabBtn, selectedType === t.value && styles.tabActive]}
+            activeOpacity={0.7}
+          >
+            <Text
+              weight={selectedType === t.value ? "semiBold" : "medium"}
+              style={[styles.tabText, selectedType === t.value && styles.tabTextActive]}
+            >
+              {t.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
       <SearchBar
-        placeholder="Search by name or message"
+        placeholder="Search"
         hideBtn
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -205,6 +204,32 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  tabsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    // marginHorizontal: adjustSize(10),
+    // marginTop: adjustSize(10),
+    backgroundColor: colors.white,
+    // borderRadius: adjustSize(10),
+    // overflow: "hidden",
+  },
+  tabBtn: {
+    flex: 1,
+    height: adjustSize(44),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+  },
+  tabActive: {
+    backgroundColor: colors.primary,
+  },
+  tabText: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+  },
+  tabTextActive: {
+    color: colors.white,
   },
   header: {
     flexDirection: "row",
@@ -254,6 +279,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(10),
     paddingVertical: adjustSize(20),
   },
+  chatCard: {
+    flexDirection: "row",
+    backgroundColor: colors.white,
+    marginHorizontal: adjustSize(10),
+    marginTop: adjustSize(12),
+    borderRadius: adjustSize(12),
+    padding: adjustSize(12),
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 2,
+  },
   info: {
     flex: 1,
     marginLeft: adjustSize(15),
@@ -302,6 +340,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  toggleLabel: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.semiBold,
   },
   btn: {
     marginVertical: adjustSize(25),

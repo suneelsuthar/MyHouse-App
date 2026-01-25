@@ -18,7 +18,10 @@ import * as yup from "yup";
 import { WithLocalSvg } from "react-native-svg/css";
 import { authService } from "../../../services/auth.service";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import Dropdown from "../../../Components/DropDown";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 // Define validation schema for signup
@@ -54,7 +57,8 @@ const defaultValues: SignUpFormData = {
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
-interface CreateAccountProps extends NativeStackScreenProps<AuthStackParamList, "CreateAccount"> {}
+interface CreateAccountProps
+  extends NativeStackScreenProps<AuthStackParamList, "CreateAccount"> {}
 
 export function CreateAccount(props: CreateAccountProps) {
   const [loading, setLoading] = useState(false);
@@ -63,6 +67,7 @@ export function CreateAccount(props: CreateAccountProps) {
   const [checked, setChecked] = useState(false);
   const authPasswordInput = useRef<TextInput>();
   const [keepLoggedIn, setKeeLoggedIn] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string>("admin");
 
   // No need for useToast hook with react-native-toast-message
   const nav = useNavigation<NavigationProp>();
@@ -78,6 +83,17 @@ export function CreateAccount(props: CreateAccountProps) {
     resolver: yupResolver(signupValidationSchema),
     defaultValues,
   });
+
+  // Role options for dropdown (same as Login)
+  const roleOptions = [
+    { label: "Admin", value: "admin" },
+    { label: "Tenant", value: "tenant" },
+    { label: "Agent", value: "agent" },
+    { label: "Facility Manager", value: "facility_manager" },
+    { label: "Landlord", value: "landlord" },
+    { label: "Sub-Landlord", value: "sub_landlord" },
+    { label: "Security", value: "security" },
+  ];
 
   const [email, password, confirmPassword] = watch([
     "email",
@@ -156,7 +172,7 @@ export function CreateAccount(props: CreateAccountProps) {
         </Text>
 
         <Text style={styles._notetext} weight="medium">
-          Already have an account?
+          Already have an account?{" "}
           <Text
             onPress={() => props.navigation.navigate("Login")}
             style={styles._register}
@@ -166,7 +182,21 @@ export function CreateAccount(props: CreateAccountProps) {
         </Text>
 
         <View style={styles._dropdownview}>
-          <Dropdown />
+         
+          <View style={styles._roleDropdown}>
+            <Dropdown
+              dropdownStyle={styles._dropdownInner}
+              placeholderStyle={styles._placeholderStyle}
+              selectedTextStyle={styles._selectedTextStyle}
+              data={roleOptions}
+              placeholder="Choose your role"
+              value={selectedRole}
+              rightIconColor="#292766"
+              onChangeValue={(val: string) => {
+                setSelectedRole(val);
+              }}
+            />
+          </View>
         </View>
 
         <Controller
@@ -179,6 +209,9 @@ export function CreateAccount(props: CreateAccountProps) {
               onBlur={onBlur}
               autoCorrect={false}
               placeholder="Enter you full name"
+              placeholderTextColor={"#B0B0B0"}
+              borderColor="white"
+              style={{ color: "white" }}
               helper={errors.fullName?.message}
               status={errors.fullName ? "error" : undefined}
               LeftAccessory={() => (
@@ -208,6 +241,9 @@ export function CreateAccount(props: CreateAccountProps) {
               autoCorrect={false}
               keyboardType="email-address"
               placeholder="Enter a valid email address"
+              placeholderTextColor={"#B0B0B0"}
+              borderColor="white"
+              style={{ color: "white" }}
               helper={errors.email?.message}
               status={errors.email ? "error" : undefined}
               LeftAccessory={() => (
@@ -238,6 +274,9 @@ export function CreateAccount(props: CreateAccountProps) {
               autoCorrect={false}
               secureTextEntry={isAuthPasswordHidden}
               placeholder="Enter strong password"
+              placeholderTextColor={"#B0B0B0"}
+              borderColor="white"
+              style={{ color: "white" }}
               containerStyle={styles.textField}
               helper={errors.password?.message}
               status={errors.password ? "error" : undefined}
@@ -263,6 +302,9 @@ export function CreateAccount(props: CreateAccountProps) {
               autoCorrect={false}
               secureTextEntry={isAuthPasswordHidden}
               placeholder="Re-enter password"
+              placeholderTextColor={"#B0B0B0"}
+              borderColor="white"
+              style={{ color: "white" }}
               containerStyle={styles.textField}
               helper={errors.confirmPassword?.message}
               status={errors.confirmPassword ? "error" : undefined}
@@ -279,11 +321,17 @@ export function CreateAccount(props: CreateAccountProps) {
         <Button
           testID="signup-button"
           text="Sign up"
-          style={[!isFormValid && styles.disabledButton, { marginTop: 30 }]}
+          style={[
+            !isFormValid && styles.disabledButton,
+            {
+              marginTop: 30,
+              backgroundColor: isFormValid ? colors.white : colors.border,
+            },
+          ]}
           preset="reversed"
           gradient={false}
           onPress={handleSubmit(signup)}
-          textStyle={{ color: colors.white, fontFamily: "bold" }}
+          textStyle={{ color: "#292766", fontFamily: "bold" }}
           disabled={!isFormValid || loading}
           RightAccessory={() =>
             loading ? (
@@ -305,23 +353,65 @@ export function CreateAccount(props: CreateAccountProps) {
               <MaterialCommunityIcons
                 name="checkbox-marked-outline"
                 size={24}
-                color={colors.primary}
+                color={colors.white}
               />
             ) : (
               <MaterialCommunityIcons
                 name="checkbox-blank-outline"
                 size={24}
-                color="black"
+                color={colors.white}
               />
             )}
           </TouchableOpacity>
 
-          <Text style={styles._agree_text}>
+          <Text style={[styles._agree_text, { color: "white" }]}>
             I agree to be bound by these {" "}
-            <Text style={styles._underline}>Terms & Condition</Text>   and{"  "}
-            <Text style={styles._underline}>User Agreement.</Text>
+            <Text style={[styles._underline, { color: "white" }]}>
+              Terms & Condition
+            </Text>{" "}
+              and{"  "}
+            <Text style={[styles._underline, { color: "white" }]}>
+              User Agreement.
+            </Text>
           </Text>
         </View>
+
+        <Text text="OR" style={styles._ortext} />
+
+        <Button
+          preset="reversed"
+          disabled={!isFormValid || loading}
+          onPress={handleSubmit(signup)}
+          text={"Continue with Google"}
+          textStyle={{ color: "#292766A3", paddingLeft: 20 }}
+          LeftAccessory={() => <WithLocalSvg asset={Images.googleicon} />}
+          style={[
+            !isFormValid && styles.disabledButton,
+            {
+              backgroundColor: isFormValid ? colors.white : colors.border,
+              marginVertical: 10,
+              marginBottom: 30,
+              justifyContent: "flex-start",
+            },
+          ]}
+        />
+
+        <Button
+          preset="reversed"
+          disabled={!isFormValid || loading}
+          onPress={handleSubmit(signup)}
+          text={"Continue with Facebook"}
+          textStyle={{ color: "#292766A3", paddingLeft: 20 }}
+          LeftAccessory={() => <WithLocalSvg asset={Images.facebook} />}
+          style={[
+            !isFormValid && styles.disabledButton,
+            {
+              backgroundColor: isFormValid ? colors.white : colors.border,
+              marginBottom: 50,
+              justifyContent: "flex-start",
+            },
+          ]}
+        />
       </ScrollView>
     </Screen>
   );
@@ -335,21 +425,43 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     lineHeight: 32,
-    color: colors.primary,
+    color: colors.white,
   },
   _heading_light: {
     textAlign: "center",
     fontSize: 24,
     lineHeight: 32,
-    color: "#29276680",
+    color: "#737373",
     marginVertical: 5,
   },
 
   textField: {
-    marginVertical: spacing.md,
+    // marginVertical: spacing.md,
   },
   _dropdownview: {
     marginVertical: spacing.md,
+  },
+  _roleLabel: {
+    fontSize: 14,
+    color: colors.primary,
+    marginBottom: 8,
+  },
+  _roleDropdown: {
+    marginBottom: 10,
+  },
+  _dropdownInner: {
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    backgroundColor: "#FFFFFF",
+    height: adjustSize(49),
+  },
+  _placeholderStyle: {
+    color: "#292766",
+  },
+  _selectedTextStyle: {
+    fontSize: adjustSize(12),
+    color: "#292766",
   },
 
   enterDetails: {
@@ -358,8 +470,9 @@ const styles = StyleSheet.create({
   },
   screenContentContainer: {
     flex: 1,
-    marginHorizontal: spacing.md,
+    paddingHorizontal: spacing.md,
     paddingTop: 70,
+    backgroundColor: "#292766",
   },
   _logoview: {
     alignSelf: "center",
@@ -372,9 +485,10 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   _ortext: {
-    fontSize: 16,
+    fontSize: adjustSize(14),
     paddingHorizontal: spacing.sm,
-    color: colors.primaryLight,
+    textAlign: "center",
+    color: "#B0B0B0",
   },
   tapButton: {
     borderRadius: 16,
@@ -401,12 +515,13 @@ const styles = StyleSheet.create({
   },
   _notetext: {
     textAlign: "center",
-    color: colors.primary,
+    color: colors.white,
     fontSize: 14,
     marginBottom: 20,
   },
   _register: {
     color: "#B0B0B0",
+    textDecorationLine: "underline",
   },
   _row: {
     flexDirection: "row",

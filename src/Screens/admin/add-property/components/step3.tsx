@@ -26,10 +26,18 @@ type Step3Props = {
 interface ServiceItem {
   label: string;
   value: string;
-  image: ImageSourcePropType;
 }
 
 
+
+const DEFAULT_FEATURES: ServiceItem[] = [
+  { label: "Balcony", value: "Balcony"},
+  { label: "Swimming Pool", value: "Swimming Pool"},
+  { label: "Garden", value: "Garden"},
+  { label: "Elevator", value: "Elevator"},
+  { label: "Security", value: "Security"},
+  { label: "Parking Space", value: "Parking Space"},
+];
 
 const DEFAULT_SERVICES: ServiceItem[] = [
   { label: "Wardrobe", value: "Wardrobe", image: Images.logo_1 },
@@ -98,6 +106,37 @@ const Step3: React.FC<Step3Props> = ({
       contentContainerStyle={{ paddingBottom: adjustSize(24) }}
       showsVerticalScrollIndicator={false}
     >
+      {/* Features */}
+      <Text weight="semiBold" style={styles.sectionTitle}>
+        Do you have any Features?
+      </Text>
+
+      <DropdownComponent
+        data={DEFAULT_FEATURES}
+        value={null}
+        onChangeValue={() => {}}
+        placeholder="Search Features"
+        dropdownStyle={
+          {
+            marginHorizontal: 1,
+            backgroundColor: colors.white,
+            boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
+            marginBottom: adjustSize(10),
+          } as ViewStyle
+        }
+        rightIconColor={colors.primary}
+        placeholderStyle={{
+          color: colors.grey,
+          fontSize: adjustSize(12),
+          fontFamily: typography.fonts.poppins.normal,
+        }}
+        selectedTextStyle={{
+          color: "#292766",
+          fontFamily: typography.fonts.poppins.normal,
+          fontSize: adjustSize(12),
+        }}
+      />
+
       {/* Services */}
       <Text weight="semiBold" style={styles.sectionTitle}>
         What about services?
@@ -117,7 +156,7 @@ const Step3: React.FC<Step3Props> = ({
           {
             marginHorizontal: 1,
             // marginBottom: adjustSize(8),
-            backgroundColor: colors.fill,
+            backgroundColor: colors.white,
             boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
             marginBottom: adjustSize(10),
           } as ViewStyle
@@ -144,11 +183,7 @@ const Step3: React.FC<Step3Props> = ({
             return (
               <View key={service.value} style={styles.chip}>
                 <View style={styles.chipContent}>
-                  <Image 
-                    source={service.image} 
-                    style={styles.serviceImage} 
-                    resizeMode="contain"
-                  />
+                 
                   <Text style={styles.chipText}>{service.label}</Text>
                 </View>
                 <TouchableOpacity
@@ -215,11 +250,11 @@ const Step3: React.FC<Step3Props> = ({
           onChange={() =>
             !assignPrimaryAgent &&
             navigation.navigate("AdminAssignProperties", {
-              type: "agent",
+              type: "primary-agent",
               title: "Assign Agent",
             } as never)
           }
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
         />
       </View>
       <View style={styles.toggleRow}>
@@ -236,7 +271,7 @@ const Step3: React.FC<Step3Props> = ({
               setAssignPrimaryAgent(false);
             }
           }}
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
         />
       </View>
 
@@ -244,7 +279,26 @@ const Step3: React.FC<Step3Props> = ({
       <Text weight="semiBold" style={styles.sectionTitle}>
         Facility Managers
       </Text>
+     
       <View style={styles.toggleRow}>
+        <Text weight="normal" style={styles.toggleLabel}>
+          Assign Facility Manager
+        </Text>
+        <Switch
+          value={assignFacilityManager}
+          onValueChange={setAssignFacilityManager}
+          trackColor={{ false: colors.greylight, true: colors.primary }}
+          thumbColor={colors.white}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1}] }}
+          onChange={() => {
+            if (!assignFacilityManager) {
+              setAllowFacilityManagerRequest(false);
+            }
+          }}
+        />
+      </View>
+
+       <View style={styles.toggleRow}>
         <Text weight="normal" style={styles.toggleLabel}>
           Allow Facility Manager Request
         </Text>
@@ -260,24 +314,7 @@ const Step3: React.FC<Step3Props> = ({
               title: "Assign Facility Manager",
             } as never)
           }
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
-        />
-      </View>
-      <View style={styles.toggleRow}>
-        <Text weight="normal" style={styles.toggleLabel}>
-          Assign Facility Manager
-        </Text>
-        <Switch
-          value={assignFacilityManager}
-          onValueChange={setAssignFacilityManager}
-          trackColor={{ false: colors.greylight, true: colors.primary }}
-          thumbColor={colors.white}
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
-          onChange={() => {
-            if (!assignFacilityManager) {
-              setAllowFacilityManagerRequest(false);
-            }
-          }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1}] }}
         />
       </View>
 
@@ -307,11 +344,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: 16,
+    borderRadius: 100,
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginRight: 8,
     marginBottom: 8,
+    height:adjustSize(40)
   },
   chipContent: {
     flexDirection: 'row',
@@ -326,7 +364,7 @@ const styles = StyleSheet.create({
   },
   chipText: {
     color: colors.white,
-    fontSize: adjustSize(12),
+    fontSize: adjustSize(14),
   },
   chipClose: {
     marginLeft: 4,
@@ -348,9 +386,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(14),
     paddingVertical: adjustSize(10),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.greylight,
+    height:adjustSize(49),
+    justifyContent:"center",
+    alignItems:"center"
   } as ViewStyle,
   restrictionActive: {
     backgroundColor: colors.primary,

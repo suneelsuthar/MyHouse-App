@@ -15,8 +15,8 @@ interface FacilityManagementCardProps {
   style?: object; // ✅ custom styling (red/blue bg)
 }
 
-const OrderAction = ["View", "Update"];
-const CompletedAction = ["View", "Export"];
+const OrderAction = ["View", "Add Update", "Export", "Chat"];
+const CompletedAction = ["View", "Export", "Chat"];
 export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
   activeTab,
   property,
@@ -54,115 +54,93 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
 
   return (
     <View style={{ position: "relative" }}>
-      <View style={[styles.container, style]}>
-        <View style={styles.left}>
-          <Image source={{ uri: thumb }} style={styles.thumbnail} />
-          <Text style={styles.requestedBy}>Requested by</Text>
-          <Text weight="medium" style={styles.requestedByVal} numberOfLines={1}>
-            {property?.requestedBy}
-          </Text>
-          {property?.status !== "Work requests" && (
-            <Text style={styles.progress}>Completed</Text>
-          )}
+      <View style={[styles.card, style]}>
+        {/* Image header */}
+        <View style={styles.imageWrap}>
+          <Image source={{ uri: thumb }} style={styles.image} />
+          {/* Status chip */}
+          <View style={[styles.chip, styles.statusChip]}>
+            <Text style={styles.chipText} weight="medium">
+              {property?.status === "Work requests"
+                ? "In progress"
+                : property?.status}
+            </Text>
+          </View>
+          {/* Menu 
+          button */}
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={styles.moreBtn}
+            onPress={() => setMenuVisible((v) => !v)}
+          >
+            <Entypo name="dots-three-vertical" size={16} color={colors.white} />
+          </TouchableOpacity>
+          {/* Priority chip */}
+          <View style={[styles.chip, styles.priorityChip]}>
+            <Text
+              style={[styles.chipText, { color: colors.white }]}
+              weight="medium"
+            >
+              {property?.priority || "High Priority"}
+            </Text>
+          </View>
         </View>
-        <View style={styles.data}>
-          {property?.status === "Work requests" && (
-            <Text style={styles.progress}>In progress</Text>
-          )}
 
-          <Text style={styles.title} numberOfLines={1}>
-            {property?.title}
-          </Text>
-          <Text weight="medium" style={styles.text} numberOfLines={1}>
-            {property?.text}
-          </Text>
-          <View style={{ flexDirection: "row" }}>
-            <View style={styles.reqNoBox}>
-              <Text style={styles.workReqNoTitle}>Work Req No: </Text>
-              <Text style={styles.workReqNo} numberOfLines={1}>
-                {property?.workReqNo}
+        {/* Footer */}
+        <View style={styles.footer}>
+          <View style={styles.footerRow}>
+            <View
+              style={{
+                flex: 1,
+                paddingRight: adjustSize(6),
+                flexDirection: "row",
+                gap: 10,
+              }}
+            >
+              <Text style={styles.footerTitle} numberOfLines={1}>
+                {property?.title}
+              </Text>
+              <Text style={styles.codeText} numberOfLines={1}>
+                (WR {property?.workReqNo})
               </Text>
             </View>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Category:
-            </Text>
-            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-              {property?.category}
-            </Text>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Priority:
-            </Text>
-            <Text
-              style={[styles.cardTitleVal, { color: "#D51E1E" }]}
-              numberOfLines={1}
-            >
-              {property?.priority}
-            </Text>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Issue Date:
-            </Text>
-            <Text
-              style={[
-                styles.cardTitleVal,
-                {
-                  color: colors.primary,
-                },
-              ]}
-              numberOfLines={1}
-            >
+            <Text style={styles.footerDate} numberOfLines={1}>
               {property?.issueDate}
             </Text>
           </View>
-          {property?.status !== "Work requests" && (
-            <View style={[styles.row]}>
-              <Text style={[styles.cardTitle]} numberOfLines={1}>
-                Due Date
-              </Text>
-              <Text
-                style={[
-                  styles.cardTitleVal,
-                  {
-                    color: "#D51E1E",
-                  },
-                ]}
-                numberOfLines={1}
-              >
-                {property?.dueDate}
-              </Text>
-            </View>
-          )}
-        </View>
-
-        <View>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={styles._morebutton}
-            onPress={() => setMenuVisible((v) => !v)}
+          <View
+            style={[
+              styles.codeRow,
+              {
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              },
+            ]}
           >
-            <Entypo
-              name="dots-three-vertical"
-              size={16}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
+            <Text style={styles.desc} numberOfLines={1}>
+              {property?.text}
+            </Text>
+            {
+              activeTab?.toLowerCase() !== "work requests" && (
+                <Text style={styles.footerDate} numberOfLines={1}>
+                  <Text text="Due:" style={{ color: "#D51E1E" }} />{" "}
+                  {property?.issueDate}
+                </Text>
+              )
+            }
+           
+          </View>
         </View>
       </View>
+
       {menuVisible && (
         <>
-          {/* Transparent overlay behind the menu */}
           <TouchableOpacity
             style={styles.overlay}
             activeOpacity={1}
             onPress={() => setMenuVisible(false)}
           />
-
-          {/* Menu box */}
           <View style={styles.menuBox}>
             {ACTIONS.map((a) => (
               <TouchableOpacity
@@ -187,16 +165,101 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    paddingVertical: adjustSize(15),
+  card: {
+    borderRadius: 15,
+    backgroundColor: colors.white,
+    overflow: "hidden",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    marginBottom: adjustSize(16),
   },
-  thumbnail: {
-    height: adjustSize(102),
-    width: adjustSize(95),
-    borderRadius: adjustSize(10),
-    backgroundColor: colors.border,
-    elevation: 1,
+  imageWrap: {
+    position: "relative",
+    width: "100%",
+    height: adjustSize(188),
+    borderRadius: 15,
+    marginBottom: -10,
+    zIndex: 1,
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  chip: {
+    position: "absolute",
+    paddingHorizontal: adjustSize(12),
+    // height: adjustSize(26),
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    height: adjustSize(20),
+    // padding:adjustSize(5),
+  },
+  statusChip: {
+    left: adjustSize(14),
+    top: adjustSize(12),
+    backgroundColor: "#0AD029",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  priorityChip: {
+    left: adjustSize(14),
+    bottom: adjustSize(12),
+    backgroundColor: "#D51E1E",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chipText: {
+    color: colors.white,
+    fontSize: adjustSize(10),
+    // lineHeight:adjustSize(10)
+  },
+  moreBtn: {
+    position: "absolute",
+    right: adjustSize(12),
+    top: adjustSize(12),
+    width: adjustSize(28),
+    height: adjustSize(28),
+    borderRadius: adjustSize(14),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.28)",
+  },
+  footer: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: adjustSize(16),
+    paddingVertical: adjustSize(14),
+  },
+  footerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  footerTitle: {
+    color: colors.white,
+    fontSize: adjustSize(15),
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  footerDate: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+  },
+  codeRow: {
+    marginTop: 2,
+    marginBottom: adjustSize(6),
+  },
+  codeText: {
+    color: "#BFD0FF",
+    fontSize: adjustSize(12),
+  },
+  desc: {
+    color: colors.white,
+    fontSize: adjustSize(10),
   },
   _morebutton: {
     marginRight: adjustSize(10),
@@ -220,81 +283,6 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
-  },
-  data: {
-    flex: 1,
-    marginRight: adjustSize(10),
-    marginLeft: adjustSize(7),
-  },
-  left: {
-    width: adjustSize(115),
-    alignItems: "center",
-  },
-  requestedBy: {
-    color: colors.primary,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.semiBold,
-    textAlign: "center",
-    marginTop: adjustSize(10),
-    paddingVertical: 0,
-    lineHeight: adjustSize(15),
-  },
-  requestedByVal: {
-    color: colors.black,
-    fontSize: adjustSize(10),
-    // fontFamily: typography.fonts.poppins.normal,
-    textAlign: "center",
-    lineHeight: adjustSize(12),
-    marginTop: adjustSize(3),
-  },
-  progress: {
-    color: "#0AD029",
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.normal,
-  },
-  title: {
-    color: colors.primary,
-    fontSize: adjustSize(15),
-    fontFamily: typography.fonts.poppins.semiBold,
-  },
-  text: {
-    color: "#7E7E7E",
-    fontSize: adjustSize(10),
-  },
-  reqNoBox: {
-    backgroundColor: colors.primary,
-    flexDirection: "row",
-    alignItems: "center",
-    height: adjustSize(25),
-    borderRadius: 100,
-    justifyContent: "center",
-    paddingHorizontal: adjustSize(10),
-    marginVertical: adjustSize(5),
-  },
-  workReqNoTitle: {
-    color: colors.white,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.semiBold,
-  },
-  workReqNo: {
-    color: colors.white,
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.normal,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  cardTitle: {
-    color: colors.primary,
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.bold,
-  },
-  cardTitleVal: {
-    color: colors.primary,
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.medium,
-    marginLeft: 2,
   },
   overlay: {
     position: "absolute",

@@ -182,10 +182,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(14),
     paddingVertical: adjustSize(10),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.greylight,
     width: adjustSize(105),
+    backgroundColor:colors.white,
+    height:adjustSize(40)
+
   } as ViewStyle,
   restrictionActive: {
     backgroundColor: colors.primary,

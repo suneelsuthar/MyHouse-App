@@ -114,6 +114,7 @@ export function Button(props: ButtonProps) {
 
   const renderButtonContent = (state: any) => (
     <>
+    
       {!!LeftAccessory && (
         <LeftAccessory style={$leftAccessoryStyle} pressableState={state} />
       )}
@@ -184,7 +185,7 @@ export function Button(props: ButtonProps) {
 }
 
 const $baseViewStyle: ViewStyle = {
-  minHeight: adjustSize(45),
+  minHeight: adjustSize(49),
   borderRadius: 10,
   justifyContent: "center",
   alignItems: "center",

@@ -84,7 +84,7 @@ export type AdminStackParamList = {
   AdminManageCalendar: { propertyId: string };
   AdminAssignProperties: {
     propertyId: string;
-    type: "agent" | "tenant" | "fm";
+    type: "agent" | "primary-agent" | "tenant" | "fm";
     title?: string;
   };
   AdminGenerateWorkRequests: { propertyId: string };
@@ -94,6 +94,7 @@ export type AdminStackParamList = {
     bookingType?: "reserved" | "active" | "history" | "cancelled";
   };
   AdminBookingDetails: { bookingId: string };
+  AdminSignAgreement: undefined;
   FacilityManagement: {
     status: "work_requests" | "work_orders" | "completed";
   };

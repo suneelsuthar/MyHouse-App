@@ -67,7 +67,7 @@ export const FMViewWorkOrder = () => {
             source={Images.ordersummary}
             style={{
               tintColor:
-                activeTab === "summary" ? colors.primary : colors.white,
+                activeTab === "summary" ? colors.white : colors.white,
               height: 23,
               width: 18,
             }}
@@ -76,7 +76,7 @@ export const FMViewWorkOrder = () => {
             style={[
               styles.tabText,
               {
-                color: activeTab === "summary" ? colors.primary : colors.white,
+                color: activeTab === "summary" ? colors.white : colors.white,
               },
             ]}
             weight={activeTab === "summary" ? "semiBold" : "medium"}
@@ -89,19 +89,19 @@ export const FMViewWorkOrder = () => {
           onPress={() => setActiveTab("updates")}
         >
           <Image
-            source={Images.ordersummary}
+            source={Images.orderUpdates}
             style={{
               tintColor:
-                activeTab === "updates" ? colors.primary : colors.white,
+                activeTab === "updates" ? colors.white : colors.white,
               height: 23,
-              width: 18,
+              width: 23,
             }}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color: activeTab === "updates" ? colors.primary : colors.white,
+                color: activeTab === "updates" ? colors.white : colors.white,
               },
             ]}
             weight={activeTab === "updates" ? "semiBold" : "medium"}
@@ -176,7 +176,9 @@ export const FMViewWorkOrder = () => {
             </View>
 
             {/* Description */}
-            <Text weight="semiBold" style={styles.sectionTitle}>
+            <Text weight="semiBold" style={[styles.sectionTitle,{
+              fontSize:adjustSize(12)
+            }]}>
               Description
             </Text>
             <Text style={styles.desc}>
@@ -201,6 +203,7 @@ export const FMViewWorkOrder = () => {
               );
             }}
           />
+          
         </ScrollView>
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -229,7 +232,7 @@ export const FMViewWorkOrder = () => {
                   >
                     {u.title}
                   </Text>
-                  <Text numberOfLines={1} style={styles.updateDesc}>
+                  <Text numberOfLines={2} style={styles.updateDesc}>
                     {u.desc}
                   </Text>
                 </View>
@@ -269,17 +272,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: colors.primary + "15",
+    backgroundColor: colors.primary ,
   },
   tabBtn: {
     alignItems: "center",
     justifyContent: "center",
     height: adjustSize(56),
     flex: 1,
+    opacity:0.6
   },
   tabActive: {
     borderBottomWidth: 2,
-    borderBottomColor: colors.primary,
+    borderBottomColor: colors.white,
+    opacity:1
   },
   tabText: {
     marginTop: spacing.xs,
@@ -354,7 +359,7 @@ const styles = StyleSheet.create({
   },
   hr: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.primary + "33",
+    backgroundColor: "#737373",
     marginVertical: spacing.md,
   },
   desc: {
@@ -402,7 +407,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: spacing.lg,
-    bottom: adjustSize(40),
+    bottom: adjustSize(90),
     width: adjustSize(48),
     height: adjustSize(48),
     borderRadius: adjustSize(24),

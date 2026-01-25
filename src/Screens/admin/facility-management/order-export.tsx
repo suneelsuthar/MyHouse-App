@@ -37,7 +37,7 @@ export const FMOrderExport = (props: any) => {
       ["Category:", "Plumbing"],
       ["Status:", "Ongoing"],
     ],
-    []
+    [],
   );
 
   const updates = useMemo(
@@ -49,7 +49,7 @@ export const FMOrderExport = (props: any) => {
         date: "24 feb , 2025",
         img: slides[i % slides.length],
       })),
-    []
+    [],
   );
 
   return (
@@ -61,203 +61,93 @@ export const FMOrderExport = (props: any) => {
     >
       <Header title="Work Order (ID)" />
 
-      {/* Tabs header */}
-      <View style={styles.tabsHeader}>
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === "summary" && styles.tabActive]}
-          onPress={() => setActiveTab("summary")}
-        >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Banner with dots */}
+        <View style={styles.heroWrap}>
           <Image
-            source={Images.ordersummary}
-            style={{
-              tintColor:
-                activeTab === "summary" ? colors.primary : colors.white,
-              height: 23,
-              width: 18,
-            }}
-          />
-          <Text
-            style={[
-              styles.tabText,
-              {
-                color: activeTab === "summary" ? colors.primary : colors.white,
-              },
-            ]}
-            weight={activeTab === "summary" ? "semiBold" : "medium"}
-          >
-            Summary
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabBtn, activeTab === "updates" && styles.tabActive]}
-          onPress={() => setActiveTab("updates")}
-        >
-          {/* <Ionicons
-            name="sync-outline"
-            size={20}
-            color={
-              activeTab === "updates" ? colors.primary : colors.primaryLight
+            source={
+              gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
             }
-          /> */}
-          <Image
-            source={Images.ordersummary}
-            style={{
-              tintColor:
-                activeTab === "updates" ? colors.primary : colors.white,
-              height: 23,
-              width: 18,
-            }}
+            style={styles.heroImg}
+            resizeMode="cover"
           />
-          <Text
-            style={[
-              styles.tabText,
-              {
-                color: activeTab === "updates" ? colors.primary : colors.white,
-              },
-            ]}
-            weight={activeTab === "updates" ? "semiBold" : "medium"}
-          >
-            Updates
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {activeTab === "summary" ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Banner with dots */}
-          <View style={styles.heroWrap}>
-            <Image
-              source={
-                gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
-              }
-              style={styles.heroImg}
-              resizeMode="cover"
-            />
-            <View style={styles.dotsRow}>
-              {gallery.map((_, i) => (
-                <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
-                  <View
-                    style={[
-                      styles.dot,
-                      i === activeSlide ? styles.dotActive : styles.dotInactive,
-                    ]}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
-          {/* Thumbs */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.thumbRow}
-          >
-            {gallery.map((src, i) => (
-              <Pressable key={i} onPress={() => setActiveSlide(i)}>
-                <Image
-                  source={src}
+          <View style={styles.dotsRow}>
+            {gallery.map((_, i) => (
+              <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
+                <View
                   style={[
-                    styles.thumb,
-                    i === activeSlide && styles.thumbActive,
+                    styles.dot,
+                    i === activeSlide ? styles.dotActive : styles.dotInactive,
                   ]}
                 />
-              </Pressable>
+              </TouchableOpacity>
             ))}
-          </ScrollView>
-
-          <View style={{ paddingHorizontal: spacing.lg }}>
-            <Text weight="semiBold" style={styles.sectionTitle}>
-              Brume Villa
-            </Text>
-
-            {/* Details */}
-            <View style={styles.detailsCard}>
-              {details.map(([k, v], idx) => (
-                <View key={k}>
-                  <View style={styles.kvRow}>
-                    <Text style={styles.kvKey} weight="semiBold">
-                      {k}
-                    </Text>
-                    <Text style={styles.kvVal}>{v}</Text>
-                  </View>
-                  {idx === 3 || idx === 6 ? <View style={styles.hr} /> : null}
-                </View>
-              ))}
-            </View>
-
-            {/* Description */}
-            <Text weight="semiBold" style={styles.sectionTitle}>
-              Description
-            </Text>
-            <Text style={styles.desc}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged.
-            </Text>
           </View>
+        </View>
 
-          <View style={{ height: spacing.xl }} />
-          <Button
-            text="Export"
-            preset="reversed"
-            style={styles.primaryBtn}
-            textStyle={styles.primaryBtnText}
-            onPress={() => {
-              Linking.openURL(
-                "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d"
-              );
-            }}
-          />
+        {/* Thumbs */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.thumbRow}
+        >
+          {gallery.map((src, i) => (
+            <Pressable key={i} onPress={() => setActiveSlide(i)}>
+              <Image
+                source={src}
+                style={[styles.thumb, i === activeSlide && styles.thumbActive]}
+              />
+            </Pressable>
+          ))}
         </ScrollView>
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ paddingHorizontal: spacing.lg }}>
-            <Text
-              weight="semiBold"
-              style={[
-                styles.sectionTitle,
-                { marginTop: adjustSize(30), marginBottom: 0 },
-              ]}
-            >
-              Brume Villa
-            </Text>
-          </View>
 
-          {/* Updates list */}
-          <View style={{ padding: spacing.lg, paddingTop: spacing.md }}>
-            {updates.map((u) => (
-              <View key={u.id} style={styles.updateRow}>
-                <Image source={u.img} style={styles.updateImg} />
-                <View style={{ flex: 1 }}>
-                  <Text
-                    weight="semiBold"
-                    numberOfLines={1}
-                    style={styles.updateTitle}
-                  >
-                    {u.title}
+        <View style={{ paddingHorizontal: spacing.lg }}>
+          <Text weight="semiBold" style={styles.sectionTitle}>
+           Work Order(Id):
+          </Text>
+
+          {/* Details */}
+          <View style={styles.detailsCard}>
+            {details.map(([k, v], idx) => (
+              <View key={k}>
+                <View style={styles.kvRow}>
+                  <Text style={styles.kvKey} weight="semiBold">
+                    {k}
                   </Text>
-                  <Text numberOfLines={1} style={styles.updateDesc}>
-                    {u.desc}
-                  </Text>
+                  <Text style={styles.kvVal}>{v}</Text>
                 </View>
-                <Text style={styles.updateDate}>{u.date}</Text>
+                {idx === 3 || idx === 6 ? <View style={styles.hr} /> : null}
               </View>
             ))}
           </View>
 
-          <Button
-            text="Add Update"
-            preset="reversed"
-            style={[styles.primaryBtn]}
-            textStyle={styles.primaryBtnText}
-            onPress={() => {}}
-          />
-        </ScrollView>
-      )}
+          {/* Description */}
+          <Text weight="semiBold" style={styles.sectionTitle}>
+            Description
+          </Text>
+          <Text style={styles.desc}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged.
+          </Text>
+        </View>
+
+        <View style={{ height: spacing.xl }} />
+        <Button
+          text="Export"
+          preset="reversed"
+          style={styles.primaryBtn}
+          textStyle={styles.primaryBtnText}
+          onPress={() => {
+            Linking.openURL(
+              "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d",
+            );
+          }}
+        />
+      </ScrollView>
 
       {/* Floating chat button */}
       <Pressable
@@ -345,7 +235,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.primary,
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     marginVertical: spacing.md,
   },
   detailsCard: {

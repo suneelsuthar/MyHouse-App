@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import {
   Screen,
@@ -22,12 +22,23 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-interface AdminAddPropertyProps
-  extends NativeStackScreenProps<AdminStackParamList, "AdminAddProperty"> {}
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../../../assets/Images";
+import PhoneInput from "@perttu/react-native-phone-number-input";
+interface AdminAddPropertyProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "AdminAddProperty"
+> {}
 
 export function AdminAddProperty(props: AdminAddPropertyProps) {
   const [currentStep, setCurrentStep] = useState<number>(-1);
-  const [type, settype] = useState("Landlord");
+  const [type, settype] = useState("");
+  const [phone, setPhone] = useState("");
+  const [formattedPhone, setFormattedPhone] = useState("");
+  const [countryCode, setCountryCode] = useState<"PK" | string>("PK");
+  const phoneRef = useRef<PhoneInput>(null);
+  const [phoneError, setPhoneError] = useState(false);
+  const [nestedStep, setNestedStep] = useState<number>(0);
   const [step1Data, setStep1Data] = useState<SelectedValue>({
     kind: "commercial",
     subType: "retail",
@@ -47,13 +58,26 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
   // Handle input change for Facility Manager form
   const handleFacilityInputChange = (
     field: keyof typeof facilityManagerData,
-    value: string | number
+    value: string | number,
   ) => {
     setFacilityManagerData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
+
+  // Country-specific validation using library. We don't limit typing; just show error when invalid.
+  useEffect(() => {
+    try {
+      const valid = phoneRef.current?.isValidNumber?.(phone);
+      // Show error only when user has typed something and it's invalid
+      setPhoneError(!!phone && valid === false);
+    } catch {
+      // Fallback: simple length check if validator not available
+      const digits = (phone || "").replace(/\D/g, "");
+      setPhoneError(!!phone && digits.length < 7);
+    }
+  }, [phone, countryCode]);
 
   // Handle unit increment
   const handleIncrement = () => {
@@ -141,7 +165,15 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
     if (!isFirst) setCurrentStep((s) => s - 1);
   };
   const goNext = () => {
-    if (!isLast) setCurrentStep((s) => s + 1);
+    console.log("currentStep", currentStep);
+    if (currentStep === 1 && nestedStep <= 2) {
+      setNestedStep(nestedStep + 1);
+
+      console.log("nestedStep", nestedStep);
+    } else {
+      setNestedStep(0);
+      if (!isLast) setCurrentStep((s) => s + 1);
+    }
   };
 
   const onSave = () => {
@@ -206,74 +238,49 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
 
           {currentStep === -1 && (
             <View>
-              <Text
-                weight="medium"
-                style={{
-                  textAlign: "center",
-                  color: colors.textDim,
-                  marginVertical: adjustSize(10),
-                  fontSize: adjustSize(14),
-                  marginTop: adjustSize(30),
-                }}
-                text="Who are you listing this property as?"
-              />
-
-              {props.route.params?.type !== "fm" ? (
-                <View style={styles._row}>
-                  <TouchableOpacity
-                    onPress={() => settype("Landlord")}
-                    activeOpacity={0.7}
-                    style={
-                      type === "Landlord" ? styles.active_card : styles._card
-                    }
-                  >
-                    <MaterialCommunityIcons
-                      name="bank"
-                      size={adjustSize(34)}
-                      color={
-                        type === "Landlord" ? colors.white : colors.primary
-                      }
-                    />
-                    <Text
-                      weight="semiBold"
-                      text="Landlord"
-                      style={
-                        type === "Landlord"
-                          ? styles.active_card_title
-                          : styles._card_title
-                      }
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => settype("Property Manager")}
-                    style={
-                      type === "Property Manager"
-                        ? styles.active_card
-                        : styles._card
-                    }
-                  >
-                    <FontAwesome5
-                      name="user-nurse"
-                      size={adjustSize(34)}
-                      color={
-                        type === "Property Manager"
-                          ? colors.white
-                          : colors.primary
-                      }
-                    />
-                    <Text
-                      weight="semiBold"
-                      text="Property Manager"
-                      style={
-                        type === "Property Manager"
-                          ? styles.active_card_title
-                          : styles._card_title
-                      }
-                    />
-                  </TouchableOpacity>
-                </View>
-              ) : (
+              {/* {props.route.params?.type !== "fm" ? ( */}
+              {!type && (
+                <>
+                  <Text
+                    weight="semiBold"
+                    style={{
+                      textAlign: "center",
+                      color: colors.primary,
+                      marginVertical: adjustSize(20),
+                      fontSize: adjustSize(14),
+                      marginTop: adjustSize(30),
+                    }}
+                    text="Who are you listing this property as?"
+                  />
+                  <View style={{ gap: 33 }}>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      style={styles._card}
+                      onPress={() => settype("Landlord")}
+                    >
+                      <WithLocalSvg asset={Images.landlord} />
+                      <Text
+                        weight="medium"
+                        text="Landlord"
+                        style={styles._card_title}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => settype("Property Manager")}
+                      style={styles._card}
+                    >
+                      <WithLocalSvg asset={Images.propertym} />
+                      <Text
+                        weight="medium"
+                        text="Property Manager"
+                        style={styles._card_title}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+              {/* ) : (
                 <View style={styles._row}>
                   <TouchableOpacity
                     onPress={() => {
@@ -307,56 +314,88 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                     />
                   </TouchableOpacity>
                 </View>
-              )}
+              )} */}
 
-              {type === "Property Manager" && (
-                <View>
-                  <Text
-                    style={{ fontSize: adjustSize(14) }}
-                    weight="semiBold"
-                    text="Who owns this property?"
-                  />
+              {type === "Property Manager" ||
+                (type === "Landlord" && (
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: adjustSize(15),
+                        color: colors.primary,
+                        marginBottom: 20,
+                      }}
+                      weight="semiBold"
+                      text="Who owns this property?"
+                    />
 
-                  <Text
-                    text="First Name"
-                    weight="medium"
-                    style={styles._label}
-                  />
-                  <TextField
-                    placeholder="Landlord's first name"
-                    inputWrapperStyle={styles._input}
-                  />
+                    <Text
+                      text="First Name"
+                      weight="medium"
+                      style={styles._label}
+                    />
+                    <TextField
+                      placeholder="Landlord's first name"
+                      inputWrapperStyle={styles._input}
+                    />
 
-                  <Text
-                    text="Last Name"
-                    weight="medium"
-                    style={styles._label}
-                  />
-                  <TextField
-                    placeholder="Landlord's last name"
-                    inputWrapperStyle={styles._input}
-                  />
+                    <Text
+                      text="Last Name"
+                      weight="medium"
+                      style={styles._label}
+                    />
+                    <TextField
+                      placeholder="Landlord's last name"
+                      inputWrapperStyle={styles._input}
+                    />
 
-                  <Text
-                    text="Landlord’s Email"
-                    weight="medium"
-                    style={styles._label}
-                  />
-                  <TextField
-                    placeholder="Landlord’s Email"
-                    autoComplete="email"
-                    inputWrapperStyle={styles._input}
-                  />
+                    <Text
+                      text="Landlord’s Email"
+                      weight="medium"
+                      style={styles._label}
+                    />
+                    <TextField
+                      placeholder="Landlord’s Email"
+                      autoComplete="email"
+                      inputWrapperStyle={styles._input}
+                    />
 
-                  <Text text="Phone*" weight="medium" style={styles._label} />
-                  <TextField
-                    placeholder="Landlord’s Phone"
-                    autoComplete="email"
-                    inputWrapperStyle={styles._input}
-                    keyboardType="number-pad"
-                  />
-                </View>
-              )}
+                    <Text text="Phone*" weight="medium" style={styles._label} />
+                    <PhoneInput
+                      ref={phoneRef}
+                      defaultCode={countryCode as any}
+                      layout="second"
+                      value={phone}
+                      onChangeText={(text) => setPhone(text)}
+                      onChangeFormattedText={(text) => setFormattedPhone(text)}
+                      onChangeCountry={(country: any) =>
+                        setCountryCode(country?.cca2 || country?.code || "PK")
+                      }
+                      containerStyle={styles.phoneContainer}
+                      countryPickerButtonStyle={[
+                        styles.countryButton,
+                        phoneError && styles.errorBorder,
+                      ]}
+                      codeTextStyle={styles.codeText}
+                      textContainerStyle={[
+                        styles.phoneTextContainer,
+                        phoneError && styles.errorBorder,
+                      ]}
+                      textInputStyle={styles.phoneTextInput}
+                      textInputProps={{
+                        placeholder: "Phone number",
+                        keyboardType: "number-pad",
+
+                        // returnKeyType: "done",
+                      }}
+                    />
+                    {phoneError && (
+                      <Text style={styles.errorText}>
+                        Enter a valid phone number
+                      </Text>
+                    )}
+                  </View>
+                ))}
 
               {/* Facility Manager Modal */}
               <CustomModal
@@ -505,7 +544,9 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                   onChange={(value) => setStep1Data(value)}
                 />
               )}
-              {currentStep === 1 && <Step2 mode="add" />}
+              {currentStep === 1 && (
+                <Step2 nestedStep={nestedStep} mode="add" />
+              )}
               {currentStep === 2 && <Step3 mode="add" />}
               {currentStep === 3 && <Step4 mode="add" />}
               {currentStep === 4 && <Step5 mode="add" />}
@@ -520,7 +561,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                   onChange={(value) => setStep1Data(value)}
                 />
               )}
-              {currentStep === 1 && <Step2 mode="add" />}
+              {currentStep === 1 && <Step2 onNext={goNext} mode="add" />}
               {currentStep === 2 && <Step3 mode="add" />}
               {currentStep === 3 && <Step4 mode="add" />}
               {currentStep === 4 && <Step5 mode="add" />}
@@ -532,32 +573,47 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
           {/* Footer nav */}
         </View>
       </ScrollView>
-
       <View style={styles.footer}>
-        <View style={styles.footerBtnLeft}>
-          <Button
+        {/* <View style={styles.footerBtnLeft}> */}
+        {/* <Button
             text="Back"
             disabled={isFirst}
             style={[styles.navBtn, isFirst && styles.btnDisabled]}
             textStyle={isFirst ? { color: colors.grey } : undefined}
             onPress={goPrev}
-          />
-        </View>
+          /> */}
+        {/* </View> */}
         <View style={styles.footerBtnRight}>
+          <Button
+            text="Save & Continue later"
+            // preset=
+            style={[styles.navBtn, { marginBottom: 20 }]}
+            // onPress={goNext}
+            textStyle={{
+              fontSize: adjustSize(15),
+              color: colors.primary,
+            }}
+          />
+
           {isLast ? (
             <Button
-              text="Save"
+              text="Submit"
               preset="reversed"
               style={styles.navBtn}
               onPress={onSave}
             />
           ) : (
-            <Button
-              text="Next"
-              preset="reversed"
-              style={styles.navBtn}
-              onPress={goNext}
-            />
+            <View>
+              <Button
+                text="Next"
+                preset="reversed"
+                style={styles.navBtn}
+                onPress={goNext}
+                textStyle={{
+                  fontSize: adjustSize(15),
+                }}
+              />
+            </View>
           )}
         </View>
       </View>
@@ -587,6 +643,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     height: adjustSize(41),
     borderRadius: adjustSize(10),
+    minHeight: adjustSize(41),
   },
   btnDisabled: {
     opacity: 0.5,
@@ -607,6 +664,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.grey,
     marginVertical: adjustSize(14),
+    marginBottom: 40,
   },
   step: {
     borderRadius: adjustSize(5),
@@ -640,25 +698,30 @@ const styles = StyleSheet.create({
   },
   _card: {
     flex: 1,
-    height: adjustSize(100),
-    borderWidth: 1,
-    backgroundColor: colors.fill,
-    borderRadius: adjustSize(5),
+    // height: adjustSize(100),
+    backgroundColor: colors.white,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
+    padding: 10,
+    height: adjustSize(49),
+    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
+    elevation: 2,
   },
   active_card: {
     flex: 1,
-    height: adjustSize(100),
     borderWidth: 1,
     backgroundColor: colors.primary,
     borderRadius: adjustSize(5),
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    height: adjustSize(49),
   },
   _card_title: {
     fontSize: adjustSize(14),
-    marginTop: adjustSize(10),
   },
   active_card_title: {
     color: colors.white,
@@ -723,5 +786,59 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     minWidth: 40,
     textAlign: "center",
+  },
+  phoneContainer: {
+    width: "100%",
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    paddingHorizontal: 0,
+    alignSelf: "stretch",
+  },
+  countryButton: {
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(10),
+    height: adjustSize(49),
+    paddingHorizontal: adjustSize(10),
+    borderWidth: 0.3,
+    borderColor: colors.grey,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
+    marginRight: adjustSize(8),
+  },
+  codeText: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontWeight: "600",
+  },
+  phoneTextContainer: {
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(10),
+    borderWidth: 0.3,
+    borderColor: colors.grey,
+    height: adjustSize(49),
+    paddingVertical: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  phoneTextInput: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    paddingVertical: 0,
+    height: adjustSize(49),
+  },
+  errorBorder: {
+    borderColor: "#D51E1E",
+    borderWidth: 1,
+  },
+  errorText: {
+    color: "#D51E1E",
+    fontSize: adjustSize(11),
+    marginTop: adjustSize(6),
   },
 });

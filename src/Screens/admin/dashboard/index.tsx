@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import { WithLocalSvg } from "react-native-svg/css";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 import { Text, Screen, Button } from "../../../Components";
+import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 import DropdownComponent from "../../../Components/DropDown";
 import { HorizontalPropertyCard } from "../../../Components/tenant/HorizontalPropertyCard";
 import BookingsChart from "../../../Components/BookingChart";
@@ -25,7 +26,14 @@ export const AdminDashboard = () => {
     { label: "Weekly", value: "weekly" },
     { label: "Daily", value: "daily" },
     { label: "Yearly", value: "yearly" },
+    { label: "Range", value: "range" },
   ];
+
+  const [analyticsRange, setAnalyticsRange] = useState<string>("monthly");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
 
   const propertiesData = [
     {
@@ -161,20 +169,59 @@ export const AdminDashboard = () => {
         {/* Recent Notifications */}
         <View style={styles.section}>
           <View style={styles._seciton_row}>
-            <Text weight="semiBold" style={styles.sectionTitle}>
-              Analytics
-            </Text>
+            <View style={styles.analyticsLeftRow}>
+              <Text weight="semiBold" style={styles.sectionTitle}>
+                Analytics
+              </Text>
+              {analyticsRange === "range" && (
+                <View style={styles.dateRangeRow}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.dateIconBtn}
+                    onPress={() => setShowStartPicker(true)}
+                  >
+                    <WithLocalSvg asset={Images.calendar} />
+                  </TouchableOpacity>
+                  <Text style={styles.toText}>To</Text>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.dateIconBtn}
+                    onPress={() => setShowEndPicker(true)}
+                  >
+                    <WithLocalSvg asset={Images.calendar} />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
                 data={analyticsData}
                 label="Select Period"
-                placeholder="Select Period"
+                placeholder="Range"
+                value={analyticsRange}
+                onChangeValue={setAnalyticsRange}
                 dropdownStyle={styles.customDropdownStyle}
                 placeholderStyle={styles.customPlaceholderStyle}
                 selectedTextStyle={styles.customSelectedTextStyle}
               />
             </View>
           </View>
+          <CustomDateTimePicker
+            mode="date"
+            value={startDate}
+            visible={showStartPicker}
+            onChange={(d) => setStartDate(d)}
+            onCancel={() => setShowStartPicker(false)}
+            onConfirm={() => setShowStartPicker(false)}
+          />
+          <CustomDateTimePicker
+            mode="date"
+            value={endDate}
+            visible={showEndPicker}
+            onChange={(d) => setEndDate(d)}
+            onCancel={() => setShowEndPicker(false)}
+            onConfirm={() => setShowEndPicker(false)}
+          />
           {/* ÷÷ */}
         </View>
 
@@ -266,12 +313,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: adjustSize(15),
     color: colors.primary,
+    flex:1
   },
   quickActions: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 10,
+    gap:10
   },
 
   headerinfo: {
@@ -293,13 +341,14 @@ const styles = StyleSheet.create({
     lineHeight: adjustSize(14),
   },
   _card: {
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    width: adjustSize(106),
+    // width: adjustSize(106),
     flexDirection: "column",
     justifyContent: "space-evenly",
+    flex:1
   },
 
   _card_text: {
@@ -314,8 +363,38 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(20),
     marginBottom: adjustSize(5),
   },
+  analyticsLeftRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: adjustSize(10),
+    flex:1
+  },
+  dateRangeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: adjustSize(10),
+    marginLeft: adjustSize(10),
+  },
+  dateIconBtn: {
+    width: adjustSize(36),
+    height: adjustSize(36),
+    borderRadius: adjustSize(10),
+    backgroundColor: colors.white,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  toText: {
+    color: colors.primary,
+    marginHorizontal: adjustSize(4),
+  },
   dropdownContainer: {
     width: adjustSize(120),
+    marginLeft:15
   },
   customDropdownStyle: {
     height: adjustSize(40),

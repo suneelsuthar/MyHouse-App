@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 420,
     overflow: "hidden",
+    maxHeight:"90%",
   },
   header: {
     paddingHorizontal: adjustSize(16),

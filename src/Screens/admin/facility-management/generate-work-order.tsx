@@ -10,7 +10,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Screen, Text, Button, TextField } from "../../../Components";
+import {
+  Screen,
+  Text,
+  Button,
+  TextField,
+  CustomTabs,
+} from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -22,6 +28,11 @@ import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
+import {
+  WorkRequestsIcon,
+  OrdersIcon,
+  CompletedIcon,
+} from "../../../assets/svg";
 type Props = NativeStackScreenProps<AdminStackParamList, "FMGenerateWorkOrder">;
 
 export function FMGenerateWorkOrder({ navigation }: Props) {
@@ -35,6 +46,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
   const [desc, setDesc] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [workReqNo] = useState<string>("123456");
 
   // date modal
   const [pickerVisible, setPickerVisible] = useState(false);
@@ -53,7 +65,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       { label: "HVAC", value: "hvac" },
       { label: "Other", value: "other" },
     ],
-    []
+    [],
   );
   const priorityOptions = useMemo(
     () => [
@@ -61,18 +73,18 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       { label: "Medium", value: "medium" },
       { label: "High", value: "high" },
     ],
-    []
+    [],
   );
   const propertyOptions = useMemo(
     () => rentalProperties.map((p) => ({ label: p.name, value: p.propertyId })),
-    []
+    [],
   );
   const fmOptions = useMemo(
     () => [
       { label: "John Doe", value: "john" },
       { label: "Jane Smith", value: "jane" },
     ],
-    []
+    [],
   );
 
   const fmtDate = (d: Date | null) => (d ? d.toLocaleDateString() : "Date");
@@ -141,16 +153,8 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
     });
   };
 
-  // Build gallery: prefer user-selected images, else fallback slides
-  const gallery: any[] = useMemo(() => {
-    if (selectedImages.length > 0) {
-      return selectedImages.map((uri) => ({ uri }));
-    }
-    return [];
-  }, [selectedImages]);
-
-  // Active hero image index
-  const [activeSlide, setActiveSlide] = useState(0);
+  // Build gallery (kept for potential future preview usage)
+  const gallery: any[] = useMemo(() => selectedImages.map((uri) => ({ uri })), [selectedImages]);
 
   return (
     <Screen
@@ -160,214 +164,150 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       safeAreaEdges={["top"]}
     >
       <Header title="Generate Work Order" />
-      <ScrollView
-        contentContainerStyle={styles.container}
-        showsVerticalScrollIndicator={false}
+      <CustomTabs
+        tabs={[
+          {
+            label: "Work Requests",
+            activeIcon: <WorkRequestsIcon color={colors.white} />,
+            inactiveIcon: <WorkRequestsIcon color={colors.white} />,
+          },
+          {
+            label: "Orders",
+            activeIcon: <OrdersIcon color={colors.white} />,
+            inactiveIcon: <OrdersIcon color={colors.white} />,
+          },
+          {
+            label: "Completed",
+            activeIcon: <CompletedIcon color={colors.white} />,
+            inactiveIcon: <CompletedIcon color={colors.white} />,
+          },
+        ]}
+        activeTab={"Work Requests"}
+        onTabChange={(label) => console.log(label)}
       >
-        {/* Hero image with dots */}
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+          <View style={{ padding: adjustSize(10) }}>
+            <Text weight="semiBold" style={styles.sectionHeading}>Create work order</Text>
 
-        {gallery.length === 0 && (
-          <Text
-            style={[
-              styles.label,
-              { marginBottom: -4, paddingHorizontal: adjustSize(10) },
-            ]}
-            weight="semiBold"
-          >
-            Upload Attachments
-          </Text>
-        )}
-        {gallery[0] && (
-          <View style={styles.heroImg}>
-            <Image
-              source={
-                gallery[Math.min(activeSlide, Math.max(gallery.length - 1, 0))]
-              }
-              style={{ width: "100%", height: "100%" }}
-              resizeMode="cover"
+            {/* Work Req No. (disabled) */}
+            <Text style={styles.label} weight="semiBold">Work Req No.</Text>
+            <TextField
+              placeholder="123456"
+              value={workReqNo}
+              editable={false}
+              inputWrapperStyle={[styles.inputWrapper, styles.disabledField]}
+              style={[styles.input, { color: colors.white }]}
+              placeholderTextColor={colors.white}
             />
 
-            {/* Dots */}
-            <View style={styles.dotsRow}>
-              {gallery.map((_, i) => (
-                <TouchableOpacity key={i} onPress={() => setActiveSlide(i)}>
-                  <View
-                    style={[
-                      styles.dot,
-                      i === activeSlide ? styles.dotActive : styles.dotInactive,
-                    ]}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        )}
+            {/* Property* */}
+            <Text style={styles.label} weight="semiBold">Property*</Text>
+            <DropdownComponent
+              data={propertyOptions}
+              placeholder="Select property"
+              value={propertyId ?? undefined}
+              onChangeValue={(v: string) => setPropertyId(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
 
-        <View style={{ padding: adjustSize(10) }}>
-          {/* Upload and thumbnails row */}
-          <View style={styles.mediaRow}>
-            <Pressable style={styles.uploadTile} onPress={pickImages}>
-              <Feather name="upload" size={30} color={colors.white} />
+            {/* Title */}
+            <Text style={styles.label} weight="semiBold">Title</Text>
+            <TextField
+              placeholder="Write title"
+              value={title}
+              onChangeText={setTitle}
+              inputWrapperStyle={styles.inputWrapper}
+              style={styles.input}
+              placeholderTextColor={colors.primaryLight}
+            />
+
+            {/* Category */}
+            <Text style={styles.label} weight="semiBold">Category</Text>
+            <DropdownComponent
+              data={categoryOptions}
+              placeholder="Select"
+              value={category ?? undefined}
+              onChangeValue={(v: string) => setCategory(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+
+            {/* Work Request Issue Date (disabled) */}
+            <Text style={styles.label} weight="semiBold">Work Request Issue Date</Text>
+            <Pressable disabled style={[styles.dtButton, styles.disabledField]}>
+              <Text style={[styles.dtText, { color: colors.white }]}>Date</Text>
+              {/* <WithLocalSvg asset={Images.calendar} /> */}
             </Pressable>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {gallery.map((src, i) => (
-                <Pressable key={i} onPress={() => setActiveSlide(i)}>
-                  <Image
-                    source={src}
-                    style={[
-                      styles.thumb,
-                      i === activeSlide && styles.thumbActive,
-                    ]}
-                    resizeMode="cover"
-                  />
-                </Pressable>
-              ))}
-            </ScrollView>
+
+            {/* Priority */}
+
+            <Text style={styles.label} weight="semiBold">Priority</Text>
+            <DropdownComponent
+              data={priorityOptions}
+              placeholder="Select"
+              value={priority ?? undefined}
+              onChangeValue={(v: string) => setPriority(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+
+            {/* Due date* */}
+            <Text style={styles.label} weight="semiBold">Due date*</Text>
+            <Pressable onPress={openIssuePicker} style={styles.dtButton}>
+              <Text
+                style={[
+                  styles.dtText,
+                  { color: issueDate ? colors.primary : colors.primaryLight },
+                ]}
+              >
+                {fmtDate(issueDate)}
+              </Text>
+              <WithLocalSvg asset={Images.calendar} />
+            </Pressable>
+
+            {/* Description */}
+            <Text style={styles.label} weight="semiBold">Description</Text>
+            <TextField
+              placeholder="Write a detailed description"
+              value={desc}
+              onChangeText={setDesc}
+              placeholderTextColor={colors.primaryLight}
+              inputWrapperStyle={[styles.inputWrapper, { height: adjustSize(120), alignItems: "flex-start" }]}
+              style={[styles.input, { height: adjustSize(110) }]}
+              multiline
+             
+            />
+
+            {/* Upload Images */}
+            <Text style={[styles.label,{marginTop:0}]} weight="semiBold">Upload Images</Text>
+            <View style={styles.uploadRow}>
+              <View style={styles.uploadInput}>
+                <Text style={styles.uploadInputText}>
+                  {selectedImages.length > 0 ? `${selectedImages.length} image(s) selected` : "No file choosen"}
+                </Text>
+              <TouchableOpacity style={styles.uploadBtn} activeOpacity={0.7} onPress={pickImages}>
+                <Feather name="upload" size={22} color={colors.primary} />
+              </TouchableOpacity>
+              </View>
+            </View>
+
+            <Button
+              text={loading ? "Creating..." : "Create"}
+              preset="reversed"
+              style={styles.generateBtn}
+              textStyle={styles.generateText}
+              onPress={onGenerate}
+            />
           </View>
-
-          {/* <Text
-            style={[styles.label, { fontSize: adjustSize(15) }]}
-            weight="semiBold"
-          >
-            Edit Work Request:
-          </Text> */}
-
-          {/* Title */}
-          <Text style={styles.label} weight="semiBold">
-            Title
-          </Text>
-          <TextField
-            placeholder="Title"
-            value={title}
-            onChangeText={setTitle}
-            inputWrapperStyle={styles.inputWrapper}
-            style={styles.input}
-            placeholderTextColor={colors.primaryLight}
-          />
-          {/* Issue date */}
-          <Text style={styles.label} weight="medium">
-            Issue date
-          </Text>
-          <Pressable disabled  style={[styles.dtButton,{opacity: 0.8}]}>
-            <Text
-              style={[
-                styles.dtText,
-                { color: issueDate ? colors.primary : colors.primaryLight },
-              ]}
-            >
-              {fmtDate(new Date())}
-            </Text>
-            <WithLocalSvg asset={Images.calendar} />
-          </Pressable>
-
-            {/* Issue date */}
-           
-
-          {/* Priority */}
-          <Text style={styles.label} weight="semiBold">
-            Priority
-          </Text>
-          
-          <DropdownComponent
-            data={priorityOptions}
-            placeholder="Select"
-            value={priority ?? undefined}
-            onChangeValue={(v: string) => setPriority(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
-<Text style={styles.label} weight="medium">
-            Due date
-          </Text>
-          <Pressable onPress={openIssuePicker} style={styles.dtButton}>
-            <Text
-              style={[
-                styles.dtText,
-                { color: issueDate ? colors.primary : colors.primaryLight },
-              ]}
-            >
-              {fmtDate(issueDate)}
-            </Text>
-            <WithLocalSvg asset={Images.calendar} />
-          </Pressable>
-
-          {/* Category */}
-          <Text style={styles.label} weight="semiBold">
-            Category
-          </Text>
-          <DropdownComponent
-            data={categoryOptions}
-            placeholder="Select"
-            value={category ?? undefined}
-            onChangeValue={(v: string) => setCategory(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
-          {/* Facility Manager */}
-          <Text style={styles.label} weight="semiBold">
-            Facility Manager
-          </Text>
-          <DropdownComponent
-            data={fmOptions}
-            placeholder="Select"
-            value={fm ?? undefined}
-            onChangeValue={(v: string) => setFm(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
-          {/* Property */}
-          <Text style={styles.label} weight="semiBold">
-            Property*
-          </Text>
-          <DropdownComponent
-            data={propertyOptions}
-            placeholder="Select property"
-            value={propertyId ?? undefined}
-            onChangeValue={(v: string) => setPropertyId(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
-          {/* Description */}
-          <Text style={styles.label} weight="semiBold">
-            Description*
-          </Text>
-          <TextField
-            placeholder="Write a detailed description"
-            value={desc}
-            onChangeText={setDesc}
-            placeholderTextColor={colors.primaryLight}
-            inputWrapperStyle={[
-              styles.inputWrapper,
-              { height: adjustSize(120), alignItems: "flex-start" },
-            ]}
-            style={[styles.input, { height: adjustSize(110) }]}
-            multiline
-          />
-
-          {/* <View style={{ height: spacing.xl }} /> */}
-          <Button
-            text={loading ? "Saving..." : "Save Changes"}
-            preset="reversed"
-            style={styles.generateBtn}
-            textStyle={styles.generateText}
-            onPress={onGenerate}
-            // disabled={!canGenerate || loading}
-          />
-        </View>
-      </ScrollView>
-
+        </ScrollView>
+      </CustomTabs>
       <CustomDateTimePicker
         mode="date"
         value={issueDate}
@@ -428,6 +368,13 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     flexGrow: 1,
   },
+  sectionHeading: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+    fontSize: adjustSize(15),
+    marginBottom: spacing.sm,
+    marginTop:30
+  },
   heroImg: {
     height: adjustSize(228),
     borderRadius: adjustSize(0),
@@ -487,7 +434,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   inputWrapper: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     shadowColor: "#000000",
     shadowOpacity: 0.15,
@@ -495,13 +442,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
+  disabledField: {
+    backgroundColor: "#A1A1A1",
+  },
   input: {
     fontFamily: typography.fonts.poppins.medium,
+    fontSize:adjustSize(12)
   },
   dropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -521,7 +472,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",
@@ -542,9 +493,42 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(12),
     backgroundColor: colors.primary,
     marginBottom: adjustSize(20),
+    marginTop:50
   },
   generateText: {
     fontFamily: typography.fonts.poppins.semiBold,
+  },
+  uploadRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
+  uploadInput: {
+    flex: 1,
+    height: adjustSize(48),
+    borderRadius: adjustSize(10),
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.md,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between"
+  },
+  uploadInputText: {
+    color: colors.primaryLight,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  uploadBtn: {
+    // width: adjustSize(48),
+    // height: adjustSize(48),
+    alignItems: "center",
+    justifyContent: "center",
+   
   },
   modalBackdrop: {
     flex: 1,

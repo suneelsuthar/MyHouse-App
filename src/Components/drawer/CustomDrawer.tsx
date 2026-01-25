@@ -401,7 +401,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
     {
       id: 3,
-      title: "Transactions",
+      title: "Manage Transactions",
       type: "item",
       icon: Images.managetrans,
       onPress: () =>
@@ -412,7 +412,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
     {
       id: 4,
-      title: "Property Groups",
+      title: "Manage Property Groups",
       type: "item",
       icon: Images.managegroups,
       onPress: () =>
@@ -1198,6 +1198,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     >
       <View style={styles.container}>
         {/* Google Ads Placeholder */}
+
+
         <View style={styles.header}>
           <TouchableOpacity
             activeOpacity={0.5}
@@ -1358,7 +1360,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           <Text weight="semiBold" text="Logout" style={styles.menuText} />
         </TouchableOpacity>
       </View>
-      <GoogleAdsPlaceholder />
+      {/* <GoogleAdsPlaceholder />  */}
     </DrawerContentScrollView>
   );
 }
@@ -1437,7 +1439,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: adjustSize(15),
-    color: "#B0B0B0",
+    color: "grey",
     lineHeight: adjustSize(20),
   },
   role: {

@@ -463,7 +463,7 @@ const Step5: React.FC<Props> = ({ onBack, onNext }) => {
       )}
 
       {/* Bottom bar */}
-      {phase === "calendar" ? (
+      {/* {phase === "calendar" ? (
         <View style={styles.footerSingle}>
           <Button
             text="Select time for selected date"
@@ -483,7 +483,7 @@ const Step5: React.FC<Props> = ({ onBack, onNext }) => {
             style={styles.selectTimeBtn}
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 };
@@ -493,6 +493,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.grey,
     marginVertical: adjustSize(30),
+    marginTop:20
   },
 
   monthHeader: {
@@ -569,8 +570,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.primaryLight,
-    paddingHorizontal: adjustSize(12),
+    backgroundColor: colors.primary,
+    paddingHorizontal: adjustSize(18),
     borderRadius: 100,
     height: adjustSize(40),
   },

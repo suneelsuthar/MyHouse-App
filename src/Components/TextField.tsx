@@ -102,6 +102,7 @@ export interface TextFieldProps extends Omit<TextInputProps, "ref"> {
    * Note: It is a good idea to memoize this.
    */
   LeftAccessory?: ComponentType<TextFieldAccessoryProps>;
+  borderColor?: string;
 }
 
 /**
@@ -111,7 +112,7 @@ export interface TextFieldProps extends Omit<TextInputProps, "ref"> {
  */
 export const TextField = forwardRef(function TextField(
   props: TextFieldProps,
-  ref: Ref<TextInput>
+  ref: Ref<TextInput>,
 ) {
   const {
     labelTx,
@@ -131,6 +132,7 @@ export const TextField = forwardRef(function TextField(
     style: $inputStyleOverride,
     containerStyle: $containerStyleOverride,
     inputWrapperStyle: $inputWrapperStyleOverride,
+    borderColor,
     ...TextInputProps
   } = props;
   const input = useRef<TextInput>();
@@ -155,6 +157,7 @@ export const TextField = forwardRef(function TextField(
     RightAccessory && { paddingEnd: 0 },
     $inputWrapperStyleOverride,
     isFocused && { borderColor: colors.primary }, // Change border color when focused
+    borderColor && { borderColor },
   ];
 
   const $inputStyles = [
@@ -169,7 +172,6 @@ export const TextField = forwardRef(function TextField(
     $helperStyle,
     status === "error" && { color: colors.error },
     HelperTextProps?.style,
-
   ];
 
   function focusInput() {
@@ -207,10 +209,9 @@ export const TextField = forwardRef(function TextField(
       <TouchableOpacity
         activeOpacity={1}
         style={[
-          isFocused ? $focusedContainerStyle : $containerStyles,
-          // { borderWidth: 4, borderRadius: 20, borderColor: colors.white },
+          $containerStyles,
           { borderColor: isFocused ? "#DEF7F1" : colors.white },
-          { marginBottom: 0 },
+          // { marginVertical: 0 },
         ]}
         onPress={focusInput}
         accessibilityState={{ disabled }}
@@ -239,7 +240,7 @@ export const TextField = forwardRef(function TextField(
             {...TextInputProps}
             editable={!disabled}
             style={[$inputStyles]}
-            onFocus={handleFocus} // Set focus state to true on focus
+            onFocus={borderColor !== null && handleFocus} // Set focus state to true on focus
             onBlur={handleBlur} // Set focus state to false on blur
           />
 
@@ -261,7 +262,7 @@ export const TextField = forwardRef(function TextField(
           tx={helperTx}
           txOptions={helperTxOptions}
           {...HelperTextProps}
-          style={[$helperStyles,{marginTop:adjustSize(5)}]}
+          style={[$helperStyles, { marginTop: adjustSize(5) }]}
         />
       )}
     </View>
@@ -270,7 +271,7 @@ export const TextField = forwardRef(function TextField(
 
 const $labelStyle: TextStyle = {
   marginBottom: spacing.xxs,
-  fontSize: adjustSize(12),
+  fontSize: adjustSize(13),
   color: colors.primary,
   // fontSize:14
 };
@@ -279,15 +280,16 @@ const $inputWrapperStyle: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
   borderRadius: 10,
-  height: 55,
+  height: adjustSize(49),
   borderColor: "#F0F0F0",
-  backgroundColor: "#F2F3FF",
   shadowColor: "#000000",
   shadowOpacity: 0.15,
   shadowOffset: { width: 0, height: 2 },
   shadowRadius: 3,
   elevation: 3,
   marginHorizontal: 3,
+  marginBottom: spacing.md,
+  borderWidth: 0.5,
 };
 
 const $inputStyle: TextStyle = {
@@ -296,6 +298,7 @@ const $inputStyle: TextStyle = {
   fontFamily: "regular",
   color: colors.black,
   marginHorizontal: spacing.sm,
+  fontSize: adjustSize(14),
 };
 
 const $helperStyle: TextStyle = {};
@@ -317,7 +320,12 @@ const $leftAccessoryStyle: ViewStyle = {
 };
 
 const $focusedContainerStyle: ViewStyle = {
-  // borderWidth: 4,
   // borderRadius: 10,
+  // height: adjustSize(49),
+  // borderColor: "#F0F0F0",
+  // // backgroundColor: "#F2F3FF",
+  // marginHorizontal: 3,
   // marginBottom: spacing.md,
+  // borderWidth:0.5,
+  //  height: adjustSize(50),
 };

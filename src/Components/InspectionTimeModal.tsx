@@ -126,7 +126,7 @@ const InspectionTimeModal: React.FC<Props> = ({
     where: { type: "same" } | { type: "different"; day: DayKey },
     idx: number,
     field: "start" | "end",
-    value: Date
+    value: Date,
   ) => {
     if (where.type === "same") {
       setSameTimes((arr) => {
@@ -174,7 +174,7 @@ const InspectionTimeModal: React.FC<Props> = ({
             placeholder="Select time option"
             rightIconColor={colors.primary}
             dropdownStyle={{
-              backgroundColor: colors.fill,
+              backgroundColor: colors.white,
               shadowColor: "#000000",
               shadowOpacity: 0.15,
               shadowOffset: { width: 0, height: 2 },
@@ -204,10 +204,13 @@ const InspectionTimeModal: React.FC<Props> = ({
                     <Text style={styles.dayText}>{day}</Text>
                     <TouchableOpacity
                       onPress={() => addForDay(day as DayKey)}
-                      style={styles.addBtn}
                       activeOpacity={0.8}
+                      style={[
+                        styles.addBtn,
+                        { alignSelf: "flex-start", marginTop: adjustSize(4) },
+                      ]}
                     >
-                      <AntDesign name="plus" size={14} color={colors.primary} />
+                      <WithLocalSvg asset={Images.addmore} />
                     </TouchableOpacity>
                   </View>
 
@@ -356,6 +359,7 @@ const InspectionTimeModal: React.FC<Props> = ({
                 backgroundColor: colors.fill,
                 borderWidth: 1,
                 borderColor: colors.grey,
+                marginTop: 40,
               }}
             />
           </View>
@@ -382,14 +386,14 @@ const InspectionTimeModal: React.FC<Props> = ({
                     { type: "different", day: pickerOpen.day },
                     pickerOpen.index,
                     pickerOpen.which,
-                    d
+                    d,
                   );
                 } else {
                   updateRange(
                     { type: "same" },
                     pickerOpen.index,
                     pickerOpen.which,
-                    d
+                    d,
                   );
                 }
                 setPickerOpen(null);
@@ -438,9 +442,9 @@ const styles = StyleSheet.create({
   },
   timeBox: {
     // flex: 1,
-    height: adjustSize(44),
+    height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.greylight,
     alignItems: "center",

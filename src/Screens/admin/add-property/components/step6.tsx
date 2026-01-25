@@ -283,7 +283,7 @@ const Step6: React.FC<Step6Props> = () => {
         dropdownStyle={
           {
             marginHorizontal: 1,
-            backgroundColor: colors.fill,
+            backgroundColor: colors.white,
             boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
             marginBottom: adjustSize(10),
             height: adjustSize(49),
@@ -329,8 +329,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: adjustSize(15),
     color: colors.primary,
-    marginTop: adjustSize(12),
-    marginBottom: adjustSize(10),
+    marginTop: adjustSize(5),
+    marginBottom: adjustSize(20),
   },
 
   label: {
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   },
 
   uploadTile: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     paddingVertical: adjustSize(14),
     paddingHorizontal: adjustSize(12),

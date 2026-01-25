@@ -9,7 +9,13 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Screen, Text, Button, TextField } from "../../../Components";
+import {
+  Screen,
+  Text,
+  Button,
+  TextField,
+  CustomTabs,
+} from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -18,7 +24,11 @@ import { AdminStackParamList } from "../../../utils/interfaces";
 import * as ImagePicker from "expo-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CustomDateTimePicker } from "../../../Components/DateTimePickerModal";
-
+import {
+  WorkRequestsIcon,
+  OrdersIcon,
+  CompletedIcon,
+} from "../../../assets/svg";
 
 type Props = NativeStackScreenProps<AdminStackParamList, "FMOrderUpdate">;
 
@@ -128,116 +138,137 @@ export function FMOrderUpdate({ navigation }: Props) {
       safeAreaEdges={["top"]}
     >
       <Header title="Update Work Order" />
-      <ScrollView
-        contentContainerStyle={styles.container}
-        showsVerticalScrollIndicator={false}
+      <CustomTabs
+        tabs={[
+          {
+            label: "Work Requests",
+            activeIcon: <WorkRequestsIcon color={colors.white} />,
+            inactiveIcon: <WorkRequestsIcon color={colors.white} />,
+          },
+          {
+            label: "Orders",
+            activeIcon: <OrdersIcon color={colors.white} />,
+            inactiveIcon: <OrdersIcon color={colors.white} />,
+          },
+          {
+            label: "Completed",
+            activeIcon: <CompletedIcon color={colors.white} />,
+            inactiveIcon: <CompletedIcon color={colors.white} />,
+          },
+        ]}
+        activeTab={"Orders"}
+        onTabChange={(label) => console.log(label)}
       >
-        <View style={{ padding: adjustSize(10) }}>
-          {/* Title */}
-          <Text style={styles.label} weight="semiBold">
-            Title
-          </Text>
-          <TextField
-            placeholder="Title"
-            value={title}
-            onChangeText={setTitle}
-            inputWrapperStyle={styles.inputWrapper}
-            style={styles.input}
-            placeholderTextColor={colors.primaryLight}
-          />
-
-          <Text style={styles.label} weight="semiBold">
-            Work Order No.*
-          </Text>
-          <TextField
-            placeholder="Order Number"
-            value={"Aba1klj23"}
-            editable={false}
-            onChangeText={setTitle}
-            inputWrapperStyle={styles.inputWrapper}
-            style={styles.input}
-            placeholderTextColor={colors.primaryLight}
-          />
-          {/* Issue date */}
-          <Text style={styles.label} weight="medium">
-            Update Date*
-          </Text>
-          <Pressable onPress={openIssuePicker} style={styles.dtButton}>
-            <Text
-              style={[
-                styles.dtText,
-                { color: tempDate ? colors.primary : colors.primaryLight },
-              ]}
-            >
-              {fmtDate(tempDate)}
+        <ScrollView
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ padding: adjustSize(10) }}>
+            {/* Title */}
+            <Text style={styles.label} weight="semiBold">
+              Title
             </Text>
-            <WithLocalSvg asset={Images.calendar} />
-          </Pressable>
+            <TextField
+              placeholder="Title"
+              value={title}
+              onChangeText={setTitle}
+              inputWrapperStyle={styles.inputWrapper}
+              style={styles.input}
+              placeholderTextColor={colors.primaryLight}
+            />
 
-          {/* Description */}
-          <Text style={styles.label} weight="semiBold">
-            Description*
-          </Text>
-          <TextField
-            placeholder="Write a detailed description"
-            value={desc}
-            onChangeText={setDesc}
-            placeholderTextColor={colors.primaryLight}
-            inputWrapperStyle={[
-              styles.inputWrapper,
-              { height: adjustSize(120), alignItems: "flex-start" },
-            ]}
-            style={[styles.input, { height: adjustSize(110) }]}
-            multiline
-          />
-
-          {/* Issue date */}
-          <Text style={styles.label} weight="medium">
-          Upload attachments
-          </Text>
-          <Pressable
-            onPress={() => pickImages()}
-            style={[styles.dtButton, { marginBottom: 20 }]}
-          >
-            <Text
-              style={[
-                styles.dtText,
-                { color: issueDate ? colors.primary : colors.primaryLight },
-              ]}
-            >
-              No file choosen
+            <Text style={[styles.label,{marginTop:0}]} weight="semiBold">
+              Work Order No.*
             </Text>
-            <WithLocalSvg asset={Images.upload} />
-          </Pressable>
+            <TextField
+              placeholder="Order Number"
+              value={"Aba1klj23"}
+              editable={false}
+              onChangeText={setTitle}
+              inputWrapperStyle={styles.inputWrapper}
+              style={styles.input}
+              placeholderTextColor={colors.primaryLight}
+            />
+            {/* Issue date */}
+            <Text style={[styles.label,{marginTop:0}]} weight="medium">
+              Update Date*
+            </Text>
+            <Pressable onPress={openIssuePicker} style={styles.dtButton}>
+              <Text
+                style={[
+                  styles.dtText,
+                  { color: tempDate ? colors.primary : colors.primaryLight },
+                ]}
+              >
+                {fmtDate(tempDate)}
+              </Text>
+              <WithLocalSvg asset={Images.calendar} />
+            </Pressable>
 
-          <View style={styles.mediaRow}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {gallery.map((src, i) => (
-                <Pressable key={i} onPress={() => setActiveSlide(i)}>
-                  <Image
-                    source={src}
-                    style={[
-                      styles.thumb,
-                      i === activeSlide && styles.thumbActive,
-                    ]}
-                    resizeMode="cover"
-                  />
-                </Pressable>
-              ))}
-            </ScrollView>
+            {/* Description */}
+            <Text style={[styles.label,{marginTop:25}]} weight="semiBold">
+              Description*
+            </Text>
+            <TextField
+              placeholder="Write a detailed description"
+              value={desc}
+              onChangeText={setDesc}
+              placeholderTextColor={colors.primaryLight}
+              inputWrapperStyle={[
+                styles.inputWrapper,
+                { height: adjustSize(120), alignItems: "flex-start" },
+              ]}
+              style={[styles.input, { height: adjustSize(110) }]}
+              multiline
+            />
+
+            {/* Issue date */}
+            <Text style={[styles.label,{marginTop:0}]} weight="medium">
+              Upload attachments
+            </Text>
+            <Pressable
+              onPress={() => pickImages()}
+              style={[styles.dtButton, { marginBottom: 20 }]}
+            >
+              <Text
+                style={[
+                  styles.dtText,
+                  { color: issueDate ? colors.primary : colors.primaryLight },
+                ]}
+              >
+                {gallery.length === 0 ? "No file choosen" : "Upload File"}
+              </Text>
+              <WithLocalSvg asset={Images.upload} />
+            </Pressable>
+
+            <View style={styles.mediaRow}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {gallery.map((src, i) => (
+                  <Pressable key={i} onPress={() => setActiveSlide(i)}>
+                    <Image
+                      source={src}
+                      style={[
+                        styles.thumb,
+                        i === activeSlide && styles.thumbActive,
+                      ]}
+                      resizeMode="cover"
+                    />
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View style={{ height: spacing.xl }} />
+            <Button
+              text={loading ? "Adding Update..." : "Add Update"}
+              preset="reversed"
+              style={styles.generateBtn}
+              textStyle={styles.generateText}
+              onPress={onGenerate}
+            />
           </View>
-
-          <View style={{ height: spacing.xl }} />
-          <Button
-            text={loading ? "Adding Update..." : "Add Update"}
-            preset="reversed"
-            style={styles.generateBtn}
-            textStyle={styles.generateText}
-            onPress={onGenerate}
-          />
-        </View>
-      </ScrollView>
-
+        </ScrollView>
+      </CustomTabs>
       {/* Custom Date Picker */}
       <CustomDateTimePicker
         mode="date"
@@ -316,7 +347,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   inputWrapper: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     shadowColor: "#000000",
     shadowOpacity: 0.15,
@@ -326,6 +357,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: typography.fonts.poppins.medium,
+    fontSize:adjustSize(12)
   },
   dropdown: {
     height: adjustSize(48),
@@ -350,7 +382,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",

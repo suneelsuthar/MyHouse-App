@@ -230,7 +230,7 @@ export function AdminManageBookings({ route }: { route: any }) {
           <MaterialIcons
             name="dashboard"
             size={adjustSize(22)}
-            color={activeTab === "all" ? colors.primary : colors.white}
+            color={activeTab === "all" ? colors.white : colors.white}
           />
           <Text
             style={[
@@ -251,7 +251,7 @@ export function AdminManageBookings({ route }: { route: any }) {
           <Ionicons
             name="checkmark-circle-outline"
             size={adjustSize(22)}
-            color={activeTab === "approved" ? colors.primary : colors.white}
+            color={activeTab === "approved" ? colors.white : colors.white}
           />
           <Text
             style={[
@@ -272,7 +272,7 @@ export function AdminManageBookings({ route }: { route: any }) {
           <Ionicons
             name="pause-circle-outline"
             size={adjustSize(22)}
-            color={activeTab === "pending" ? colors.primary : colors.white}
+            color={activeTab === "pending" ? colors.white : colors.white}
           />
           <Text
             style={[
@@ -293,7 +293,7 @@ export function AdminManageBookings({ route }: { route: any }) {
           <Ionicons
             name="close-circle-outline"
             size={adjustSize(22)}
-            color={activeTab === "rejected" ? colors.primary : colors.white}
+            color={activeTab === "rejected" ? colors.white : colors.white}
           />
           <Text
             style={[
@@ -308,6 +308,20 @@ export function AdminManageBookings({ route }: { route: any }) {
 
       {/* List */}
       <FlatList
+        ListHeaderComponent={
+          <View>
+            <Text text="Manage Bookings"
+            weight="semiBold"
+            style={{
+              color:colors.primary,
+              fontSize:adjustSize(14),
+              marginBottom:15,
+              paddingHorizontal:5
+            }}
+            />
+          </View>
+
+        }
         data={filtered}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
@@ -353,7 +367,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     height: adjustSize(34),
     borderRadius: adjustSize(18),
-    backgroundColor: colors.primaryLight + "33",
+    backgroundColor: colors.primary,
   },
   pillText: {
     color: colors.white,
@@ -364,7 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     padding: spacing.sm,
     // paddingHorizontal: spacing.sm,
     height: adjustSize(83),
@@ -384,10 +398,10 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
   },
   tabLabelActive: {
-    color: colors.primary,
+    color: colors.white,
   },
   card: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     padding: adjustSize(10),
     borderRadius: adjustSize(7),
     shadowColor: "#000",
@@ -430,6 +444,6 @@ const styles = StyleSheet.create({
     minWidth: adjustSize(120),
     height: adjustSize(33),
     borderRadius: 100,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
 });

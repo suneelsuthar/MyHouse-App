@@ -99,7 +99,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
 
   const [ReservationsCardData, setReservationsCardData] = useState([
     {
-      name: "John Doe",
+      name: "Brume Djbah",
       swimmingPool: "Shortlet",
       reservationID: "RES123456",
       amenity: "lorem ipsum",

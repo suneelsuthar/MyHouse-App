@@ -51,6 +51,7 @@ export function CustomTabs({
                   style={[
                     styles.tabButtonScrollable,
                     isActive && styles.activeTab,
+                   
                   ]}
                 >
                   <View style={styles.iconWrapper}>
@@ -63,7 +64,7 @@ export function CustomTabs({
                         fontFamily: isActive
                           ? typography.fonts.poppins.semiBold
                           : typography.fonts.poppins.normal,
-                        color: isActive ? colors.primary : colors.white,
+                        color: isActive ? colors.white : colors.white,
                         fontSize: adjustSize(14),
                       },
                     ]}
@@ -95,7 +96,7 @@ export function CustomTabs({
                         fontFamily: isActive
                           ? typography.fonts.poppins.semiBold
                           : typography.fonts.poppins.normal,
-                        color: isActive ? colors.primary : colors.white,
+                        color: isActive ? colors.white : colors.white,
                       },
                     ]}
                   >
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: adjustSize(2),
     borderColor: "transparent",
+    opacity:0.6
   },
   tabButtonScrollable: {
     // minWidth: adjustSize(100), // fixed width so they don’t shrink
@@ -142,11 +144,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(15),
   },
   activeTab: {
-    borderColor: colors.primary,
+    borderColor: colors.white,
+    opacity:1
   },
   iconWrapper: { marginBottom: adjustSize(3) },
-  label: { fontSize: adjustSize(14) },
-  tabBgImage: { height: adjustSize(62), backgroundColor: "#dedfef" },
+  label: { fontSize: adjustSize(12) },
+  tabBgImage: { height: adjustSize(62), backgroundColor: colors.primary },
   page: {
     flex: 1,
   },

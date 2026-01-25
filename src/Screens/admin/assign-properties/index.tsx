@@ -60,7 +60,7 @@ export function AdminAssignProperties({
         return "Assign Property to a Registered tenant";
       case "agent":
       default:
-        return "Assign Property to a Registered Agent";
+        return "Assign Property to a Primary Agent";
     }
   }, [assignType]);
   const searchPlaceholder = useMemo(() => {
@@ -151,7 +151,7 @@ export function AdminAssignProperties({
               )}
             </Pressable>
           </View>
-          {isChecked && assignType !== "fm" && (
+          {isChecked && (assignType === "primary-agent") && (
             <View style={styles.commissionRow}>
               <Text style={styles.commissionLabel}>Commission %:</Text>
               <View
@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     borderWidth: 1,
     borderColor: "#D9D9D9",
+    backgroundColor:colors.white
   },
   commValue: {
     color: colors.primary,

@@ -175,11 +175,28 @@ export function AdminManageCalendar({
   const confirmText = useMemo(() => {
     if (mode === "range") {
       return selectedAction === "reopen"
-        ? "Confirm Reopened dates"
+        ? "Confirm Reopened Dates"
         : "Confirm Blocked Dates";
     }
+    if (startDate) {
+      const k = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
+      const isBlocked = blockedKeys.has(k);
+      return isBlocked ? "Confirm Reopened Dates" : "Confirm Blocked Dates";
+    }
     return "Confirm Blocked Dates";
-  }, [mode, selectedAction]);
+  }, [mode, selectedAction, startDate, blockedKeys]);
+
+  const listTitle = useMemo(() => {
+    if (mode === "range") {
+      return selectedAction === "reopen" ? "Enabled dates" : "Blocked dates";
+    }
+    if (startDate) {
+      const k = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
+      const isBlocked = blockedKeys.has(k);
+      return isBlocked ? "Enabled dates" : "Blocked dates";
+    }
+    return "Blocked dates";
+  }, [mode, selectedAction, startDate, blockedKeys]);
 
   return (
     <Screen
@@ -240,46 +257,48 @@ export function AdminManageCalendar({
           </Text>
 
           {/* Action dropdown (only for range mode) */}
-          <View style={styles.actionWrap}>
-            <Text weight="medium" style={styles.actionLabel}>
-              Select action
-            </Text>
-            <Pressable
-              onPress={() => setActionOpen((p) => !p)}
-              style={styles.actionSelect}
-            >
-              <Text style={styles.actionSelectText}>
-                {selectedAction === "block"
-                  ? "Block dates"
-                  : selectedAction === "reopen"
-                  ? "Reopen dates"
-                  : "Block dates/ Reopen dates"}
+          {mode === "range" && (
+            <View style={styles.actionWrap}>
+              <Text weight="medium" style={styles.actionLabel}>
+                Select action
               </Text>
-              <Text style={styles.actionCaret}>▾</Text>
-            </Pressable>
-            {actionOpen && (
-              <View style={styles.actionOptions}>
-                <Pressable
-                  style={styles.actionOption}
-                  onPress={() => {
-                    setSelectedAction("block");
-                    setActionOpen(false);
-                  }}
-                >
-                  <Text style={styles.actionOptionText}>Block dates</Text>
-                </Pressable>
-                <Pressable
-                  style={styles.actionOption}
-                  onPress={() => {
-                    setSelectedAction("reopen");
-                    setActionOpen(false);
-                  }}
-                >
-                  <Text style={styles.actionOptionText}>Reopen dates</Text>
-                </Pressable>
-              </View>
-            )}
-          </View>
+              <Pressable
+                onPress={() => setActionOpen((p) => !p)}
+                style={styles.actionSelect}
+              >
+                <Text style={styles.actionSelectText}>
+                  {selectedAction === "block"
+                    ? "Block dates"
+                    : selectedAction === "reopen"
+                    ? "Reopen dates"
+                    : "Block dates/ Reopen dates"}
+                </Text>
+                <Text style={styles.actionCaret}>▾</Text>
+              </Pressable>
+              {actionOpen && (
+                <View style={styles.actionOptions}>
+                  <Pressable
+                    style={styles.actionOption}
+                    onPress={() => {
+                      setSelectedAction("block");
+                      setActionOpen(false);
+                    }}
+                  >
+                    <Text style={styles.actionOptionText}>Block dates</Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.actionOption}
+                    onPress={() => {
+                      setSelectedAction("reopen");
+                      setActionOpen(false);
+                    }}
+                  >
+                    <Text style={styles.actionOptionText}>Reopen dates</Text>
+                  </Pressable>
+                </View>
+              )}
+            </View>
+          )}
 
           {/* Legend */}
           <View style={styles.legendRow}>
@@ -318,14 +337,6 @@ export function AdminManageCalendar({
           {/* Calendar grid */}
           <View style={styles.grid}>
             {daysGrid.map((cell, idx) => {
-              if (!cell.inMonth) {
-                return (
-                  <View
-                    key={idx}
-                    style={[styles.dayCell, styles.dayCellEmpty]}
-                  />
-                );
-              }
               const key = `${cell.date.getFullYear()}-${String(
                 cell.date.getMonth() + 1
               ).padStart(2, "0")}-${String(cell.date.getDate()).padStart(
@@ -344,24 +355,22 @@ export function AdminManageCalendar({
               return (
                 <Pressable
                   key={idx}
-                  onPress={() => toggleDay(cell.date)}
-                  style={[styles.dayCell]}
+                  onPress={() => (cell.inMonth ? toggleDay(cell.date) : null)}
+                  style={[styles.dayCell, !cell.inMonth && styles.dayCellFaded]}
                 >
                   <View
                     style={[
-                      sel && styles.daySelected,
-                      isEdge && styles.dayEdge,
+                      sel && cell.inMonth && styles.daySelected,
+                      isEdge && cell.inMonth && styles.dayEdge,
                     ]}
                   >
                     <Text
                       style={[
                         styles.dayText,
-                        sel && styles.dayTextSelected,
-                        !sel && isBlocked && styles.dayTextBlocked,
-                        !sel &&
-                          !isBlocked &&
-                          isToday &&
-                          styles.dayTextAvailable,
+                        !cell.inMonth && styles.dayTextFaded,
+                        sel && cell.inMonth && styles.dayTextSelected,
+                        !sel && cell.inMonth && isBlocked && styles.dayTextBlocked,
+                        !sel && cell.inMonth && !isBlocked && isToday && styles.dayTextAvailable,
                       ]}
                     >
                       {cell.date.getDate()}
@@ -372,9 +381,9 @@ export function AdminManageCalendar({
             })}
           </View>
 
-          {/* Blocked dates list */}
+          {/* Selected dates list */}
           <Text weight="semiBold" style={styles.blockedTitle}>
-            Blocked dates
+            {listTitle}
           </Text>
           <FlatList
             data={selectedRange}
@@ -452,7 +461,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   segmentActive: {
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
   segmentText: {
@@ -465,13 +474,13 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
   },
   sectionTitle: {
-    fontSize: adjustSize(16),
-    color: colors.black,
+    fontSize: adjustSize(15),
+    color: colors.primary,
     marginBottom: spacing.xs,
   },
   helpText: {
     fontSize: adjustSize(12),
-    color: colors.greylight,
+    color: colors.primary,
     marginBottom: spacing.md,
   },
   legendRow: {
@@ -531,9 +540,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
-    height: adjustSize(44),
+    height: adjustSize(49),
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -641,7 +650,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     borderRadius: 100,
     borderWidth: 1,
     borderColor: colors.border,

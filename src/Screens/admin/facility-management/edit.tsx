@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Screen, Text, Button, TextField } from "../../../Components";
+import { Screen, Text, Button, TextField ,CustomTabs} from "../../../Components";
 import { Header } from "../../../Components/Header";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { WithLocalSvg } from "react-native-svg/css";
@@ -21,7 +21,11 @@ import * as ImagePicker from "expo-image-picker";
 import Feather from "@expo/vector-icons/Feather";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
-
+import {
+  WorkRequestsIcon,
+  OrdersIcon,
+  CompletedIcon,
+} from "../../../assets/svg";
 type Props = NativeStackScreenProps<AdminStackParamList, "FMEdit">;
 
 export function FMEdit({ navigation }: Props) {
@@ -156,7 +160,28 @@ export function FMEdit({ navigation }: Props) {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      {/* <Header title="Edit Work Requests" /> */}
+      <Header title="Edit Work Requests" />
+      <CustomTabs
+              tabs={[
+                {
+                  label: "Work Requests",
+                  activeIcon: <WorkRequestsIcon color={colors.white} />,
+                  inactiveIcon: <WorkRequestsIcon color={colors.white} />,
+                },
+                {
+                  label: "Orders",
+                  activeIcon: <OrdersIcon color={colors.white} />,
+                  inactiveIcon: <OrdersIcon color={colors.white} />,
+                },
+                {
+                  label: "Completed",
+                  activeIcon: <CompletedIcon color={colors.white} />,
+                  inactiveIcon: <CompletedIcon color={colors.white} />,
+                },
+              ]}
+              activeTab={"Work Requests"}
+              onTabChange={(label) => console.log(label)}
+            >
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -219,13 +244,29 @@ export function FMEdit({ navigation }: Props) {
             Title
           </Text>
           <TextField
-            placeholder="Title"
+            placeholder="Write title"
             value={title}
             onChangeText={setTitle}
-            inputWrapperStyle={styles.inputWrapper}
-            style={styles.input}
-            placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={[styles.inputWrapper,{marginBottom:0}]}
+            style={[styles.input]}
+            placeholderTextColor={"#737373"}
+
           />
+            {/* Category */}
+          <Text style={[styles.label,{marginTop:5}]} weight="semiBold">
+            Category
+          </Text>
+          <DropdownComponent
+            data={categoryOptions}
+            placeholder="Select"
+            value={category ?? undefined}
+            onChangeValue={(v: string) => setCategory(v)}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+
           {/* Issue date */}
           <Text style={styles.label} weight="medium">
             Issue date
@@ -234,7 +275,7 @@ export function FMEdit({ navigation }: Props) {
             <Text
               style={[
                 styles.dtText,
-                { color: issueDate ? colors.primary : colors.primaryLight },
+                { color: issueDate ? colors.primary : "#737373" },
               ]}
             >
               {fmtDate(tempDate)}
@@ -257,36 +298,8 @@ export function FMEdit({ navigation }: Props) {
             rightIconColor={colors.primary}
           />
 
-          {/* Category */}
-          <Text style={styles.label} weight="semiBold">
-            Category
-          </Text>
-          <DropdownComponent
-            data={categoryOptions}
-            placeholder="Select"
-            value={category ?? undefined}
-            onChangeValue={(v: string) => setCategory(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
-            {/* Facility Manager */}
-            <Text style={styles.label} weight="semiBold">
-            Facility Manager
-          </Text>
-          <DropdownComponent
-            data={fmOptions}
-            placeholder="Select"
-            value={fm ?? undefined}
-            onChangeValue={(v: string) => setFm(v)}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-
+        
+           
           {/* Property */}
           <Text style={styles.label} weight="semiBold">
             Property*
@@ -302,7 +315,21 @@ export function FMEdit({ navigation }: Props) {
             rightIconColor={colors.primary}
           />
 
-        
+         {/* Facility Manager */}
+            <Text style={styles.label} weight="semiBold">
+            Facility Manager
+          </Text>
+          <DropdownComponent
+            data={fmOptions}
+            placeholder="Select"
+            value={fm ?? undefined}
+            onChangeValue={(v: string) => setFm(v)}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+
 
           {/* Description */}
           <Text style={styles.label} weight="semiBold">
@@ -312,7 +339,7 @@ export function FMEdit({ navigation }: Props) {
             placeholder="Write a detailed description"
             value={desc}
             onChangeText={setDesc}
-            placeholderTextColor={colors.primaryLight}
+            placeholderTextColor={"#737373"}
             inputWrapperStyle={[
               styles.inputWrapper,
               { height: adjustSize(120), alignItems: "flex-start" },
@@ -332,6 +359,7 @@ export function FMEdit({ navigation }: Props) {
           />
         </View>
       </ScrollView>
+      </CustomTabs>
 
       {/* Date Picker Modal */}
       {/* <Modal
@@ -379,7 +407,7 @@ export function FMEdit({ navigation }: Props) {
         onCancel={() => setPickerVisible(false)}
         onConfirm={() => {
           setIssueDate(tempDate);
-          // setShowPicker(false);
+          setPickerVisible(false);
         }}
       />  
     </Screen>
@@ -451,7 +479,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   inputWrapper: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     shadowColor: "#000000",
     shadowOpacity: 0.15,
@@ -460,12 +488,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   input: {
-    fontFamily: typography.fonts.poppins.medium,
+    fontSize:adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
   },
   dropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -474,7 +503,7 @@ const styles = StyleSheet.create({
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(12),
-    color: colors.primaryLight,
+    color: "#737373",
     fontFamily: typography.fonts.poppins.medium,
   },
   dropdownSelected: {
@@ -485,7 +514,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",
@@ -502,7 +531,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.medium,
   },
   generateBtn: {
-    height: adjustSize(48),
+    minHeight: adjustSize(47),
     borderRadius: adjustSize(12),
     backgroundColor: colors.primary,
     marginBottom: adjustSize(20),

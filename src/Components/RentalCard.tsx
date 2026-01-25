@@ -18,14 +18,14 @@ interface RentalCardProps {
 }
 
 const RENTAL_ACTIONS = [
-  "View Details",
+  "View",
   "Edit",
   "Manage Calendar",
   "Assign to agent",
   "Assign to FM",
-  "Register Tenant",
-  "Generate work request",
-  "Create Visitor request",
+  // "Register Tenant",
+  // "Generate work request",
+  // "Create Visitor request",
 ];
 
 const ACTIONS_MANAGE = ["View", "Register Tenant", "Generate work request"];
@@ -52,60 +52,33 @@ export const RentalCard: React.FC<RentalCardProps> = ({
       ? ACTIONS_MANAGE
       : ACTIONS_GROUP;
 
-      console.log("===sdf==========>", type);
 
   return (
     <View style={{ position: "relative" }}>
-      <View style={styles.container}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.container}>
         <TouchableOpacity
           activeOpacity={0.6}
           style={styles._morebutton}
           onPress={() => setMenuVisible((v) => !v)}
         >
-          <Entypo name="dots-three-vertical" size={16} color={colors.primary} />
+          <Entypo name="dots-three-vertical" size={16} color={colors.white} />
         </TouchableOpacity>
         <Image source={{ uri: thumb }} style={styles.thumbnail} />
-        <View style={styles.content}>
-          <View style={styles.rowBetween}>
-            <Text weight="semiBold" style={styles.title} numberOfLines={1}>
+        {/* Footer overlay */}
+        <View style={styles.footerOverlay}>
+          <View style={{ flex: 1 }}>
+            <Text weight="semiBold" style={styles.footerTitle} numberOfLines={1}>
               {property.name}
             </Text>
-            <Text style={styles.group} numberOfLines={1}>
-              ({property.group})
+            <Text style={styles.footerSubtitle} numberOfLines={1}>
+              Shortlet -{property.location}
             </Text>
-            {/* <TouchableOpacity
-              onPress={() => setMenuVisible((v) => !v)}
-              style={styles.dotMenu}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            /> */}
           </View>
-
-          <Text style={styles.location} numberOfLines={1}>
-            Shortlet - {property.location}
+          <Text style={styles.footerRight} numberOfLines={1}>
+            Property ID: {property.propertyId}
           </Text>
-
-          <View style={styles.metaRow}>
-            <Text style={styles.metaLabel}>Status:</Text>
-            <Text style={[styles.status, statusColor(property.status)]}>
-              {property.status}
-            </Text>
-            <Text style={styles.metaLabel}>Tenant:</Text>
-            <Text style={styles.metaValue} numberOfLines={1}>
-              {property.tenantName}
-            </Text>
-          </View>
-          <View style={[styles.metaRow, { justifyContent: "space-between" }]}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={styles.metaLabel}>Property ID:</Text>
-              <Text style={styles.metaValue}>{property.propertyId}asfaf</Text>
-            </View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={styles.metaLabel}>Added by:</Text>
-              <Text style={styles.metaValue}>{property.addedBy}</Text>
-            </View>
-          </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {menuVisible && (
         <View style={styles.menuBox}>
           {ACTIONS.map((a) => (
@@ -138,10 +111,8 @@ const statusColor = (status: IRentalProperty["status"]) => ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    backgroundColor: "#F2F3FF",
-    borderRadius: adjustSize(12),
-    padding: adjustSize(10),
+    borderRadius: adjustSize(16),
+    overflow: "hidden",
     marginBottom: adjustSize(12),
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -149,59 +120,50 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     zIndex: -1,
-    alignItems: "center",
-    borderWidth: 0.3,
-    borderColor: "#00000040",
   },
   thumbnail: {
-    height: adjustSize(106),
-    width: adjustSize(99),
-    borderRadius: adjustSize(8),
-    marginRight: adjustSize(10),
+    height: adjustSize(190),
+    width: "100%",
     backgroundColor: colors.border,
+    marginBottom:-15
   },
-  content: {
-    flex: 1,
-  },
-  rowBetween: {
+  footerOverlay: {
+    // position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.primary,
+    paddingHorizontal: adjustSize(14),
+    paddingVertical: adjustSize(12),
     flexDirection: "row",
-    gap: adjustSize(2),
-    // justifyContent: "space-between",
     alignItems: "center",
-    flexWrap: "wrap",
+    gap: adjustSize(10),
+    borderTopLeftRadius: adjustSize(16),
+    borderTopRightRadius: adjustSize(16),
   },
-  title: {
-    fontSize: adjustSize(13),
-    color: colors.primary,
+  greenCurve: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: adjustSize(64),
+    height: adjustSize(10),
+    backgroundColor: colors.secnodary,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
   },
-  group: {
-    fontSize: adjustSize(11),
-    color: colors.primaryLight,
+  footerTitle: {
+    fontSize: adjustSize(16),
+    color: colors.white,
   },
-  location: {
-    fontSize: adjustSize(11),
+  footerSubtitle: {
+    marginTop: adjustSize(4),
+    fontSize: adjustSize(12),
     color: "#B0B0B0",
-    marginTop: adjustSize(3),
   },
-  metaRow: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    gap: adjustSize(6),
-    marginTop: adjustSize(6),
-    overflow: "hidden",
-  },
-  metaLabel: {
-    fontSize: adjustSize(10),
-    color: colors.primary,
-    fontFamily: typography.fonts.poppins.medium,
-  },
-  metaValue: {
-    fontSize: adjustSize(10),
-    color: "#7E7E7E",
-  },
-  status: {
-    fontSize: adjustSize(10),
-    marginRight: adjustSize(6),
+  footerRight: {
+    fontSize: adjustSize(12),
+    color: colors.white,
+    marginLeft: adjustSize(10),
   },
   dotMenu: {
     height: 18,
@@ -228,7 +190,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
     zIndex: 10,
-    width: adjustSize(190),
+    width: adjustSize(220),
     paddingVertical: adjustSize(6),
     paddingBottom: adjustSize(15),
   },
@@ -244,5 +206,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: adjustSize(10),
     top: adjustSize(10),
+    zIndex:100,
+    backgroundColor:colors.primary,
+    borderRadius:100,
+    padding:5
   },
 });

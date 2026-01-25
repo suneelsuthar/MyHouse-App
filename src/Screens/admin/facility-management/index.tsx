@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import {
   Screen,
   Text,
@@ -42,6 +42,9 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
   };
   const [activeTab, setActiveTab] = useState(titleMap[status]); // 🔹 string state
   const [search, setSearch] = useState<string>("");
+  const [sortBy, setSortBy] = useState<
+    "newest" | "oldest" | "priorityHigh" | "priorityLow" | "title"
+  >("newest");
   useEffect(() => {
     setActiveTab(titleMap[status]);
   }, [status]);
@@ -59,7 +62,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -76,7 +79,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -93,7 +96,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -110,7 +113,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -127,7 +130,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -144,7 +147,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -161,7 +164,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -178,7 +181,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -195,7 +198,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -212,7 +215,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -229,7 +232,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -246,7 +249,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
       text: "Leaking toilet in master drawing room",
       workReqNo: "WR12345",
       category: "Plumbing",
-      priority: "High",
+      priority: "High Priority",
       issueDate: "15, Sep 2024",
       dueDate: "15, Sep 2024",
     },
@@ -255,6 +258,36 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
   const filteredData = data?.filter(
     (item) => item?.status?.toLowerCase() === activeTab?.toLowerCase()
   );
+  const priorityRank: Record<string, number> = { high: 3, medium: 2, low: 1 };
+  const parseDate = (s?: string) => (s ? new Date(s) : new Date(0));
+  const sortedData = React.useMemo(() => {
+    const arr = [...(filteredData ?? [])];
+    switch (sortBy) {
+      case "oldest":
+        return arr.sort(
+          (a, b) => parseDate(a.issueDate).getTime() - parseDate(b.issueDate).getTime()
+        );
+      case "priorityHigh":
+        return arr.sort(
+          (a, b) =>
+            (priorityRank[(b.priority || "").toLowerCase()] || 0) -
+            (priorityRank[(a.priority || "").toLowerCase()] || 0)
+        );
+      case "priorityLow":
+        return arr.sort(
+          (a, b) =>
+            (priorityRank[(a.priority || "").toLowerCase()] || 0) -
+            (priorityRank[(b.priority || "").toLowerCase()] || 0)
+        );
+      case "title":
+        return arr.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+      case "newest":
+      default:
+        return arr.sort(
+          (a, b) => parseDate(b.issueDate).getTime() - parseDate(a.issueDate).getTime()
+        );
+    }
+  }, [filteredData, sortBy]);
   return (
     <Screen
       preset="fixed"
@@ -266,17 +299,17 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         tabs={[
           {
             label: "Work Requests",
-            activeIcon: <WorkRequestsIcon color={colors.primary} />,
+            activeIcon: <WorkRequestsIcon color={colors.white} />,
             inactiveIcon: <WorkRequestsIcon color={colors.white} />,
           },
           {
             label: "Orders",
-            activeIcon: <OrdersIcon color={colors.primary} />,
+            activeIcon: <OrdersIcon color={colors.white} />,
             inactiveIcon: <OrdersIcon color={colors.white} />,
           },
           {
             label: "Completed",
-            activeIcon: <CompletedIcon color={colors.primary} />,
+            activeIcon: <CompletedIcon color={colors.white} />,
             inactiveIcon: <CompletedIcon color={colors.white} />,
           },
         ]}
@@ -301,7 +334,10 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
           />
         )}
 
-        <View style={styles.section}>
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.section}>
           {user?.role !== "admin" && activeTab === "Work Requests" && (
             <View style={styles.dropdownContainer}>
               <View style={{ flex: 1 }}>
@@ -339,6 +375,30 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                 ? "Work Orders"
                 : "Work Requests"}
             </Text>
+            <View style={{ width: 150 }}>
+              <DropdownComponent
+                data={[
+                  { label: "High Priority", value: "highpriority" },
+                  { label: "In Progress", value: "inprogress" },
+                ]}
+                placeholder="Sort by"
+                value={sortBy}
+                onChangeValue={(v) =>
+                  setSortBy(
+                    (v as "newest" | "oldest" | "priorityHigh" | "priorityLow" | "title")
+                  )
+                }
+                dropdownStyle={{
+                  height: adjustSize(36),
+                  borderRadius: adjustSize(50),
+                  paddingHorizontal: adjustSize(12),
+                  backgroundColor: colors.primary,
+                }}
+                placeholderStyle={{ color: colors.white, fontSize: adjustSize(12) }}
+                selectedTextStyle={{ color: colors.white, fontSize: adjustSize(12) }}
+                rightIconColor={colors.white}
+              />
+            </View>
             {/* 
             {user?.role === "tenant" && activeTab === "Work Requests" && (
               <Button
@@ -367,8 +427,9 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
 
         {/* List */}
         <FlatList
-          data={filteredData}
+          data={sortedData}
           keyExtractor={(item) => item.id}
+          scrollEnabled={false}
           contentContainerStyle={styles.listContent}
           renderItem={({ item, index }) => (
             <FacilityManagementCard
@@ -386,8 +447,8 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                   (navigation as any).navigate("FMViewWorkOrder" as never);
                 } else if (action === "View") {
                   // Orders tab: View
-                  (navigation as any).navigate("FMOrderView" as never);
-                } else if (action === "Update") {
+                  (navigation as any).navigate("FMViewWorkOrder" as never);
+                } else if (action === "Add Update") {
                   // Orders tab: Update
                   (navigation as any).navigate("FMOrderUpdate" as never);
                 } else if (action === "Export") {
@@ -410,7 +471,9 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
               }}
             />
           )}
+
         />
+        </ScrollView>
       </CustomTabs>
     </Screen>
   );
@@ -426,7 +489,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: adjustSize(15),
-    color: colors.primary,
+    color: colors.black,
   },
   _seciton_row: {
     flexDirection: "row",
@@ -434,6 +497,42 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: adjustSize(10),
     marginBottom: adjustSize(20),
+  },
+  sortBtn: {
+    backgroundColor: colors.primary,
+    minWidth: adjustSize(110),
+    height: adjustSize(36),
+    borderRadius: adjustSize(50),
+    paddingHorizontal: adjustSize(14),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sortBtnText: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+    marginRight: adjustSize(6),
+  },
+  sortCaret: {
+    color: colors.white,
+    fontSize: adjustSize(14),
+  },
+  sortMenu: {
+    marginTop: adjustSize(8),
+    backgroundColor: colors.primary,
+    borderRadius: adjustSize(10),
+    paddingVertical: adjustSize(6),
+    paddingHorizontal: adjustSize(8),
+    alignSelf: "flex-end",
+  },
+  sortOption: {
+    paddingVertical: adjustSize(6),
+    paddingHorizontal: adjustSize(6),
+  },
+  sortOptionText: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
   },
   dropdownContainer: {
     width: "100%",
@@ -458,7 +557,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   listContent: {
-    // paddingHorizontal: adjustSize(10),
+    paddingHorizontal: adjustSize(10),
     paddingBottom: adjustSize(20),
   },
   _generate_btn: {

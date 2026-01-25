@@ -156,6 +156,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
             onBlur={() => validateForm(form)}
             status={errors.percent ? "error" : undefined}
             helper={errors.percent}
+            inputWrapperStyle={{ backgroundColor: "white" }}
           />
 
           <Text style={styles.fieldLabel}>Start date</Text>
@@ -168,6 +169,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
             onBlur={() => validateForm(form)}
             status={errors.startDate ? "error" : undefined}
             helper={errors.startDate}
+            inputWrapperStyle={{ backgroundColor: "white" }}
           />
 
           <Text style={styles.fieldLabel}>End date</Text>
@@ -180,6 +182,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
             onBlur={() => validateForm(form)}
             status={errors.endDate ? "error" : undefined}
             helper={errors.endDate}
+            inputWrapperStyle={{ backgroundColor: "white" }}
           />
 
           <View
@@ -202,6 +205,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                   borderColor: colors.error,
                   borderWidth: 1,
                   backgroundColor: colors.fill,
+                  minHeight: adjustSize(41),
                 }}
               />
             </View>
@@ -211,6 +215,9 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                 preset="reversed"
                 onPress={saveFormIntoList}
                 disabled={!canSave}
+                style={{
+                  minHeight: adjustSize(41),
+                }}
               />
             </View>
           </View>
@@ -219,22 +226,25 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
 
       {/* List of saved promotions at bottom */}
       {promotions.length > 0 && (
+        <>
+        {(formVisible || editIndex !== null) && (
+          <View style={styles.divider} />
+        )}
         <View style={{ gap: adjustSize(10), marginTop: adjustSize(16) }}>
           {promotions.map((p, idx) => (
             <View key={`${p.startDate}-${p.endDate}-${idx}`} style={styles.promoCard}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <View style={styles.cardHeader}>
                 <Text weight="semiBold" style={{ color: colors.primary }}>
                   Discount: {p.percent}%
                 </Text>
-                <TouchableOpacity onPress={() => startEdit(idx)}>
-                  <AntDesign name="edit" size={16} color={colors.primary} />
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: adjustSize(10) }}>
+                  <TouchableOpacity onPress={() => startEdit(idx)}>
+                    <AntDesign name="edit" size={16} color={colors.primary} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => removeAt(idx)}>
+                    <AntDesign name="delete" size={16} color={colors.error} />
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View style={styles.dateRow}>
@@ -247,7 +257,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                       fontFamily: typography.fonts.poppins.medium,
                     }}
                     style={{
-                      backgroundColor: colors.primaryLight,
+                      backgroundColor: colors.primary,
                       minHeight: adjustSize(36),
                     }}
                   />
@@ -262,19 +272,16 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                       fontFamily: typography.fonts.poppins.medium,
                     }}
                     style={{
-                      backgroundColor: colors.primaryLight,
+                      backgroundColor: colors.primary,
                       minHeight: adjustSize(36),
                     }}
                   />
                 </View>
               </View>
-
-              <TouchableOpacity style={styles.removeBtn} onPress={() => removeAt(idx)}>
-                <Text style={{ color: colors.primary }}>Remove</Text>
-              </TouchableOpacity>
             </View>
           ))}
         </View>
+        </>
       )}
 
       {/* Add button at the very bottom when form is hidden and there are items */}
@@ -303,6 +310,11 @@ const styles = StyleSheet.create({
     borderColor: colors.greylight,
     marginTop: adjustSize(20),
   } as ViewStyle,
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  } as ViewStyle,
   dateRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -315,9 +327,10 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
     fontSize: adjustSize(12),
   } as TextStyle,
-  removeBtn: {
-    alignSelf: "flex-end",
-    marginTop: adjustSize(8),
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.greylight,
+    marginTop: adjustSize(12),
   } as ViewStyle,
 });
 

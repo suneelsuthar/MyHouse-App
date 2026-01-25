@@ -22,11 +22,10 @@ export {
   AdminManageInspections,
 };
 
-interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<
-    AdminStackParamList,
-    "AdminPropertyManagement"
-  > {}
+interface AdminPropertyManagementProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "AdminPropertyManagement"
+> {}
 export function AdminPropertyManagement({
   route,
 }: AdminPropertyManagementProps) {
@@ -56,9 +55,7 @@ export function AdminPropertyManagement({
         </TouchableOpacity>
         <View style={styles.headerinfo}>
           <Text weight="semiBold" style={styles.username}>
-            {propertyType === "rental"
-              ? "Rental Properties"
-              : "Managed Properties"}
+            Manage Properties
           </Text>
         </View>
         <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
@@ -81,7 +78,7 @@ export function AdminPropertyManagement({
                 { label: "C", value: "C" },
               ]}
               label="Select Period"
-              placeholder="Sort by"
+              placeholder="Filters"
               dropdownStyle={styles.customDropdownStyle}
               placeholderStyle={styles.customPlaceholderStyle}
               selectedTextStyle={styles.customSelectedTextStyle}
@@ -98,7 +95,7 @@ export function AdminPropertyManagement({
             onChangeText={setsearch}
             placeholderTextColor={colors.primaryLight}
             inputWrapperStyle={{ backgroundColor: colors.white }}
-            placeholder="Search property"
+            placeholder="Search"
             style={styles._input}
           />
         </View>
@@ -125,20 +122,21 @@ export function AdminPropertyManagement({
             property={item}
             type={propertyType}
             onAction={(action, property) => {
+              console.log("action=============>", action);
               if (action === "View Details" || action === "View") {
                 (navigation as any).navigate(
                   "PropertyDetails" as never,
-                  { propertyId: property.propertyId } as never
+                  { propertyId: property.propertyId } as never,
                 );
               } else if (action === "Edit") {
                 (navigation as any).navigate(
                   "AdminAddProperty" as never,
-                  { propertyId: property.propertyId, mode: "edit" } as never
+                  { propertyId: property.propertyId, mode: "edit" } as never,
                 );
               } else if (action === "Manage Calendar") {
                 (navigation as any).navigate(
                   "AdminManageCalendar" as never,
-                  { propertyId: property.propertyId } as never
+                  { propertyId: property.propertyId } as never,
                 );
               } else if (action === "Assign to agent") {
                 (navigation as any).navigate(
@@ -147,7 +145,16 @@ export function AdminPropertyManagement({
                     propertyId: property.propertyId,
                     type: "agent",
                     title: "Assign Agent",
-                  } as never
+                  } as never,
+                );
+              } else if (action === "Assign to Secondary Agent") {
+                alert("Assign to Secondary Agent")(navigation as any).navigate(
+                  "AdminAssignProperties" as never,
+                  {
+                    propertyId: property.propertyId,
+                    type: "agent",
+                    title: "Assign Agent",
+                  } as never,
                 );
               } else if (action === "Assign to FM") {
                 (navigation as any).navigate(
@@ -156,7 +163,7 @@ export function AdminPropertyManagement({
                     propertyId: property.propertyId,
                     type: "fm",
                     title: "Assign Facility Manager",
-                  } as never
+                  } as never,
                 );
               } else if (action === "Register Tenant") {
                 (navigation as any).navigate(
@@ -165,17 +172,17 @@ export function AdminPropertyManagement({
                     propertyId: property.propertyId,
                     type: "tenant",
                     title: "Register Tenant",
-                  } as never
+                  } as never,
                 );
               } else if (action === "Generate work request") {
                 (navigation as any).navigate(
                   "AdminGenerateWorkRequests" as never,
-                  { propertyId: property.propertyId } as never
+                  { propertyId: property.propertyId } as never,
                 );
               } else if (action === "Create Visitor request") {
                 (navigation as any).navigate(
                   "AdminCreateVisitorRequests" as never,
-                  { propertyId: property.propertyId } as never
+                  { propertyId: property.propertyId } as never,
                 );
               }
             }}

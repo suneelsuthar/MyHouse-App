@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { Screen, Text } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { AdminStackParamList } from "../../../utils/interfaces";
@@ -80,8 +86,10 @@ const visitorData = [
   },
 ];
 
-
-type Props = NativeStackScreenProps<AdminStackParamList, "AdminVisitorManagement">;
+type Props = NativeStackScreenProps<
+  AdminStackParamList,
+  "AdminVisitorManagement"
+>;
 
 export function AdminVisitorManagement({ route }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>("Active");
@@ -95,13 +103,14 @@ export function AdminVisitorManagement({ route }: Props) {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profileSection}>
           <View style={styles.profileAvatar}>
-            <Image 
-              source={{ uri: "https://via.placeholder.com/40x40/333/fff?text=U" }}
+            <Image
+              source={{
+                uri: "https://via.placeholder.com/40x40/333/fff?text=U",
+              }}
               style={styles.avatarImage}
             />
           </View>
@@ -110,7 +119,11 @@ export function AdminVisitorManagement({ route }: Props) {
           </Text>
         </View>
         <TouchableOpacity style={styles.notificationIcon}>
-          <Ionicons name="notifications-outline" size={24} color={colors.primary} />
+          <Ionicons
+            name="notifications-outline"
+            size={24}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
 
@@ -120,35 +133,47 @@ export function AdminVisitorManagement({ route }: Props) {
           style={[styles.tab, activeTab === "Active" && styles.activeTab]}
           onPress={() => setActiveTab("Active")}
         >
-          <Ionicons 
-            name="people" 
-            size={20} 
-            color={activeTab === "Active" ? colors.primary : colors.primaryLight} 
+          <Ionicons
+            name="people"
+            size={20}
+            color={
+              activeTab === "Active" ? colors.primary : colors.primaryLight
+            }
           />
           <Text
             style={[
               styles.tabText,
-              { color: activeTab === "Active" ? colors.primary : colors.primaryLight }
+              {
+                color:
+                  activeTab === "Active" ? colors.primary : colors.primaryLight,
+              },
             ]}
             weight={activeTab === "Active" ? "semiBold" : "medium"}
           >
             Active
           </Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={[styles.tab, activeTab === "History" && styles.activeTab]}
           onPress={() => setActiveTab("History")}
         >
-          <Ionicons 
-            name="time-outline" 
-            size={20} 
-            color={activeTab === "History" ? colors.primary : colors.primaryLight} 
+          <Ionicons
+            name="time-outline"
+            size={20}
+            color={
+              activeTab === "History" ? colors.primary : colors.primaryLight
+            }
           />
           <Text
             style={[
               styles.tabText,
-              { color: activeTab === "History" ? colors.primary : colors.primaryLight }
+              {
+                color:
+                  activeTab === "History"
+                    ? colors.primary
+                    : colors.primaryLight,
+              },
             ]}
             weight={activeTab === "History" ? "semiBold" : "medium"}
           >
@@ -170,7 +195,7 @@ export function AdminVisitorManagement({ route }: Props) {
             selectedTextStyle={styles.dropdownSelected}
           />
         </View>
-        
+
         <TouchableOpacity style={styles.addButton}>
           <Ionicons name="add" size={24} color={colors.white} />
         </TouchableOpacity>
@@ -195,26 +220,26 @@ export function AdminVisitorManagement({ route }: Props) {
       </View>
 
       {/* Visitor List */}
-      <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {visitorData.map((visitor) => (
           <TouchableOpacity key={visitor.id} style={styles.visitorItem}>
-            <View 
+            <View
               style={[
-                styles.visitorAvatar, 
-                { backgroundColor: visitor.backgroundColor }
+                styles.visitorAvatar,
+                { backgroundColor: visitor.backgroundColor },
               ]}
             >
-              <Text 
-                style={[
-                  styles.avatarText, 
-                  { color: visitor.textColor }
-                ]}
+              <Text
+                style={[styles.avatarText, { color: visitor.textColor }]}
                 weight="semiBold"
               >
                 {visitor.avatar}
               </Text>
             </View>
-            
+
             <View style={styles.visitorInfo}>
               <Text style={styles.visitorName} weight="semiBold">
                 {visitor.name}
@@ -223,11 +248,9 @@ export function AdminVisitorManagement({ route }: Props) {
                 Property: {visitor.property}
               </Text>
             </View>
-            
+
             <View style={styles.statusContainer}>
-              <Text style={styles.statusText}>
-                {visitor.status}
-              </Text>
+              <Text style={styles.statusText}>{visitor.status}</Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -289,14 +312,12 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   activeTab: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-    
-    
   },
   tabText: {
     fontSize: adjustSize(12),
@@ -325,7 +346,7 @@ const styles = StyleSheet.create({
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(12),
-    color: colors.primaryLight,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
   },
   dropdownSelected: {
@@ -412,7 +433,7 @@ const styles = StyleSheet.create({
   },
   visitorProperty: {
     fontSize: adjustSize(12),
-    color: colors.primaryLight,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
   },
   statusContainer: {

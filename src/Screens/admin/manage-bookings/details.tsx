@@ -41,11 +41,11 @@ export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
       "Check in Confirmed",
       "Check Out Confirmed",
     ],
-    []
+    [],
   );
 
   // TODO: derive this from real booking status when available
-  const bookingStatusLabel = "Reservation Approved";
+  const bookingStatusLabel = "Reservation Pending";
   const currentStep = Math.max(0, steps.indexOf(bookingStatusLabel));
 
   const Check = ({ checked }: { checked: boolean }) => (
@@ -92,7 +92,7 @@ export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
                         <Feather
                           name="check"
                           size={adjustSize(12)}
-                          color={colors.white}
+                          color={colors.primary}
                         />
                       )}
                     </View>
@@ -271,9 +271,12 @@ export function AdminBookingDetails({ route }: AdminBookingDetailsProps) {
 
           <View style={{ height: spacing.md }} />
           <TouchableOpacity
-            disabled={!agree}
             style={[styles.primaryBtn]}
             activeOpacity={0.9}
+              onPress={() => {
+                navigation.navigate("AdminSignAgreement")
+                // TODO: Navigate to rental agreement
+              }}
           >
             <Text
               weight="semiBold"
@@ -409,7 +412,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(16),
   },
   stepsBar: {
-    backgroundColor: "#CACAE0",
+    backgroundColor: colors.primary,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.sm,
     marginBottom: spacing.md,
@@ -436,8 +439,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   stepBoxActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: colors.white,
+    borderColor: colors.white,
   },
   stepLabel: {
     fontSize: adjustSize(10),
@@ -446,7 +449,7 @@ const styles = StyleSheet.create({
     lineHeight: adjustSize(14),
   },
   stepLabelActive: {
-    color: colors.primary,
+    color: colors.white,
   },
   connectorImg: {
     width: adjustSize(56),
@@ -462,7 +465,7 @@ const styles = StyleSheet.create({
   },
   connectorImgInactive: {
     opacity: 0.4,
-    tintColor: colors.primaryLight,
+    tintColor: colors.primary,
   },
   connectorImgPlaceholder: {
     height: adjustSize(8),
@@ -547,7 +550,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   totalLabel: {
     color: colors.white,
@@ -596,12 +599,12 @@ const styles = StyleSheet.create({
   },
   dangerBtn: {
     height: adjustSize(46),
-    borderWidth:2,
-    borderColor:"#E15241",
-    alignItems:"center",
-    justifyContent:"center",
-    borderRadius:adjustSize(10),
-    marginHorizontal:adjustSize(15)
+    borderWidth: 2,
+    borderColor: "#E15241",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: adjustSize(10),
+    marginHorizontal: adjustSize(15),
   },
   // Inline Modal
   modalOverlay: {
@@ -614,7 +617,7 @@ const styles = StyleSheet.create({
   modalCard: {
     width: "100%",
     borderRadius: adjustSize(12),
-    backgroundColor: colors.white,
+    backgroundColor: colors.fill,
     padding: spacing.lg,
     paddingVertical: adjustSize(50),
   },
@@ -658,7 +661,8 @@ const styles = StyleSheet.create({
   modalBtnSecondary: {
     flex: 1,
     backgroundColor: colors.white,
-    borderColor: colors.border,
+    borderColor: colors.primary,
+    minHeight: adjustSize(47),
   },
   modalBtnSecondaryText: {
     color: colors.primary,
@@ -668,6 +672,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#D51E1E",
     borderColor: colors.palette.angry500,
+    minHeight: adjustSize(47),
   },
   modalBtnPrimaryText: {
     color: colors.white,

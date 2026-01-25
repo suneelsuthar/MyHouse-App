@@ -14,6 +14,7 @@ import { Images } from "../../../assets/Images";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
+import { Entypo } from "@expo/vector-icons";
 type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
@@ -37,6 +38,7 @@ export const VisitorRequests: React.FC = () => {
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
   const [visitorData, setvisitorData] = useState([
     {
       id: 1,
@@ -120,16 +122,16 @@ export const VisitorRequests: React.FC = () => {
           <Image
             source={Images.activevisit}
             style={{
-              height: adjustSize(24),
-              width: adjustSize(24),
-              tintColor: activeTab === "Active" ? colors.primary : colors.white,
+              height: adjustSize(20),
+              width: adjustSize(20),
+              tintColor: activeTab === "Active" ? colors.white : colors.white,
             }}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color: activeTab === "Active" ? colors.primary : colors.white,
+                color: activeTab === "Active" ? colors.white : colors.white,
               },
             ]}
             weight={activeTab === "Active" ? "semiBold" : "medium"}
@@ -145,17 +147,16 @@ export const VisitorRequests: React.FC = () => {
           <Image
             source={Images.visithistory}
             style={{
-              height: adjustSize(24),
-              width: adjustSize(24),
-              tintColor:
-                activeTab === "History" ? colors.primary : colors.white,
+              height: adjustSize(20),
+              width: adjustSize(20),
+              tintColor: activeTab === "History" ? colors.white : colors.white,
             }}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color: activeTab === "History" ? colors.primary : colors.white,
+                color: activeTab === "History" ? colors.white : colors.white,
               },
             ]}
             weight={activeTab === "History" ? "semiBold" : "medium"}
@@ -176,9 +177,10 @@ export const VisitorRequests: React.FC = () => {
             dropdownStyle={styles.searchDropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
           />
         </View>
-
+        {/* 
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
@@ -186,28 +188,10 @@ export const VisitorRequests: React.FC = () => {
           }}
         >
           <WithLocalSvg asset={Images.addprop} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
-      {/* Property Group Label and Sort */}
-      <View style={styles.listHeader}>
-        <Text style={styles.propertyGroupLabel} weight="semiBold">
-          Visitor Requests
-        </Text>
-        <View style={styles.sortContainer}>
-          <DropdownComponent
-            data={sortOptions}
-            value={sortBy}
-            onChangeValue={setSortBy}
-            placeholder="Sort by"
-            dropdownStyle={styles.sortDropdown}
-            placeholderStyle={styles.sortPlaceholder}
-            selectedTextStyle={styles.sortSelected}
-          />
-        </View>
-      </View>
-
-      <TextField
+      {/* <TextField
         placeholder="Search"
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -217,55 +201,110 @@ export const VisitorRequests: React.FC = () => {
           width: "94%",
           alignSelf: "center",
         }}
-      />
+      /> */}
 
       {/* Visitor List */}
       <ScrollView
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
       >
+        {/* Property Group Label and Sort */}
+        <View style={styles.listHeader}>
+          <Text style={styles.propertyGroupLabel} weight="semiBold">
+            Estate
+          </Text>
+          <View style={styles.sortContainer}>
+            <DropdownComponent
+              data={sortOptions}
+              value={sortBy}
+              onChangeValue={setSortBy}
+              placeholder="Select Estate"
+              dropdownStyle={styles.sortDropdown}
+              placeholderStyle={styles.sortPlaceholder}
+              selectedTextStyle={styles.sortSelected}
+            />
+          </View>
+        </View>
         {filterData.map((visitor, index) => (
-          <TouchableOpacity
+          <View
             key={visitor.id}
             style={[
               styles.visitorItem,
-              {
-                backgroundColor: index % 2 === 0 ? "#cacae0" : colors.fill,
-              },
+              menuOpenId === visitor.id && styles.itemRaised,
             ]}
-            onPress={() => handleVisitorPress(visitor.id)}
           >
             <View
               style={[
                 styles.visitorAvatar,
-                { backgroundColor: visitor.backgroundColor },
+                // { backgroundColor: visitor.backgroundColor },
               ]}
             >
-              <Text
-                style={[styles.avatarText, { color: visitor.textColor }]}
-                weight="semiBold"
-              >
-                {visitor.avatar}
-              </Text>
+              <WithLocalSvg asset={Images.profile} />
             </View>
 
             <View style={styles.visitorInfo}>
-              <Text style={styles.statusText}>{visitor.status}</Text>
-
               <Text style={styles.visitorName} weight="semiBold">
                 {visitor.name}
               </Text>
-              <Text style={styles.visitorProperty} weight="medium">
-                Property:
-                <Text style={{ color: colors.white }}>
-                  {` `}
-                  {visitor.property}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.visitorProperty} weight="medium">
+                  <Text style={styles.propLabel}>Property:</Text>
+                  <Text style={styles.propValue}> {visitor.property}</Text>
                 </Text>
-              </Text>
+                <View style={styles.statusPill}>
+                  <Text style={styles.statusPillText}>{visitor.status}</Text>
+                </View>
+              </View>
             </View>
 
-            <View style={styles.statusContainer}></View>
-          </TouchableOpacity>
+            <View style={styles.rightCol}>
+              <TouchableOpacity
+                onPress={() =>
+                  menuOpenId ? setMenuOpenId(null) : setMenuOpenId(visitor.id)
+                }
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                style={styles.moreBtn}
+              >
+                <Entypo
+                  name="dots-three-vertical"
+                  size={18}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {menuOpenId === visitor.id && (
+              <View style={styles.menuWrap}>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    setMenuOpenId(null);
+                    handleVisitorPress(visitor.id);
+                  }}
+                >
+                  <Text style={styles.menuText}>View</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    setMenuOpenId(null);
+                  }}
+                >
+                  <Text style={styles.menuText}>Revoke Invitation</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    setMenuOpenId(null);
+                  }}
+                >
+                  <Text style={[styles.menuText, styles.menuTextMuted]}>
+                    Alert Security
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         ))}
       </ScrollView>
     </Screen>
@@ -310,7 +349,7 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flexDirection: "row",
-    backgroundColor: "#dedfef",
+    backgroundColor: colors.primary,
 
     // padding: spacing.xs,
   },
@@ -318,13 +357,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.xxs,
     // gap: spacing.xs,
   },
   activeTab: {
     borderBottomWidth: 3,
-    borderColor: colors.primary,
-    backgroundColor: colors.white,
+    borderColor: colors.white,
+    backgroundColor: colors.primary,
   },
   tabText: {
     fontSize: adjustSize(12),
@@ -343,7 +382,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -353,12 +392,12 @@ const styles = StyleSheet.create({
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: colors.greylight,
     fontFamily: typography.fonts.poppins.medium,
   },
   dropdownSelected: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
   },
   addButton: {
@@ -377,7 +416,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   propertyGroupLabel: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
   },
@@ -387,7 +426,7 @@ const styles = StyleSheet.create({
   sortDropdown: {
     height: adjustSize(35),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   sortPlaceholder: {
     fontSize: adjustSize(11),
@@ -400,13 +439,27 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.medium,
   },
   listContainer: {
-    flex: 1,
+    // flex: 1,
   },
   visitorItem: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: colors.white,
     padding: spacing.md,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
+    borderRadius: adjustSize(12),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+    height: adjustSize(94),
+    position: "relative",
+  },
+  itemRaised: {
+    zIndex: 2000,
+    elevation: 12,
   },
   visitorAvatar: {
     width: adjustSize(50),
@@ -415,10 +468,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: spacing.md,
+    backgroundColor: colors.primary,
   },
   avatarText: {
     fontSize: adjustSize(18),
     fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.white,
   },
   visitorInfo: {
     flex: 1,
@@ -431,9 +486,15 @@ const styles = StyleSheet.create({
   },
   visitorProperty: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
+    flex: 1,
   },
+  propLabel: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  propValue: { color: colors.primary },
   statusContainer: {
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
@@ -442,6 +503,59 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(11),
     color: "#FF6B35",
     fontFamily: typography.fonts.poppins.medium,
+  },
+  rightCol: {
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    gap: spacing.sm,
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  moreBtn: {
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xs,
+  },
+  moreBtnDot: {
+    color: colors.primary,
+    fontSize: adjustSize(18),
+  },
+  statusPill: {
+    backgroundColor: "#F26938",
+    borderRadius: adjustSize(100),
+    paddingHorizontal: spacing.md,
+    paddingVertical: 3,
+  },
+  statusPillText: {
+    color: colors.white,
+    fontSize: adjustSize(11),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  menuWrap: {
+    position: "absolute",
+    right: spacing.md,
+    top: 45,
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(10),
+    paddingVertical: spacing.xs,
+    minWidth: adjustSize(140),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+    zIndex: 3000,
+    borderWidth: 0.3,
+    borderColor: colors.greylight,
+  },
+  menuItem: {
+    paddingVertical: spacing.xxs,
+    paddingHorizontal: spacing.md,
+  },
+  menuText: {
+    color: colors.primary,
+    fontSize: adjustSize(13),
+    fontFamily: typography.fonts.poppins.normal,
   },
   headerinfo: {
     flex: 1,

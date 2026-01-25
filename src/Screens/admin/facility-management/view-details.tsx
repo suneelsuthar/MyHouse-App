@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Screen, Text, Button, Header } from "../../../Components";
+import { Screen, Text, Button, Header, CustomTabs } from "../../../Components";
 import {
   Image,
   ScrollView,
@@ -15,10 +15,14 @@ import { colors, spacing, typography, adjustSize } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
-
+import {
+  WorkRequestsIcon,
+  OrdersIcon,
+  CompletedIcon,
+} from "../../../assets/svg";
 export const FMViewDetails = () => {
   const navigation = useNavigation();
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get("window");
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const [activeSlide, setActiveSlide] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -28,10 +32,11 @@ export const FMViewDetails = () => {
     Images.slide3,
   ]);
 
-  const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets.";
+  const description =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets.";
   const maxDescriptionLength = 150;
-  const displayDescription = showFullDescription 
-    ? description 
+  const displayDescription = showFullDescription
+    ? description
     : `${description.substring(0, maxDescriptionLength)}...`;
 
   const panResponder = React.useRef(
@@ -39,13 +44,14 @@ export const FMViewDetails = () => {
       onStartShouldSetPanResponder: () => true,
       onPanResponderRelease: (_, { dx }) => {
         if (Math.abs(dx) > 50) {
-          const nextIndex = dx > 0 
-            ? Math.max(0, activeSlide - 1) 
-            : Math.min(selectedImages.length - 1, activeSlide + 1);
+          const nextIndex =
+            dx > 0
+              ? Math.max(0, activeSlide - 1)
+              : Math.min(selectedImages.length - 1, activeSlide + 1);
           setActiveSlide(nextIndex);
         }
       },
-    })
+    }),
   ).current;
 
   return (
@@ -55,8 +61,30 @@ export const FMViewDetails = () => {
       contentContainerStyle={styles.container}
       statusBarStyle="dark"
     >
-      {/* Header */}
       <Header title="View Work Requests" />
+
+      <CustomTabs
+        tabs={[
+          {
+            label: "Work Requests",
+            activeIcon: <WorkRequestsIcon color={colors.white} />,
+            inactiveIcon: <WorkRequestsIcon color={colors.white} />,
+          },
+          {
+            label: "Orders",
+            activeIcon: <OrdersIcon color={colors.white} />,
+            inactiveIcon: <OrdersIcon color={colors.white} />,
+          },
+          {
+            label: "Completed",
+            activeIcon: <CompletedIcon color={colors.white} />,
+            inactiveIcon: <CompletedIcon color={colors.white} />,
+          },
+        ]}
+        activeTab={"Work Requests"}
+        onTabChange={(label) => console.log(label)}
+      >
+      {/* Header */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Hero Image Carousel */}
@@ -67,7 +95,7 @@ export const FMViewDetails = () => {
             showsHorizontalScrollIndicator={false}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-              { useNativeDriver: false }
+              { useNativeDriver: false },
             )}
             onMomentumScrollEnd={(e) => {
               const slide = Math.round(e.nativeEvent.contentOffset.x / width);
@@ -84,12 +112,12 @@ export const FMViewDetails = () => {
               />
             ))}
           </Animated.ScrollView>
-         
+
           {/* Dots Indicator */}
           <View style={styles.dotsContainer}>
             {selectedImages.map((_, i) => (
-              <TouchableOpacity 
-                key={i} 
+              <TouchableOpacity
+                key={i}
                 onPress={() => setActiveSlide(i)}
                 style={styles.dotContainer}
               >
@@ -105,7 +133,7 @@ export const FMViewDetails = () => {
         </View>
 
         {/* Thumbs */}
-        <ScrollView
+        {/* <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.thumbRow}
@@ -118,9 +146,9 @@ export const FMViewDetails = () => {
               />
             </Pressable>
           ))}
-        </ScrollView>
+        </ScrollView> */}
         {/* Details Card */}
-        <View style={[styles.card, { marginTop: spacing.lg }]}>
+        <View style={[styles.card, { marginTop: spacing.sm }]}>
           <Text weight="semiBold" style={styles.sectionHeading}>
             Work Request(Id):
           </Text>
@@ -153,15 +181,7 @@ export const FMViewDetails = () => {
           </Text>
           <View style={{ height: spacing.xs }} />
           <Text style={styles.descText}>
-            {displayDescription}
-            {description.length > maxDescriptionLength && (
-              <Text 
-                style={styles.viewMoreText}
-                onPress={() => setShowFullDescription(!showFullDescription)}
-              >
-                {showFullDescription ? ' Show Less' : ' View More'}
-              </Text>
-            )}
+            {description}
           </Text>
         </View>
 
@@ -176,6 +196,7 @@ export const FMViewDetails = () => {
 
         <View style={{ height: spacing.xl }} />
       </ScrollView>
+      </CustomTabs>
     </Screen>
   );
 };
@@ -208,21 +229,21 @@ const styles = StyleSheet.create({
     // borderRadius: adjustSize(12),
   },
   carouselContainer: {
-    position: 'relative',
+    position: "relative",
     height: adjustSize(304),
   },
   heroImg: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   dotsContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: adjustSize(16),
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   dotContainer: {
     padding: adjustSize(4),
@@ -234,14 +255,14 @@ const styles = StyleSheet.create({
     marginHorizontal: adjustSize(2),
   },
   arrowButton: {
-    position: 'absolute',
-    top: '50%',
+    position: "absolute",
+    top: "50%",
     width: adjustSize(40),
     height: adjustSize(40),
     borderRadius: adjustSize(20),
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 1,
   },
   arrowLeft: {
@@ -252,9 +273,9 @@ const styles = StyleSheet.create({
   },
   viewMoreText: {
     color: colors.primary,
-    fontWeight: '600',
+    fontWeight: "600",
     marginTop: spacing.xs,
-    textDecorationLine:"underline"
+    textDecorationLine: "underline",
   },
   dotActive: {
     backgroundColor: colors.primary,
@@ -270,7 +291,7 @@ const styles = StyleSheet.create({
   sectionHeading: {
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
   },
   kvRow: {
     flexDirection: "row",
@@ -301,6 +322,7 @@ const styles = StyleSheet.create({
     margin: adjustSize(10),
     width: "95%",
     alignSelf: "center",
+    marginBottom:40
   },
   closeBtnText: {
     color: colors.white,

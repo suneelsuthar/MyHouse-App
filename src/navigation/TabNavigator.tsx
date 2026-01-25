@@ -105,6 +105,7 @@ import {
   Subscription,
   Reviews,
   SelectSubscriptionplans,
+  AdminSignAgreement,
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -664,6 +665,10 @@ const AdminBookingStackNavigator = () => (
       name="AdminBookingDetails"
       component={AdminBookingDetails}
     />
+    <AdminBookingStack.Screen
+      name="AdminSignAgreement"
+      component={AdminSignAgreement}
+    />
   </AdminBookingStack.Navigator>
 );
 
@@ -1218,6 +1223,8 @@ const FacilityManagerTabs = () => (
           routeName === "AdminAssignProperties" ||
           routeName === "AdminGenerateWorkRequests" ||
           routeName === "TenantDetails" ||
+          routeName === "AdminSignAgreement" ||
+
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {
@@ -1455,6 +1462,7 @@ const AdminTabs = () => (
           "PanicEmergency",
           "AdminPropertyRequests",
           "AdminManageInspections",
+          "AdminSignAgreement",
           "AdminSimDataManagement",
           "ManageMeters",
           "ManageTransactions",
@@ -1489,6 +1497,12 @@ const AdminTabs = () => (
             tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
           };
         }
+        else if (routeName === "AdminSignAgreement") {
+          return {
+            title: "Booking",
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          };
+        }
         return {
           title: "Booking",
           tabBarStyle: baseTabBarStyle,
@@ -1513,6 +1527,8 @@ const AdminTabs = () => (
           routeName === "AdminAssignProperties" ||
           routeName === "AdminGenerateWorkRequests" ||
           routeName === "TenantDetails" ||
+          routeName === "AdminCreateVisitorRequests" ||
+          routeName === "AdminSignAgreement" ||
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {
