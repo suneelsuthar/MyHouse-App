@@ -26,8 +26,10 @@ import { Images } from "../../../assets/Images";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import Feather from "@expo/vector-icons/Feather";
-interface CommuicationProps
-  extends NativeStackScreenProps<AdminStackParamList, "Commuication"> {}
+interface CommuicationProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "Commuication"
+> {}
 
 export function Commuication(props: CommuicationProps) {
   const navigation = useNavigation();
@@ -99,7 +101,7 @@ export function Commuication(props: CommuicationProps) {
   ];
 
   const filteredTenants = tenants.filter((tenant) =>
-    tenant.name.toLowerCase().includes(searchQuery.toLowerCase())
+    tenant.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   // Handle message press with double tap detection
@@ -133,7 +135,7 @@ export function Commuication(props: CommuicationProps) {
 
   const toggleRecipientSelection = (
     recipient: { id: string; name: string },
-    type: "tenant" | "property_group"
+    type: "tenant" | "property_group",
   ) => {
     setSelectedRecipients((prev) => {
       const exists = prev.some((r) => r.id === recipient.id && r.type === type);
@@ -168,7 +170,7 @@ export function Commuication(props: CommuicationProps) {
           onValueChange={onChange}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
-          style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
         />
       </View>
     );
@@ -181,7 +183,7 @@ export function Commuication(props: CommuicationProps) {
       style={[
         styles.chatItem,
         {
-          backgroundColor: index % 2 === 0 ? "transparent" : "#dedff0",
+          backgroundColor: colors.white,
         },
       ]}
     >
@@ -189,18 +191,9 @@ export function Commuication(props: CommuicationProps) {
       <View style={styles.info}>
         <View style={styles.itemHeader}>
           <Text style={styles.name}>{item.name}</Text>
-          <Text
-            style={[
-              styles.date,
-              {
-                color: index % 2 === 0 ? "#B0B0B0" : "#FFFFFF",
-              },
-            ]}
-          >
-            {item.date}
-          </Text>
+          <Text style={[styles.date]}>{item.date}</Text>
         </View>
-        <Text style={styles.message} numberOfLines={1}>
+        <Text style={styles.message} numberOfLines={2}>
           {item.message}
         </Text>
       </View>
@@ -258,18 +251,18 @@ export function Commuication(props: CommuicationProps) {
           tabs={[
             {
               label: "New message",
-              activeIcon: <NewMessageIcon color={colors.primary} />,
+              activeIcon: <NewMessageIcon color={colors.white} />,
               inactiveIcon: <NewMessageIcon color={colors.white} />,
             },
             {
               label: "History",
-              activeIcon: <HistoryIcon2 color={colors.primary} />,
+              activeIcon: <HistoryIcon2 color={colors.white} />,
               inactiveIcon: <HistoryIcon2 color={colors.white} />,
             },
             {
               label: "Archive",
               activeIcon: (
-                <Feather name="archive" size={24} color={colors.primary} />
+                <Feather name="archive" size={24} color={colors.white} />
               ),
               inactiveIcon: (
                 <Feather name="archive" size={24} color={colors.white} />
@@ -293,6 +286,7 @@ export function Commuication(props: CommuicationProps) {
                 value={fromEmail}
                 onChangeText={setFromEmail}
                 placeholderTextColor={colors.primaryLight}
+                inputWrapperStyle={{ backgroundColor: colors.white }}
               />
 
               <Text style={styles.title}>To:</Text>
@@ -318,7 +312,7 @@ export function Commuication(props: CommuicationProps) {
                       ))
                     ) : (
                       <Text
-                        text="Select Recipients"
+                        text="Search"
                         style={{ color: colors.primaryLight }}
                       />
                     )}
@@ -345,6 +339,7 @@ export function Commuication(props: CommuicationProps) {
                 value={subject}
                 onChangeText={setSubject}
                 placeholderTextColor={colors.primaryLight}
+                inputWrapperStyle={{ backgroundColor: colors.white }}
               />
 
               <Text style={styles.title}>Message Body:</Text>
@@ -354,7 +349,11 @@ export function Commuication(props: CommuicationProps) {
                 onChangeText={setMessageBody}
                 placeholderTextColor={colors.primaryLight}
                 inputWrapperStyle={[
-                  { height: adjustSize(120), alignItems: "flex-start" },
+                  {
+                    height: adjustSize(120),
+                    alignItems: "flex-start",
+                    backgroundColor: colors.white,
+                  },
                 ]}
                 style={[{ height: adjustSize(110) }]}
                 multiline
@@ -614,7 +613,7 @@ export function Commuication(props: CommuicationProps) {
                   const isSelected = selectedRecipients.some(
                     (r) =>
                       r.id === item.id &&
-                      r.type === (activeRecipientTab.slice(0, -1) as any)
+                      r.type === (activeRecipientTab.slice(0, -1) as any),
                   );
                   return (
                     <TouchableOpacity
@@ -625,7 +624,7 @@ export function Commuication(props: CommuicationProps) {
                           item,
                           activeRecipientTab === "tenants"
                             ? "tenant"
-                            : "property_group"
+                            : "property_group",
                         )
                       }
                     >
@@ -746,6 +745,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: adjustSize(10),
     paddingVertical: adjustSize(20),
+    marginVertical: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    borderRadius: 7,
+    elevation: 2,
+    marginHorizontal: 10,
+    height: adjustSize(96),
   },
   info: {
     flex: 1,
@@ -762,12 +770,13 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   date: {
-    fontSize: adjustSize(12),
+    fontSize: adjustSize(10),
     fontFamily: typography.fonts.poppins.normal,
+    color: colors.primary,
   },
   message: {
     fontSize: adjustSize(12),
-    color: colors.primaryLight,
+    color: "#737373",
     fontFamily: typography.fonts.poppins.normal,
     lineHeight: adjustSize(20),
   },
@@ -795,6 +804,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    padding: adjustSize(10),
   },
   toggleLabel: {
     color: colors.primary,
@@ -914,6 +924,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     padding: 5,
+    backgroundColor: colors.white,
   },
   chipsContainer: {
     flexDirection: "row",

@@ -102,7 +102,7 @@ export const Images = {
   logo_1: require("./logo_1.png"),
   fire: require("./fire.png"),
   police: require("./police.png"),
-  ambulance: require("./ambulance.svg"),
+  ambulance: require("./ambulance.png"),
   userIcon3: require("./user-icon-3.svg"),
   check2: require("./check-2.svg"),
   apartment: require("./apartment.svg"),
@@ -113,5 +113,14 @@ export const Images = {
   propertym: require("./property-m.svg"),
   landlord: require("./landlord.svg"),
   orderUpdates: require("./orderUpdates.png"),
-  profile:require('./profile.svg')
+  profile: require("./profile.svg"),
+  residents: require("./residents.svg"),
+  amentiIcon: require("./amentiIcon.png"),
+  pre: require("./pre.svg"),
+  next: require("./next.svg"),
+  met:require("./met.svg"),
+  tra:require("./tra.svg"),
+  est:require("./est.svg"),
+
+
 };

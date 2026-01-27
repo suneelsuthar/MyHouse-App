@@ -12,6 +12,7 @@ type Agent = {
   name: string;
   code: string;
   avatar: string;
+  
 };
 
 const MOCK_AGENTS: Agent[] = [
@@ -50,8 +51,11 @@ const MOCK_AGENTS: Agent[] = [
 export function AdminAssignProperties({
   route,
   navigation,
-}: NativeStackScreenProps<AdminStackParamList, "AdminAssignProperties">) {
+  action,
+}: any) {
   const assignType = route?.params?.type;
+  const actionType = route?.params?.action;
+
   const headerTitle = useMemo(() => {
     switch (assignType) {
       case "fm":
@@ -213,14 +217,28 @@ export function AdminAssignProperties({
       </View>
       {/* Bottom Assign Button */}
       <View style={styles.bottomBar}>
-        <Button
-          text={loading ? "Assigning..." : "Assign"}
-          preset="reversed"
-          style={styles.assignBtn}
-          textStyle={styles.assignText}
-          onPress={onAssign}
-          disabled={!canAssign || loading}
-        />
+        {
+          actionType && actionType === "delete" ? (
+            <Button
+              text={loading ? "Deleting..." : "Delete"}
+              preset="reversed"
+              style={[styles.assignBtn,{backgroundColor:"#D62828"}]}
+              textStyle={[styles.assignText,{color:colors.white}]}
+              onPress={onAssign}
+              disabled={!canAssign || loading}
+            />
+          ) : (
+            <Button
+              text={loading ? "Assigning..." : "Assign"}
+              preset="reversed"
+              style={styles.assignBtn}
+              textStyle={styles.assignText}
+              onPress={onAssign}
+              disabled={!canAssign || loading}
+            />
+          )
+        }
+       
       </View>
     </Screen>
   );

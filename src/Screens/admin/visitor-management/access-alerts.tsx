@@ -12,7 +12,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
-  { label: "All Properties", value: "all" },
+  { label: "Select Estate", value: "all" },
   { label: "Farm House", value: "farm_house" },
   { label: "Town House", value: "town_house" },
   { label: "Villa", value: "villa" },
@@ -28,7 +28,7 @@ const sortOptions = [
 const visitorData = [
   {
     id: 1,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "pending",
     alert: "Kidnap",
@@ -38,7 +38,7 @@ const visitorData = [
   },
   {
     id: 2,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "new",
     alert: "Kidnap",
@@ -48,7 +48,7 @@ const visitorData = [
   },
   {
     id: 3,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "responding",
     alert: "Kidnap",
@@ -58,7 +58,7 @@ const visitorData = [
   },
   {
     id: 4,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "Acknowledged",
     alert: "Kidnap",
@@ -68,7 +68,7 @@ const visitorData = [
   },
   {
     id: 5,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "resolved",
     alert: "Kidnap",
@@ -78,7 +78,7 @@ const visitorData = [
   },
   {
     id: 6,
-    name: "Jane Smith",
+    name: "Brume Djbah",
     property: "Greenwood Apartments",
     status: "escalated",
     alert: "Kidnap",
@@ -105,7 +105,7 @@ export const AdminAccessAlerts: React.FC = () => {
       case "responding":
         return { color: "#DEB446" };
       case "acknowledged":
-        return { color: colors.primaryLight };
+        return { color: colors.primary };
       case "resolved":
         return { color: "#0AD029" };
       case "escalated":
@@ -203,155 +203,33 @@ export const AdminAccessAlerts: React.FC = () => {
             ]}
             activeOpacity={0.8}
           >
-            <View style={styles.cardHeaderRow}>
-              <View style={styles.cardHeaderRow}>
-                <Text weight="semiBold" style={styles.cardTitle}>
-                  {item.name}
-                </Text>
-
-                {item.property ? (
-                  <Text style={styles.subtitle}>
-                    {"  "}({item.property})
-                  </Text>
-                ) : null}
+            {/* Top row: Avatar, Name, Status pill and Menu */}
+            <View style={styles.cardRowTop}>
+              <View style={styles.alertAvatar}>
+                <WithLocalSvg asset={Images.profile} />
+                <View style={styles.alertDot} />
               </View>
+              <View style={{ alignItems: "center", flex: 1 }}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text weight="semiBold" style={styles.cardTitle}>
+                    {item.name}
+                  </Text>
 
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() =>
-                  setDropdownVisible(
-                    dropdownVisible === item.id ? null : item.id
-                  )
-                }
-              >
-                <Entypo
-                  name="dots-three-vertical"
-                  size={adjustSize(18)}
-                  color="black"
-                />
-              </TouchableOpacity>
-
-              {dropdownVisible === item.id && (
-                <View style={styles.dropdownMenu}>
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "acknowledged" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="check-circle"
-                      size={adjustSize(16)}
-                      color="#4CAF50"
-                    />
-                    <Text style={styles.dropdownText}>Acknowledge</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "responding" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="autorenew"
-                      size={adjustSize(16)}
-                      color="#FF9800"
-                    />
-                    <Text style={styles.dropdownText}>Responding</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "resolved" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="assignment-turned-in"
-                      size={adjustSize(16)}
-                      color="#2196F3"
-                    />
-                    <Text style={styles.dropdownText}>Mark as Resolved</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "resolved" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <Ionicons
-                      name="checkmark-done"
-                      size={adjustSize(16)}
-                      color="#4CAF50"
-                    />
-                    <Text style={styles.dropdownText}>Resolve</Text>
-                  </TouchableOpacity>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={styles.statusPill}>
+                      <Text style={styles.statusPillText}>Pending</Text>
+                    </View>
+                  </View>
                 </View>
-              )}
-              {/* <Text
-                weight="medium"
-                style={[styles.statusText, statusLabelColor(item.status)]}
-              >
-                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-              </Text> */}
-            </View>
-            <View style={styles.rowBetween}>
-              <View>
-                <Text weight="medium" style={styles.label}>
-                  Time:
-                  <Text style={styles.labelValue}>
-                    {"  "}
-                    10:00 am
-                  </Text>
-                </Text>
-                <Text weight="medium" style={[styles.label]}>
-                  Date:
-                  {"  "}
-                  <Text style={styles.labelValue}>26 Sep,2024</Text>
-                </Text>
-              </View>
-              <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                <Text
-                  weight="medium"
-                  style={[styles.statusText, statusLabelColor(item.status)]}
-                >
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                </Text>
-                <Text weight="medium" style={[styles.label]}>
-                  Alert:
-                  <Text style={[styles.labelValue, { color: "#D51E1E" }]}>
-                    {" "}
-                    {item.alert}
-                  </Text>
-                </Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={styles.cardRowBottom}>
+                    <Text style={styles.propertyText}>{item.property}</Text>
+                    <Text style={styles.dateText}>26 Sep 2024 - 10:00am</Text>
+                  </View>
+                </View>
               </View>
             </View>
+            {/* Bottom row: Property and Date */}
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -434,7 +312,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -468,7 +346,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   propertyGroupLabel: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
   },
@@ -478,7 +356,7 @@ const styles = StyleSheet.create({
   sortDropdown: {
     height: adjustSize(35),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   sortPlaceholder: {
     fontSize: adjustSize(11),
@@ -571,20 +449,48 @@ const styles = StyleSheet.create({
   headerIcon: {
     marginRight: 16,
   },
+  cardRowTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   card: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     padding: adjustSize(10),
-    borderRadius: adjustSize(7),
-    // shadowColor: "#000",
-    // boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
-    elevation: 2,
-    marginHorizontal: adjustSize(10),
-    minHeight: adjustSize(96),
-    marginVertical: adjustSize(8),
-    zIndex: 1,
+    borderRadius: adjustSize(10),
     shadowColor: "#000",
-    borderWidth: 0.4,
-    borderColor: colors.grey,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginHorizontal: adjustSize(10),
+    marginVertical: adjustSize(5),
+    minHeight: adjustSize(89),
+    zIndex: 1,
+    alignItems:"center",
+    flexDirection:"row"
+  },
+  alertAvatar: {
+    width: adjustSize(50),
+    height: adjustSize(50),
+    borderRadius: adjustSize(25),
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: spacing.md,
+    position: "relative",
+  },
+  alertDot: {
+    position: "absolute",
+    top: adjustSize(0),
+    right: adjustSize(6),
+    width: adjustSize(8),
+    height: adjustSize(8),
+    borderRadius: adjustSize(4),
+    backgroundColor: "#F54747",
   },
   cardWithDropdown: {
     zIndex: 9999,
@@ -605,11 +511,24 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
     fontSize: adjustSize(15),
+    flex: 1,
   },
   subtitle: {
     color: colors.grey,
     fontSize: adjustSize(10),
     // marginBottom: spacing.sm,
+  },
+  statusPill: {
+    backgroundColor: "#F26938",
+    borderRadius: adjustSize(100),
+    paddingHorizontal: spacing.md,
+    paddingVertical: 4,
+    marginBottom:5
+  },
+  statusPillText: {
+    color: colors.white,
+    fontSize: adjustSize(11),
+    fontFamily: typography.fonts.poppins.medium,
   },
 
   label: {
@@ -617,23 +536,33 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(10),
     zIndex: -1,
   },
-  rowBetween: {
+  cardRowBottom: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "space-between",
-    marginTop: spacing.sm,
-    zIndex: -1,
+    // marginTop: spacing.sm,
   },
   labelValue: {
     color: colors.primary,
     fontSize: adjustSize(10),
     zIndex: -1,
   },
+  propertyText: {
+    color: colors.primary,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
+    flex:1
+  },
+  dateText: {
+    color: colors.primary,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
+  },
   dropdown: {
     minWidth: adjustSize(120),
     height: adjustSize(33),
     borderRadius: 100,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
   dropdownMenu: {
     position: "absolute",

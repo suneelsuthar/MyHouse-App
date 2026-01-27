@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   daysHeader: {
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     height: adjustSize(47),
     borderRadius: adjustSize(7),
     flexDirection: "row",
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(15),
   },
   daysName: {
-    color: colors.primary,
+    color: colors.white,
     fontSize: adjustSize(14),
     fontFamily: typography.fonts.poppins.normal,
     flex: 1,

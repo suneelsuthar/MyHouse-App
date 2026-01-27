@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { Text } from "../../../../Components";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -7,10 +7,10 @@ import { IFacilityManagement } from "./../../../../utils/data";
 
 interface FacilityManagementCardProps {
   activeTab: string;
-  property: IFacilityManagement;
+  property: any;
   onPress?: () => void;
   onAction?: (action: string, property: IFacilityManagement) => void;
-  style?: object; // ✅ custom styling (red/blue bg)
+  style?: object; 
 }
 export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
   activeTab,
@@ -25,14 +25,13 @@ export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
     <View style={{ position: "relative" }}>
       <View style={[styles.container, style]}>
         <View style={styles.header}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={styles.nameBox}>
-              <Text style={styles.nameTitle}>Tenant: </Text>
-              <Text style={styles.name} numberOfLines={1}>
-                {property?.name}
-              </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+            <Text style={styles.swimmingPool} numberOfLines={1}>
+              {property?.title || "Swimming Pool"}
+            </Text>
+            <View style={styles.statusPill}>
+              <Text style={styles.statusText}>Reserved</Text>
             </View>
-            <Text style={styles.status}>Status</Text>
           </View>
           <TouchableOpacity
             activeOpacity={0.6}
@@ -46,27 +45,17 @@ export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
             />
           </TouchableOpacity>
         </View>
-        <View
+        <Text
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: adjustSize(5),
+            fontSize: adjustSize(12),
+            color: "#7E7E7E",
+            fontFamily: typography.fonts.poppins.normal,
+            marginTop: adjustSize(8),
           }}
+          numberOfLines={1}
         >
-          <Text style={styles.swimmingPool} numberOfLines={1}>
-            Swimming pool
-          </Text>
-          <Text
-            style={{
-              fontSize: adjustSize(12),
-              color: "#7E7E7E",
-              fontFamily: typography.fonts.poppins.normal,
-              paddingLeft: adjustSize(10),
-            }}
-          >
-            {property?.swimmingPool}
-          </Text>
-        </View>
+          {(property as any)?.reservationDate || (property as any)?.dateCreated}
+        </Text>
         <View style={styles.rowMain}>
           <View style={[styles.row]}>
             <Text style={[styles.cardTitle]} numberOfLines={1}>
@@ -144,8 +133,17 @@ export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: adjustSize(15),
-    paddingHorizontal: adjustSize(10),
+    paddingVertical: adjustSize(14),
+    paddingHorizontal: adjustSize(14),
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(14),
+    marginHorizontal: adjustSize(10),
+    marginBottom: adjustSize(12),
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
   },
 
   _morebutton: {
@@ -154,13 +152,17 @@ const styles = StyleSheet.create({
   menuBox: {
     position: "absolute",
     right: adjustSize(10),
-    top: adjustSize(36),
+    top: adjustSize(40),
     backgroundColor: colors.white,
-    borderRadius: adjustSize(10),
-    elevation: 4,
-    width: adjustSize(190),
-    paddingVertical: adjustSize(6),
+    borderRadius: adjustSize(14),
+    elevation: 6,
+    width: adjustSize(200),
+    paddingVertical: adjustSize(8),
     zIndex: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
   },
   menuItem: {
     paddingVertical: adjustSize(5),
@@ -174,8 +176,22 @@ const styles = StyleSheet.create({
 
   swimmingPool: {
     color: colors.primary,
-    fontSize: adjustSize(12),
+    fontSize: adjustSize(16),
     fontFamily: typography.fonts.poppins.semiBold,
+  },
+  statusPill: {
+    backgroundColor: "#D51E1E",
+    paddingHorizontal: adjustSize(12),
+    height: adjustSize(26),
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: adjustSize(10),
+  },
+  statusText: {
+    color: colors.white,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
   },
 
   nameBox: {
@@ -237,5 +253,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    display: "none",
   },
 });

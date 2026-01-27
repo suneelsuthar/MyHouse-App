@@ -113,6 +113,7 @@ export function AdminPropertyManagement({
         </TouchableOpacity>
       </View>
       {/* Properties List */}
+      {console.log("======>propertyType", propertyType)}
       <FlatList
         data={filterData}
         keyExtractor={(item) => item.id}
@@ -120,9 +121,8 @@ export function AdminPropertyManagement({
         renderItem={({ item }) => (
           <RentalCard
             property={item}
-            type={propertyType}
+            type={propertyType === "rental" ? "rental" : "manage"}
             onAction={(action, property) => {
-              console.log("action=============>", action);
               if (action === "View Details" || action === "View") {
                 (navigation as any).navigate(
                   "PropertyDetails" as never,

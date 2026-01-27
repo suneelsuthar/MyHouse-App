@@ -12,11 +12,13 @@ interface FacilityManagementCardProps {
   onPress?: () => void;
   onAction?: (action: string, property: IFacilityManagement) => void;
   style?: object; // ✅ custom styling (red/blue bg)
+  rightText?: string; // e.g., date or meta shown on footer right
 }
 export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
   property,
   onAction,
   style,
+  rightText,
 }) => {
   const { user } = useAppSelector((state: RootState) => state.auth);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -34,89 +36,35 @@ export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
   user?.role === "tenant" && items.splice(items.indexOf("Edit"), 1);
   user?.role === "tenant" && items.splice(items.indexOf("Manage Calendar"), 1);
   return (
-    <View style={{ position: "relative" }}>
-      <View style={[styles.container, style]}>
-        <View style={styles.left}>
-          <Image source={{ uri: thumb }} style={styles.thumbnail} />
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.title} numberOfLines={1}>
-            {property?.title}
-          </Text>
-          <View style={{ flexDirection: "row" }}>
-            <View style={styles.reqNoBox}>
-              <Text style={styles.workReqNoTitle}>Group ID: </Text>
-              <Text style={styles.workReqNo} numberOfLines={1}>
-                {property?.groupId}
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Property Group name:
-            </Text>
-            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-              {property?.propertyGroupName}
-            </Text>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Amenity:
-            </Text>
-            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-              {property?.amenity}
-            </Text>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Capacity:
-            </Text>
-            <Text style={[styles.cardTitleVal]} numberOfLines={1}>
-              {property?.capacity}
-            </Text>
-          </View>
-          <View style={[styles.row]}>
-            <Text style={[styles.cardTitle]} numberOfLines={1}>
-              Date Added:
-            </Text>
-            <Text
-              style={[
-                styles.cardTitleVal,
-                {
-                  color: "#D51E1E",
-                },
-              ]}
-              numberOfLines={1}
-            >
-              {property?.dateAdded}
-            </Text>
-          </View>
-        </View>
-
-        <View>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={styles._morebutton}
-            onPress={() => setMenuVisible((v) => !v)}
-          >
-            <Entypo
-              name="dots-three-vertical"
-              size={16}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
-        </View>
+    <View style={[styles.cardWrapper, style]}>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: thumb }} style={styles.image} />
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={styles.menuButton}
+          onPress={() => setMenuVisible((v) => !v)}
+        >
+          <Entypo name="dots-three-vertical" size={16} color={colors.white} />
+        </TouchableOpacity>
       </View>
+      <View style={styles.footerBar}>
+        <Text style={styles.footerTitle} numberOfLines={1}>
+          {property?.title}
+        </Text>
+        {rightText ? (
+          <Text style={styles.footerDate} numberOfLines={1}>
+            {rightText}
+          </Text>
+        ) : null}
+      </View>
+
       {menuVisible && (
         <>
-          {/* Transparent overlay behind the menu */}
           <TouchableOpacity
             style={styles.overlay}
             activeOpacity={1}
             onPress={() => setMenuVisible(false)}
           />
-
-          {/* Menu box */}
           <View style={styles.menuBox}>
             {items.map((a) => (
               <TouchableOpacity
@@ -139,91 +87,89 @@ export const AmenitiesCard: React.FC<FacilityManagementCardProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
+  cardWrapper: {
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(14),
+    marginHorizontal: adjustSize(10),
+    marginBottom: adjustSize(12),
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    overflow: "hidden",
+    position: "relative",
+  },
+  imageContainer: {
+    position: "relative",
+    height:adjustSize(175),
+    borderRadius:10,
+    overflow:"hidden",
+    marginBottom:-8,
+    // zIndex:20
+    // borderWidth:1
+  },
+  image: {
+    width: "100%",
+    height: adjustSize(175),
+  },
+  menuButton: {
+    position: "absolute",
+    top: adjustSize(10),
+    right: adjustSize(10),
+    backgroundColor: "rgba(0,0,0,0.35)",
+    height: adjustSize(28),
+    width: adjustSize(28),
+    borderRadius: adjustSize(8),
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex:3000
+  },
+  footerBar: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: adjustSize(12),
+    paddingVertical: adjustSize(20),
     flexDirection: "row",
-    paddingVertical: adjustSize(15),
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop:adjustSize(25),
+    zIndex:-1
   },
-  thumbnail: {
-    height: adjustSize(94),
-    width: adjustSize(95),
-    borderRadius: adjustSize(10),
-    backgroundColor: colors.border,
-    elevation: 1,
-  },
-  _morebutton: {
+  footerTitle: {
+    color: colors.white,
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.semiBold,
+    flex: 1,
     marginRight: adjustSize(10),
+  },
+  footerDate: {
+    color: colors.white,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
   },
   menuBox: {
     position: "absolute",
     right: adjustSize(10),
-    top: adjustSize(36),
+    top: adjustSize(45),
     backgroundColor: colors.white,
-    borderRadius: adjustSize(10),
-    elevation: 4,
-    width: adjustSize(190),
-    paddingVertical: adjustSize(6),
+    borderRadius: adjustSize(12),
+    elevation: 6,
+    width: adjustSize(200),
+    paddingVertical: adjustSize(8),
     zIndex: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
   },
   menuItem: {
-    paddingVertical: adjustSize(5),
-    paddingHorizontal: adjustSize(12),
+    paddingVertical: adjustSize(4),
+    paddingHorizontal: adjustSize(14),
   },
   menuText: {
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
-  },
-  data: {
-    flex: 1,
-    marginRight: adjustSize(10),
-    marginLeft: adjustSize(7),
-  },
-  left: {
-    width: adjustSize(115),
-    alignItems: "center",
-  },
-
-  title: {
-    color: colors.primary,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.semiBold,
-    marginTop: adjustSize(5),
-  },
-
-  reqNoBox: {
-    backgroundColor: colors.primary,
-    flexDirection: "row",
-    alignItems: "center",
-    height: adjustSize(25),
-    borderRadius: 100,
-    justifyContent: "center",
-    paddingHorizontal: adjustSize(10),
-    marginVertical: adjustSize(5),
-  },
-  workReqNoTitle: {
-    color: colors.white,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.semiBold,
-  },
-  workReqNo: {
-    color: colors.white,
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.normal,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  cardTitle: {
-    color: colors.primary,
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.medium,
-  },
-  cardTitleVal: {
-    color: "#7E7E7E",
-    fontSize: adjustSize(10),
-    fontFamily: typography.fonts.poppins.medium,
-    marginLeft: 2,
   },
   overlay: {
     position: "absolute",
@@ -231,7 +177,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "transparent", // invisible but catch taps
+    backgroundColor: "transparent",
     zIndex: 5,
   },
 });

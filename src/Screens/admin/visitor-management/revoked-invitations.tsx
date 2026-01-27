@@ -176,7 +176,7 @@ export const RevokedInvitations: React.FC = () => {
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
       >
-        {visitorData.map((item, index) => (
+        {/* {visitorData.map((item, index) => (
           <TouchableOpacity key={index} style={styles.card} activeOpacity={0.8}>
             <View style={styles.cardHeaderRow}>
               <View style={styles.cardHeaderRow}>
@@ -221,6 +221,37 @@ export const RevokedInvitations: React.FC = () => {
               </View>
             </View>
           </TouchableOpacity>
+        ))} */}
+        {visitorData.map((visitor, index) => (
+          <View key={visitor.id} style={[styles.visitorItem]}>
+            <View
+              style={[
+                styles.visitorAvatar,
+                // { backgroundColor: visitor.backgroundColor },
+              ]}
+            >
+              <WithLocalSvg asset={Images.profile} />
+            </View>
+
+            <View style={styles.visitorInfo}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.visitorName} weight="semiBold">
+                  {visitor.name}
+                </Text>
+                <View style={styles.statusPill}>
+                  <Text style={styles.statusPillText}>Pending</Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.visitorProperty} weight="medium">
+                  <Text style={styles.propValue}> {visitor.property}</Text>
+                </Text>
+                <Text style={styles.visitorProperty} weight="medium">
+                  <Text style={styles.propValue}> 26 Sep 2024 - 10:00am</Text>
+                </Text>
+              </View>
+            </View>
+          </View>
         ))}
       </ScrollView>
     </Screen>
@@ -302,7 +333,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -336,7 +367,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   propertyGroupLabel: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
   },
@@ -346,7 +377,7 @@ const styles = StyleSheet.create({
   sortDropdown: {
     height: adjustSize(35),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   sortPlaceholder: {
     fontSize: adjustSize(11),
@@ -367,7 +398,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.md,
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -378,6 +409,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginHorizontal: adjustSize(10),
     marginVertical: adjustSize(5),
+    minHeight: adjustSize(89),
   },
   visitorAvatar: {
     width: adjustSize(50),
@@ -385,7 +417,8 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(25),
     alignItems: "center",
     justifyContent: "center",
-    marginRight: spacing.md,
+    marginRight: spacing.sm,
+    backgroundColor: colors.primary,
   },
   avatarText: {
     fontSize: adjustSize(18),
@@ -399,11 +432,13 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
     marginBottom: 2,
+    flex: 1,
   },
   visitorProperty: {
     fontSize: adjustSize(12),
     color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
+    flex: 1,
   },
   statusContainer: {
     paddingHorizontal: spacing.sm,
@@ -482,6 +517,31 @@ const styles = StyleSheet.create({
     minWidth: adjustSize(120),
     height: adjustSize(33),
     borderRadius: 100,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
+  propLabel: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  propValue: { color: colors.primary, fontSize: adjustSize(10) },
+  statusPill: {
+    backgroundColor: "#F26938",
+    borderRadius: adjustSize(100),
+    paddingHorizontal: spacing.md,
+    paddingVertical: 3,
+  },
+  statusPillText: {
+    color: colors.white,
+    fontSize: adjustSize(11),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  // statusContainer: {
+  //   paddingHorizontal: spacing.sm,
+  //   paddingVertical: spacing.xs,
+  // },
+  // statusText: {
+  //   fontSize: adjustSize(11),
+  //   color: "#FF6B35",
+  //   fontFamily: typography.fonts.poppins.medium,
+  // },
 });

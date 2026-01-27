@@ -163,7 +163,19 @@ export type AdminStackParamList = {
   ViewMeterDetails: { meter: MeterData };
   EditCreateMeter: { mode: "add" | "edit"; meterId?: string };
   ViewPropertiesGroups: undefined;
-  AddEditGroup: {
+  EditGroup: {
+    mode: "add" | "edit";
+    group?: {
+      id: string;
+      title: string;
+      groupId: string;
+      noOfProp?: string;
+      noOfTenents?: string;
+      noOfMeters?: string;
+      date?: string;
+    };
+  };
+   AddGroup: {
     mode: "add" | "edit";
     group?: {
       id: string;

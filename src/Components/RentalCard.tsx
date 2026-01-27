@@ -28,13 +28,19 @@ const RENTAL_ACTIONS = [
   // "Create Visitor request",
 ];
 
-const ACTIONS_MANAGE = ["View", "Register Tenant", "Generate work request"];
+const ACTIONS_MANAGE = [
+  "View",
+  "Assign to FM",
+  "Add Resident",
+  "Generate work request",
+];
 
 const ACTIONS_GROUP = [
   "View",
-  "Register Tenant",
-  "Generate work request",
-  "Create Visitor request",
+  "Assign to FM",
+  "Add Resident",
+  "Remove Resident",
+  "Delete",
 ];
 
 export const RentalCard: React.FC<RentalCardProps> = ({
@@ -49,13 +55,16 @@ export const RentalCard: React.FC<RentalCardProps> = ({
     type === "rental"
       ? RENTAL_ACTIONS
       : type === "manage"
-      ? ACTIONS_MANAGE
-      : ACTIONS_GROUP;
-
+        ? ACTIONS_MANAGE
+        : ACTIONS_GROUP;
 
   return (
     <View style={{ position: "relative" }}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onPress}
+        style={styles.container}
+      >
         <TouchableOpacity
           activeOpacity={0.6}
           style={styles._morebutton}
@@ -66,8 +75,17 @@ export const RentalCard: React.FC<RentalCardProps> = ({
         <Image source={{ uri: thumb }} style={styles.thumbnail} />
         {/* Footer overlay */}
         <View style={styles.footerOverlay}>
+          {type === "group" && (
+            <View style={styles.greenCurve}>
+              <Text text="GRP1234" style={styles.greenCurveText} />
+            </View>
+          )}
           <View style={{ flex: 1 }}>
-            <Text weight="semiBold" style={styles.footerTitle} numberOfLines={1}>
+            <Text
+              weight="semiBold"
+              style={styles.footerTitle}
+              numberOfLines={1}
+            >
               {property.name}
             </Text>
             <Text style={styles.footerSubtitle} numberOfLines={1}>
@@ -105,8 +123,8 @@ const statusColor = (status: IRentalProperty["status"]) => ({
     status === "Approved"
       ? "#0AD029"
       : status === "Pending"
-      ? "#F5A524"
-      : "#D62828",
+        ? "#F5A524"
+        : "#D62828",
 });
 
 const styles = StyleSheet.create({
@@ -125,7 +143,7 @@ const styles = StyleSheet.create({
     height: adjustSize(190),
     width: "100%",
     backgroundColor: colors.border,
-    marginBottom:-15
+    marginBottom: -15,
   },
   footerOverlay: {
     // position: "absolute",
@@ -143,14 +161,22 @@ const styles = StyleSheet.create({
   },
   greenCurve: {
     position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: adjustSize(64),
-    height: adjustSize(10),
-    backgroundColor: colors.secnodary,
-    borderTopLeftRadius: 100,
-    borderTopRightRadius: 100,
+    left: 10,
+    // right: 10,
+    bottom: adjustSize(60),
+    // height: adjustSize(10),
+    backgroundColor: colors.white,
+    // bottom:0,
+
+    alignSelf: "flex-start",
+    width: 100,
+    zIndex: 10,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 2,
   },
+  greenCurveText: {},
   footerTitle: {
     fontSize: adjustSize(16),
     color: colors.white,
@@ -206,9 +232,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: adjustSize(10),
     top: adjustSize(10),
-    zIndex:100,
-    backgroundColor:colors.primary,
-    borderRadius:100,
-    padding:5
+    zIndex: 100,
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+    padding: 5,
   },
 });

@@ -198,10 +198,10 @@ export function AdminAmenityView({ route }: any) {
                 );
               }
               const key = `${cell.date.getFullYear()}-${String(
-                cell.date.getMonth() + 1
+                cell.date.getMonth() + 1,
               ).padStart(2, "0")}-${String(cell.date.getDate()).padStart(
                 2,
-                "0"
+                "0",
               )}`;
               const isBlocked = blockedKeys.has(key);
               const sel =
@@ -261,9 +261,7 @@ export function AdminAmenityView({ route }: any) {
               styles.addMoneyBtn,
               {
                 backgroundColor:
-                  user?.role !== "tenant" || user?.role !== "facility_manager"
-                    ? colors.primary
-                    : colors.fill,
+                 colors.fill,
               },
             ]}
             onPress={() =>
@@ -276,9 +274,8 @@ export function AdminAmenityView({ route }: any) {
                 styles.addMoneyBtnText,
                 {
                   color:
-                    user?.role !== "tenant" || user?.role !== "facility_manager"
-                      ? colors.white
-                      : colors.primary,
+                 colors.primary,
+                 opacity:0.8
                 },
               ]}
             >
@@ -286,11 +283,13 @@ export function AdminAmenityView({ route }: any) {
             </Text>
           </TouchableOpacity>
 
-          {user?.role !== "tenant" ||
-            (user?.role !== "facility_manager" && (
+          {/* {user?.role !== "tenant" ||
+            (user?.role !== "facility_manager" && ( */}
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.sendMoneyBtn}
+                style={[styles.sendMoneyBtn]}
+
+
                 onPress={() =>
                   (navigation as any).navigate("AdminAmenityManageCalendar")
                 }
@@ -299,7 +298,7 @@ export function AdminAmenityView({ route }: any) {
                   Manage Calendar
                 </Text>
               </TouchableOpacity>
-            ))}
+            {/* ))} */}
         </View>
       </ScrollView>
     </Screen>
@@ -392,7 +391,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     height: adjustSize(25),
     width: adjustSize(25),
-    borderRadius: adjustSize(4),
+    borderRadius: adjustSize(100),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -425,7 +424,7 @@ const styles = StyleSheet.create({
     marginVertical: adjustSize(20),
   },
   availableBox: {
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     height: adjustSize(47),
     borderRadius: adjustSize(10),
     flexDirection: "row",

@@ -189,7 +189,7 @@ export default function ReservationCalendar({
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              // inputWrapperStyle={styles.dropdown}
+              inputWrapperStyle={styles.dropdown}
               placeholderTextColor={colors.greylight}
               keyboardType="numeric"
             />
@@ -204,7 +204,7 @@ export default function ReservationCalendar({
           render={({ field: { onChange, value } }) => (
             <DropdownComponent
               data={dummyData}
-              label="Choose type"
+              label="Resident"
               placeholder="Tenant"
               value={value}
               onChangeValue={onChange}
@@ -217,7 +217,10 @@ export default function ReservationCalendar({
         />
         {errors.reservedFor && (<Text style={styles.errorText}>{errors.reservedFor.message}</Text>)}
 
-        <Text style={styles.title}>Reserve Amenity</Text>
+        <Text style={[styles.title,{
+          marginTop:30,
+          marginBottom:20
+        }]}>Reserve Amenity</Text>
 
         {/* Month header */}
         <View style={styles.monthHeader}>
@@ -421,7 +424,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -538,7 +541,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     borderRadius: 100,
     borderWidth: 1,
     borderColor: colors.border,

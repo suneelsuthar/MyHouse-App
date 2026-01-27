@@ -33,8 +33,11 @@ interface VisitorDetailsData {
   qrCode: string;
 }
 
-export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
-  const { visitorId } = route.params || {};
+export const AdminVisitorDetails: React.FC<Props> = ({
+  navigation,
+  route,
+}: Props) => {
+  const { visitorId, type }: any = route.params || {};
   const [revokeModalVisible, setRevokeModalVisible] = useState(false);
   const [alertModalVisible, setAlertModalVisible] = useState(false);
 
@@ -42,7 +45,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
   const visitorData: VisitorDetailsData = {
     id: visitorId || "1",
     name: "Brume Djbah",
-    type: "lorem ipsum",
+    type: type || "lorem ipsum",
     propertyGroup: "lorem ipsum",
     accessCode: "lorem ipsum",
     fromDateTime: "lorem ipsum",
@@ -73,7 +76,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
     setAlertModalVisible(false);
     Alert.alert(
       "Security Alerted",
-      "Security has been cancelled about this visitor."
+      "Security has been cancelled about this visitor.",
     );
   };
 
@@ -104,67 +107,128 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
     </View>
   );
 
+  console.log("type", type);
   return (
     <Screen
       preset="fixed"
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
+       
+      
       {/* Header */}
-      <Header title="Visitor Details" />
-
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* QR Code Section */}
-        <View style={styles.qrSection}>
-          <View style={styles.qrPlaceholder}>
-            <WithLocalSvg asset={Images.visitorcode} color={colors.primary} />
-          </View>
-          {/* <TouchableOpacity style={styles.downloadButton} onPress={handleShare}>
+      <Header title={type === "requests" ? "Visitor Request Details" : "Visitor Details"} />
+      {type === "requests" && (
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          {/* QR Code Section */}
+          <View style={styles.qrSection}>
+            <View style={styles.qrPlaceholder}>
+              <WithLocalSvg asset={Images.visitorcode} color={colors.primary} />
+            </View>
+            {/* <TouchableOpacity style={styles.downloadButton} onPress={handleShare}>
             <Text style={styles.downloadText}>Download QR Code</Text>
           </TouchableOpacity> */}
-          <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-            <Text style={styles.shareText}>Share</Text>
-          </TouchableOpacity>
-        </View>
+            {/* <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
+              <Text style={styles.shareText}>Share</Text>
+            </TouchableOpacity> */}
+             <TouchableOpacity
+              style={[styles.revokeButton,{
+                width:"100%"
+              }]}
+              // onPress={handleRevoke}
+              onPress={handleShare}
+            >
+              <Text style={styles.revokeButtonText}>Share</Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* Visitor Information */}
-        <View style={styles.section}>
-          <InfoRow label="Name" value={visitorData.name} />
-          <InfoRow label="Access Code" value={visitorData.accessCode} />
-          <InfoRow label="Property" value={visitorData.property} />
-          <InfoRow label="Property Group" value={visitorData.propertyGroup} />
-          <InfoRow label="Type" value={visitorData.type} />
-        </View>
+          {/* Visitor Information */}
+          <View style={styles.section}>
+            <InfoRow label="Name" value={visitorData.name} />
+            <InfoRow label="Access Code" value={visitorData.accessCode} />
+            <InfoRow label="Property" value={visitorData.property} />
+            <InfoRow label="Property Group" value={visitorData.propertyGroup} />
+            <InfoRow label="Type" value={visitorData.type} />
+          </View>
 
-        <View style={styles.section}>
-          <InfoRow label="From" value={visitorData.fromDateTime} />
-          <InfoRow label="To" value={visitorData.toDateTime} />
-        </View>
+          <View style={styles.section}>
+            <InfoRow label="From" value={visitorData.fromDateTime} />
+            <InfoRow label="To" value={visitorData.toDateTime} />
+          </View>
 
-        <View style={styles.section}>
-          <InfoRow label="Requested By" value={visitorData.requestedBy} />
-          <InfoRow label="Check-In" value={visitorData.checkInDateTime} />
-          <InfoRow label="Check-Out" value={visitorData.checkOutDateTime} />
-        </View>
+          <View style={styles.section}>
+            <InfoRow label="Requested By" value={visitorData.requestedBy} />
+            <InfoRow label="Check-In" value={visitorData.checkInDateTime} />
+            <InfoRow label="Check-Out" value={visitorData.checkOutDateTime} />
+          </View>
 
-        {/* <View style={[styles.section, { borderBottomWidth: 0 }]}>
+          {/* <View style={[styles.section, { borderBottomWidth: 0 }]}>
           <InfoRow label="Property" value={visitorData.property} />
         </View> */}
 
-        {/* Action Buttons */}
-        <View style={styles.actionButtons}>
-          <TouchableOpacity
-            style={styles.alertButton}
-            onPress={handleAlertSecurity}
-          >
-            <Text style={styles.alertButtonText}>Alert Security</Text>
-          </TouchableOpacity>
+          {/* Action Buttons */}
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.alertButton}
+              onPress={handleAlertSecurity}
+            >
+              <Text style={styles.alertButtonText}>Alert Security</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.revokeButton} onPress={handleRevoke}>
-            <Text style={styles.revokeButtonText}>Revoke</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            <TouchableOpacity
+              style={styles.revokeButton}
+              onPress={handleRevoke}
+            >
+              <Text style={styles.revokeButtonText}>Revoke</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
+     
+
+       {type === "visitors" && (
+        <ScrollView style={[styles.content,{paddingTop:30}]} showsVerticalScrollIndicator={false}>
+          {/* QR Code Section */}
+
+          {/* Visitor Information */}
+          <View style={styles.section}>
+            <InfoRow label="Visitor Name" value={visitorData.name} />
+            <InfoRow label="Visitor ID" value={visitorData.id} />
+            <InfoRow label="Visit Date" value={visitorData.fromDateTime} />
+            <InfoRow label="Visit Time" value={visitorData.toDateTime} />
+          </View>
+
+          <View style={styles.section}>
+            <InfoRow label="Validated Code" value={visitorData.accessCode} />
+            <InfoRow label="Property Name" value={visitorData.property} />
+          </View>
+
+          <View style={styles.section}>
+            <InfoRow label="Status" value={visitorData.requestedBy} />
+          </View>
+
+          {/* <View style={[styles.section, { borderBottomWidth: 0 }]}>
+          <InfoRow label="Property" value={visitorData.property} />
+        </View> */}
+
+          {/* Action Buttons */}
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.alertButton}
+              onPress={handleAlertSecurity}
+            >
+              <Text style={styles.alertButtonText}>Alert Security</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.revokeButton}
+              onPress={handleRevoke}
+            >
+              <Text style={styles.revokeButtonText}>Revoke</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
 
       {/* Revoke Modal */}
       <Modal
@@ -234,7 +298,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({ navigation, route }) => {
                   setAlertModalVisible(false);
                   Alert.alert(
                     "Security Alerted",
-                    "Security has been alerted about this visitor."
+                    "Security has been alerted about this visitor.",
                   );
                 }}
               >

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  TextInput,
+  Share,
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
@@ -23,6 +23,7 @@ import { AppStackScreenProps } from "../../../../utils/interfaces";
 import Entypo from "@expo/vector-icons/Entypo";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { Ionicons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 type NavigationProp = {
   navigate: (screen: keyof AdminStackParamList, params?: any) => void;
@@ -87,8 +88,10 @@ const groupsData = [
   },
 ];
 
-interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<AdminStackParamList, "AdminManagePropertyGroup"> {}
+interface AdminPropertyManagementProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "AdminManagePropertyGroup"
+> {}
 export const AdminManagePropertyGroup = ({
   route,
 }: AdminPropertyManagementProps) => {
@@ -98,6 +101,7 @@ export const AdminManagePropertyGroup = ({
     useState<GroupsData[]>(groupsData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const [signupLink, setSignupLink] = useState<string>("");
 
   // Handle search functionality
   const filteredGroups = transactionList.filter(
@@ -106,11 +110,30 @@ export const AdminManagePropertyGroup = ({
       (transaction.title &&
         transaction.title.toLowerCase().includes(search.toLowerCase())) ||
       (transaction.groupId &&
-        transaction.groupId.toLowerCase().includes(search.toLowerCase()))
+        transaction.groupId.toLowerCase().includes(search.toLowerCase())),
   );
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+  };
+
+  const openSignupModal = (group: GroupsData) => {
+    // Build a shareable link; adjust domain/path to your backend route if needed
+    const link = `https://myhomes.app/resident-signup?estate=${group.groupId}`;
+    setSignupLink(link);
+    setIsModalVisible(true);
+  };
+
+  const copyLink = async () => {
+    try {
+      await Clipboard.setStringAsync(signupLink);
+    } catch {}
+  };
+
+  const shareLink = async () => {
+    try {
+      await Share.share({ message: signupLink });
+    } catch {}
   };
 
   return (
@@ -133,17 +156,74 @@ export const AdminManagePropertyGroup = ({
         }
         centerAccessory={
           <Text
-            text="Property Groups"
+            text="Estates"
             weight="semiBold"
             style={{ fontSize: adjustSize(15), color: colors.primary }}
           />
         }
-        rightAccessory={
+ rightAccessory={
           <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
             <WithLocalSvg asset={Images.notofication} />
           </TouchableOpacity>
         }
       />
+
+      {/* Resident Signup Link Modal */}
+      <Modal transparent visible={isModalVisible} animationType="fade">
+        <View style={styles.centeredView}>
+          <View style={[styles.modalView, { backgroundColor: colors.fill, paddingBottom: adjustSize(20) }] }>
+            <TouchableOpacity
+              onPress={handleCloseModal}
+              style={{
+                position: "absolute",
+                right: 12,
+                top: 12,
+                width: 30,
+                height: 30,
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: "#D62828",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10,
+              }}
+            >
+              <Text style={{ color: "#D62828", fontSize: adjustSize(14) }}>✕</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.modalText}>Resident Signup Link</Text>
+
+              <TextField
+                // style={[styles.input,{
+                // }]}
+                inputWrapperStyle={{
+                  backgroundColor: colors.white,
+                  marginHorizontal: 20,
+                }}
+                value={signupLink}
+                editable={false}
+                placeholder="https://..."
+                placeholderTextColor={colors.grey}
+              />
+
+            <TouchableOpacity
+              onPress={copyLink}
+              style={{ alignSelf: "flex-end", marginRight: adjustSize(20), marginTop: -10 }}
+            >
+              <Ionicons name="copy-outline" size={18} color={colors.primary} />
+            </TouchableOpacity>
+
+            <Button
+              text="Share"
+              onPress={shareLink}
+              style={styles.copyButton}
+              preset="reversed"
+            />
+          </View>
+        </View>
+      </Modal>
+        }
+       
       {/* Search Bar */}
       <View style={styles._searchrow}>
         <View style={styles._inputview}>
@@ -153,11 +233,12 @@ export const AdminManagePropertyGroup = ({
             style={styles._input}
             value={search}
             onChangeText={(text) => setSearch(text as string)}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
         </View>
         <TouchableOpacity
           style={styles._addbtn}
-          onPress={() => navigation.navigate("AddEditGroup", { mode: "add" })}
+          onPress={() => navigation.navigate("AddGroup", { mode: "add" })}
         >
           <WithLocalSvg asset={Images.addprop} />
         </TouchableOpacity>
@@ -166,7 +247,7 @@ export const AdminManagePropertyGroup = ({
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Groups
+            Manage Estates
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -196,11 +277,18 @@ export const AdminManagePropertyGroup = ({
             <View style={styles._cardinfo}>
               <Text weight="semiBold" text={item.title} style={styles._name} />
               <Text style={styles._label}>
-                Group Id:
+                Estate Id:
                 <Text style={styles._labelValue}>
                   {` `}
                   {item.groupId}
                 </Text>
+                <TouchableOpacity onPress={() => null}>
+                  <Ionicons
+                    name="copy-outline"
+                    size={12}
+                    color={colors.primary}
+                  />
+                </TouchableOpacity>
               </Text>
               <View style={styles._row}>
                 <Text style={styles._label}>
@@ -211,29 +299,25 @@ export const AdminManagePropertyGroup = ({
                   </Text>
                 </Text>
 
-                <Text style={styles._label}>
-                  No. of Meters:
-                  <Text style={styles._labelValue}>
-                    {` `}
-                    {item.noOfMeters}
-                  </Text>
-                </Text>
+                <View style={styles.statusPill}>
+                  <Text text="Pending" style={styles.statusPillText} />
+                </View>
               </View>
 
               <View style={styles._row}>
                 <Text style={styles._label}>
-                  No. of Tenants:
+                  No. of Residents:
                   <Text style={styles._labelValue}>
                     {` `}
                     {item.noOfTenents}
                   </Text>
                 </Text>
 
-                <Text style={[styles._label, { color: "#4CAF50" }]}>
+                <Text style={[styles._label, { color: colors.primary }]}>
                   Date Created:
                   <Text style={styles._labelValue}>
                     {` `}
-                    {item.noOfMeters}
+                    22 feb , 2025
                   </Text>
                 </Text>
               </View>
@@ -244,7 +328,7 @@ export const AdminManagePropertyGroup = ({
                 setDropdownVisible(
                   dropdownVisible === parseInt(item.id)
                     ? null
-                    : parseInt(item.id)
+                    : parseInt(item.id),
                 )
               }
             >
@@ -272,7 +356,7 @@ export const AdminManagePropertyGroup = ({
                   style={styles.menuItem}
                   onPress={() => {
                     setDropdownVisible(null);
-                    navigation.navigate("AddEditGroup", {
+                    navigation.navigate("EditGroup", {
                       mode: "edit",
                       group: item,
                     });
@@ -280,6 +364,18 @@ export const AdminManagePropertyGroup = ({
                 >
                   <Text style={[styles.menuText]}>Edit</Text>
                 </TouchableOpacity>
+                 <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    setDropdownVisible(null);
+                    openSignupModal(item);
+                  }}
+                >
+                  <Text style={[styles.menuText]}>Generate Resident Sign-up Link</Text>
+                </TouchableOpacity>
+
+
+                
               </View>
             )}
           </View>
@@ -371,7 +467,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: adjustSize(10),
-    marginBottom: 10,
+    marginBottom: 25,
   },
   _input: {
     margin: 0,
@@ -513,7 +609,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: "center",
-    fontSize: adjustSize(15),
+    fontSize: adjustSize(18),
     fontFamily: typography.fonts.poppins.semiBold,
     color: colors.primary,
     padding: adjustSize(20),
@@ -541,11 +637,21 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   _card: {
-    borderTopWidth: 0.6,
-    borderColor: colors.grey,
     padding: adjustSize(10),
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(8),
+    marginBottom: adjustSize(10),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+    marginHorizontal: 12,
   },
   _cardinfo: {
     flex: 1,
@@ -566,11 +672,14 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: adjustSize(4),
+    position:"absolute",
+    top:10,
+    right:10
   },
   menuBox: {
     position: "absolute",
-    right: 10,
-    top: 40,
+    right: 30,
+    top: 10,
     backgroundColor: colors.white,
     borderRadius: 8,
     padding: spacing.xs,
@@ -579,11 +688,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
-    zIndex: 1000,
+    zIndex: 3000,
     minWidth: 180,
+    borderWidth:0.4,
+    borderColor:colors.border ,
   },
   menuItem: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 12,
     borderBottomColor: colors.border,
   },
@@ -591,8 +702,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   menuText: {
-    fontSize: adjustSize(14),
-    color: colors.text,
+    fontSize: adjustSize(12),
+    color: colors.primary,
   },
   _subtitle: {
     color: "#4CAF50",
@@ -640,5 +751,17 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(14),
     marginBottom: 4,
     color: colors.primary,
+  },
+  statusPill: {
+    backgroundColor: "#F26938",
+    borderRadius: adjustSize(100),
+    paddingHorizontal: spacing.md,
+    paddingVertical: 2,
+    marginBottom:5
+  },
+  statusPillText: {
+    color: colors.white,
+    fontSize: adjustSize(11),
+    fontFamily: typography.fonts.poppins.medium,
   },
 });

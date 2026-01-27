@@ -8,6 +8,7 @@ import { Header } from "../../../Components";
 import ReservationCalendar from "./components/ReservationCalendar";
 import ReservationStep1 from "./components/ReservationStep1";
 import ReservationCalendarAddTime from "./components/ReservationCalendarAddTime";
+import SelectedDates from "./components/SelectedDates";
 import { WithLocalSvg } from "react-native-svg/css";
 import { adjustSize, colors, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
@@ -41,6 +42,7 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
   });
 
   const selectedDates = watch("selectedDates", []);
+  const timeSlots = watch("timeSlots", []);
 
   const handleNextStep = async () => {
     let fieldsToValidate: any[] = [];
@@ -49,11 +51,14 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
     } else if (step === 1) {
       fieldsToValidate = ["capacity", "reservedFor", "selectedDates"];
     } else if (step === 2) {
-      fieldsToValidate = ["timeSlots"];
+      // Do not block moving to Step 3; review in Step 3 before confirm
+      fieldsToValidate = [];
+    } else if (step === 3) {
+      fieldsToValidate = [];
     }
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {
-      if (step < 2) {
+      if (step < 3) {
         setStep(step + 1);
       } else {
         setVisiable(true);
@@ -103,6 +108,14 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
           errors={errors}
           setValue={setValue}
           selectedDates={watch("selectedDates")}
+          backHandler={() => setStep(step - 1)}
+          rightBtnHandler={handleNextStep}
+        />
+      )}
+      {step === 3 && (
+        <SelectedDates
+          selectedDates={selectedDates}
+          timeSlots={timeSlots}
           backHandler={() => setStep(step - 1)}
           rightBtnHandler={handleNextStep}
         />
@@ -160,7 +173,7 @@ export function AdminAmenityMakeReservation({ navigation }: any) {
                 // onChangeText={setAmenityName}
                 placeholderTextColor={colors.primaryLight}
                 inputWrapperStyle={[
-                  { height: adjustSize(120), alignItems: "flex-start" },
+                  { height: adjustSize(120), alignItems: "flex-start" ,backgroundColor:colors.white},
                 ]}
                 style={[{ height: adjustSize(110) }]}
                 multiline
@@ -195,13 +208,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: adjustSize(10),
+    paddingHorizontal: adjustSize(15),
   },
   modalCard: {
-    width: "100%",
+    width: "95%",
     backgroundColor: colors.fill,
     borderRadius: adjustSize(20),
     paddingVertical: adjustSize(20),
+    paddingHorizontal: adjustSize(10),
   },
   closeBtn: {
     alignSelf: "flex-end",
@@ -214,7 +228,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: adjustSize(24),
     fontFamily: typography.primary.semiBold,
-    textAlign: "center",
+    textAlign: "left",
     lineHeight: adjustSize(50),
     marginBottom: adjustSize(10),
   },

@@ -87,6 +87,9 @@ import { SecuritySettings } from "./security/settings";
 import { Admin } from "./admin";
 import { Message } from "./global/chat/messages";
 import { AdminDashboard } from "./admin/dashboard";
+import { AdminUtilitiesDashboard } from "./admin/dashboard/utilities-dashboard";
+
+
 import { AdminUserManagement } from "./admin/user-management";
 import { AdminPropertyManagement } from "./admin/property-management";
 import { FinancialReports } from "./admin/financial-reports";
@@ -148,7 +151,8 @@ import { AdminUtilitiesSettings } from "./admin/utilities/settings";
 import ViewMeterDetails from "./admin/utilities/manage-meters/ViewMeterDetails";
 import EditCreateMeter from "./admin/utilities/manage-meters/EditCreateMeter";
 import { ViewPropertiesGroups } from "./admin/utilities/view-properties-groups";
-import { AddEditGroup } from "./admin/utilities/add-edit-group";
+import { AddGroup } from "./admin/utilities/add-group";
+import { EditGroup } from "./admin/utilities/edit-group"; 
 import { SendMoney } from "./tenant/sendmoney";
 import { AddBeneficiary } from "./tenant/addbeneficiary";
 import { Profile } from "./global/profile";
@@ -233,6 +237,7 @@ export {
   SecuritySettings,
   Admin,
   AdminDashboard,
+  AdminUtilitiesDashboard,
   AdminUserManagement,
   AdminPropertyManagement,
   FinancialReports,
@@ -293,7 +298,8 @@ export {
   AdminUtilitiesSettings,
   ViewMeterDetails,
   EditCreateMeter,
-  AddEditGroup,
+  AddGroup,
+  EditGroup,
   SendMoney,
   AddBeneficiary,
   Profile,

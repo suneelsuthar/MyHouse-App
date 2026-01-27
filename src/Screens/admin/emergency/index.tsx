@@ -25,7 +25,7 @@ export const Emergency: React.FC = () => {
       desc: "For police emergencies. Contact this number in case of any crime or law enforcement issues.",
     },
     {
-      name: "Fire Department",
+      name: "Fire Brigade",
       num: "# 767",
       image: Images.fire,
       desc: "For fire emergencies. In case of fire, call this number immediately to get assistance from the fire department.",
@@ -56,50 +56,40 @@ export const Emergency: React.FC = () => {
             {list.map((val, index) => {
               return (
                 <View key={index} style={styles.list}>
-                  <View
-                    style={{
-                      backgroundColor: "#f1f5f9",
-                      height: 160,
-                      borderRadius: 10,
-                      marginHorizontal: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {val.name === "Ambulance" ? (
-                      <WithLocalSvg asset={val.image} style={styles.image} />
-                    ) : (
-                      <Image source={val.image} style={styles.image} />
-                    )}
-                  </View>
-                  <View>
-                    <View style={{ padding: 15 }}>
+                  <View style={styles.leftCol}>
+                    <View style={styles.iconBox}>
+                      <Image source={val.image} style={styles.icon} />
+                    </View>
+                    <View style={styles.leftInfo}>
                       <Text style={styles.name}>{val.name}</Text>
                       <Text style={styles.num}>{val.num}</Text>
-                      <Button
-                        text={"Call Us Now"}
-                        preset="reversed"
-                        // style={styles.btn}
-                        textStyle={styles.btnTxt}
-                        onPress={() =>
-                          (navigation as any).navigate("PanicEmergency")
-                        }
-                      />
                     </View>
+                  </View>
+                  <View style={styles.contentBox}>
+                    <Text style={styles.desc}>{val.desc}</Text>
+                    <Button
+                      text={"Call us Now"}
+                      preset="reversed"
+                      style={styles.callBtn}
+                      textStyle={styles.callBtnText}
+                      onPress={() =>
+                        (navigation as any).navigate("PanicEmergency")
+                      }
+                    />
                   </View>
                 </View>
               );
             })}
           </View>
-          {user?.role !== "admin" && (
-            <Button
-              text={"Panic"}
-              preset="reversed"
-              style={styles.btn}
-              textStyle={styles.btnTxt}
-              onPress={() => (navigation as any).navigate("PanicEmergency")}
-            />
-          )}
+          {/* {user?.role !== "admin" && ( */}
+          <Button
+            text={"Panic"}
+            preset="reversed"
+            style={styles.btn}
+            textStyle={styles.btnTxt}
+            onPress={() => (navigation as any).navigate("PanicEmergency")}
+          />
+          {/* )} */}
         </View>
       </ScrollView>
     </Screen>
@@ -123,10 +113,10 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(10),
   },
   list: {
-    // flexDirection: "row",
-    // alignItems: "center",
-    // justifyContent: "space-between",
-    paddingVertical: adjustSize(10),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: adjustSize(10),
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     marginBottom: adjustSize(10),
@@ -140,6 +130,35 @@ const styles = StyleSheet.create({
     elevation: 1,
     marginTop: 20,
   },
+  iconBox: {
+    // width: adjustSize(96),
+    // height: adjustSize(96),
+    // backgroundColor: "#f1f5f9",
+    borderRadius: adjustSize(10),
+    marginHorizontal: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    // width: "90%",
+    // height: "90%",
+    resizeMode: "contain",
+  },
+  contentBox: {
+    flex: 1.5,
+    paddingRight: adjustSize(10),
+  },
+  desc: {
+    color: colors.black,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  bottomRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: adjustSize(10),
+  },
   name: {
     color: colors.primary,
     fontSize: adjustSize(15),
@@ -150,12 +169,23 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(14),
     fontFamily: typography.fonts.poppins.normal,
   },
+  callBtn: {
+    minHeight: adjustSize(41),
+    borderRadius: 10,
+    paddingHorizontal: adjustSize(14),
+    marginTop:20
+  },
+  callBtnText: {
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
   btn: {
     height: adjustSize(49),
     justifyContent: "center",
     alignItems: "center",
     marginVertical: adjustSize(30),
-    // backgroundColor: "#D51E1E",
+    backgroundColor: "#D51E1E",
+    borderRadius: adjustSize(10),
   },
   btnTxt: {
     fontSize: adjustSize(15),
@@ -165,7 +195,13 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "100%",
     alignSelf: "center",
-    // resizeMode: "cover",
     aspectRatio: 1 / 1,
   },
+  leftCol:{
+    flex:1
+  },
+  leftInfo:{
+    justifyContent:"center",
+    alignItems:"center"
+  }
 });

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import {
   Screen,
   Text,
@@ -187,7 +193,6 @@ export function CommunityArea({ route }: CommunityAreaProps) {
     return item.title.toLowerCase().includes(search.toLowerCase());
   });
 
-
   const filterReservationsData = ReservationsCardData.filter((item) => {
     return item.name.toLowerCase().includes(search.toLowerCase());
   });
@@ -202,12 +207,24 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         tabs={[
           {
             label: "Amenities",
-            activeIcon: <AmenitiesIcon color={colors.primary} />,
-            inactiveIcon: <AmenitiesIcon color={colors.white} />,
+            activeIcon: (
+              <Image
+                source={Images.amentiIcon}
+                tintColor={colors.white}
+                style={{ width: adjustSize(19), height: adjustSize(21) }}
+              />
+            ),
+            inactiveIcon: (
+              <Image
+                source={Images.amentiIcon}
+                tintColor={colors.white}
+                style={{ width: adjustSize(19), height: adjustSize(21) }}
+              />
+            ),
           },
           {
             label: "Reservations",
-            activeIcon: <ReservationsIcon color={colors.primary} />,
+            activeIcon: <ReservationsIcon color={colors.white} />,
             inactiveIcon: <ReservationsIcon color={colors.white} />,
           },
         ]}
@@ -217,7 +234,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         <View style={[styles._searchrow, { marginTop: adjustSize(15) }]}>
           <View style={styles._inputview}>
             {activeTab === "Amenities" ? (
-              <GroupDropdown placeholder="Select Properties" />
+              <GroupDropdown placeholder="Select Estate" />
             ) : (
               <TextField
                 placeholderTextColor={colors.primaryLight}
@@ -245,16 +262,19 @@ export function CommunityArea({ route }: CommunityAreaProps) {
               </TouchableOpacity>
             )
           ) : (
-
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles._addbtn}
               onPress={() =>
                 activeTab === "Amenities"
                   ? (navigation as any).navigate("AdminAddNewAmenity")
-                  : (navigation as any).navigate("AdminAmenityMakeReservation", {
-                      data: data,
-                    })}
+                  : (navigation as any).navigate(
+                      "AdminAmenityMakeReservation",
+                      {
+                        data: data,
+                      },
+                    )
+              }
             >
               <WithLocalSvg asset={Images.addprop} />
             </TouchableOpacity>
@@ -307,6 +327,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
               <AmenitiesCard
                 property={item}
                 activeTab={activeTab}
+                rightText={item.dateAdded}
                 onAction={(action, property) => {
                   if (action === "Delete") {
                     setAmenityDeleteModal(true);
@@ -323,9 +344,6 @@ export function CommunityArea({ route }: CommunityAreaProps) {
                   } else if (action === "Manage Calendar") {
                     (navigation as any).navigate("AdminAmenityManageCalendar");
                   }
-                }}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
                 }}
               />
             ) : (
@@ -344,9 +362,6 @@ export function CommunityArea({ route }: CommunityAreaProps) {
                   } else if (action === "Delete") {
                     setDeleteModal(true);
                   }
-                }}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
                 }}
               />
             )
@@ -423,7 +438,7 @@ const styles = StyleSheet.create({
   customDropdownStyle: {
     height: adjustSize(33),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   customPlaceholderStyle: {
     fontSize: adjustSize(12),

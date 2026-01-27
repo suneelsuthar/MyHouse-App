@@ -40,6 +40,7 @@ import {
 
   // Import admin screens from the admin directory
   AdminDashboard,
+  AdminUtilitiesDashboard,
   AdminPropertyManagement,
   PropertyDetails,
   AdminAddProperty,
@@ -88,7 +89,8 @@ import {
   ViewMeterDetails,
   EditCreateMeter,
   ViewPropertiesGroups,
-  AddEditGroup,
+  EditGroup,  
+  AddGroup,
   AdminManageBookings,
   TenantDetails,
   Commuication,
@@ -525,9 +527,11 @@ const SecurityStackNavigator = () => (
 );
 
 // Admin Stacks per tab
+// Admin Stacks per tab
 const AdminHomeStackNavigator = () => (
   <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
+    <AdminHomeStack.Screen name="AdminUtilitiesDashboard" component={AdminUtilitiesDashboard} />
     {/* Register cross-section Admin screens here for global access */}
     <AdminHomeStack.Screen name="PropertyDetails" component={PropertyDetails} />
     <AdminHomeStack.Screen
@@ -649,7 +653,8 @@ const AdminHomeStackNavigator = () => (
       name="ViewPropertiesGroups"
       component={ViewPropertiesGroups}
     />
-    <AdminHomeStack.Screen name="AddEditGroup" component={AddEditGroup} />
+    <AdminHomeStack.Screen name="EditGroup" component={EditGroup} />
+    <AdminHomeStack.Screen name="AddGroup" component={AddGroup} />
     <AdminHomeStack.Screen name="Commuication" component={Commuication} />
   </AdminHomeStack.Navigator>
 );

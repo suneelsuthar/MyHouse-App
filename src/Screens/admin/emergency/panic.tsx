@@ -70,7 +70,7 @@ export const PanicEmergency: React.FC = () => {
                     borderColor: val.isSelected ? colors.primary : "#B0B0B0",
                     backgroundColor: val.isSelected
                       ? colors.primary
-                      : colors.fill,
+                      : colors.white,
                   },
                 ]}
               >
@@ -84,6 +84,14 @@ export const PanicEmergency: React.FC = () => {
               </View>
             </TouchableOpacity>
           ))}
+        <Text text="Please make sure you have an Emergency that requires Urgent Attention" 
+        style={{
+          color:"#D62828",
+          fontSize:adjustSize(14),
+          fontFamily:typography.fonts.poppins.normal,
+          marginTop:adjustSize(10)
+        }}
+        />
         </View>
 
         {/* Footer buttons */}
@@ -149,6 +157,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     marginVertical: adjustSize(20),
     backgroundColor: colors.fill,
+    marginBottom:50
   },
   cancelBtn: {
     flex: 1,

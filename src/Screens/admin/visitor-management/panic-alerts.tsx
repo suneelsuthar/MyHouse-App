@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+  Alert
+} from "react-native";
 import { Screen, Text, Header, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import DropdownComponent from "../../../Components/DropDown";
@@ -8,11 +15,13 @@ import { Images } from "../../../assets/Images";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
-  { label: "All Properties", value: "all" },
+  { label: "Select Estate", value: "all" },
   { label: "Farm House", value: "farm_house" },
   { label: "Town House", value: "town_house" },
   { label: "Villa", value: "villa" },
@@ -94,6 +103,9 @@ export const AdminPanicAlerts: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [visitorList, setVisitorList] = useState(visitorData);
   const navigation = useNavigation();
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"acknowledge" | "responding" | "resolved" | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   const statusLabelColor = (status: any) => {
     switch (status) {
@@ -104,13 +116,36 @@ export const AdminPanicAlerts: React.FC = () => {
       case "responding":
         return { color: "#DEB446" };
       case "acknowledged":
-        return { color: colors.primaryLight };
+        return { color: colors.primary };
       case "resolved":
         return { color: "#0AD029" };
       case "escalated":
         return { color: "#D80027" };
     }
   };
+    const handleConfirmAction = () => {
+      if (!selectedItemId || !pendingAction) {
+        setConfirmModalVisible(false);
+        return;
+      }
+      const statusMap: Record<string, string> = {
+        acknowledge: "acknowledged",
+        responding: "responding",
+        resolved: "resolved",
+      };
+      const nextStatus = statusMap[pendingAction];
+      if (nextStatus) {
+        const updatedList = visitorList.map((v) =>
+          v.id === selectedItemId ? { ...v, status: nextStatus } : v
+        );
+        setVisitorList(updatedList);
+      }
+      setConfirmModalVisible(false);
+      setPendingAction(null);
+      setSelectedItemId(null);
+      setDropdownVisible(null);
+    };
+  
   return (
     <Screen
       preset="fixed"
@@ -152,7 +187,7 @@ export const AdminPanicAlerts: React.FC = () => {
             data={propertyGroupOptions}
             value={propertyGroup}
             onChangeValue={setPropertyGroup}
-            placeholder="Select Property Group"
+            placeholder="Select Estate"
             dropdownStyle={styles.searchDropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -163,7 +198,7 @@ export const AdminPanicAlerts: React.FC = () => {
       {/* Property Group Label and Sort */}
       <View style={styles.listHeader}>
         <Text style={styles.propertyGroupLabel} weight="semiBold">
-          Revoked Invitations
+          Panic Alerts
         </Text>
         <View style={styles.sortContainer}>
           <DropdownComponent
@@ -202,165 +237,190 @@ export const AdminPanicAlerts: React.FC = () => {
             ]}
             activeOpacity={0.8}
           >
-            <View style={styles.cardHeaderRow}>
-              <View style={styles.cardHeaderRow}>
+            {/* Top row: Avatar, Name, Status pill */}
+            <View style={styles.cardRowTop}>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", flex: 1 }}
+              >
+                <View style={styles.visitorAvatar}>
+                  <WithLocalSvg asset={Images.profile} />
+                </View>
                 <Text weight="semiBold" style={styles.cardTitle}>
                   {item.name}
                 </Text>
-
-                {item.property ? (
-                  <Text style={styles.subtitle}>
-                    {"  "}({item.property})
-                  </Text>
-                ) : null}
               </View>
-
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() =>
-                  setDropdownVisible(
-                    dropdownVisible === item.id ? null : item.id
-                  )
-                }
-              >
-                <Entypo
-                  name="dots-three-vertical"
-                  size={adjustSize(18)}
-                  color="black"
-                />
-              </TouchableOpacity>
-
-              {dropdownVisible === item.id && (
-                <View style={styles.dropdownMenu}>
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "acknowledged" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="check-circle"
-                      size={adjustSize(16)}
-                      color="#4CAF50"
-                    />
-                    <Text style={styles.dropdownText}>Acknowledge</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "responding" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="autorenew"
-                      size={adjustSize(16)}
-                      color="#FF9800"
-                    />
-                    <Text style={styles.dropdownText}>Responding</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "resolved" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="assignment-turned-in"
-                      size={adjustSize(16)}
-                      color="#2196F3"
-                    />
-                    <Text style={styles.dropdownText}>Mark as Resolved</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      const updatedList = visitorList.map((visitor) =>
-                        visitor.id === item.id
-                          ? { ...visitor, status: "resolved" }
-                          : visitor
-                      );
-                      setVisitorList(updatedList);
-                      setDropdownVisible(null);
-                    }}
-                  >
-                    <Ionicons
-                      name="checkmark-done"
-                      size={adjustSize(16)}
-                      color="#4CAF50"
-                    />
-                    <Text style={styles.dropdownText}>Resolve</Text>
-                  </TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.statusPill}>
+                  <Text style={styles.statusPillText}>Pending</Text>
                 </View>
-              )}
-              {/* <Text
-                weight="medium"
-                style={[styles.statusText, statusLabelColor(item.status)]}
-              >
-                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-              </Text> */}
-            </View>
-            <Text
-              weight="medium"
-              style={{ color: colors.primary, fontSize: adjustSize(10) }}
-            >
-              Tenant name/ID:
-              <Text style={styles.labelValue}>{` `}lorem ipsum</Text>
-            </Text>
-            <View style={styles.rowBetween}>
-              <View>
-                <Text weight="medium" style={styles.label}>
-                  Time:
-                  <Text style={styles.labelValue}>
-                    {"  "}
-                    10:00 am
-                  </Text>
-                </Text>
-                <Text weight="medium" style={[styles.label]}>
-                  Date:
-                  {"  "}
-                  <Text style={styles.labelValue}>26 Sep,2024</Text>
-                </Text>
-              </View>
-              <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                <Text
-                  weight="medium"
-                  style={[styles.statusText, statusLabelColor(item.status)]}
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={() =>
+                    setDropdownVisible(
+                      dropdownVisible === item.id ? null : item.id,
+                    )
+                  }
+                  style={{ marginLeft: adjustSize(8) }}
                 >
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                </Text>
-                <Text weight="medium" style={[styles.label]}>
-                  Alert:
-                  <Text style={[styles.labelValue, { color: "#D51E1E" }]}>
-                    {" "}
-                    {item.alert}
-                  </Text>
-                </Text>
+                  <Entypo
+                    name="dots-three-vertical"
+                    size={adjustSize(18)}
+                    color="black"
+                  />
+                </TouchableOpacity>
+
+                {dropdownVisible === item.id && (
+                  <View style={styles.dropdownMenu}>
+                    <TouchableOpacity
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedItemId(item.id);
+                        setPendingAction("acknowledge");
+                        setConfirmModalVisible(true);
+                      }}
+                    >
+                      <MaterialIcons
+                        name="check-circle"
+                        size={adjustSize(16)}
+                        color="#4CAF50"
+                      />
+                      <Text style={styles.dropdownText}>Acknowledge</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedItemId(item.id);
+                        setPendingAction("responding");
+                        setConfirmModalVisible(true);
+                      }}
+                    >
+                      <MaterialIcons
+                        name="autorenew"
+                        size={adjustSize(16)}
+                        color="#FF9800"
+                      />
+                      <Text style={styles.dropdownText}>Responding</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedItemId(item.id);
+                        setPendingAction("resolved");
+                        setConfirmModalVisible(true);
+                      }}
+                    >
+                      <MaterialIcons
+                        name="assignment-turned-in"
+                        size={adjustSize(16)}
+                        color="#2196F3"
+                      />
+                      <Text style={styles.dropdownText}>Mark as Resolved</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedItemId(item.id);
+                        setPendingAction("resolved");
+                        setConfirmModalVisible(true);
+                      }}
+                    >
+                      <Ionicons
+                        name="checkmark-done"
+                        size={adjustSize(16)}
+                        color="#4CAF50"
+                      />
+                      <Text style={styles.dropdownText}>Resolve</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
+            </View>
+
+            {/* Bottom row: Property and Date */}
+            <View style={[styles.cardRowBottom, { marginLeft: 70 }]}>
+              <Text style={styles.visitorProperty} weight="medium">
+                <Text style={styles.propValue}> {item.property}</Text>
+              </Text>
+              <Text style={styles.visitorProperty} weight="medium">
+                <Text style={styles.propValue}> 26 Sep 2024 - 10:00am</Text>
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <Modal
+        visible={confirmModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setConfirmModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setConfirmModalVisible(false)}
+            >
+              <AntDesign name="closecircleo" size={24} color={"#D62828"} />
+            </TouchableOpacity>
+
+            <Text style={styles.modalTitle}>Confirmation</Text>
+            <Text style={styles.modalMessage}>
+              {`Are you sure you want to ${
+                pendingAction === "responding"
+                  ? "mark as responding"
+                  : pendingAction === "resolved"
+                  ? "mark as resolved"
+                  : "acknowledge"
+              } this panic alert?`}
+            </Text>
+
+            <View
+              style={{
+                backgroundColor: colors.white,
+                borderRadius: adjustSize(12),
+                padding: spacing.lg,
+                marginBottom: spacing.lg,
+              }}
+            >
+              <Text weight="semiBold" style={{ color: colors.primary, marginBottom: spacing.sm }}>
+                Alert Details
+              </Text>
+              {(() => {
+                const sel = visitorList.find((v) => v.id === selectedItemId);
+                return (
+                  <View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Resident:</Text><Text style={styles.detailValue}>{sel?.name || "-"}</Text></View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Property:</Text><Text style={styles.detailValue}>{sel?.property || "-"}</Text></View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Alert Type:</Text><Text style={styles.detailValue}>{sel?.alert || "-"}</Text></View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Date:</Text><Text style={styles.detailValue}>2024-11-12</Text></View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Time:</Text><Text style={styles.detailValue}>11:00 AM</Text></View>
+                    <View style={styles.detailRow}><Text style={styles.detailLabel}>Current Status:</Text><Text style={styles.detailValue}>{sel?.status || "-"}</Text></View>
+                  </View>
+                );
+              })()}
+            </View>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setConfirmModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={handleConfirmAction}
+              >
+                <Text style={styles.confirmButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 };
@@ -437,7 +497,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -471,17 +531,17 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   propertyGroupLabel: {
-    fontSize: adjustSize(16),
+    fontSize: adjustSize(15),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
   },
   sortContainer: {
-    minWidth: 120,
+    minWidth: 140,
   },
   sortDropdown: {
     height: adjustSize(35),
-    borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    borderRadius: adjustSize(120),
+    backgroundColor: colors.primary,
   },
   sortPlaceholder: {
     fontSize: adjustSize(11),
@@ -520,7 +580,8 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(25),
     alignItems: "center",
     justifyContent: "center",
-    marginRight: spacing.md,
+    marginRight: spacing.sm,
+    backgroundColor: colors.primary,
   },
   avatarText: {
     fontSize: adjustSize(18),
@@ -539,6 +600,29 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
+    flex: 1,
+  },
+  propValue: { color: colors.primary, fontSize: adjustSize(10) },
+  statusPill: {
+    backgroundColor: "#F26938",
+    borderRadius: adjustSize(100),
+    paddingHorizontal: spacing.md,
+    paddingVertical: 4,
+  },
+  statusPillText: {
+    color: colors.white,
+    fontSize: adjustSize(11),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  cardRowTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  cardRowBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   statusContainer: {
     paddingHorizontal: spacing.sm,
@@ -575,17 +659,21 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   card: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     padding: adjustSize(10),
-    borderRadius: adjustSize(7),
-    elevation: 2,
-    marginHorizontal: adjustSize(10),
-    minHeight: adjustSize(96),
-    marginVertical: adjustSize(8),
-    zIndex: 1,
+    borderRadius: adjustSize(10),
     shadowColor: "#000",
-    borderWidth: 0.4,
-    borderColor: colors.grey,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginHorizontal: adjustSize(10),
+    marginVertical: adjustSize(5),
+    minHeight: adjustSize(89),
+    zIndex: 1,
   },
   cardWithDropdown: {
     zIndex: 9999,
@@ -632,7 +720,7 @@ const styles = StyleSheet.create({
     minWidth: adjustSize(120),
     height: adjustSize(33),
     borderRadius: 100,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
   dropdownMenu: {
     position: "absolute",
@@ -651,6 +739,8 @@ const styles = StyleSheet.create({
     elevation: 30,
     zIndex: 10000,
     minWidth: adjustSize(160),
+    borderWidth: 0.3,
+    borderColor: colors.grey,
   },
   dropdownItem: {
     flexDirection: "row",
@@ -664,6 +754,98 @@ const styles = StyleSheet.create({
     marginLeft: adjustSize(8),
     fontSize: adjustSize(12),
     color: colors.primary,
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  // Details rows inside modal
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: adjustSize(8),
+  },
+  detailLabel: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.medium,
+    fontSize: adjustSize(12),
+  },
+  detailValue: {
+    color: colors.grey,
+    fontFamily: typography.fonts.poppins.normal,
+    fontSize: adjustSize(12),
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    backgroundColor: colors.fill,
+    borderRadius: adjustSize(16),
+    padding: spacing.xl,
+    marginHorizontal: spacing.lg,
+    position: "relative",
+    width:"90%"
+  },
+  closeButton: {
+    position: "absolute",
+    top: adjustSize(16),
+    right: adjustSize(16),
+    zIndex: 1,
+  },
+  modalTitle: {
+    fontSize: adjustSize(18),
+    fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.primary,
+    textAlign: "center",
+    marginBottom: spacing.md,
+    marginTop: adjustSize(50),
+  },
+  modalMessage: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.normal,
+    color: colors.primary,
+    textAlign: "center",
+    marginBottom: spacing.xl,
+    lineHeight: adjustSize(20),
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: spacing.md,
+    height: adjustSize(47),
+  },
+  cancelButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#FF6B6B",
+    borderRadius: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+    height: adjustSize(47),
+  },
+  cancelButtonText: {
+    fontSize: adjustSize(14),
+    color: "#FF6B6B",
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  alertCancelButtonText: {
+    fontSize: adjustSize(14),
+    color: "#FF6B6B",
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  confirmButton: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    borderRadius: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+    height: adjustSize(47),
+  },
+  confirmButtonText: {
+    fontSize: adjustSize(14),
+    color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
   },
 });

@@ -7,6 +7,8 @@ import DropdownComponent from "../../../Components/DropDown";
 import moment from "moment";
 import Entypo from "@expo/vector-icons/Entypo";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../../../assets/Images";
 export const data = [
   {
     name: "Ethan Baker",
@@ -120,12 +122,12 @@ export function Tenants() {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header2 title="Tenants" onNotificationPress={() => {}} />
+      <Header2 title="Residents" onNotificationPress={() => {}} />
       <SearchDropdown />
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Tenants
+            Residents
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -151,76 +153,64 @@ export function Tenants() {
           const isMenuVisible = visibleMenuIndex === index;
 
           return (
-            <View
-              style={[
-                styles.card,
-                {
-                  backgroundColor: index % 2 === 0 ? "#dedff0" : "transparent",
-                },
-              ]}
-            >
-              <View style={styles.profileMain}>
-                <Text style={styles.profileName}>{item.name.slice(0, 1)}</Text>
-              </View>
-
-              <View style={styles.data}>
-                <Text style={styles.name} numberOfLines={1}>
-                  {item.name}
-                </Text>
-                <Text style={styles.property} numberOfLines={1}>
-                  Property:{" "}
-                  <Text
-                    style={[
-                      styles.property,
-                      { fontFamily: typography.fonts.poppins.normal },
-                    ]}
-                  >
-                    {item.property}
-                  </Text>
-                </Text>
-                <Text style={styles.date} numberOfLines={1}>
-                  Date Added:{" "}
-                  <Text
-                    style={[
-                      styles.date,
-                      {
-                        fontFamily: typography.fonts.poppins.normal,
-                        color: "#4CAF50",
-                      },
-                    ]}
-                  >
-                    {moment(item.dateAdded).format("DD MMM, YYYY")}
-                  </Text>
-                </Text>
-              </View>
-
-              <View>
-                <TouchableOpacity
-                  activeOpacity={0.6}
-                  onPress={() =>
-                    setVisibleMenuIndex(
-                      isMenuVisible ? null : index // toggle
-                    )
-                  }
+            <View style={styles.card}>
+              <View style={styles.cardRowTop}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flex: 1,
+                  }}
                 >
-                  <Entypo
-                    name="dots-three-vertical"
-                    size={16}
-                    color={colors.primary}
-                  />
-                </TouchableOpacity>
+                  <View style={styles.profileMain}>
+                    <WithLocalSvg asset={Images.profile} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text
+                        style={styles.name}
+                        numberOfLines={1}
+                        text={item.name}
+                      />
+
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={() =>
+                          setVisibleMenuIndex(isMenuVisible ? null : index)
+                        }
+                      >
+                        <Entypo
+                          name="dots-three-vertical"
+                          size={adjustSize(18)}
+                          color={colors.primary}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.cardRowBottom}>
+                      <Text style={styles.propertyText} numberOfLines={1}>
+                        {item.property}
+                      </Text>
+                      <Text style={styles.dateText} numberOfLines={1}>
+                        {moment(item.dateAdded).format("DD MMM, YYYY")}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
 
               {isMenuVisible && (
                 <>
-                  {/* Transparent overlay */}
                   <TouchableOpacity
                     style={styles.overlay}
                     activeOpacity={1}
                     onPress={() => setVisibleMenuIndex(null)}
                   />
-
-                  {/* Menu box */}
                   <View style={styles.menuBox}>
                     {["View"].map((a) => (
                       <TouchableOpacity
@@ -279,7 +269,7 @@ const styles = StyleSheet.create({
   customDropdownStyle: {
     height: adjustSize(33),
     borderRadius: adjustSize(100),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
   },
   customPlaceholderStyle: {
     fontSize: adjustSize(12),
@@ -292,43 +282,55 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   card: {
-    paddingVertical: adjustSize(15),
-    paddingHorizontal: adjustSize(10),
-    flexDirection: "row",
+    backgroundColor: colors.white,
+    padding: adjustSize(10),
+    borderRadius: adjustSize(10),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginHorizontal: adjustSize(10),
+    marginVertical: adjustSize(5),
+    minHeight: adjustSize(89),
     position: "relative",
   },
+  cardRowTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  cardRowBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: spacing.sm,
+  },
   profileMain: {
-    backgroundColor: colors.white,
-    height: adjustSize(40),
-    width: adjustSize(40),
-    borderRadius: 100,
-    elevation: 1,
+    backgroundColor: colors.primary,
+    height: adjustSize(50),
+    width: adjustSize(50),
+    borderRadius: adjustSize(25),
     alignItems: "center",
     justifyContent: "center",
-  },
-  profileName: {
-    color: colors.black,
-    fontSize: adjustSize(26),
-    fontFamily: typography.fonts.poppins.semiBold,
-    lineHeight: adjustSize(36),
+    marginRight: spacing.sm,
   },
   data: {
     flex: 1,
-    marginHorizontal: adjustSize(15),
+    marginHorizontal: adjustSize(10),
   },
   name: {
-    color: colors.primaryLight,
+    color: colors.primary,
     fontSize: adjustSize(15),
     fontFamily: typography.fonts.poppins.semiBold,
-    marginTop: adjustSize(5),
   },
-  property: {
+  propertyText: {
     color: colors.primary,
-    fontSize: adjustSize(12),
-    fontFamily: typography.fonts.poppins.semiBold,
-    marginTop: adjustSize(7),
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
+    flex: 1,
   },
-  date: {
+  dateText: {
     color: colors.primary,
     fontSize: adjustSize(10),
     fontFamily: typography.fonts.poppins.medium,
@@ -349,13 +351,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     elevation: 4,
-    width: adjustSize(100),
-    paddingVertical: adjustSize(6),
+    width: adjustSize(70),
+    paddingVertical: adjustSize(2),
     zIndex: 10,
+    borderWidth:1,
+    justifyContent:"center",
+    alignItems:"center"
   },
   menuItem: {
     paddingVertical: adjustSize(5),
-    paddingHorizontal: adjustSize(12),
+    paddingHorizontal: adjustSize(6),
   },
   menuText: {
     fontSize: adjustSize(12),

@@ -33,7 +33,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
   const data = route?.params?.data;
   console.log("data---------", data);
   const [propertyGroup, setPropertyGroup] = useState<string>(
-    data?.propertyGroupName
+    data?.propertyGroupName,
   );
   const [amenityName, setAmenityName] = useState<string>(data?.amenity);
   const [capacity, setCapacity] = useState<string>(data?.capacity);
@@ -168,13 +168,14 @@ export function AdminAmenityEdit({ route, navigation }: any) {
           contentContainerStyle={{ paddingBottom: adjustSize(0) }}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.title}>Property Group*</Text>
+          <Text style={styles.title}>Estate</Text>
 
           <TextField
-            placeholder="Property Group"
+            placeholder="Estate"
             value={propertyGroup}
             onChangeText={setPropertyGroup}
             placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
           <Text style={styles.title}>Amenity Name*</Text>
@@ -183,6 +184,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             value={amenityName}
             onChangeText={setAmenityName}
             placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
           <Text style={styles.title}>Capacity*</Text>
@@ -192,6 +194,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             onChangeText={setCapacity}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
           <Text style={styles.title}>Duration Per Slot (minutes)</Text>
@@ -201,6 +204,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             onChangeText={setDurationPerSlot}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
           <Text style={styles.title}>
@@ -212,6 +216,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             onChangeText={setMaxDuration}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+            inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
           <Text style={styles.title}>Choose days of the week</Text>
@@ -292,7 +297,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
                 <View>
                   {selectedDays.map((val, index) => {
                     const slotsForDay = dayTimeSlots.filter(
-                      (slot) => slot.day === val
+                      (slot) => slot.day === val,
                     );
                     return (
                       <View key={index}>
@@ -372,7 +377,7 @@ export function AdminAmenityEdit({ route, navigation }: any) {
           <Button
             text={loading ? "Updating ..." : "Update Amenity"}
             preset="reversed"
-            style={[styles.btn, !isFormValid && { opacity: 0.7 }]}
+            style={[styles.btn]}
             disabled={!isFormValid}
             onPress={() => {
               setLoading(true);
@@ -439,7 +444,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -466,7 +471,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",
@@ -480,7 +485,7 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dtText: {
-    color: colors.primaryLight,
+    color: colors.primary,
     fontSize: adjustSize(12),
     fontFamily: typography.fonts.poppins.normal,
   },
@@ -502,7 +507,7 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: adjustSize(8),
     borderWidth: adjustSize(0.5),
-    borderColor: colors.primaryLight,
+    borderColor: colors.primary,
   },
   removeBtn: {
     position: "absolute",
@@ -514,7 +519,7 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
   daysHeader: {
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     height: adjustSize(47),
     borderRadius: adjustSize(7),
     flexDirection: "row",
@@ -546,7 +551,7 @@ const styles = StyleSheet.create({
   timeBox: {
     height: adjustSize(40),
     borderRadius: adjustSize(20),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

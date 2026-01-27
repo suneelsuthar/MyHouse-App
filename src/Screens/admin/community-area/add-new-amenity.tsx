@@ -154,19 +154,24 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top", "bottom"]}
     >
-      <Header title={"New Reservation"} />
+      <Header title={"Add new Amenity"} />
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={{ paddingBottom: adjustSize(0) }}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.title}>Property Group*</Text>
+          <Text style={styles.title}>Estate*</Text>
 
           <TextField
-            placeholder="Property Group"
+            placeholder="Estate"
             value={propertyGroup}
             onChangeText={setPropertyGroup}
             placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={[
+              {
+                backgroundColor: colors.white,
+              },
+            ]}
           />
 
           <Text style={styles.title}>Amenity Name*</Text>
@@ -175,6 +180,11 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             value={amenityName}
             onChangeText={setAmenityName}
             placeholderTextColor={colors.primaryLight}
+             inputWrapperStyle={[
+              {
+                backgroundColor: colors.white,
+              },
+            ]}
           />
 
           <Text style={styles.title}>Capacity*</Text>
@@ -184,6 +194,11 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             onChangeText={setCapacity}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+             inputWrapperStyle={[
+              {
+                backgroundColor: colors.white,
+              },
+            ]}
           />
 
           <Text style={styles.title}>Duration Per Slot (minutes)</Text>
@@ -193,6 +208,11 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             onChangeText={setDurationPerSlot}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+             inputWrapperStyle={[
+              {
+                backgroundColor: colors.white,
+              },
+            ]}
           />
 
           <Text style={styles.title}>
@@ -204,6 +224,11 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             onChangeText={setMaxDuration}
             placeholderTextColor={colors.primaryLight}
             keyboardType="numeric"
+             inputWrapperStyle={[
+              {
+                backgroundColor: colors.white,
+              },
+            ]}
           />
 
           <Text style={styles.title}>Choose days of the week</Text>
@@ -284,7 +309,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
                 <View>
                   {selectedDays.map((val, index) => {
                     const slotsForDay = dayTimeSlots.filter(
-                      (slot) => slot.day === val
+                      (slot) => slot.day === val,
                     );
                     return (
                       <View key={index}>
@@ -361,7 +386,7 @@ export function AdminAddNewAmenity({ route, navigation }: any) {
             </View>
           )}
           <Button
-            text={loading ? "Adding ..." : "Submit"}
+            text={loading ? "Adding ..." : "Add Amenity"}
             preset="reversed"
             style={[styles.btn]}
             disabled={!isFormValid}
@@ -449,7 +474,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",

@@ -281,9 +281,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
     {
       id: 5,
-      title: "Tenants",
+      title: "Residents",
       type: "item",
-      icon: Images.tenants,
+      icon: Images.residents,
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
@@ -374,7 +374,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
-          params: { screen: "AdminDashboard" },
+          params: { screen: "AdminUtilitiesDashboard" },
         }),
     },
     {
@@ -412,7 +412,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     },
     {
       id: 4,
-      title: "Manage Property Groups",
+      title: "Manage Estates",
       type: "item",
       icon: Images.managegroups,
       onPress: () =>

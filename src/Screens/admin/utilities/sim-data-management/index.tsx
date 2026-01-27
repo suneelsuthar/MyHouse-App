@@ -9,6 +9,13 @@ export const AdminSimDataManagement: React.FC = () => {
   const navigation = useNavigation();
   const data = [
     {
+      id: 3,
+      name: "MTN",
+      icon: Images.mtn,
+      totalgb: 200,
+      used: 90,
+    },
+    {
       id: 0,
       name: "AirTel",
       icon: Images.airtel,
@@ -24,17 +31,10 @@ export const AdminSimDataManagement: React.FC = () => {
     },
     {
       id: 2,
-      name: "Mobile",
+      name: "9 Mobile",
       icon: Images.mobile,
       totalgb: 200,
       used: 70,
-    },
-    {
-      id: 3,
-      name: "MTN",
-      icon: Images.mtn,
-      totalgb: 200,
-      used: 90,
     },
   ];
   return (
@@ -131,14 +131,15 @@ const styles = StyleSheet.create({
     padding: adjustSize(10),
     borderRadius: adjustSize(10),
     margin: adjustSize(10),
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: colors.grey,
-    height: adjustSize(176),
+    paddingVertical:20
+    // height: adjustSize(176),
   },
   _name: {
     fontSize: adjustSize(20),
     lineHeight: adjustSize(24),
-    color: "#6369A4",
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
     marginTop: adjustSize(10),
   },
@@ -156,5 +157,6 @@ const styles = StyleSheet.create({
   },
   _used: {
     fontSize: adjustSize(12),
+    color:colors.primary
   },
 });

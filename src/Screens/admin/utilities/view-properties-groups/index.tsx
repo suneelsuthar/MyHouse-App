@@ -18,11 +18,26 @@ import { rentalProperties } from "../../../../utils/data";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 
-interface ViewPropertiesGroupsProps
-  extends NativeStackScreenProps<AdminStackParamList, "ViewPropertiesGroups"> {}
+interface ViewPropertiesGroupsProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "ViewPropertiesGroups"
+> {}
 export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
   const navigation = useNavigation();
   const { propertyType = "rental" } = route.params || {};
+
+  const navigateToAdminProperties = (
+    screen: string,
+    params?: Record<string, any>
+  ) => {
+    (navigation as any).navigate("Admin", {
+      screen: "Properties",
+      params: {
+        screen,
+        params,
+      },
+    });
+  };
 
   return (
     <Screen
@@ -51,9 +66,9 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
         <View style={styles._searchrow}>
           <View style={styles._inputview}>
             <TextField
-              placeholderTextColor={colors.primaryLight}
+              placeholderTextColor={colors.grey}
               inputWrapperStyle={{ backgroundColor: colors.white }}
-              placeholder="Search property"
+              placeholder="Search"
               style={styles._input}
             />
           </View>
@@ -74,7 +89,7 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-              Property Groups
+              View Estates
             </Text>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
@@ -113,61 +128,65 @@ export function ViewPropertiesGroups({ route }: ViewPropertiesGroupsProps) {
               property={item}
               type={"group"}
               onAction={(action, property) => {
-                {
-                  console.log("===========+>", action);
-                }
                 if (action === "View Details" || action === "View") {
                   (navigation as any).navigate(
                     "PropertyDetails" as never,
-                    { propertyId: property.propertyId } as never
+                    { propertyId: property.propertyId } as never,
                   );
                 } else if (action === "Edit") {
-                  (navigation as any).navigate(
-                    "AdminAddProperty" as never,
-                    { propertyId: property.propertyId } as never
-                  );
+                  navigateToAdminProperties("AdminAddProperty", {
+                    propertyId: property.propertyId,
+                  });
                 } else if (action === "Manage Calendar") {
-                  (navigation as any).navigate(
-                    "AdminManageCalendar" as never,
-                    { propertyId: property.propertyId } as never
-                  );
+                  navigateToAdminProperties("AdminManageCalendar", {
+                    propertyId: property.propertyId,
+                  });
                 } else if (action === "Assign to agent") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "agent",
-                      title: "Assign Agent",
-                    } as never
-                  );
-                } else if (action === "Assign to FM") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "fm",
-                      title: "Assign Facility Manager",
-                    } as never
-                  );
+                  navigateToAdminProperties("AdminAssignProperties", {
+                    propertyId: property.propertyId,
+                    type: "agent",
+                    title: "Assign Agent",
+                  });
+                } else if (action === "Add Resident") {
+                  navigateToAdminProperties("AdminAssignProperties", {
+                    propertyId: property.propertyId,
+                    type: "agent",
+                    title: "Assign Agent",
+                  });
+                } else if (
+                  action === "Assign to FM" ||
+                  action === "Assign to Facility Manager"
+                ) {
+                  navigateToAdminProperties("AdminAssignProperties", {
+                    propertyId: property.propertyId,
+                    type: "fm",
+                    title: "Assign Facility Manager",
+                  });
                 } else if (action === "Register Tenant") {
-                  (navigation as any).navigate(
-                    "AdminAssignProperties" as never,
-                    {
-                      propertyId: property.propertyId,
-                      type: "tenant",
-                      title: "Register Tenant",
-                    } as never
-                  );
+                  navigateToAdminProperties("AdminAssignProperties", {
+                    propertyId: property.propertyId,
+                    type: "tenant",
+                    title: "Register Tenant",
+                  });
                 } else if (action === "Generate work request") {
-                  (navigation as any).navigate(
-                    "AdminGenerateWorkRequests" as never,
-                    { propertyId: property.propertyId } as never
-                  );
+                  navigateToAdminProperties("AdminGenerateWorkRequests", {
+                    propertyId: property.propertyId,
+                  });
                 } else if (action === "Create Visitor request") {
-                  (navigation as any).navigate(
-                    "AdminCreateVisitorRequests" as never,
-                    { propertyId: property.propertyId } as never
-                  );
+                  navigateToAdminProperties("AdminCreateVisitorRequests", {
+                    propertyId: property.propertyId,
+                  });
+                } else if (action === "Remove Resident") {
+                  navigateToAdminProperties("AdminAssignProperties", {
+                    propertyId: property.propertyId,
+                    type: "tenant",
+                    title: "Register Tenant",
+                    action: "delete",
+                  });
+                } else if (action === "Delete") {
+                  console.log("action=============>" + action);
+                } else {
+                  alert("action not found");
                 }
               }}
             />
@@ -306,7 +325,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     borderRadius: adjustSize(10),
     padding: adjustSize(10),
     marginVertical: adjustSize(5),
@@ -316,6 +335,8 @@ const styles = StyleSheet.create({
   },
   _num: {
     fontSize: adjustSize(20),
+    lineHeight: adjustSize(25),
+
     color: colors.white,
     fontFamily: typography.fonts.poppins.semiBold,
   },

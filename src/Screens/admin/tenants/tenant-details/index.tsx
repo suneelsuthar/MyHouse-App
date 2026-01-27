@@ -20,39 +20,43 @@ export function TenantDetails({ navigation }: any) {
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
     >
-      <Header title="Tenant Details" />
+      <Header title="Resident Details" />
       <View style={styles.dataMain}>
-        <View>
-          <View style={styles.profileMain}>
-            <Text style={styles.profileName}>J</Text>
-          </View>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.email}>abdfgc12345@gmail.com</Text>
-          <View style={styles.list}>
-            <Text style={styles.listTitle}>Date Added</Text>
-            <Text style={styles.listVal}>lorem ipsum</Text>
-          </View>
-          <View style={styles.list}>
-            <Text style={styles.listTitle}>Tenant Code/ID</Text>
-            <Text style={styles.listVal}>lorem ipsum</Text>
-          </View>
-          <View style={styles.list}>
-            <Text style={styles.listTitle}>Property </Text>
-            <Text style={styles.listVal}>lorem ipsum</Text>
-          </View>
-          <View style={styles.list}>
-            <Text style={styles.listTitle}>Property Group</Text>
-            <Text style={styles.listVal}>lorem ipsum</Text>
+        <View style={styles.profileMain}>
+          <Text style={styles.profileName}>J</Text>
+        </View>
+        <Text style={styles.name}>John Doe</Text>
+        <Text style={styles.email}>abdfgc12345@gmail.com</Text>
+        <View style={styles.userinfo}>
+          <View>
+            <View style={styles.list}>
+              <Text style={styles.listTitle}>Date Added</Text>
+              <Text style={styles.listVal}>lorem ipsum</Text>
+            </View>
+            <View style={styles.list}>
+              <Text style={styles.listTitle}>Tenant Code/ID</Text>
+              <Text style={styles.listVal}>lorem ipsum</Text>
+            </View>
+            <View style={styles.list}>
+              <Text style={styles.listTitle}>Property </Text>
+              <Text style={styles.listVal}>lorem ipsum</Text>
+            </View>
+            <View style={styles.list}>
+              <Text style={styles.listTitle}>Property Group</Text>
+              <Text style={styles.listVal}>lorem ipsum</Text>
+            </View>
           </View>
         </View>
-        <Button
-          text={"Back"}
-          preset="reversed"
-          // style={styles.generateBtn}
-          // textStyle={styles.generateText}
-          onPress={() => navigation.goBack()}
-        />
       </View>
+
+      <Button
+        text={"Back"}
+        preset="reversed"
+        style={{ marginVertical: 20, width: "95%", alignSelf: "center" }}
+        // style={styles.generateBtn}
+        // textStyle={styles.generateText}
+        onPress={() => navigation.goBack()}
+      />
     </Screen>
   );
 }
@@ -64,12 +68,12 @@ const styles = StyleSheet.create({
   },
   dataMain: {
     flex: 1,
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     paddingVertical: adjustSize(25),
     paddingHorizontal: adjustSize(10),
   },
   profileMain: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     elevation: 2,
     width: adjustSize(130),
     height: adjustSize(130),
@@ -79,8 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profileName: {
-    color: "#7E7E7E",
-    fontSize: adjustSize(91),
+    color: colors.white,
+    fontSize: adjustSize(50),
     lineHeight: adjustSize(140),
     fontFamily: typography.fonts.poppins.semiBold,
   },
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
   },
   email: {
     textAlign: "center",
-    color: colors.primaryLight,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
     fontSize: adjustSize(12),
     marginBottom: adjustSize(30),
@@ -103,16 +107,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: adjustSize(5),
+    marginVertical: adjustSize(5),
   },
   listTitle: {
-    color: colors.primary,
-    fontFamily: typography.fonts.poppins.semiBold,
-    fontSize: adjustSize(12),
+    color: colors.white,
+    fontSize: adjustSize(14),
   },
   listVal: {
-    color: colors.primaryLight,
-    fontFamily: typography.fonts.poppins.normal,
-    fontSize: adjustSize(12),
+    color: colors.white,
+    fontSize: adjustSize(14),
+  },
+  userinfo: {
+    backgroundColor: colors.primary,
+    borderRadius: 15,
+    padding: 15,
+    paddingVertical: 25,
   },
 });

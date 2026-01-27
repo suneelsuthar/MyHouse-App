@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     height: adjustSize(47),
     borderRadius: 10,
     paddingHorizontal: 8,
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     paddingLeft: 15,
   },
   icon: {

@@ -5,6 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Modal,
+  Alert,
 } from "react-native";
 import { Screen, Text, Header2, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
@@ -15,6 +17,8 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import { Entypo } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
@@ -33,12 +37,15 @@ const sortOptions = [
 ];
 
 export const VisitorRequests: React.FC = () => {
-  const navigation = useNavigation<NavigationProp>();
+  const navigation: any = useNavigation<NavigationProp>();
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
+  const [revokeModalVisible, setRevokeModalVisible] = useState(false);
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+
   const [visitorData, setvisitorData] = useState([
     {
       id: 1,
@@ -98,12 +105,30 @@ export const VisitorRequests: React.FC = () => {
   const handleVisitorPress = (visitorId: number) => {
     navigation.navigate("AdminVisitorDetails", {
       visitorId: visitorId.toString(),
+      type: "requests",
     });
   };
 
   const filterData = visitorData.filter((item) => {
     return item.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
+  const confirmAlertSecurity = () => {
+    setAlertModalVisible(false);
+    Alert.alert(
+      "Security Alerted",
+      "Security has been cancelled about this visitor.",
+    );
+  };
+
+  const handleRevoke = (visitorId: number) => {
+    setRevokeModalVisible(true);
+  };
+
+  const confirmRevoke = () => {
+    setRevokeModalVisible(false);
+    Alert.alert("Access Revoked", "Visitor access has been revoked.");
+    navigation.goBack();
+  };
 
   return (
     <Screen
@@ -211,7 +236,7 @@ export const VisitorRequests: React.FC = () => {
         {/* Property Group Label and Sort */}
         <View style={styles.listHeader}>
           <Text style={styles.propertyGroupLabel} weight="semiBold">
-            Estate
+            Visitor Requests
           </Text>
           <View style={styles.sortContainer}>
             <DropdownComponent
@@ -260,7 +285,7 @@ export const VisitorRequests: React.FC = () => {
             <View style={styles.rightCol}>
               <TouchableOpacity
                 onPress={() =>
-                  menuOpenId ? setMenuOpenId(null) : setMenuOpenId(visitor.id)
+                 setMenuOpenId(visitor.id)
                 }
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 style={styles.moreBtn}
@@ -288,6 +313,7 @@ export const VisitorRequests: React.FC = () => {
                   style={styles.menuItem}
                   onPress={() => {
                     setMenuOpenId(null);
+                    handleRevoke(visitor.id);
                   }}
                 >
                   <Text style={styles.menuText}>Revoke Invitation</Text>
@@ -296,17 +322,101 @@ export const VisitorRequests: React.FC = () => {
                   style={styles.menuItem}
                   onPress={() => {
                     setMenuOpenId(null);
+                    setAlertModalVisible(true);
                   }}
                 >
-                  <Text style={[styles.menuText, styles.menuTextMuted]}>
-                    Alert Security
-                  </Text>
+                  <Text style={[styles.menuText]}>Alert Security</Text>
                 </TouchableOpacity>
               </View>
             )}
           </View>
         ))}
       </ScrollView>
+      {/* Revoke Modal */}
+      <Modal
+        visible={revokeModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setRevokeModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setRevokeModalVisible(false)}
+            >
+              <AntDesign name="closecircleo" size={24} color={"#D62828"} />
+            </TouchableOpacity>
+
+            <Text style={styles.modalTitle}>Are you Sure?</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to You want to revoke this invitation?
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={confirmRevoke}
+              >
+                <Text style={styles.cancelButtonText}>Remove</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={() => setRevokeModalVisible(false)}
+              >
+                <Text style={styles.confirmButtonText}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Alert Security Modal */}
+      <Modal
+        visible={alertModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setAlertModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setAlertModalVisible(false)}
+            >
+              <AntDesign name="closecircleo" size={24} color={"#D62828"} />
+            </TouchableOpacity>
+
+            <Text style={styles.modalTitle}>Are you Sure?</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to You want to Alert Security?
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => {
+                  setAlertModalVisible(false);
+                  Alert.alert(
+                    "Security Alerted",
+                    "Security has been alerted about this visitor.",
+                  );
+                }}
+              >
+                <Text style={styles.alertCancelButtonText}>Alert</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={confirmAlertSecurity}
+              >
+                <Text style={styles.confirmButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 };
@@ -596,6 +706,81 @@ const styles = StyleSheet.create({
   generateButtonText: {
     color: colors.white,
     fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    backgroundColor: colors.fill,
+    borderRadius: adjustSize(16),
+    padding: spacing.xl,
+    marginHorizontal: spacing.lg,
+    minWidth: adjustSize(300),
+    position: "relative",
+  },
+  closeButton: {
+    position: "absolute",
+    top: adjustSize(16),
+    right: adjustSize(16),
+    zIndex: 1,
+  },
+  modalTitle: {
+    fontSize: adjustSize(18),
+    fontFamily: typography.fonts.poppins.semiBold,
+    color: colors.primary,
+    textAlign: "center",
+    marginBottom: spacing.md,
+    marginTop: adjustSize(50),
+  },
+  modalMessage: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.normal,
+    color: colors.primary,
+    textAlign: "center",
+    marginBottom: spacing.xl,
+    lineHeight: adjustSize(20),
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: spacing.md,
+    height: adjustSize(47),
+  },
+  cancelButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#FF6B6B",
+    borderRadius: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+    height: adjustSize(47),
+  },
+  cancelButtonText: {
+    fontSize: adjustSize(14),
+    color: "#FF6B6B",
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  alertCancelButtonText: {
+    fontSize: adjustSize(14),
+    color: "#FF6B6B",
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  confirmButton: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    borderRadius: adjustSize(10),
+    alignItems: "center",
+    justifyContent: "center",
+    height: adjustSize(47),
+  },
+  confirmButtonText: {
+    fontSize: adjustSize(14),
+    color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
   },
 });

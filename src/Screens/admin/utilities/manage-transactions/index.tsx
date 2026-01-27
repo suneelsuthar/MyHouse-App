@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 import {
   View,
   StyleSheet,
@@ -11,7 +11,7 @@ import {
   TextInput,
   Alert,
   Platform,
-  Share
+  Share,
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, spacing, typography } from "../../../../theme";
@@ -94,8 +94,10 @@ const transactionData = [
   },
 ];
 
-interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<AdminStackParamList, "ManageTransactions"> {}
+interface AdminPropertyManagementProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "ManageTransactions"
+> {}
 export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
   const navigation = useNavigation<NavigationProp>();
   const [search, setSearch] = useState("");
@@ -273,7 +275,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             <div class="row">
               <span class="label">Reference Number:</span>
               <span class="value">REF-${Math.floor(
-                100000 + Math.random() * 900000
+                100000 + Math.random() * 900000,
               )}</span>
             </div>
           </div>
@@ -301,13 +303,13 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             <div class="row">
               <span class="label">Property ID:</span>
               <span class="value">PROP-${Math.floor(
-                1000 + Math.random() * 9000
+                1000 + Math.random() * 9000,
               )}</span>
             </div>
             <div class="row">
               <span class="label">Meter Number:</span>
               <span class="value">MTR-${Math.floor(
-                10000 + Math.random() * 90000
+                10000 + Math.random() * 90000,
               )}</span>
             </div>
           </div>
@@ -343,7 +345,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
 
   const showToastMessage = (
     message: string,
-    type: "success" | "error" = "success"
+    type: "success" | "error" = "success",
   ) => {
     setToastMessage(message);
     setToastType(type);
@@ -352,7 +354,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
   };
 
   const generateAndSharePDF = async (
-    action: "share" | "download" = "download"
+    action: "share" | "download" = "download",
   ) => {
     try {
       // Set the appropriate loading state
@@ -373,26 +375,29 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
       });
 
       // Small delay to ensure the PDF is fully generated
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (action === "share") {
         try {
           await Share.share({
-            title: 'Transaction Receipt',
-            message: 'Here is your transaction receipt',
+            title: "Transaction Receipt",
+            message: "Here is your transaction receipt",
             url: `file://${uri}`,
           });
-          
+
           showToastMessage("Receipt shared successfully!");
         } catch (shareError) {
-          console.error('Error sharing:', shareError);
-          showToastMessage("Failed to share receipt. Please try again.", "error");
+          console.error("Error sharing:", shareError);
+          showToastMessage(
+            "Failed to share receipt. Please try again.",
+            "error",
+          );
         }
       } else {
         // For download, we'll use the system's save dialog
         await Share.share({
-          title: 'Save Transaction Receipt',
-          message: 'Save your transaction receipt',
+          title: "Save Transaction Receipt",
+          message: "Save your transaction receipt",
           url: `file://${uri}`,
         });
         showToastMessage("Receipt is ready to be saved!");
@@ -401,7 +406,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
       console.error("Error handling PDF:", error);
       showToastMessage(
         `Failed to ${action} receipt. Please try again.`,
-        "error"
+        "error",
       );
     } finally {
       // Reset the appropriate loading state
@@ -423,7 +428,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
       (transaction.amount &&
         transaction.amount.toLowerCase().includes(search.toLowerCase())) ||
       (transaction.type &&
-        transaction.type.toLowerCase().includes(search.toLowerCase()))
+        transaction.type.toLowerCase().includes(search.toLowerCase())),
   );
 
   const handleCloseModal = () => {
@@ -462,22 +467,11 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
         }
       />
       {/* Search Bar */}
-      <View style={styles._searchrow}>
-        <View style={styles._inputview}>
-          <TextField
-            placeholderTextColor={colors.primaryLight}
-            placeholder="Search"
-            style={styles._input}
-            value={search}
-            onChangeText={(text) => setSearch(text as string)}
-          />
-        </View>
-      </View>
       {/* Recent Notifications */}
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Transaction History
+            Transaction
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -491,6 +485,18 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
               dropdownStyle={styles.customDropdownStyle}
               placeholderStyle={styles.customPlaceholderStyle}
               selectedTextStyle={styles.customSelectedTextStyle}
+            />
+          </View>
+        </View>
+        <View style={styles._searchrow}>
+          <View style={styles._inputview}>
+            <TextField
+              placeholderTextColor={colors.primaryLight}
+              placeholder="Search"
+              style={styles._input}
+              value={search}
+              onChangeText={(text) => setSearch(text as string)}
+              inputWrapperStyle={{ backgroundColor: colors.white }}
             />
           </View>
         </View>
@@ -513,9 +519,25 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
           >
             <WithLocalSvg asset={Images.thistory} />
             <View style={styles._cardinfo}>
-              <Text text="20 Feb , 2025" style={styles._date} />
-              <Text weight="semiBold" text="15,00,000" style={styles._price} />
-              <Text text={item.type} style={styles._type} />
+              <Text
+                text={"Utility Bill Payment"}
+                style={styles._type}
+                weight="semiBold"
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text text="20 Feb , 2025" style={styles._date} />
+                <Text
+                  weight="semiBold"
+                  text="15,00,000"
+                  style={styles._price}
+                />
+              </View>
             </View>
             <TouchableOpacity
               style={styles.menuButton}
@@ -523,7 +545,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
                 setDropdownVisible(
                   dropdownVisible === parseInt(item.id)
                     ? null
-                    : parseInt(item.id)
+                    : parseInt(item.id),
                 )
               }
             >
@@ -543,10 +565,10 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
                     setActionType("view");
                   }}
                 >
-                  <Text style={styles.menuText}>View Details</Text>
+                  <Text style={styles.menuText}>View Receipt</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.menuItem}
                   onPress={() => {
                     setActionType("download");
@@ -555,7 +577,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
                   }}
                 >
                   <Text style={[styles.menuText]}>Download</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             )}
           </TouchableOpacity>
@@ -643,34 +665,27 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
                   text="Token "
                   style={[styles._rowlabel, { marginRight: 5 }]}
                 />
-                {/* <Text text="T0001" style={[styles._rowvalue, { fontFamily: 'Poppins-Medium' }]} /> */}
               </View>
-              <TouchableOpacity style={styles.copyIcon}>
-                <Ionicons
-                  name="copy-outline"
-                  size={20}
-                  color={colors.primary}
-                />
-              </TouchableOpacity>
+              <Text text="234556" style={styles._rowvalue} />
             </View>
-            {actionType === "download" && (
-              <View style={[styles._row, { gap: 10 }]}>
-                <Button
-                  text={isDownloading ? "Generating..." : "Download"}
-                  preset="reversed"
-                  style={styles.copyButton}
-                  onPress={handleDownloadReceipt}
-                  disabled={isDownloading || isSharing}
-                />
-                <Button
+            {/* {actionType === "download" && ( */}
+            <View style={[styles._row, { gap: 10 }]}>
+              <Button
+                text={isDownloading ? "Generating..." : "Download"}
+                preset="reversed"
+                style={styles.copyButton}
+                onPress={handleDownloadReceipt}
+                disabled={isDownloading || isSharing}
+              />
+              {/* <Button
                   text={isSharing ? "Preparing..." : "Share"}
                   preset="reversed"
                   style={styles.copyButton}
                   onPress={handleShareReceipt}
                   disabled={isSharing || isDownloading}
-                />
-              </View>
-            )}
+                /> */}
+            </View>
+            {/* )} */}
           </View>
         </View>
       </Modal>
@@ -704,6 +719,7 @@ const styles = StyleSheet.create({
 
   section: {
     marginHorizontal: adjustSize(10),
+    marginTop: 20,
   },
   sectionTitle: {
     fontSize: adjustSize(15),
@@ -750,6 +766,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 5,
     alignItems: "center",
+    marginTop: 15,
   },
   _addbtn: {
     backgroundColor: colors.primary,
@@ -775,7 +792,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   card: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     padding: adjustSize(10),
     minHeight: adjustSize(96),
     zIndex: 1,
@@ -929,11 +946,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   _card: {
-    borderBottomWidth: 0.6,
-    borderColor: colors.grey,
     padding: adjustSize(10),
     flexDirection: "row",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
+    backgroundColor: colors.white,
+    marginBottom: 10,
+    marginHorizontal: 10,
+    borderRadius: 7,
+    height: adjustSize(82),
   },
   _cardinfo: {
     flex: 1,
@@ -950,15 +975,15 @@ const styles = StyleSheet.create({
   },
   _type: {
     color: colors.primary,
-    fontSize: adjustSize(10),
+    fontSize: adjustSize(15),
   },
   menuButton: {
     padding: adjustSize(4),
   },
   menuBox: {
     position: "absolute",
-    right: 10,
-    top: 40,
+    right: 30,
+    top: 20,
     backgroundColor: colors.white,
     borderRadius: 8,
     padding: spacing.xs,
@@ -968,10 +993,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     zIndex: 1000,
-    minWidth: 180,
+    minWidth: 150,
   },
   menuItem: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 12,
     borderBottomColor: colors.border,
   },
