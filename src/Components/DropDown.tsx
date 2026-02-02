@@ -174,10 +174,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical:10
   },
   itemText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: adjustSize(12),
     color: '#292766',
     fontFamily: typography.fonts.poppins.normal,
   },

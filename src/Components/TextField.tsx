@@ -135,7 +135,7 @@ export const TextField = forwardRef(function TextField(
     borderColor,
     ...TextInputProps
   } = props;
-  const input = useRef<TextInput>();
+  const input = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = React.useState(false);
 
   const disabled = TextInputProps.editable === false || status === "disabled";
@@ -164,7 +164,7 @@ export const TextField = forwardRef(function TextField(
     $inputStyle,
     disabled && { color: colors.textDim },
     isRTL && { textAlign: "right" as TextStyle["textAlign"] },
-    TextInputProps.multiline && { height: "auto" },
+    TextInputProps.multiline && ({ textAlignVertical: "top" } as TextStyle),
     $inputStyleOverride,
   ];
 
@@ -187,6 +187,8 @@ export const TextField = forwardRef(function TextField(
   const handleBlur = () => {
     setIsFocused(false);
   };
+
+  const { onFocus, onBlur, ...restTextInputProps } = TextInputProps;
   // left accessory should not reregister as a dependency
 
   // render left accessory using useMemo
@@ -234,14 +236,20 @@ export const TextField = forwardRef(function TextField(
           <TextInput
             ref={input}
             underlineColorAndroid={colors.transparent}
-            textAlignVertical="top"
+            // textAlignVertical="top"
             placeholder={placeholderContent}
             placeholderTextColor={colors.grey}
-            {...TextInputProps}
+            {...restTextInputProps}
             editable={!disabled}
-            style={[$inputStyles]}
-            onFocus={borderColor !== null && handleFocus} // Set focus state to true on focus
-            onBlur={handleBlur} // Set focus state to false on blur
+            style={$inputStyles}
+            onFocus={(e) => {
+              if (borderColor !== null) handleFocus();
+              onFocus?.(e);
+            }}
+            onBlur={(e) => {
+              handleBlur();
+              onBlur?.(e);
+            }}
           />
 
           {!!RightAccessory && (

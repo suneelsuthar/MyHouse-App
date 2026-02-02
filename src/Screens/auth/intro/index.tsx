@@ -50,7 +50,7 @@ export function Intro({ navigation }: NativeStackScreenProps<AuthStackParamList,
 
   const onFinish = async () => {
     await AsyncStorage.setItem("hasLaunched", "true");
-    navigation.replace("GettingStart");
+    navigation.replace("Login");
   };
 
   return (

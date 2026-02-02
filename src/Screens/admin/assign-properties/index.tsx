@@ -12,7 +12,6 @@ type Agent = {
   name: string;
   code: string;
   avatar: string;
-  
 };
 
 const MOCK_AGENTS: Agent[] = [
@@ -48,11 +47,7 @@ const MOCK_AGENTS: Agent[] = [
   },
 ];
 
-export function AdminAssignProperties({
-  route,
-  navigation,
-  action,
-}: any) {
+export function AdminAssignProperties({ route, navigation, action }: any) {
   const assignType = route?.params?.type;
   const actionType = route?.params?.action;
 
@@ -68,14 +63,17 @@ export function AdminAssignProperties({
     }
   }, [assignType]);
   const searchPlaceholder = useMemo(() => {
+    console.log(assignType);
     switch (assignType) {
       case "fm":
         return "Search facility manager";
       case "tenant":
         return "Search tenant";
+      case "primary-agent":
+        return "Search Primary Agent";
       case "agent":
       default:
-        return "Search agent";
+        return "Search";
     }
   }, [assignType]);
   const [query, setQuery] = useState("");
@@ -93,7 +91,7 @@ export function AdminAssignProperties({
     const q = query.trim().toLowerCase();
     if (!q) return MOCK_AGENTS;
     return MOCK_AGENTS.filter(
-      (a) => a.name.toLowerCase().includes(q) || a.code.includes(q)
+      (a) => a.name.toLowerCase().includes(q) || a.code.includes(q),
     );
   }, [query]);
 
@@ -115,7 +113,7 @@ export function AdminAssignProperties({
 
   const canAssign = useMemo(
     () => Object.entries(selected).some(([id, v]) => v),
-    [selected]
+    [selected],
   );
 
   const onAssign = () => {
@@ -155,7 +153,7 @@ export function AdminAssignProperties({
               )}
             </Pressable>
           </View>
-          {isChecked && (assignType === "primary-agent") && (
+          {isChecked && assignType === "primary-agent" && (
             <View style={styles.commissionRow}>
               <Text style={styles.commissionLabel}>Commission %:</Text>
               <View
@@ -202,7 +200,7 @@ export function AdminAssignProperties({
             placeholderTextColor={colors.primaryLight}
           />
           <View style={styles.searchIconBox}>
-            <Feather name="search" size={18} color={colors.primaryLight} />
+            <Feather name="search" size={28} color={"#737373"} />
           </View>
         </View>
 
@@ -217,28 +215,25 @@ export function AdminAssignProperties({
       </View>
       {/* Bottom Assign Button */}
       <View style={styles.bottomBar}>
-        {
-          actionType && actionType === "delete" ? (
-            <Button
-              text={loading ? "Deleting..." : "Delete"}
-              preset="reversed"
-              style={[styles.assignBtn,{backgroundColor:"#D62828"}]}
-              textStyle={[styles.assignText,{color:colors.white}]}
-              onPress={onAssign}
-              disabled={!canAssign || loading}
-            />
-          ) : (
-            <Button
-              text={loading ? "Assigning..." : "Assign"}
-              preset="reversed"
-              style={styles.assignBtn}
-              textStyle={styles.assignText}
-              onPress={onAssign}
-              disabled={!canAssign || loading}
-            />
-          )
-        }
-       
+        {actionType && actionType === "delete" ? (
+          <Button
+            text={loading ? "Deleting..." : "Delete"}
+            preset="reversed"
+            style={[styles.assignBtn, { backgroundColor: "#D62828" }]}
+            textStyle={[styles.assignText, { color: colors.white }]}
+            onPress={onAssign}
+            disabled={!canAssign || loading}
+          />
+        ) : (
+          <Button
+            text={loading ? "Assigning..." : "Assign"}
+            preset="reversed"
+            style={styles.assignBtn}
+            textStyle={styles.assignText}
+            onPress={onAssign}
+            disabled={!canAssign || loading}
+          />
+        )}
       </View>
     </Screen>
   );
@@ -251,7 +246,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.md,
   },
   searchWrap: {
     marginTop: spacing.md,
@@ -355,7 +350,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     borderWidth: 1,
     borderColor: "#D9D9D9",
-    backgroundColor:colors.white
+    backgroundColor: colors.white,
   },
   commValue: {
     color: colors.primary,

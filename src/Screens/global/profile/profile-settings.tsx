@@ -60,9 +60,10 @@ export const ProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         <TouchableOpacity>
@@ -81,9 +82,10 @@ export const ProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Confirm Password */}
@@ -97,9 +99,10 @@ export const ProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Save Button */}
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(35),
   },
   forgotPassword: {
-    color: "#7E7E7E",
+    color: colors.primary,
     fontSize: adjustSize(10),
     fontFamily: typography.fonts.poppins.normal,
     textAlign: "right",

@@ -168,6 +168,7 @@ export function LoginScreen(props: LoginScreenProps) {
                 placeholder="Email"
                 style={{ color: "white" }}
                 placeholderTextColor={"#B0B0B0"}
+                inputWrapperStyle={{backgroundColor: colors.primary}}
                 helper={errors.email?.message}
                 status={errors.email ? "error" : undefined}
                 LeftAccessory={() => (
@@ -204,6 +205,7 @@ export function LoginScreen(props: LoginScreenProps) {
                 placeholder="Password"
                 containerStyle={styles.textField}
                 helper={errors.password?.message}
+                inputWrapperStyle={{backgroundColor: colors.primary}}
                 style={{ color: "white" }}
                 status={errors.password ? "error" : undefined}
                 LeftAccessory={() => (

@@ -102,6 +102,7 @@ export default function MultiSelectDropdown({
             }
             if (!open) setOpen(true);
           }}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
         <TouchableOpacity
           onPress={() => setOpen((s) => !s)}
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dropdownPanel: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(10),
     marginTop: adjustSize(8),
     borderWidth: StyleSheet.hairlineWidth,

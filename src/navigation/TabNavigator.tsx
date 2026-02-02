@@ -49,6 +49,7 @@ import {
   AdminGenerateWorkRequests,
   AdminCreateVisitorRequests,
   AdminBookingDetails,
+  AdminAddEditCharges,
   // Property management screens are imported directly from their files
   // Other admin screens
   FacilityManagement,
@@ -89,7 +90,7 @@ import {
   ViewMeterDetails,
   EditCreateMeter,
   ViewPropertiesGroups,
-  EditGroup,  
+  EditGroup,
   AddGroup,
   AdminManageBookings,
   TenantDetails,
@@ -108,6 +109,7 @@ import {
   Reviews,
   SelectSubscriptionplans,
   AdminSignAgreement,
+  AdminUtilitiesCharges,
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -158,6 +160,7 @@ const TenantWalletStack = createNativeStackNavigator<TenantStackParamList>();
 import { UtilitiesSummary } from "../Screens/tenant/utilities/Summary";
 import { UtilitiesMyMeter } from "../Screens/tenant/utilities/MyMeter";
 import { UtilitiesCharges } from "../Screens/tenant/utilities/Charges";
+
 import { TenantUtilitiesTransactions } from "../Screens/tenant/utilities/Transactions";
 import { TenantUtilitiesVendingHistory } from "../Screens/tenant/utilities/VendingHistory";
 import { TenantUtilitiesReportIssue } from "../Screens/tenant/utilities/ReportIssue";
@@ -531,7 +534,21 @@ const SecurityStackNavigator = () => (
 const AdminHomeStackNavigator = () => (
   <AdminHomeStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminHomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
-    <AdminHomeStack.Screen name="AdminUtilitiesDashboard" component={AdminUtilitiesDashboard} />
+    <AdminHomeStack.Screen
+      name="AdminUtilitiesDashboard"
+      component={AdminUtilitiesDashboard}
+    />
+    <AdminHomeStack.Screen
+      name="AdminUtilitiesCharges"
+      component={AdminUtilitiesCharges}
+    />
+     <AdminHomeStack.Screen
+      name="AdminAddEditCharges"
+      component={AdminAddEditCharges}
+    />
+
+    
+
     {/* Register cross-section Admin screens here for global access */}
     <AdminHomeStack.Screen name="PropertyDetails" component={PropertyDetails} />
     <AdminHomeStack.Screen
@@ -1229,7 +1246,6 @@ const FacilityManagerTabs = () => (
           routeName === "AdminGenerateWorkRequests" ||
           routeName === "TenantDetails" ||
           routeName === "AdminSignAgreement" ||
-
           routeName === "AdminCreateVisitorRequests"
         ) {
           return {
@@ -1501,8 +1517,7 @@ const AdminTabs = () => (
             title: "Booking",
             tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
           };
-        }
-        else if (routeName === "AdminSignAgreement") {
+        } else if (routeName === "AdminSignAgreement") {
           return {
             title: "Booking",
             tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],

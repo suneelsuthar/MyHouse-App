@@ -54,6 +54,8 @@ export const Step1: React.FC<Step1Props> = ({ mode, value, onChange }) => {
   return (
     <View>
       {/* Dropdowns */}
+      {console.log(mode)}
+      {mode === "add" &&
       <View>
         <Text weight="medium" style={styles.ddLabel}>User type:</Text>
         <TouchableOpacity
@@ -117,6 +119,7 @@ export const Step1: React.FC<Step1Props> = ({ mode, value, onChange }) => {
           </View>
         )}
       </View>
+}
 
       <Text weight="semiBold" style={[styles.title,{marginTop:30}]}>
         What Category is your listing?

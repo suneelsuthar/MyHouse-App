@@ -50,7 +50,7 @@ export const Analysis: React.FC = (props: any) => {
   const openPicker = (mode: "start" | "end") => {
     setPickerMode(mode);
     setTempDate(
-      mode === "start" ? startDate || new Date() : endDate || new Date()
+      mode === "start" ? startDate || new Date() : endDate || new Date(),
     );
     setShowPicker(true);
   };
@@ -65,7 +65,7 @@ export const Analysis: React.FC = (props: any) => {
       if (startDate && date < startDate) {
         Alert.alert(
           "Invalid Date",
-          "End date cannot be earlier than start date."
+          "End date cannot be earlier than start date.",
         );
       } else {
         setEndDate(date);
@@ -124,20 +124,19 @@ export const Analysis: React.FC = (props: any) => {
         tabs={[
           {
             label: "Power Consumption",
-            activeIcon: <PowerConsumptionIcon color={colors.primary} />,
+            activeIcon: <PowerConsumptionIcon color={colors.white} />,
             inactiveIcon: <PowerConsumptionIcon color={colors.white} />,
           },
           {
             label: "Vending History",
-            activeIcon: <VendingHistoryIcon color={colors.primary} />,
+            activeIcon: <VendingHistoryIcon color={colors.white} />,
             inactiveIcon: <VendingHistoryIcon color={colors.white} />,
           },
         ]}
         activeTab={activeTab}
         onTabChange={(label: string) => setActiveTab(label)}
       >
-        
-          <ScrollView>
+        <ScrollView>
           {/* First Dropdown */}
           <Text style={styles.title}>Select by</Text>
           <DropdownComponent
@@ -145,8 +144,8 @@ export const Analysis: React.FC = (props: any) => {
               { label: "Property", value: "Property" },
               { label: "Property Group", value: "Property Group" },
             ]}
-            label="Choose type"
-            placeholder="Select by"
+            label="Property"
+            placeholder="Property"
             value={selectBy}
             onChangeValue={(v: string) => {
               setSelectBy(v);
@@ -213,7 +212,7 @@ export const Analysis: React.FC = (props: any) => {
               </View>
 
               {/* Date Pickers */}
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -240,7 +239,7 @@ export const Analysis: React.FC = (props: any) => {
                   </Text>
                   <WithLocalSvg asset={Images.calendar} />
                 </Pressable>
-              </View>
+              </View> */}
 
               {/* Units */}
               <Text style={styles.units}>300 units</Text>
@@ -282,6 +281,14 @@ const styles = StyleSheet.create({
   },
   multiSelect: {
     marginTop: 8,
+    padding:0,
+    // height:adjustSize(50),
+    borderRadius:15,
+     shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
   },
   label: {
     fontSize: adjustSize(12),
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -358,7 +365,7 @@ const styles = StyleSheet.create({
   dtButton: {
     height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.md,
     alignItems: "center",
     justifyContent: "space-between",
@@ -388,6 +395,6 @@ const styles = StyleSheet.create({
     height: adjustSize(0.2),
     backgroundColor: "#B0B0B0",
     marginTop: adjustSize(35),
-    opacity:0.9
+    opacity: 0.9,
   },
 });

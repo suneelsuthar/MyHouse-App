@@ -8,10 +8,16 @@ import {
   Switch,
 } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
-import { Screen, Text, Header2, TextField } from "../../../../Components";
+import {
+  Screen,
+  Text,
+  Header2,
+  TextField,
+  Button,
+} from "../../../../Components";
 import { colors, typography, adjustSize } from "../../../../theme";
 import DropdownComponent from "../../../../Components/DropDown";
-
+import { useNavigation } from "@react-navigation/native";
 const CounterRow = ({
   label,
   value,
@@ -81,7 +87,7 @@ const ToggleRow = ({
 
         {showInfo && (
           <View style={{ position: "relative", marginLeft: 4 }}>
-            <Tooltip
+            {/* <Tooltip
               isVisible={tooltipVisible}
               content={
                 <Text
@@ -116,8 +122,8 @@ const ToggleRow = ({
               arrowSize={{ width: 10, height: 5 }}
             >
               <View style={{ width: 0, height: 0 }} />
-            </Tooltip>
-            <TouchableOpacity
+            </Tooltip> */}
+            {/* <TouchableOpacity
               style={styles._info}
               onPress={onTooltipToggle}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -132,7 +138,7 @@ const ToggleRow = ({
               >
                 ?
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         )}
       </View>
@@ -141,7 +147,7 @@ const ToggleRow = ({
         onValueChange={onChange}
         trackColor={{ false: colors.greylight, true: colors.primary }}
         thumbColor={colors.white}
-        style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+        style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
       />
     </View>
   );
@@ -150,7 +156,6 @@ const ToggleRow = ({
 export const AdminUtilitiesSettings: React.FC = () => {
   // dropdown states
   const [propertyGroup, setPropertyGroup] = useState<string | undefined>();
-  const [utilityType, setUtilityType] = useState<string | undefined>();
   const [unitOfMeasurement, setUnitOfMeasurement] = useState<string>("₦");
   const [grandPeriodBasis, setGrandPeriodBasis] =
     useState<string>("Calendar Day");
@@ -162,7 +167,6 @@ export const AdminUtilitiesSettings: React.FC = () => {
   const [enablePeriodThreshold, setEnablePeriodThreshold] = useState(false);
   const [enableLimitPerPayment, setEnableLimitPerPayment] = useState(false);
   const [allowEmergencyCredit, setAllowEmergencyCredit] = useState(false);
-  const [lowCreditWarning, setLowCreditWarning] = useState(false);
 
   // text fields
   const [dayOfMonth, setDayOfMonth] = useState("");
@@ -171,23 +175,13 @@ export const AdminUtilitiesSettings: React.FC = () => {
   const [maxQty, setMaxQty] = useState<any>("");
   const [maxAmount, setMaxAmount] = useState("");
   const [emergencyQty, setEmergencyQty] = useState("");
-  const [lowCredit1, setLowCredit1] = useState("");
-  const [lowCredit2, setLowCredit2] = useState("");
 
   // Tooltip visibility states
   const [periodThresholdTooltip, setPeriodThresholdTooltip] = useState(false);
-  const [gracePeriodTooltip, setGracePeriodTooltip] = useState(false);
-  const [dayOfMonthTooltip, setDayOfMonthTooltip] = useState(false);
-  const [minQtyTooltip, setMinQtyTooltip] = useState(false);
-  const [minAmountTooltip, setMinAmountTooltip] = useState(false);
-  const [maxQtyTooltip, setMaxQtyTooltip] = useState(false);
-  const [maxAmountTooltip, setMaxAmountTooltip] = useState(false);
   const [emergencyCreditTooltip, setEmergencyCreditTooltip] = useState(false);
-  const [emergencyQtyTooltip, setEmergencyQtyTooltip] = useState(false);
-  const [lowCreditTooltip, setLowCreditTooltip] = useState(false);
-  const [lowCredit1Tooltip, setLowCredit1Tooltip] = useState(false);
-  const [lowCredit2Tooltip, setLowCredit2Tooltip] = useState(false);
   const [limitPerPaymentTooltip, setLimitPerPaymentTooltip] = useState(false);
+
+  const navigation = useNavigation();
 
   // dynamic unit symbol
   const unitSymbol = unitOfMeasurement === "₦" ? "₦" : "₦";
@@ -195,7 +189,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
   return (
     <Screen
       preset="fixed"
-      safeAreaEdges={["top"]}
+      safeAreaEdges={["top", "bottom"]}
       contentContainerStyle={styles.container}
     >
       <Header2 title="Settings" onNotificationPress={() => {}} />
@@ -206,7 +200,9 @@ export const AdminUtilitiesSettings: React.FC = () => {
           paddingBottom: adjustSize(40),
         }}
       >
-        <Text style={styles.heading}>Utility Settings</Text>
+        <Text style={[styles.heading, { marginTop: 40 }]}>
+          Utility Settings
+        </Text>
 
         {/* Property Group (Required First) */}
         <Text style={styles.title}>Select by property group</Text>
@@ -229,7 +225,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
         {propertyGroup && (
           <>
             {/* Utility Type */}
-            <Text style={styles.title}>Utility type</Text>
+            {/* <Text style={styles.title}>Utility type</Text>
             <DropdownComponent
               data={[{ label: "Electricity", value: "Electricity" }]}
               label="Choose type"
@@ -240,20 +236,14 @@ export const AdminUtilitiesSettings: React.FC = () => {
               placeholderStyle={styles.dropdownPlaceholder}
               selectedTextStyle={styles.dropdownSelected}
               rightIconColor={colors.primary}
-            />
+            /> */}
 
-            <Text style={[styles.rowLabel, { marginTop: adjustSize(20) }]}>
-              Rate Per Unit
-            </Text>
-            <View style={{ flex: 1 }}>
-              <TextField
-                placeholder={"0"}
-                value={ratePerUnit.toString()}
-                onChangeText={(text) => setRatePerUnit(Number(text) || 0)}
-                keyboardType="numeric"
-                style={{ flex: 1 }}
-                placeholderTextColor={colors.primaryLight}
-                inputWrapperStyle={{ flex: 1 }}
+            <View style={{ marginTop: adjustSize(20) }}>
+              <CounterRow
+                label="Rate Per Unit"
+                value={ratePerUnit}
+                setValue={setRatePerUnit}
+                min={0}
               />
             </View>
 
@@ -298,7 +288,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   <Text style={[styles.title, { marginTop: adjustSize(10) }]}>
                     Grace Period Basis:
                   </Text>
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={gracePeriodTooltip}
                     content={
                       <Text
@@ -343,7 +333,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
                 <DropdownComponent
                   data={[
@@ -364,6 +354,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
+                    marginTop: 20,
                   }}
                 >
                   <Text style={styles.title}>
@@ -371,7 +362,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                       ? "Day of the Month"
                       : "No. of Days"}
                   </Text>
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={dayOfMonthTooltip}
                     content={
                       <Text
@@ -416,7 +407,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
                 <TextField
                   placeholder={`Enter Day${
@@ -427,6 +418,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   placeholderTextColor={colors.primaryLight}
                   keyboardType="numeric"
                   style={styles.input}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
                 />
               </>
             )}
@@ -520,7 +512,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                     Minimum Quantity Per Period ({unitSymbol}):
                   </Text>
 
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={minQtyTooltip}
                     content={
                       <Text
@@ -565,7 +557,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
 
                 <TextField
@@ -575,6 +567,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   placeholderTextColor={colors.primaryLight}
                   keyboardType="numeric"
                   style={styles.input}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
                 />
 
                 {/* <Text style={styles.title}>Minimum Amount Per Period (₦):</Text> */}
@@ -588,7 +581,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   <Text style={styles.title}>
                     Minimum Amount Per Period (₦):
                   </Text>
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={minAmountTooltip}
                     content={
                       <Text
@@ -633,7 +626,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
                 <TextField
                   placeholder=""
@@ -643,6 +636,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   keyboardType="numeric"
                   style={styles.input}
                   editable={false}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
                 />
 
                 {/* <Text style={styles.title}>
@@ -658,7 +652,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   <Text style={styles.title}>
                     Maximum Quantity Per Period ({unitSymbol}):
                   </Text>
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={maxQtyTooltip}
                     content={
                       <Text
@@ -703,7 +697,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
                 <TextField
                   placeholder="Enter amount"
@@ -712,6 +706,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   placeholderTextColor={colors.primaryLight}
                   keyboardType="numeric"
                   style={styles.input}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
                 />
 
                 {/* <Text style={styles.title}></Text> */}
@@ -725,7 +720,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   <Text style={styles.title}>
                     Maximum Amount Per Period (₦):
                   </Text>
-                  <Tooltip
+                  {/* <Tooltip
                     isVisible={maxAmountTooltip}
                     content={
                       <Text
@@ -770,7 +765,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                         ?
                       </Text>
                     </TouchableOpacity>
-                  </Tooltip>
+                  </Tooltip> */}
                 </View>
                 <TextField
                   placeholder=""
@@ -779,6 +774,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   placeholderTextColor={colors.primaryLight}
                   keyboardType="numeric"
                   style={styles.input}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
                 />
               </>
             )}
@@ -797,25 +793,14 @@ export const AdminUtilitiesSettings: React.FC = () => {
             />
             {allowEmergencyCredit && (
               <>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginTop: adjustSize(10),
-                  }}
-                >
-                  <Text style={styles.title}>
-                    Set Emergency Quantity ({unitSymbol}):
-                  </Text>
+                <View style={{ marginTop: adjustSize(10) }}>
+                  <CounterRow
+                    label={`Set Emergency Quantity (${unitSymbol}):`}
+                    value={Number(emergencyQty) || 0}
+                    setValue={(n: number) => setEmergencyQty(String(n))}
+                    min={0}
+                  />
                 </View>
-                <TextField
-                  placeholder="Enter amount"
-                  value={emergencyQty}
-                  onChangeText={setEmergencyQty}
-                  placeholderTextColor={colors.primaryLight}
-                  keyboardType="numeric"
-                  style={styles.input}
-                />
               </>
             )}
 
@@ -859,10 +844,18 @@ export const AdminUtilitiesSettings: React.FC = () => {
                   />
                 </View>
               </>
-            )} */}
+              )} */}
           </>
         )}
       </ScrollView>
+      <Button
+        text="Save"
+        preset="reversed"
+        onPress={() => {
+          navigation.goBack();
+        }}
+        style={{ width: "95%", alignSelf: "center", marginBottom: 30 }}
+      />
     </Screen>
   );
 };
@@ -881,7 +874,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
@@ -935,6 +928,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: adjustSize(0.5),
     borderColor: colors.primary,
+    backgroundColor: colors.white,
   },
   boxBtnText: {
     color: colors.primaryLight,

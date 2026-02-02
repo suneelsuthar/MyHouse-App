@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
 import * as FileSystem from "expo-file-system";
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
+  Pressable,
+  Dimensions,
   TextInput,
   Alert,
   Platform,
@@ -108,8 +110,64 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
   const [transactionList, setTransactionList] =
     useState<TrnasData[]>(transactionData);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuTransactionId, setMenuTransactionId] = useState<string | null>(
+    null,
+  );
+  const [menuAnchor, setMenuAnchor] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const menuButtonRefs = useRef<Record<string, any>>({});
   const [actionType, setActionType] = useState<string>("");
+
+  useEffect(() => {
+    const unsubscribe = (navigation as any).addListener?.("blur", () => {
+      setMenuVisible(false);
+      setMenuTransactionId(null);
+      setMenuAnchor(null);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const openMenu = (transaction: TrnasData) => {
+    const ref = menuButtonRefs.current[transaction.id];
+    if (!ref?.measureInWindow) {
+      setMenuTransactionId(transaction.id);
+      setMenuVisible(true);
+      return;
+    }
+    ref.measureInWindow(
+      (x: number, y: number, width: number, height: number) => {
+        setMenuAnchor({ x, y, width, height });
+        setMenuTransactionId(transaction.id);
+        setMenuVisible(true);
+      },
+    );
+  };
+
+  const closeMenu = () => {
+    setMenuVisible(false);
+    setMenuTransactionId(null);
+    setMenuAnchor(null);
+  };
+
+  const handleDeleteTransaction = (transaction: TrnasData) => {
+    Alert.alert("Delete", "Are you sure you want to delete this transaction?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          setTransactionList((prev) =>
+            prev.filter((t) => String(t.id) !== String(transaction.id)),
+          );
+        },
+      },
+    ]);
+  };
   const generateReceiptHTML = (transaction: any) => {
     // Format date for receipt
     const receiptDate = new Date().toLocaleString("en-US", {
@@ -240,7 +298,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
           
           <div class="section">
             <div class="row">
-              <span class="label">Transaction ID:</span>
+              <span class="label">ID:</span>
               <span class="value">${"TXN123456"}</span>
             </div>
             <div class="row">
@@ -293,11 +351,11 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
           <div class="section">
             <div class="section-title">Property & Tenant</div>
             <div class="row">
-              <span class="label">Tenant Name:</span>
+              <span class="label">Resident:</span>
               <span class="value">John Doe</span>
             </div>
             <div class="row">
-              <span class="label">Property Group:</span>
+              <span class="label">Estate:</span>
               <span class="value">Apartment</span>
             </div>
             <div class="row">
@@ -422,7 +480,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
   const handleShareReceipt = () => generateAndSharePDF("share");
 
   // Handle search functionality
-  const filteredTransactions = transactionData.filter(
+  const filteredTransactions = transactionList.filter(
     (transaction) =>
       transaction.date.toLowerCase().includes(search.toLowerCase()) ||
       (transaction.amount &&
@@ -469,9 +527,21 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
       {/* Search Bar */}
       {/* Recent Notifications */}
       <View style={styles.section}>
+        <View style={styles._searchrow}>
+          <View style={styles._inputview}>
+            <TextField
+              placeholderTextColor={colors.primaryLight}
+              placeholder="Search"
+              style={styles._input}
+              value={search}
+              onChangeText={(text) => setSearch(text as string)}
+              inputWrapperStyle={{ backgroundColor: colors.white }}
+            />
+          </View>
+        </View>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-            Transaction
+            Transaction History
           </Text>
           <View style={styles.dropdownContainer}>
             <DropdownComponent
@@ -488,18 +558,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             />
           </View>
         </View>
-        <View style={styles._searchrow}>
-          <View style={styles._inputview}>
-            <TextField
-              placeholderTextColor={colors.primaryLight}
-              placeholder="Search"
-              style={styles._input}
-              value={search}
-              onChangeText={(text) => setSearch(text as string)}
-              inputWrapperStyle={{ backgroundColor: colors.white }}
-            />
-          </View>
-        </View>
+
         {/* ÷÷ */}
       </View>
 
@@ -513,7 +572,8 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             style={styles._card}
             activeOpacity={0.5}
             onLongPress={() => {
-              setDropdownVisible(null);
+              closeMenu();
+              setSelectedTransaction(item);
               setIsModalVisible(true);
             }}
           >
@@ -541,13 +601,10 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             </View>
             <TouchableOpacity
               style={styles.menuButton}
-              onPress={() =>
-                setDropdownVisible(
-                  dropdownVisible === parseInt(item.id)
-                    ? null
-                    : parseInt(item.id),
-                )
-              }
+              ref={(r) => {
+                menuButtonRefs.current[item.id] = r;
+              }}
+              onPress={() => openMenu(item)}
             >
               <Entypo
                 name="dots-three-vertical"
@@ -555,34 +612,73 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
                 color={colors.primary}
               />
             </TouchableOpacity>
-            {dropdownVisible === parseInt(item.id) && (
-              <View style={styles.menuBox}>
-                <TouchableOpacity
-                  style={styles.menuItem}
-                  onPress={() => {
-                    setDropdownVisible(null);
-                    setIsModalVisible(true);
-                    setActionType("view");
-                  }}
-                >
-                  <Text style={styles.menuText}>View Receipt</Text>
-                </TouchableOpacity>
-
-                {/* <TouchableOpacity
-                  style={styles.menuItem}
-                  onPress={() => {
-                    setActionType("download");
-                    setDropdownVisible(null);
-                    setIsModalVisible(true);
-                  }}
-                >
-                  <Text style={[styles.menuText]}>Download</Text>
-                </TouchableOpacity> */}
-              </View>
-            )}
           </TouchableOpacity>
         )}
       />
+
+      <Modal
+        visible={menuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={closeMenu}
+      >
+        <Pressable style={styles.menuOverlay} onPress={closeMenu}>
+          <View
+            style={[
+              styles.menuBox,
+              (() => {
+                const { width: screenWidth, height: screenHeight } =
+                  Dimensions.get("window");
+                const menuWidth = 180;
+                const leftRaw =
+                  (menuAnchor?.x ?? 0) + (menuAnchor?.width ?? 0) - menuWidth;
+                const left = Math.max(
+                  10,
+                  Math.min(leftRaw, screenWidth - menuWidth - 10),
+                );
+                const topRaw =
+                  (menuAnchor?.y ?? 0) + (menuAnchor?.height ?? 0) + 8;
+                const top = Math.max(10, Math.min(topRaw, screenHeight - 220));
+                return { left, top, width: menuWidth };
+              })(),
+            ]}
+          >
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                const tx = transactionList.find(
+                  (t) => String(t.id) === String(menuTransactionId),
+                );
+                closeMenu();
+                if (tx) setSelectedTransaction(tx);
+                setActionType("view");
+                setIsModalVisible(true);
+              }}
+            >
+              <Text style={styles.menuText} text="View Receipt"/>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                const tx = transactionList.find(
+                  (t) => String(t.id) === String(menuTransactionId),
+                );
+                closeMenu();
+                if (tx) setSelectedTransaction(tx);
+                setActionType("download");
+                setIsModalVisible(true);
+              }}
+            >
+              <Text style={styles.menuText} text="Download"/>
+            </TouchableOpacity>
+
+
+          
+          </View>
+        </Pressable>
+      </Modal>
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -615,8 +711,8 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             />
 
             <View style={styles._divider} />
-            <View style={[styles._row, { marginBottom: 10 }]}>
-              <Text text="Transaction ID: " style={styles._rowlabel} />
+            <View style={[styles._row, {  }]}>
+              <Text text="ID: " style={styles._rowlabel} />
               <Text
                 text="TXN123456"
                 style={[styles._rowvalue, { fontFamily: "Poppins-Medium" }]}
@@ -633,12 +729,12 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             </View>
 
             <View style={styles._row}>
-              <Text text="Tenant:" style={styles._rowlabel} />
+              <Text text="Resident:" style={styles._rowlabel} />
               <Text text="John Doe" style={styles._rowvalue} />
             </View>
 
             <View style={styles._row}>
-              <Text text="Property Group:" style={styles._rowlabel} />
+              <Text text="Estate:" style={styles._rowlabel} />
               <Text text="Apartment" style={styles._rowvalue} />
             </View>
 
@@ -671,7 +767,7 @@ export const ManageTransactions = ({ route }: AdminPropertyManagementProps) => {
             {/* {actionType === "download" && ( */}
             <View style={[styles._row, { gap: 10 }]}>
               <Button
-                text={isDownloading ? "Generating..." : "Download"}
+                text={isDownloading ? "Generating..." : "Download Receipt"}
                 preset="reversed"
                 style={styles.copyButton}
                 onPress={handleDownloadReceipt}
@@ -742,6 +838,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 20,
   },
   dropdownContainer: {
     width: adjustSize(120),
@@ -764,9 +861,9 @@ const styles = StyleSheet.create({
   _searchrow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 5,
+    // marginVertical: 5,
     alignItems: "center",
-    marginTop: 15,
+    // marginTop: 15,
   },
   _addbtn: {
     backgroundColor: colors.primary,
@@ -898,7 +995,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: colors.fill,
     borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
@@ -920,7 +1017,8 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(15),
     fontFamily: typography.fonts.poppins.semiBold,
     color: colors.primary,
-    padding: adjustSize(20),
+    paddingTop: adjustSize(20),
+    paddingBottom:10,
     marginTop: adjustSize(30),
   },
   inputContainer: {
@@ -941,7 +1039,7 @@ const styles = StyleSheet.create({
   },
   copyButton: {
     // width: "90%",
-    marginVertical: adjustSize(20),
+    marginBottom: adjustSize(20),
     alignSelf: "center",
     flex: 1,
   },
@@ -982,8 +1080,6 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: 30,
-    top: 20,
     backgroundColor: colors.white,
     borderRadius: 8,
     padding: spacing.xs,
@@ -993,19 +1089,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     zIndex: 1000,
-    minWidth: 150,
+    minWidth: 140,
+  },
+  menuOverlay: {
+    flex: 1,
+    backgroundColor: "transparent",
   },
   menuItem: {
     paddingVertical: 5,
     paddingHorizontal: 12,
-    borderBottomColor: colors.border,
+    borderBottomColor: colors.primary,
+    // borderBottomWidth: 1,
   },
   menuItemLast: {
     borderBottomWidth: 0,
   },
   menuText: {
-    fontSize: adjustSize(14),
-    color: colors.text,
+    // fontSize: adjustSize(13),
+    color: colors.primary,
   },
   _subtitle: {
     color: "#4CAF50",
@@ -1015,7 +1116,7 @@ const styles = StyleSheet.create({
   _divider: {
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
-    marginVertical: adjustSize(20),
+    marginVertical: adjustSize(10),
   },
   _label: {
     color: "#7E7E7E",
@@ -1026,6 +1127,8 @@ const styles = StyleSheet.create({
   amount: {
     textAlign: "center",
     fontSize: adjustSize(20),
+    color: colors.primary,
+
   },
   _row: {
     flexDirection: "row",
@@ -1037,13 +1140,13 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: adjustSize(12),
     textAlign: "center",
-    paddingVertical: adjustSize(5),
+    paddingVertical: adjustSize(3),
   },
   _rowvalue: {
     color: "#7E7E7E",
     fontSize: adjustSize(12),
     textAlign: "center",
-    paddingVertical: adjustSize(5),
+    paddingVertical: adjustSize(3),
   },
   copyIcon: {
     padding: adjustSize(4),

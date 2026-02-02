@@ -265,13 +265,13 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
             <View style={[styles.dropdownContainer, { width: "100%" }]}>
               <DropdownComponent
                 data={[
-                  { label: "All Groups", value: "all" },
+                  { label: "Select Estate", value: "all" },
                   { label: "Residential", value: "residential" },
                   { label: "Commercial", value: "commercial" },
                   { label: "Industrial", value: "industrial" },
                 ]}
-                label="Select Property Group"
-                placeholder="Property Group"
+                label="Select Estate"
+                placeholder="Select Estate"
                 dropdownStyle={[
                   styles.customDropdownStyle,
                   { height: adjustSize(50), borderRadius: adjustSize(10) },
@@ -296,6 +296,7 @@ export const ManageMeters = ({ route }: AdminPropertyManagementProps) => {
                 style={styles._input}
                 value={search}
                 onChangeText={(text) => setSearch(text as string)}
+                inputWrapperStyle={{backgroundColor:colors.white}}
               />
             </View>
 
@@ -450,12 +451,12 @@ const styles = StyleSheet.create({
   },
   _addbtn: {
     backgroundColor: colors.primary,
-    width: adjustSize(40),
-    height: adjustSize(40),
+    width: adjustSize(47),
+    height: adjustSize(47),
     borderRadius: adjustSize(8),
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: adjustSize(10),
+    marginLeft: adjustSize(5),
   },
   _input: {
     margin: 0,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as Print from "expo-print";
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 import {
   View,
   StyleSheet,
@@ -94,11 +94,10 @@ const transactionData = [
   },
 ];
 
-interface AdminPropertyManagementProps
-  extends NativeStackScreenProps<
-    AdminStackParamList,
-    "AdminManageVendingHistory"
-  > {}
+interface AdminPropertyManagementProps extends NativeStackScreenProps<
+  AdminStackParamList,
+  "AdminManageVendingHistory"
+> {}
 export const AdminManageVendingHistory = ({
   route,
 }: AdminPropertyManagementProps) => {
@@ -110,7 +109,8 @@ export const AdminManageVendingHistory = ({
   const [type, settype] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState<TrnasData | null>(null);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<TrnasData | null>(null);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   // Handle search functionality
   const filteredTransactions = transactionList.filter(
@@ -119,19 +119,18 @@ export const AdminManageVendingHistory = ({
       (transaction.amount &&
         transaction.amount.toLowerCase().includes(search.toLowerCase())) ||
       (transaction.type &&
-        transaction.type.toLowerCase().includes(search.toLowerCase()))
+        transaction.type.toLowerCase().includes(search.toLowerCase())),
   );
 
-    const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalVisible(false);
   };
 
   const showToastMessage = (
     message: string,
-    type: "success" | "error" = "success"
+    type: "success" | "error" = "success",
   ) => {
     // You can implement a toast notification here if needed
-   ;
   };
 
   const generateReceiptHTML = (transaction: TrnasData) => {
@@ -234,7 +233,9 @@ export const AdminManageVendingHistory = ({
     `;
   };
 
-  const generateAndSharePDF = async (action: "share" | "download" = "download") => {
+  const generateAndSharePDF = async (
+    action: "share" | "download" = "download",
+  ) => {
     if (!selectedTransaction) return;
 
     try {
@@ -256,13 +257,13 @@ export const AdminManageVendingHistory = ({
       });
 
       // Small delay to ensure the PDF is fully generated
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (action === "share") {
         try {
           await Share.share({
-            title: 'Vending Receipt',
-            message: 'Here is your vending receipt',
+            title: "Vending Receipt",
+            message: "Here is your vending receipt",
             url: `file://${uri}`,
           });
           showToastMessage("Receipt shared successfully!");
@@ -273,20 +274,20 @@ export const AdminManageVendingHistory = ({
       } else {
         // For download, we'll use the system's save dialog
         await Share.share({
-          title: 'Save Vending Receipt',
-          message: 'Save your vending receipt',
+          title: "Save Vending Receipt",
+          message: "Save your vending receipt",
           url: `file://${uri}`,
         });
         showToastMessage("Receipt is ready to be saved!");
       }
-      
+
       // Close the modal after successful operation
       setIsModalVisible(false);
     } catch (error) {
       console.error("Error handling PDF:", error);
       showToastMessage(
         `Failed to ${action} receipt. Please try again.`,
-        "error"
+        "error",
       );
     } finally {
       // Reset the appropriate loading state
@@ -342,7 +343,7 @@ export const AdminManageVendingHistory = ({
             ]}
             label="Select Period"
             placeholder="Sort by"
-            dropdownStyle={{ backgroundColor: "#6369A4" }}
+            dropdownStyle={{ backgroundColor: colors.primary }}
           />
         </View>
 
@@ -350,7 +351,7 @@ export const AdminManageVendingHistory = ({
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-             Vending History
+              Vending History
             </Text>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
@@ -392,15 +393,13 @@ export const AdminManageVendingHistory = ({
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <View style={styles._card}>
-              <WithLocalSvg asset={Images.thistory} />
               <View style={styles._cardinfo}>
-                <Text text="20 Feb , 2025" style={styles._date} />
                 <Text
                   weight="semiBold"
-                  text="15,00,000"
+                  text="Electricity"
                   style={styles._price}
                 />
-                <Text text="Utility Bill Payment" style={styles._type} />
+                <Text text="20 Feb , 2025" style={styles._date} />
               </View>
               <TouchableOpacity
                 style={styles.menuButton}
@@ -408,7 +407,7 @@ export const AdminManageVendingHistory = ({
                   setDropdownVisible(
                     dropdownVisible === parseInt(item.id)
                       ? null
-                      : parseInt(item.id)
+                      : parseInt(item.id),
                   )
                 }
               >
@@ -417,13 +416,18 @@ export const AdminManageVendingHistory = ({
                   size={16}
                   color={colors.primary}
                 />
+                <Text
+                  weight="semiBold"
+                  text="15,00,000"
+                  style={styles._price}
+                />
               </TouchableOpacity>
               {dropdownVisible === parseInt(item.id) && (
                 <View style={styles.menuBox}>
                   <TouchableOpacity
                     style={styles.menuItem}
                     onPress={() => {
-                      settype("view")
+                      settype("view");
                       setDropdownVisible(null);
                       setIsModalVisible(true);
                     }}
@@ -467,9 +471,9 @@ export const AdminManageVendingHistory = ({
               />
             </TouchableOpacity>
             <Text style={styles.modalText}>
-            {type === "view" ? "Vending Information" : "Vending Receipt"}
+              {type === "view" ? "Vending Information" : "Vending Receipt"}
               {/* Vending Information */}
-              </Text>
+            </Text>
             <Text
               text="On February 20, 2025 at 09:06 am"
               style={styles._subtitle}
@@ -512,40 +516,45 @@ export const AdminManageVendingHistory = ({
               <Text text="B1234556" style={styles._rowvalue} />
             </View>
 
-            <View style={[styles._row,{
-              marginBottom: type === "view" ? 20 : 10
-            }]}>
+            <View
+              style={[
+                styles._row,
+                {
+                  marginBottom: type === "view" ? 20 : 10,
+                },
+              ]}
+            >
               <Text text="Meter Number:" style={styles._rowlabel} />
               <Text text="MTR34556" style={styles._rowvalue} />
             </View>
 
-            {type === "download" && 
-             
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: 10,
-                gap: 10,
-              }}
-            >
-              <Button
-                text={isDownloading ? "Processing..." : "Download Receipt"}
-                preset="reversed"
-                style={{ flex: 1 }}
-                onPress={handleDownloadReceipt}
-                disabled={isDownloading}
-              />
+            {type === "download" && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: 10,
+                  gap: 10,
+                }}
+              >
+                <Button
+                  text={isDownloading ? "Processing..." : "Download Receipt"}
+                  preset="reversed"
+                  style={{ flex: 1 }}
+                  onPress={handleDownloadReceipt}
+                  disabled={isDownloading}
+                />
 
-              <Button 
-                text={isSharing ? "Sharing..." : "Share"} 
-                preset="reversed" 
-                style={{ flex: 1 }} 
-                onPress={handleShareReceipt}
-                disabled={isSharing}
-              />
-            </View>}
+                {/* <Button
+                  text={isSharing ? "Sharing..." : "Share"}
+                  preset="reversed"
+                  style={{ flex: 1 }}
+                  onPress={handleShareReceipt}
+                  disabled={isSharing}
+                /> */}
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -704,7 +713,7 @@ const styles = StyleSheet.create({
     minWidth: adjustSize(120),
     height: adjustSize(33),
     borderRadius: 100,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
   dropdownMenu: {
     position: "absolute",
@@ -807,6 +816,15 @@ const styles = StyleSheet.create({
     padding: adjustSize(10),
     flexDirection: "row",
     alignItems: "center",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    backgroundColor: colors.white,
+    marginHorizontal: adjustSize(10),
+    borderRadius: 10,
+    marginBottom: 15,
   },
   _cardinfo: {
     flex: 1,
@@ -827,11 +845,12 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: adjustSize(4),
+    alignItems: "flex-end",
   },
   menuBox: {
     position: "absolute",
     right: 10,
-    top: 40,
+    top: 0,
     backgroundColor: colors.white,
     borderRadius: 8,
     padding: spacing.xs,
@@ -842,9 +861,10 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 1000,
     minWidth: 180,
+    alignSelf: "flex-end",
   },
   menuItem: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 12,
     borderBottomColor: colors.border,
   },

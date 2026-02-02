@@ -6,6 +6,7 @@ import {
   Switch,
   ViewStyle,
   TextStyle,
+  TextInput
 } from "react-native";
 import {
   Text,
@@ -177,9 +178,10 @@ const Step2: React.FC<Step2Props> = ({ mode, nestedStep }) => {
       <View style={styles.card}>
         <TextField
           label="Property Name"
-          placeholder="Write the name of your newly built property"
+          placeholder="Property name"
           value={streetAddress}
           onChangeText={setStreetAddress}
+          
           // style={{ color: "white" }}
           inputWrapperStyle={{ backgroundColor: "white" }}
           placeholderTextColor={colors.grey}
@@ -283,6 +285,8 @@ const Step2: React.FC<Step2Props> = ({ mode, nestedStep }) => {
           onChangeText={setStreetAddress}
           containerStyle={styles.fieldGap as ViewStyle}
           inputWrapperStyle={{ backgroundColor: "white" }}
+          
+          
         />
         <TextField
           label="Country"

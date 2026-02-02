@@ -34,7 +34,12 @@ export function AdminPropertyManagement({
   const { propertyType = "rental" } = route.params || {};
   const [search, setsearch] = useState("");
 
-  const filterData = data.filter((val) => val.name.includes(search));
+  const normalizedSearch = search.trim().toLowerCase();
+  const filterData = data.filter((val) =>
+    String(val?.name ?? "")
+      .toLowerCase()
+      .includes(normalizedSearch),
+  );
   return (
     <Screen
       contentContainerStyle={styles.container}
@@ -118,6 +123,24 @@ export function AdminPropertyManagement({
         data={filterData}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyState}>
+            <Text weight="semiBold" style={styles.emptyTitle}>
+              No property match
+            </Text>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.emptyAddBtn}
+              onPress={() =>
+                (navigation as any).navigate("AdminAddProperty", {
+                  type: "fm",
+                })
+              }
+            >
+              <WithLocalSvg asset={Images.addprop} />
+            </TouchableOpacity>
+          </View>
+        )}
         renderItem={({ item }) => (
           <RentalCard
             property={item}
@@ -287,7 +310,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(10),
     paddingBottom: adjustSize(20),
   },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: adjustSize(40),
+    gap: adjustSize(12),
+  },
+  emptyTitle: {
+    color: colors.primary,
+    fontSize: adjustSize(14),
+  },
+  emptyAddBtn: {
+    backgroundColor: colors.primary,
+    height: adjustSize(47),
+    width: adjustSize(47),
+    borderRadius: adjustSize(10),
+    justifyContent: "center",
+    alignItems: "center",
+  },
   username: {
     fontSize: adjustSize(15),
+    color: colors.primary,
   },
 });

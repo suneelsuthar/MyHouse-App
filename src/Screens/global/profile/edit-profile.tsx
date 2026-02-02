@@ -79,6 +79,7 @@ export const EditProfile: React.FC = ({
             <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.userIcon} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Full Name */}
@@ -91,6 +92,7 @@ export const EditProfile: React.FC = ({
             <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.userIcon} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Email */}
@@ -104,9 +106,10 @@ export const EditProfile: React.FC = ({
           placeholder="Enter a valid email address"
           placeholderTextColor={colors.primaryLight}
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.email} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.email2} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Phone */}
@@ -120,6 +123,7 @@ export const EditProfile: React.FC = ({
             <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.callIcon} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Address */}
@@ -135,6 +139,7 @@ export const EditProfile: React.FC = ({
             />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Save Button */}

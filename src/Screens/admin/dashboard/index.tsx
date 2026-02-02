@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -16,6 +16,14 @@ import { CustomDateTimePicker } from "../../../Components/CustomDateTimePicker";
 import DropdownComponent from "../../../Components/DropDown";
 import { HorizontalPropertyCard } from "../../../Components/tenant/HorizontalPropertyCard";
 import BookingsChart from "../../../Components/BookingChart";
+import {
+  buildChartSeries,
+  buildMetricCards,
+  getAnalyticsWindow,
+  type AnalyticsRange,
+  type DashboardEvent,
+  type DashboardMetricKey,
+} from "./utilities-dashboard";
 
 const width = Dimensions.get("screen").width;
 
@@ -29,77 +37,92 @@ export const AdminDashboard = () => {
     { label: "Range", value: "range" },
   ];
 
-  const [analyticsRange, setAnalyticsRange] = useState<string>("monthly");
+  const [analyticsRange, setAnalyticsRange] =
+    useState<AnalyticsRange>("monthly");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
 
-  const propertiesData = [
-    {
-      id: "1",
-      title: "Properties",
-      value: 70,
-      subtitle: "Get from last month",
-      isLoss: false,
-      onPress: () => console.log("Bookings pressed"),
-      chartdata: [1, 4, 6, 7, 8, 2],
-    },
-    {
-      id: "2",
-      title: "Bookings",
-      value: 104,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: true,
-      chartdata: [1, 4, 16, 7, 8, 2],
-    },
-    {
-      id: "3",
-      title: "Work Requests",
-      value: 70,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: true,
-      chartdata: [1, 4, 6, 7, 8, 2],
-    },
-    {
-      id: "4",
-      title: "Work Orders",
-      value: 70,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: false,
-      chartdata: [1, 14, 6, 7, 8, 2],
-    },
-    {
-      id: "5",
-      title: "Team",
-      value: 170,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: true,
-      chartdata: [1, 4, 6, 7, 8, 2],
-    },
-    {
-      id: "6",
-      title: "Visitors",
-      value: 120,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: false,
-      chartdata: [1, 4, 6, 10, 8, 2],
-    },
-    {
-      id: "7",
-      title: "Wallet",
-      value: 120,
-      subtitle: "Get from last month",
-      onPress: () => console.log("Bookings pressed"),
-      isLoss: true,
-      chartdata: [1, 4, 6, 12, 8, 2],
-    },
-  ];
+  const dashboardEvents: DashboardEvent[] = useMemo(() => {
+    const now = new Date();
+    const day = (n: number) =>
+      new Date(now.getFullYear(), now.getMonth(), now.getDate() - n);
+    return [
+      { type: "property_listed", date: day(1) },
+      { type: "property_listed", date: day(2) },
+      { type: "property_listed", date: day(9) },
+      { type: "booking_created", date: day(0) },
+      { type: "booking_created", date: day(1) },
+      { type: "booking_created", date: day(3) },
+      { type: "booking_created", date: day(8) },
+      { type: "work_request", date: day(2) },
+      { type: "work_request", date: day(6) },
+      { type: "work_order", date: day(4) },
+      { type: "work_order", date: day(12) },
+      { type: "team_member", date: day(20) },
+      { type: "visitor", date: day(0) },
+      { type: "visitor", date: day(5) },
+    ];
+  }, []);
+
+  const analyticsWindow = useMemo(
+    () => getAnalyticsWindow(analyticsRange, startDate, endDate),
+    [analyticsRange, startDate, endDate],
+  );
+
+  useEffect(() => {
+    if (analyticsRange !== "range") {
+      setStartDate(null);
+      setEndDate(null);
+      setShowStartPicker(false);
+      setShowEndPicker(false);
+    }
+  }, [analyticsRange]);
+
+  const formatRangeDate = useMemo(
+    () => (d: Date | null) =>
+      d
+        ? d.toLocaleDateString(undefined, {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+        : "Select",
+    [],
+  );
+
+  const metricKeys: DashboardMetricKey[] = useMemo(
+    () => [
+      "Properties",
+      "Bookings",
+      "Work Requests",
+      "Work Orders",
+      "Team",
+      "Visitors",
+    ],
+    [],
+  );
+
+  const propertiesData = useMemo(() => {
+    if (!analyticsWindow) return [];
+    const cards = buildMetricCards(
+      dashboardEvents,
+      analyticsWindow,
+      metricKeys,
+    );
+    return cards.map((c, idx) => ({ ...c, id: String(idx + 1) }));
+  }, [analyticsWindow, dashboardEvents, metricKeys]);
+
+  const bookingsSeries = useMemo(() => {
+    if (!analyticsWindow) return { labels: [""], data: [0] };
+    return buildChartSeries(
+      dashboardEvents,
+      analyticsWindow,
+      analyticsRange,
+      "Bookings",
+    );
+  }, [analyticsWindow, dashboardEvents, analyticsRange]);
 
   return (
     <Screen
@@ -137,28 +160,34 @@ export const AdminDashboard = () => {
         {/* Quick Actions */}
         <View style={styles.section}>
           <View style={styles.quickActions}>
-            <TouchableOpacity 
-              style={styles._card} 
+            <TouchableOpacity
+              style={styles._card}
               activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminPropertyRequests")}
+              onPress={() =>
+                (navigation as any).navigate("AdminPropertyRequests")
+              }
             >
               <WithLocalSvg asset={Images.propreq} />
               <Text text="Property Requests" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles._card} 
+            <TouchableOpacity
+              style={styles._card}
               activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminManageBookings")}
+              onPress={() =>
+                (navigation as any).navigate("AdminManageBookings")
+              }
             >
               <WithLocalSvg asset={Images.managebooking} />
               <Text text="Manage Bookings" style={styles._card_text} />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles._card} 
+            <TouchableOpacity
+              style={styles._card}
               activeOpacity={0.7}
-              onPress={() => (navigation as any).navigate("AdminManageInspections")}
+              onPress={() =>
+                (navigation as any).navigate("AdminManageInspections")
+              }
             >
               <WithLocalSvg asset={Images.manageins} />
               <Text text="Manage Inspections" style={styles._card_text} />
@@ -177,7 +206,7 @@ export const AdminDashboard = () => {
                 <View style={styles.dateRangeRow}>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    style={styles.dateIconBtn}
+                    style={styles.dateBtn}
                     onPress={() => setShowStartPicker(true)}
                   >
                     <WithLocalSvg asset={Images.calendar} />
@@ -185,8 +214,14 @@ export const AdminDashboard = () => {
                   <Text style={styles.toText}>To</Text>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    style={styles.dateIconBtn}
-                    onPress={() => setShowEndPicker(true)}
+                    style={styles.dateBtn}
+                    onPress={() => {
+                      if (startDate) {
+                        setShowEndPicker(true);
+                      } else {
+                        setShowStartPicker(true);
+                      }
+                    }}
                   >
                     <WithLocalSvg asset={Images.calendar} />
                   </TouchableOpacity>
@@ -199,7 +234,7 @@ export const AdminDashboard = () => {
                 label="Select Period"
                 placeholder="Range"
                 value={analyticsRange}
-                onChangeValue={setAnalyticsRange}
+                onChangeValue={(v) => setAnalyticsRange(v as AnalyticsRange)}
                 dropdownStyle={styles.customDropdownStyle}
                 placeholderStyle={styles.customPlaceholderStyle}
                 selectedTextStyle={styles.customSelectedTextStyle}
@@ -210,7 +245,10 @@ export const AdminDashboard = () => {
             mode="date"
             value={startDate}
             visible={showStartPicker}
-            onChange={(d) => setStartDate(d)}
+            onChange={(d) => {
+              setStartDate(d);
+              if (endDate && d > endDate) setEndDate(null);
+            }}
             onCancel={() => setShowStartPicker(false)}
             onConfirm={() => setShowStartPicker(false)}
           />
@@ -218,7 +256,13 @@ export const AdminDashboard = () => {
             mode="date"
             value={endDate}
             visible={showEndPicker}
-            onChange={(d) => setEndDate(d)}
+            onChange={(d) => {
+              if (startDate && d < startDate) {
+                setEndDate(null);
+                return;
+              }
+              setEndDate(d);
+            }}
             onCancel={() => setShowEndPicker(false)}
             onConfirm={() => setShowEndPicker(false)}
           />
@@ -247,14 +291,22 @@ export const AdminDashboard = () => {
         <View>
           <View
             style={[
-              styles._seciton_row,
-              { paddingHorizontal: adjustSize(10), marginTop: adjustSize(30) },
+              // styles._seciton_row,
+              {
+                paddingHorizontal: adjustSize(10),
+                marginTop: adjustSize(30),
+                justifyContent: "flex-start",
+                flexDirection: "row",
+                alignItems: "center",
+              },
             ]}
           >
             <Text weight="semiBold" style={styles.sectionTitle}>
               Upcoming Bookings
             </Text>
-            <Text style={[styles.change, { color: "#0AD029" }]}>
+            <Text
+              style={[styles.change, { color: "#0AD029", paddingLeft: 30 }]}
+            >
               ▲ 35% more
             </Text>
           </View>
@@ -272,10 +324,25 @@ export const AdminDashboard = () => {
               bookings from the last month
             </Text>
           </View>
-          <BookingsChart
-            data={[14, 20, 28, 32]}
-            lables={["Week1", "Week2", "Week3", "Week4"]}
-          />
+          {analyticsRange === "range" && !analyticsWindow ? (
+            <View
+              style={{
+                paddingHorizontal: adjustSize(10),
+                paddingTop: adjustSize(10),
+              }}
+            >
+              <Text style={styles.subtitle}>
+                Select start and end date to view range analytics
+              </Text>
+            </View>
+          ) : (
+            <BookingsChart
+              data={bookingsSeries.data}
+              labels={bookingsSeries.labels}
+                renderCustomBottomLabels={true}   // hides default x labels and renders our row
+
+            />
+          )}
         </View>
       </ScrollView>
     </Screen>
@@ -313,13 +380,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: adjustSize(15),
     color: colors.primary,
-    flex:1
+    // flex:1
   },
   quickActions: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    gap:10
+    gap: 10,
   },
 
   headerinfo: {
@@ -348,7 +415,7 @@ const styles = StyleSheet.create({
     // width: adjustSize(106),
     flexDirection: "column",
     justifyContent: "space-evenly",
-    flex:1
+    flex: 1,
   },
 
   _card_text: {
@@ -367,7 +434,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: adjustSize(10),
-    flex:1
+    flex: 1,
   },
   dateRangeRow: {
     flexDirection: "row",
@@ -375,18 +442,24 @@ const styles = StyleSheet.create({
     gap: adjustSize(10),
     marginLeft: adjustSize(10),
   },
-  dateIconBtn: {
-    width: adjustSize(36),
+  dateBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: adjustSize(6),
     height: adjustSize(36),
     borderRadius: adjustSize(10),
     backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingHorizontal: adjustSize(8),
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
     elevation: 3,
+  },
+  dateBtnText: {
+    color: colors.primary,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
   },
   toText: {
     color: colors.primary,
@@ -394,7 +467,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     width: adjustSize(120),
-    marginLeft:15
+    marginLeft: 15,
   },
   customDropdownStyle: {
     height: adjustSize(40),

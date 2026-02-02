@@ -1,11 +1,14 @@
 export const Images = {
   email: require("./email.svg"),
+  email2: require("./email2.svg"),
+
   logo: require("./logo.svg"),
   slide1: require("./slide1.png"),
   slide2: require("./slide2.png"),
   slide3: require("./slide3.png"),
   sublogo: require("./sublogo.svg"),
   lock: require("./lock.svg"),
+  lock2: require("./lock2.svg"),
   password: require("./lock.svg"),
   facebookicon: require("./facebook.png"),
   google: require("./google.png"),
@@ -121,6 +124,8 @@ export const Images = {
   met:require("./met.svg"),
   tra:require("./tra.svg"),
   est:require("./est.svg"),
+  star:require("./star.svg"),
+
 
 
 };

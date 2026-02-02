@@ -31,7 +31,11 @@ interface AdminAddPropertyProps extends NativeStackScreenProps<
 > {}
 
 export function AdminAddProperty(props: AdminAddPropertyProps) {
-  const [currentStep, setCurrentStep] = useState<number>(-1);
+  const mode = props.route.params?.mode ?? "add";
+
+  const [currentStep, setCurrentStep] = useState<number>(
+    mode === "edit" ? 0 : -1,
+  );
   const [type, settype] = useState("");
   const [phone, setPhone] = useState("");
   const [formattedPhone, setFormattedPhone] = useState("");
@@ -212,30 +216,47 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles._stepper}>
-            {steps.map((step, i) => (
-              <TouchableOpacity
-                key={step.id}
-                activeOpacity={0.7}
-                onPress={() => setCurrentStep(i)}
-                style={styles._stepperItem}
-              >
-                <View
-                  style={[styles.step, i === currentStep && styles.stepActive]}
+            {steps.map((step, i) => {
+              const isActive = i === currentStep;
+              const isCompleted = currentStep >= 0 && i < currentStep;
+
+              return (
+                <TouchableOpacity
+                  key={step.id}
+                  activeOpacity={0.7}
+                  onPress={() => setCurrentStep(i)}
+                  style={styles._stepperItem}
                 >
-                  <Text
-                    weight="semiBold"
+                  <View
                     style={[
-                      styles.stepText,
-                      i === currentStep && styles.stepTextActive,
+                      styles.step,
+                      (isActive || isCompleted) && styles.stepActive,
                     ]}
                   >
-                    {i + 1}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+                    {/* {isCompleted ? (
+                      <MaterialCommunityIcons
+                        name="check"
+                        size={16}
+                        color={colors.white}
+                      />
+                    ) : ( */}
+                      <Text
+                        weight="semiBold"
+                        style={[
+                          styles.stepText,
+                          // isActive && styles.stepTextActive,
+                          isActive || isCompleted ? {color:"white"} : {color:colors.primaryLight}
+                        ]}
+                      >
+                        {i + 1}
+                      </Text>
+                    {/* )} */}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
-
+          {/* {console.log(props.route.params.mode)} */}
           {currentStep === -1 && (
             <View>
               {/* {props.route.params?.type !== "fm" ? ( */}
@@ -539,13 +560,13 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             <View style={{ flex: 1 }}>
               {currentStep === 0 && (
                 <Step1
-                  mode="add"
+                  mode={mode}
                   value={step1Data}
                   onChange={(value) => setStep1Data(value)}
                 />
               )}
               {currentStep === 1 && (
-                <Step2 nestedStep={nestedStep} mode="add" />
+                <Step2 nestedStep={nestedStep} mode={mode} />
               )}
               {currentStep === 2 && <Step3 mode="add" />}
               {currentStep === 3 && <Step4 mode="add" />}
@@ -556,12 +577,14 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             <View style={{ flex: 1 }}>
               {currentStep === 0 && (
                 <Step1
-                  mode="add"
+                  mode={mode}
                   value={step1Data}
                   onChange={(value) => setStep1Data(value)}
                 />
               )}
-              {currentStep === 1 && <Step2 onNext={goNext} mode="add" />}
+              {currentStep === 1 && (
+                <Step2 nestedStep={nestedStep} onNext={goNext} mode={mode} />
+              )}
               {currentStep === 2 && <Step3 mode="add" />}
               {currentStep === 3 && <Step4 mode="add" />}
               {currentStep === 4 && <Step5 mode="add" />}
@@ -574,15 +597,6 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
         </View>
       </ScrollView>
       <View style={styles.footer}>
-        {/* <View style={styles.footerBtnLeft}> */}
-        {/* <Button
-            text="Back"
-            disabled={isFirst}
-            style={[styles.navBtn, isFirst && styles.btnDisabled]}
-            textStyle={isFirst ? { color: colors.grey } : undefined}
-            onPress={goPrev}
-          /> */}
-        {/* </View> */}
         <View style={styles.footerBtnRight}>
           <Button
             text="Save & Continue later"
@@ -591,6 +605,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             // onPress={goNext}
             textStyle={{
               fontSize: adjustSize(15),
+              lineHeight: adjustSize(16),
               color: colors.primary,
             }}
           />
@@ -611,6 +626,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
                 onPress={goNext}
                 textStyle={{
                   fontSize: adjustSize(15),
+                  lineHeight: adjustSize(16),
                 }}
               />
             </View>

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  Dimensions,
   Image,
   Modal,
   ScrollView,
@@ -32,16 +33,24 @@ export function PropertyDetails() {
   const { propertyId } = route.params;
   const [approveModalVisible, setApproveModalVisible] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [confirmationMode, setConfirmationMode] = useState<
+    "approve" | "reject"
+  >("approve");
   const [tab, setTab] = useState<
     "details" | "inspection" | "agents" | "fm" | "media"
   >("details");
   const [selectedImgIdx, setSelectedImgIdx] = useState(0);
   const [descExpanded, setDescExpanded] = useState(false);
 
+  const heroWidth = Dimensions.get("window").width - adjustSize(20);
+  const heroScrollRef = React.useRef<ScrollView>(null);
+
   const property: IRentalProperty | undefined = useMemo(
     () => rentalProperties.find((p) => p.propertyId === propertyId),
     [propertyId],
   );
+
+  const images = useMemo(() => property?.images ?? [], [property?.images]);
 
   useEffect(() => {
     // reset gallery selection when property changes
@@ -111,10 +120,12 @@ export function PropertyDetails() {
                   style={[styles.propTitle, { flex: 2 }]}
                   numberOfLines={1}
                 />
-
+                <View style={{ marginBottom: 4 }}>
+                  <WithLocalSvg asset={Images.star} />
+                </View>
                 <Text style={[styles.rating, { flex: 1.5 }]}>
-                  <Text style={{ color: "#F26938" }}>★ </Text>
-                  <Text style={styles.ratingReviews}>{property.rating}</Text>
+                  {/* <Text style={{ color: "#F26938" }}>★ </Text> */}
+                  <Text style={styles.ratingReviews}> {property.rating}</Text>
                   <Text style={styles.ratingReviews}>
                     {" "}
                     ({property.reviewsCount} Reviews)
@@ -159,31 +170,61 @@ export function PropertyDetails() {
               <View>
                 {/* Media */}
                 <View style={{ paddingHorizontal: adjustSize(10) }}>
-                  <Image
-                    source={{ uri: property.images[selectedImgIdx] }}
-                    style={styles.hero}
-                  />
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.galleryRow}
-                  >
-                    {property.images.map((img, i) => (
-                      <TouchableOpacity
-                        key={img + i}
-                        activeOpacity={0.7}
-                        onPress={() => setSelectedImgIdx(i)}
+                  {images.length > 0 && (
+                    <>
+                      <ScrollView
+                        ref={heroScrollRef}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        onMomentumScrollEnd={(e) => {
+                          const pageWidth =
+                            e.nativeEvent.layoutMeasurement.width || heroWidth;
+                          const x = e.nativeEvent.contentOffset.x;
+                          const nextIdx = Math.round(
+                            x / Math.max(1, pageWidth),
+                          );
+                          if (Number.isFinite(nextIdx))
+                            setSelectedImgIdx(nextIdx);
+                        }}
                       >
-                        <Image
-                          source={{ uri: img }}
-                          style={[
-                            styles.galleryThumb,
-                            i === selectedImgIdx && styles.galleryThumbSelected,
-                          ]}
-                        />
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
+                        {images.map((img, i) => (
+                          <View key={img + i} style={{ width: heroWidth }}>
+                            <Image source={{ uri: img }} style={styles.hero} />
+                          </View>
+                        ))}
+                      </ScrollView>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.galleryRow}
+                      >
+                        {images.map((img, i) => (
+                          <TouchableOpacity
+                            key={img + i}
+                            activeOpacity={0.7}
+                            onPress={() => {
+                              setSelectedImgIdx(i);
+                              heroScrollRef.current?.scrollTo({
+                                x: heroWidth * i,
+                                y: 0,
+                                animated: true,
+                              });
+                            }}
+                          >
+                            <Image
+                              source={{ uri: img }}
+                              style={[
+                                styles.galleryThumb,
+                                i === selectedImgIdx &&
+                                  styles.galleryThumbSelected,
+                              ]}
+                            />
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </>
+                  )}
                 </View>
 
                 <ScrollView
@@ -435,13 +476,16 @@ export function PropertyDetails() {
                       style={[
                         styles.card,
                         styles.addressCard,
-                        { borderRadius: 100,height:adjustSize(50)},
+                        { borderRadius: 100, height: adjustSize(50) },
                       ]}
                     >
-                      <Text weight="normal" style={[styles.addressLabel,{flex:1}]}>
+                      <Text
+                        weight="normal"
+                        style={[styles.addressLabel, { flex: 1 }]}
+                      >
                         Contact Number
                       </Text>
-                      <Text style={[styles.addressValue,{flex:1}]}>
+                      <Text style={[styles.addressValue, { flex: 1 }]}>
                         +1 (555) 123-4567
                       </Text>
                     </View>
@@ -498,6 +542,7 @@ export function PropertyDetails() {
               style={styles.rejectBtn}
               onPress={() => {
                 setRejectionReason("");
+                setConfirmationMode("reject");
                 setApproveModalVisible(true);
               }}
             >
@@ -506,7 +551,10 @@ export function PropertyDetails() {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.approveBtn}
-              onPress={() => setApproveModalVisible(true)}
+              onPress={() => {
+                setConfirmationMode("approve");
+                setApproveModalVisible(true);
+              }}
             >
               <Text style={styles.approveText}>Approve</Text>
             </TouchableOpacity>
@@ -532,7 +580,9 @@ export function PropertyDetails() {
                 Are you Sure?
               </Text>
               <Text style={styles.modalMessage}>
-                Are you sure you want to approve this property listing?
+                {confirmationMode === "approve"
+                  ? "Are you sure you want to approve this property listing?"
+                  : "Are you sure you want to reject this property listing?"}
               </Text>
               <View style={styles.modalButtons}>
                 <TouchableOpacity
@@ -547,12 +597,14 @@ export function PropertyDetails() {
                     { backgroundColor: colors.primary },
                   ]}
                   onPress={() => {
-                    // Handle approval logic here
+                    // Handle approval/rejection logic here
                     setApproveModalVisible(false);
-                    // Add your approval logic
+                    // Add your approve/reject logic
                   }}
                 >
-                  <Text style={styles.modalButtonText}>Approve</Text>
+                  <Text style={styles.modalButtonText}>
+                    {confirmationMode === "approve" ? "Approve" : "Reject"}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -612,11 +664,12 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
-    paddingVertical: 12,
+    // paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 4,
+    // marginHorizontal: 4,
+    height: adjustSize(47),
   },
   cancelButton: {
     borderWidth: 1,
@@ -839,6 +892,8 @@ const styles = StyleSheet.create({
   priceValue: {
     color: colors.primary,
     fontSize: adjustSize(12),
+    flex: 1,
+    minWidth: adjustSize(50),
   },
   card: {
     backgroundColor: colors.white,
@@ -1090,9 +1145,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: colors.primary,
-    paddingVertical: adjustSize(12),
+    // paddingVertical: adjustSize(12),
     borderRadius: adjustSize(10),
     alignItems: "center",
+     height:adjustSize(47),
+    justifyContent:"center"
+
   },
   rejectText: {
     color: colors.primary,
@@ -1101,9 +1159,11 @@ const styles = StyleSheet.create({
   approveBtn: {
     flex: 1,
     backgroundColor: colors.primary,
-    paddingVertical: adjustSize(12),
+    // paddingVertical: adjustSize(12),
     borderRadius: adjustSize(10),
     alignItems: "center",
+    height:adjustSize(47),
+    justifyContent:"center"
   },
   approveText: {
     color: colors.white,

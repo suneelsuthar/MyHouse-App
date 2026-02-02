@@ -5,12 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Text,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../../utils/interfaces";
 import { colors, spacing, typography, adjustSize } from "../../../../theme";
-import { Header, Screen, TextField } from "../../../../Components";
+import { Header, Screen, Text, TextField } from "../../../../Components";
 import DropdownComponent from "../../../../Components/DropDown";
 
 type Props = NativeStackScreenProps<AdminStackParamList, "EditCreateMeter">;
@@ -33,17 +32,28 @@ const propertyGroupOptions = [
   { label: "Villas", value: "villas" },
 ];
 
+const utilityTypeOptions = [
+  { label: "Electricity", value: "electricity" },
+  { label: "Water", value: "water" },
+  { label: "Gas", value: "gas" },
+];
+
 const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
   const { mode } = route.params || {};
   const isEditMode = mode === "edit";
 
   const [formData, setFormData] = useState({
     meterId: "",
-    meterNumber: "",
     manufacturer: "",
-    phaseNumber: "",
-    propertyGroup: "",
+    meterType: "",
+    meterNumber: "",
+    utilityType: "",
+    sgc: "",
+    tariffIndex: "",
+    krn: "",
+    estate: "",
     property: "",
+    property2: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -53,11 +63,16 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
   const handleAdd = () => {
     if (
       !formData.meterId ||
-      !formData.meterNumber ||
       !formData.manufacturer ||
-      !formData.phaseNumber ||
-      !formData.propertyGroup ||
-      !formData.property
+      !formData.meterType ||
+      !formData.meterNumber ||
+      !formData.utilityType ||
+      !formData.sgc ||
+      !formData.tariffIndex ||
+      !formData.krn ||
+      !formData.estate ||
+      !formData.property ||
+      !formData.property2
     ) {
       Alert.alert("Error", "Please fill all fields");
       return;
@@ -71,7 +86,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
           text: "OK",
           onPress: () => navigation.goBack(),
         },
-      ]
+      ],
     );
   };
 
@@ -81,7 +96,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-      <Header title={isEditMode ? "Update Meter" : "Add Meter"} />
+      <Header title={isEditMode ? "Update Meter" : "Add meter"} />
 
       <ScrollView
         style={styles.content}
@@ -94,8 +109,37 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
             placeholder="lorem ipsum"
             value={isEditMode ? "MTR001" : formData.meterId}
             onChangeText={(text) => handleInputChange("meterId", text)}
+            placeholderTextColor={colors.white}
+            inputWrapperStyle={[
+              styles.textInput,
+              {
+                backgroundColor: "#A1A1A1",
+                marginBottom: 0,
+              },
+            ]}
+            editable={false}
+          />
+        </View>
+        <View style={[styles.fieldContainer, { marginTop: 0 }]}>
+          <Text style={styles.label}>Manufacturer</Text>
+          <DropdownComponent
+            data={manufacturerOptions}
+            value={formData.manufacturer}
+            onChangeValue={(value) => handleInputChange("manufacturer", value)}
+            placeholder="Select Manufacturer"
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+        </View>
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Meter Type</Text>
+          <TextField
+            placeholder="lorem ipsum"
+            value={formData.meterType}
+            onChangeText={(text) => handleInputChange("meterType", text)}
             inputWrapperStyle={styles.textInput}
-            editable={!isEditMode}
           />
         </View>
 
@@ -110,12 +154,12 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
         </View>
 
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Manufacturer</Text>
+          <Text style={styles.label}>Utility type</Text>
           <DropdownComponent
-            data={manufacturerOptions}
-            value={formData.manufacturer}
-            onChangeValue={(value) => handleInputChange("manufacturer", value)}
-            placeholder="Select Manufacturer"
+            data={utilityTypeOptions}
+            value={formData.utilityType}
+            onChangeValue={(value) => handleInputChange("utilityType", value)}
+            placeholder="Select Estate"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -124,32 +168,42 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
         </View>
 
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Phase Number</Text>
-          <DropdownComponent
-            data={[
-              { label: "Phase 1", value: "phase_1" },
-              { label: "Phase 2", value: "phase_2" },
-              { label: "Phase 3", value: "phase_3" },
-            ]}
-            value={formData.phaseNumber}
-            onChangeValue={(value) => handleInputChange("phaseNumber", value)}
-            placeholder="Select Phase Number"
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
+          <Text style={styles.label}>SGC</Text>
+          <TextField
+            placeholder="Enter SGC"
+            value={formData.sgc}
+            onChangeText={(text) => handleInputChange("sgc", text)}
+            inputWrapperStyle={styles.textInput}
           />
         </View>
 
-        
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Tariff Index</Text>
+          <TextField
+            placeholder="Enter Tariff Index"
+            value={formData.tariffIndex}
+            onChangeText={(text) => handleInputChange("tariffIndex", text)}
+            inputWrapperStyle={styles.textInput}
+          />
+        </View>
 
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Property Group</Text>
+          <Text style={styles.label}>KRN</Text>
+          <TextField
+            placeholder="Enter KRN"
+            value={formData.krn}
+            onChangeText={(text) => handleInputChange("krn", text)}
+            inputWrapperStyle={styles.textInput}
+          />
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Estate</Text>
           <DropdownComponent
             data={propertyGroupOptions}
-            value={formData.propertyGroup}
-            onChangeValue={(value) => handleInputChange("propertyGroup", value)}
-            placeholder="Select Property Group"
+            value={formData.estate}
+            onChangeValue={(value) => handleInputChange("estate", value)}
+            placeholder="Select Estate"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
@@ -171,10 +225,25 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
           />
         </View>
 
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Property</Text>
+          <DropdownComponent
+            data={propertyOptions}
+            value={formData.property2}
+            onChangeValue={(value) => handleInputChange("property2", value)}
+            placeholder="Select Property"
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+        </View>
+
         <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
-          <Text style={styles.addButtonText}>
-            {isEditMode ? "Update Meter" : "Add Meter"}
-          </Text>
+          <Text
+            style={styles.addButtonText}
+            text={isEditMode ? "Update Meter" : "Add"}
+          />
         </TouchableOpacity>
       </ScrollView>
     </Screen>
@@ -233,15 +302,16 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: colors.primary,
     borderRadius: adjustSize(12),
-    paddingVertical: spacing.md,
+    // paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
     marginTop: spacing.xl,
     height: adjustSize(50),
-    marginBottom:20
+    marginBottom: 20,
   },
   addButtonText: {
     fontSize: adjustSize(15),
+    // lineHeight: adjustSize(16),
     color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
   },

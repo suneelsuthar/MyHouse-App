@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Image,
   Pressable,
+  Modal,
 } from "react-native";
 import { adjustSize, colors, typography } from "../theme";
 import { Text } from "./Text";
 import { IRentalProperty } from "../utils/data";
 import Entypo from "@expo/vector-icons/Entypo";
+import { useNavigation } from "@react-navigation/native";
 interface RentalCardProps {
   property: IRentalProperty;
   onPress?: () => void;
@@ -49,7 +51,12 @@ export const RentalCard: React.FC<RentalCardProps> = ({
   onAction,
   type,
 }) => {
+  const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
+  const moreBtnRef = useRef<View>(null);
+  const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const thumb = property.images?.[0];
   const ACTIONS =
     type === "rental"
@@ -57,6 +64,26 @@ export const RentalCard: React.FC<RentalCardProps> = ({
       : type === "manage"
         ? ACTIONS_MANAGE
         : ACTIONS_GROUP;
+
+  useEffect(() => {
+    const unsubscribe = (navigation as any)?.addListener?.("blur", () => {
+      setMenuVisible(false);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const openMenu = () => {
+    if (!moreBtnRef.current) {
+      setMenuAnchor(null);
+      setMenuVisible(true);
+      return;
+    }
+
+    moreBtnRef.current.measureInWindow((x, y) => {
+      setMenuAnchor({ x, y });
+      setMenuVisible(true);
+    });
+  };
 
   return (
     <View style={{ position: "relative" }}>
@@ -68,9 +95,17 @@ export const RentalCard: React.FC<RentalCardProps> = ({
         <TouchableOpacity
           activeOpacity={0.6}
           style={styles._morebutton}
-          onPress={() => setMenuVisible((v) => !v)}
+          onPress={() => {
+            if (menuVisible) {
+              setMenuVisible(false);
+              return;
+            }
+            openMenu();
+          }}
         >
-          <Entypo name="dots-three-vertical" size={16} color={colors.white} />
+          <View ref={moreBtnRef} collapsable={false}>
+            <Entypo name="dots-three-vertical" size={16} color={colors.white} />
+          </View>
         </TouchableOpacity>
         <Image source={{ uri: thumb }} style={styles.thumbnail} />
         {/* Footer overlay */}
@@ -81,24 +116,56 @@ export const RentalCard: React.FC<RentalCardProps> = ({
             </View>
           )}
           <View style={{ flex: 1 }}>
-            <Text
-              weight="semiBold"
-              style={styles.footerTitle}
-              numberOfLines={1}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
             >
-              {property.name}
-            </Text>
+              <Text
+                weight="semiBold"
+                style={styles.footerTitle}
+                numberOfLines={1}
+              >
+                {property.name}
+              </Text>
+              <Text style={styles.footerRight} numberOfLines={1}>
+                Property ID: {property.propertyId}
+              </Text>
+            </View>
+
             <Text style={styles.footerSubtitle} numberOfLines={1}>
               Shortlet -{property.location}
             </Text>
           </View>
-          <Text style={styles.footerRight} numberOfLines={1}>
-            Property ID: {property.propertyId}
-          </Text>
         </View>
       </TouchableOpacity>
-      {menuVisible && (
-        <View style={styles.menuBox}>
+      <Modal
+        visible={menuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <Pressable
+          style={styles.backdrop}
+          onPress={() => setMenuVisible(false)}
+        />
+        <View
+          style={[
+            styles.menuBox,
+            menuAnchor
+              ? {
+                  top: menuAnchor.y + adjustSize(22),
+                  right: undefined,
+                  left: Math.max(
+                    adjustSize(10),
+                    menuAnchor.x - adjustSize(200),
+                  ),
+                }
+              : null,
+          ]}
+        >
           {ACTIONS.map((a) => (
             <TouchableOpacity
               key={a}
@@ -113,7 +180,7 @@ export const RentalCard: React.FC<RentalCardProps> = ({
             </TouchableOpacity>
           ))}
         </View>
-      )}
+      </Modal>
     </View>
   );
 };
@@ -189,7 +256,7 @@ const styles = StyleSheet.create({
   footerRight: {
     fontSize: adjustSize(12),
     color: colors.white,
-    marginLeft: adjustSize(10),
+    // marginLeft: adjustSize(10),
   },
   dotMenu: {
     height: 18,
@@ -206,7 +273,7 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: adjustSize(10),
+    right: adjustSize(30),
     top: adjustSize(36),
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),

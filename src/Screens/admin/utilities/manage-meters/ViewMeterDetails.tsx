@@ -106,7 +106,7 @@ const ViewMeterDetails = (props: any) => {
           <DetailRow label="Terminal type:" value="Lorem Ipsum" />
           <View style={{ paddingVertical: adjustSize(10) }} />
           <DetailRow label="Phase Number:" value="Lorem Ipsum" />
-          <DetailRow label="Property Group:" value={meter.groupId} />
+          <DetailRow label="Estate:" value={meter.groupId} />
           <DetailRow label="Property Name:" value="Lorem Ipsum" />
           <DetailRow label="Property ID:" value={meter.propertyId} />
           <View
@@ -140,7 +140,7 @@ const ViewMeterDetails = (props: any) => {
               thumbColor={colors.white}
               onValueChange={toggleSwitch}
               value={isEnabled}
-              style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+              style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
             />
           </View>
         </View>
@@ -200,6 +200,7 @@ const ViewMeterDetails = (props: any) => {
                 style={styles.input}
                 value={temperToken}
                 editable={false}
+
               />
               <TouchableOpacity onPress={copyToClipboard}>
                 <Ionicons
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "80%",
-    backgroundColor: "white",
+    backgroundColor: colors.fill,
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
@@ -304,20 +305,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 15,
     width: "100%",
+    backgroundColor:colors.white
   },
   input: {
     flex: 1,
     fontSize: adjustSize(16),
     color: colors.text,
     height: adjustSize(47),
+    backgroundColor:colors.white
   },
   copyButton: {
     backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     width: "100%",
     alignItems: "center",
+    minHeight:adjustSize(47),
+    marginTop:30
   },
   copyButtonText: {
     color: "white",
@@ -326,7 +331,7 @@ const styles = StyleSheet.create({
   actionButton: {
     backgroundColor: colors.primary,
     borderRadius: adjustSize(5),
-    height: adjustSize(32),
+    height: adjustSize(28),
     minWidth: adjustSize(80),
     justifyContent: "center",
     alignItems: "center",

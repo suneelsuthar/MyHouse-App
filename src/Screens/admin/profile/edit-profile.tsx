@@ -76,6 +76,7 @@ export const AdminEditProfile: React.FC = () => {
             <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.userIcon} />
           )}
           containerStyle={[styles.input]}
+          inputWrapperStyle={{backgroundColor:colors.white}}
         />
 
         {/* Full Name */}
@@ -101,7 +102,7 @@ export const AdminEditProfile: React.FC = () => {
           placeholder="Enter a valid email address"
           placeholderTextColor={colors.primaryLight}
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.email} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.email2} />
           )}
           containerStyle={[styles.input]}
         />

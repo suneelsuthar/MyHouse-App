@@ -211,6 +211,7 @@ export function CreateAccount(props: CreateAccountProps) {
               placeholder="Enter you full name"
               placeholderTextColor={"#B0B0B0"}
               borderColor="white"
+              inputWrapperStyle={{backgroundColor: "white"}}
               style={{ color: "white" }}
               helper={errors.fullName?.message}
               status={errors.fullName ? "error" : undefined}
@@ -243,6 +244,7 @@ export function CreateAccount(props: CreateAccountProps) {
               placeholder="Enter a valid email address"
               placeholderTextColor={"#B0B0B0"}
               borderColor="white"
+              inputWrapperStyle={{backgroundColor: "white"}}
               style={{ color: "white" }}
               helper={errors.email?.message}
               status={errors.email ? "error" : undefined}
@@ -276,6 +278,7 @@ export function CreateAccount(props: CreateAccountProps) {
               placeholder="Enter strong password"
               placeholderTextColor={"#B0B0B0"}
               borderColor="white"
+              inputWrapperStyle={{backgroundColor: colors.primary}}
               style={{ color: "white" }}
               containerStyle={styles.textField}
               helper={errors.password?.message}
@@ -304,6 +307,7 @@ export function CreateAccount(props: CreateAccountProps) {
               placeholder="Re-enter password"
               placeholderTextColor={"#B0B0B0"}
               borderColor="white"
+              inputWrapperStyle={{backgroundColor: colors.primary}}
               style={{ color: "white" }}
               containerStyle={styles.textField}
               helper={errors.confirmPassword?.message}

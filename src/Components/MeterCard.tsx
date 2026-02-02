@@ -5,6 +5,9 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  Modal,
+  Pressable,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { adjustSize, colors, typography } from "../theme";
@@ -49,7 +52,7 @@ type NavigationProp = {
       mode: "view" | "edit" | "add";
       meterData?: MeterData;
       onSave?: (data: MeterData) => void;
-    }
+    },
   ) => void;
 };
 
@@ -62,7 +65,22 @@ export const MeterCard: React.FC<MeterCardProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuAnimation = useRef(new Animated.Value(0)).current;
+  const menuAnchorRef = useRef<any>(null);
+  const [menuAnchor, setMenuAnchor] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const { user } = useAppSelector((state: RootState) => state.auth);
+
+  React.useEffect(() => {
+    const unsubscribe = (navigation as any)?.addListener?.("blur", () => {
+      setMenuVisible(false);
+      menuAnimation.setValue(0);
+    });
+    return unsubscribe;
+  }, [navigation, menuAnimation]);
 
   const menuScale = menuAnimation.interpolate({
     inputRange: [0, 1],
@@ -74,14 +92,30 @@ export const MeterCard: React.FC<MeterCardProps> = ({
     outputRange: [0, 1],
   });
 
-  const toggleMenu = () => {
+  const closeMenu = () => {
     Animated.timing(menuAnimation, {
-      toValue: menuVisible ? 0 : 1,
-      duration: 200,
+      toValue: 0,
+      duration: 150,
       easing: Easing.inOut(Easing.ease),
       useNativeDriver: true,
-    }).start();
-    setMenuVisible(!menuVisible);
+    }).start(({ finished }) => {
+      if (finished) setMenuVisible(false);
+    });
+  };
+
+  const openMenu = () => {
+    menuAnchorRef.current?.measureInWindow?.(
+      (x: number, y: number, width: number, height: number) => {
+        setMenuAnchor({ x, y, width, height });
+        setMenuVisible(true);
+        Animated.timing(menuAnimation, {
+          toValue: 1,
+          duration: 200,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }).start();
+      },
+    );
   };
 
   const handleView = () => {
@@ -92,7 +126,7 @@ export const MeterCard: React.FC<MeterCardProps> = ({
   };
 
   const handleEdit = () => {
-    setMenuVisible(false);
+    closeMenu();
     navigation.navigate("MeterDetail", {
       mode: "edit",
       meterData: data,
@@ -108,7 +142,7 @@ export const MeterCard: React.FC<MeterCardProps> = ({
         style={styles.container}
         activeOpacity={0.8}
         onPress={() => {
-          setMenuVisible(false);
+          closeMenu();
           onPress?.(data);
         }}
       >
@@ -119,26 +153,29 @@ export const MeterCard: React.FC<MeterCardProps> = ({
             </Text>
           </View>
 
-          <TouchableOpacity
-            onPress={(e) => {
-              e.stopPropagation();
-              toggleMenu();
-            }}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Entypo
-              name="dots-three-vertical"
-              size={adjustSize(18)}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
+          <View ref={menuAnchorRef} collapsable={false}>
+            <TouchableOpacity
+              onPress={(e) => {
+                e.stopPropagation();
+                if (menuVisible) closeMenu();
+                else openMenu();
+              }}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Entypo
+                name="dots-three-vertical"
+                size={adjustSize(18)}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.detailsContainer}>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabelvalue}>
               <Text weight="medium" style={styles.detailLabel}>
-                Tenant:{" "}
+                Resident:{" "}
               </Text>
               {data?.tenent}
             </Text>
@@ -172,7 +209,7 @@ export const MeterCard: React.FC<MeterCardProps> = ({
             </Text>
             <Text style={styles.detailLabelvalue}>
               <Text weight="medium" style={styles.detailLabel}>
-                Group ID:{" "}
+                Estate ID:{" "}
               </Text>
               {data?.groupId}
             </Text>
@@ -180,49 +217,86 @@ export const MeterCard: React.FC<MeterCardProps> = ({
         </View>
       </TouchableOpacity>
 
-      {menuVisible && (
-        <Animated.View
-          style={[
-            styles.menuContainer,
-            {
-              opacity: menuOpacity,
-              transform: [{ scale: menuScale }],
-            },
-          ]}
-        >
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              setMenuVisible(false);
-              onPress("view", data);
-            }}
+      <Modal
+        visible={menuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={closeMenu}
+      >
+        <Pressable style={styles.menuOverlay} onPress={closeMenu}>
+          <Animated.View
+            style={[
+              styles.menuContainer,
+              {
+                opacity: menuOpacity,
+                transform: [{ scale: menuScale }],
+              },
+              (() => {
+                const { width: screenWidth, height: screenHeight } =
+                  Dimensions.get("window");
+                const MENU_W = 160;
+                const MENU_H = user?.role !== "facility_manager" ? 140 : 60;
+                const safePad = 12;
+
+                const x = menuAnchor?.x ?? safePad;
+                const y = menuAnchor?.y ?? safePad;
+                const w = menuAnchor?.width ?? 0;
+                const h = menuAnchor?.height ?? 0;
+
+                const left = Math.max(
+                  safePad,
+                  Math.min(x + w - MENU_W, screenWidth - MENU_W - safePad),
+                );
+                const top = Math.max(
+                  safePad,
+                  Math.min(y + h + 6, screenHeight - MENU_H - safePad),
+                );
+
+                return {
+                  position: "absolute" as const,
+                  top,
+                  left,
+                  width: MENU_W,
+                };
+              })(),
+            ]}
           >
-            <Text style={styles.menuText}>View</Text>
-          </TouchableOpacity>
-          {user?.role !== "facility_manager" && (
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => {
-                setMenuVisible(false);
-                onEdit("edit", data);
+                closeMenu();
+                onPress?.("view", data);
               }}
             >
-              <Text style={styles.menuText}>Update</Text>
+              <Text style={styles.menuText}>View</Text>
             </TouchableOpacity>
-          )}
-          {user?.role !== "facility_manager" && (
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => {
-                setMenuVisible(false);
-                onClearTember?.(data);
-              }}
-            >
-              <Text style={[styles.menuText]}>Clear Tamper</Text>
-            </TouchableOpacity>
-          )}
-        </Animated.View>
-      )}
+
+            {user?.role !== "facility_manager" && (
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  closeMenu();
+                  onEdit?.("edit", data);
+                }}
+              >
+                <Text style={styles.menuText}>Update</Text>
+              </TouchableOpacity>
+            )}
+
+            {user?.role !== "facility_manager" && (
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  closeMenu();
+                  onClearTember?.(data);
+                }}
+              >
+                <Text style={styles.menuText}>Clear Tamper</Text>
+              </TouchableOpacity>
+            )}
+          </Animated.View>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
@@ -230,11 +304,20 @@ export const MeterCard: React.FC<MeterCardProps> = ({
 const styles = StyleSheet.create({
   cardContainer: {
     position: "relative",
+    backgroundColor: colors.white,
+    marginBottom: 20,
+    marginHorizontal: 15,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
   },
   container: {
     padding: adjustSize(15),
-    borderBottomWidth: adjustSize(0.5),
-    borderColor: "#B0B0B0",
   },
   header: {
     flexDirection: "row",
@@ -293,19 +376,19 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.semiBold,
   },
   menuContainer: {
-    position: "absolute",
-    top: 40,
-    right: 10,
     backgroundColor: "white",
     borderRadius: 8,
     paddingVertical: 4,
-    width: 160,
     elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     zIndex: 10,
+  },
+  menuOverlay: {
+    flex: 1,
+    backgroundColor: "transparent",
   },
   menuItem: {
     paddingVertical: 10,

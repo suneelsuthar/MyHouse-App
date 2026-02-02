@@ -94,6 +94,7 @@ import { AdminUserManagement } from "./admin/user-management";
 import { AdminPropertyManagement } from "./admin/property-management";
 import { FinancialReports } from "./admin/financial-reports";
 import { AdminSystemSettings } from "./admin/system-settings";
+
 import { AdminAnalytics } from "./admin/analytics";
 import { AdminAuditLogs } from "./admin/audit-logs";
 import { AdminBackupRestore } from "./admin/backup-restore";
@@ -110,7 +111,7 @@ import { AdminBookingDetails } from "./admin/manage-bookings/details";
 import { AdminVisitorManagement } from "./admin/visitor-management";
 import { Tenants } from "./admin/tenants";
 import { TenantsRequests } from "./admin/tenants/tenent-requests";
-
+import AdminAddEditCharges  from "./admin/utilities/manage-charges/AddEditCharges";
 import { CommunityArea } from "./admin/community-area";
 import { VisitorRequests } from "./admin/visitor-management/visitor-requests";
 import { AdminVisitorsList } from "./admin/visitor-management/visitors-list";
@@ -163,6 +164,7 @@ import { MessageHistory } from "./global/message-history";
 import { Reviews } from "./global/profile/reviews";
 import { Subscription } from "./global/profile/subscription";
 import { SelectSubscriptionplans } from "./global/profile/components/SelectSubscriptionplans";
+import { AdminUtilitiesCharges } from "./admin/utilities/manage-charges";
 export {
   Splash,
   Intro,
@@ -287,6 +289,8 @@ export {
   AdminProfileSettings,
   PanicEmergency,
   AdminPropertyRequests,
+  AdminUtilitiesCharges,
+  AdminAddEditCharges,
   AdminManageInspections,
   AdminSimDataManagement,
   ManageMeters,

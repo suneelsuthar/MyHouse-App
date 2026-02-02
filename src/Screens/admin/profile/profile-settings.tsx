@@ -60,7 +60,7 @@ export const AdminProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
         />
@@ -81,7 +81,7 @@ export const AdminProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
         />
@@ -97,7 +97,7 @@ export const AdminProfileSettings: React.FC = () => {
           autoCorrect={false}
           secureTextEntry
           LeftAccessory={() => (
-            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.password} />
+            <WithLocalSvg style={{ marginLeft: 10 }} asset={Images.lock2} />
           )}
           containerStyle={[styles.input]}
         />

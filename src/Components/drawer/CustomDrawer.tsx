@@ -333,13 +333,17 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
     {
       id: 8,
-      title: "Wallet",
+      title: "Transactions",
       type: "item",
       icon: Images.wallet,
       onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Wallet",
+         closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "ManageTransactions" },
         }),
+        // closeMenusAndNavigate("Admin", {
+        //   screen: "Wallet",
+        // }),
     },
 
     {
@@ -388,6 +392,91 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           params: { screen: "AdminSimDataManagement" },
         }),
     },
+      {
+      id: 11,
+      title: "Manage Properties",
+      type: "dropdown",
+      icon: Images.manageprop,
+      menueItems: [
+        {
+          id: 0,
+          title: "Rental Properties",
+          // onPress: () => console.log(""),
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: { screen: "AdminPropertyManagement" },
+            }),
+        },
+        {
+          id: 1,
+          title: "Managed Properties",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyManagement",
+                params: { propertyType: "managed" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Property Requests",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "AdminPropertyRequests",
+              },
+            }),
+        },
+        {
+          id: 3,
+          title: "Services",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyServices",
+              },
+            }),
+        },
+        {
+          id: 4,
+          title: "Features",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyFeatures",
+              },
+            }),
+        },
+        {
+          id: 5,
+          title: "Restrictions",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyRestriction",
+              },
+            }),
+        },
+        {
+          id: 6,
+          title: "Manage Inspections",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminManageInspections",
+              },
+            }),
+        },
+      ],
+    },
     {
       id: 2,
       title: "Manage Meters",
@@ -399,26 +488,38 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           params: { screen: "ManageMeters" },
         }),
     },
-    {
+   
+    // {
+    //   id: 4,
+    //   title: "Manage Estates",
+    //   type: "item",
+    //   icon: Images.managegroups,
+    //   onPress: () =>
+    //     closeMenusAndNavigate("Admin", {
+    //       screen: "Home",
+    //       params: { screen: "AdminManagePropertyGroup" },
+    //     }),
+    // },
+     {
+      id: 210,
+      title: "Manage Charges",
+      type: "item",
+      icon: Images.managetrans,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: { screen: "AdminUtilitiesCharges" },
+        }),
+    },
+     {
       id: 3,
-      title: "Manage Transactions",
+      title: "Transactions",
       type: "item",
       icon: Images.managetrans,
       onPress: () =>
         closeMenusAndNavigate("Admin", {
           screen: "Home",
           params: { screen: "ManageTransactions" },
-        }),
-    },
-    {
-      id: 4,
-      title: "Manage Estates",
-      type: "item",
-      icon: Images.managegroups,
-      onPress: () =>
-        closeMenusAndNavigate("Admin", {
-          screen: "Home",
-          params: { screen: "AdminManagePropertyGroup" },
         }),
     },
     {
@@ -1446,6 +1547,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(10),
     lineHeight: adjustSize(14),
     color: colors.white,
+    textTransform:"capitalize"
   },
   tab_row: {
     flexDirection: "row",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TextStyle,
   Switch,
   Image,
-  ImageSourcePropType
+  ImageSourcePropType,
 } from "react-native";
 import { Text } from "../../../../Components";
 import DropdownComponent from "../../../../Components/DropDown";
@@ -22,36 +22,33 @@ type Step3Props = {
   mode?: string;
 };
 
-
 interface ServiceItem {
   label: string;
   value: string;
 }
 
-
-
 const DEFAULT_FEATURES: ServiceItem[] = [
-  { label: "Balcony", value: "Balcony"},
-  { label: "Swimming Pool", value: "Swimming Pool"},
-  { label: "Garden", value: "Garden"},
-  { label: "Elevator", value: "Elevator"},
-  { label: "Security", value: "Security"},
-  { label: "Parking Space", value: "Parking Space"},
+  { label: "Balcony", value: "Balcony" },
+  { label: "Swimming Pool", value: "Swimming Pool" },
+  { label: "Garden", value: "Garden" },
+  { label: "Elevator", value: "Elevator" },
+  { label: "Security", value: "Security" },
+  { label: "Parking Space", value: "Parking Space" },
 ];
 
 const DEFAULT_SERVICES: ServiceItem[] = [
-  { label: "Wardrobe", value: "Wardrobe", image: Images.logo_1 },
-  { label: "Air conditioner", value: "Air conditioner", image: Images.logo_1 },
-  { label: "Wifi", value: "Wifi", image: Images.logo_1 },
-  { label: "Heater", value: "Heater", image: Images.logo_1 },
-  { label: "TV", value: "TV", image: Images.logo_1 },
-  { label: "Kitchen", value: "Kitchen", image: Images.logo_1 },
-  { label: "Parking", value: "Parking", image: Images.logo_1 },
-  { label: "Washer", value: "Washer", image: Images.logo_1 },
-  { label: "Dryer", value: "Dryer", image: Images.logo_1 },
-  { label: "Microwave", value: "Microwave", image: Images.logo_1 },
-  { label: "Refrigerator", value: "Refrigerator", image: Images.logo_1 },
-  { label: "Gym", value: "Gym", image: Images.logo_1 },
+  { label: "Wardrobe", value: "Wardrobe" },
+  { label: "Air conditioner", value: "Air conditioner" },
+  { label: "Wifi", value: "Wifi" },
+  { label: "Heater", value: "Heater" },
+  { label: "TV", value: "TV" },
+  { label: "Kitchen", value: "Kitchen" },
+  { label: "Parking", value: "Parking" },
+  { label: "Washer", value: "Washer" },
+  { label: "Dryer", value: "Dryer" },
+  { label: "Microwave", value: "Microwave" },
+  { label: "Refrigerator", value: "Refrigerator" },
+  { label: "Gym", value: "Gym" },
 ];
 
 const DEFAULT_RESTRICTIONS = [
@@ -70,15 +67,19 @@ const Step3: React.FC<Step3Props> = ({
   // Services
   const [allServices] = useState<ServiceItem[]>(DEFAULT_SERVICES);
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    initialSelectedServices
+    initialSelectedServices,
   );
   const [serviceValue, setServiceValue] = useState<string | null>(null);
   // MultiSelectDropdown manages query/open internally; we just pass/set values
 
+  const availableServices = useMemo(() => {
+    return allServices.filter((s) => !selectedServices.includes(s.value));
+  }, [allServices, selectedServices]);
+
   // Restrictions
   const [restrictionOptions] = useState<string[]>(initialRestrictions);
   const [selectedRestrictions, setSelectedRestrictions] = useState<Set<string>>(
-    new Set(["No Smoking", "No Parties"]) // as per screenshots demo
+    new Set(["No Smoking", "No Parties"]), // as per screenshots demo
   );
 
   const navigation: any = useNavigation();
@@ -143,13 +144,14 @@ const Step3: React.FC<Step3Props> = ({
       </Text>
 
       <DropdownComponent
-        data={allServices}
+        data={availableServices}
         value={serviceValue}
         onChangeValue={(val) => {
-          setServiceValue(null);
+          setServiceValue(val);
           if (!selectedServices.includes(val)) {
             setSelectedServices((prev) => [...prev, val]);
           }
+          setTimeout(() => setServiceValue(null), 0);
         }}
         placeholder="Search Services"
         dropdownStyle={
@@ -177,23 +179,26 @@ const Step3: React.FC<Step3Props> = ({
       {selectedServices.length > 0 && (
         <View style={styles.chipsRow}>
           {selectedServices.map((serviceValue) => {
-            const service = allServices.find(s => s.value === serviceValue);
+            const service = allServices.find((s) => s.value === serviceValue);
             if (!service) return null;
-            
+
             return (
               <View key={service.value} style={styles.chip}>
                 <View style={styles.chipContent}>
-                 
                   <Text style={styles.chipText}>{service.label}</Text>
                 </View>
                 <TouchableOpacity
                   onPress={() =>
-                    setSelectedServices((prev) => prev.filter((x) => x !== service.value))
+                    setSelectedServices((prev) =>
+                      prev.filter((x) => x !== service.value),
+                    )
                   }
                   style={styles.chipClose}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  <Text style={{ color: colors.white, fontSize: adjustSize(12) }}>
+                  <Text
+                    style={{ color: colors.white, fontSize: adjustSize(12) }}
+                  >
                     ×
                   </Text>
                 </TouchableOpacity>
@@ -279,7 +284,7 @@ const Step3: React.FC<Step3Props> = ({
       <Text weight="semiBold" style={styles.sectionTitle}>
         Facility Managers
       </Text>
-     
+
       <View style={styles.toggleRow}>
         <Text weight="normal" style={styles.toggleLabel}>
           Assign Facility Manager
@@ -289,16 +294,18 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAssignFacilityManager}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
-          style={{ transform: [{ scaleX: 1 }, { scaleY: 1}] }}
-          onChange={() => {
-            if (!assignFacilityManager) {
-              setAllowFacilityManagerRequest(false);
-            }
-          }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
+          onChange={() =>
+            !allowFacilityManagerRequest &&
+            navigation.navigate("AdminAssignProperties", {
+              type: "fm",
+              title: "Assign Facility Manager",
+            } as never)
+          }
         />
       </View>
 
-       <View style={styles.toggleRow}>
+      <View style={styles.toggleRow}>
         <Text weight="normal" style={styles.toggleLabel}>
           Allow Facility Manager Request
         </Text>
@@ -307,14 +314,12 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAllowFacilityManagerRequest}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
-          onChange={() =>
-            !allowFacilityManagerRequest &&
-            navigation.navigate("AdminAssignProperties", {
-              type: "fm",
-              title: "Assign Facility Manager",
-            } as never)
-          }
-          style={{ transform: [{ scaleX: 1 }, { scaleY: 1}] }}
+          onChange={() => {
+            if (!assignFacilityManager) {
+              setAllowFacilityManagerRequest(false);
+            }
+          }}
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
         />
       </View>
 
@@ -341,25 +346,25 @@ const styles = StyleSheet.create({
   },
 
   chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: 100,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 16,
+    // paddingVertical: 0,
     marginRight: 8,
     marginBottom: 8,
-    height:adjustSize(40)
+    height: adjustSize(40),
   },
   chipContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   serviceImage: {
     width: 20,
     height: 20,
     marginRight: 6,
-    borderRadius:5
+    borderRadius: 5,
     // tintColor: colors.white,
   },
   chipText: {
@@ -389,9 +394,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.greylight,
-    height:adjustSize(49),
-    justifyContent:"center",
-    alignItems:"center"
+    height: adjustSize(49),
+    justifyContent: "center",
+    alignItems: "center",
   } as ViewStyle,
   restrictionActive: {
     backgroundColor: colors.primary,
