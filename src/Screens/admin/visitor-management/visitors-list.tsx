@@ -824,6 +824,8 @@ const confirmAlertSecurity = () => {
                 <TouchableOpacity
                   style={styles.menuItem}
                   onPress={() => {
+                    handleRevoke(visitor.id);
+
                     setMenuOpenId(null);
                   }}
                 >

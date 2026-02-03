@@ -1,10 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   Image,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
   ViewStyle,
   TextStyle,
 } from "react-native";
@@ -33,9 +36,11 @@ const MAX_IMAGES = 16;
 const Step6: React.FC<Step6Props> = () => {
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
-  const [activeIndex, setActiveIndex] = useState<number>(0); // 0 = cover, 1..n = images
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const [docType, setDocType] = useState<string | null>(null);
   const [docFileName, setDocFileName] = useState<string | null>(null);
+  const [coverWidth, setCoverWidth] = useState<number>(0);
+  const coverListRef = useRef<FlatList<string> | null>(null);
 
   const ensureMediaPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -98,22 +103,35 @@ const Step6: React.FC<Step6Props> = () => {
     const next = [...images];
     next.splice(idx, 1);
     setImages(next);
-    if (activeIndex > 0) {
-      const maxIndex = next.length; // because 0 is cover, last is next.length
-      setActiveIndex((prev) => Math.min(prev, maxIndex));
-    }
+    const nextAll = (coverImage ? [coverImage, ...next] : next).filter(Boolean);
+    const maxIndex = Math.max(0, nextAll.length - 1);
+    setActiveIndex((prev) => Math.min(prev, maxIndex));
   };
 
-  const totalImages = useMemo(() => {
-    let count = images.length + (coverImage ? 1 : 0);
-    return Math.min(count, MAX_IMAGES + (coverImage ? 1 : 0));
-  }, [images.length, coverImage]);
+  const allUris = useMemo(() => {
+    const list = (coverImage ? [coverImage, ...images] : images).filter(
+      Boolean,
+    );
+    return list as string[];
+  }, [coverImage, images]);
 
-  const currentCoverUri = useMemo(() => {
-    if (!coverImage && images.length === 0) return null;
-    if (activeIndex === 0) return coverImage || images[0];
-    return images[activeIndex - 1] || coverImage || null;
-  }, [activeIndex, coverImage, images]);
+  const totalImages = allUris.length;
+  const currentCoverUri = allUris[activeIndex] || null;
+
+  const scrollToIndex = (idx: number) => {
+    setActiveIndex(idx);
+    if (!coverWidth) return;
+    coverListRef.current?.scrollToOffset({
+      offset: idx * coverWidth,
+      animated: true,
+    });
+  };
+
+  const handleCoverScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (!coverWidth) return;
+    const nextIndex = Math.round(e.nativeEvent.contentOffset.x / coverWidth);
+    if (!Number.isNaN(nextIndex)) setActiveIndex(nextIndex);
+  };
 
   const pickDocument = async () => {
     try {
@@ -145,7 +163,33 @@ const Step6: React.FC<Step6Props> = () => {
 
       {currentCoverUri ? (
         <View style={styles.coverWrap}>
-          <Image source={{ uri: currentCoverUri }} style={styles.coverImage} />
+          <View
+            onLayout={(evt) => {
+              const w = evt.nativeEvent.layout.width;
+              if (w && w !== coverWidth) setCoverWidth(w);
+            }}
+          >
+            <FlatList
+              ref={(r) => {
+                coverListRef.current = r;
+              }}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              data={allUris}
+              keyExtractor={(uri, idx) => `${uri}-${idx}`}
+              onMomentumScrollEnd={handleCoverScrollEnd}
+              renderItem={({ item }) => (
+                <Image
+                  source={{ uri: item }}
+                  style={[
+                    styles.coverImage,
+                    coverWidth ? { width: coverWidth } : null,
+                  ]}
+                />
+              )}
+            />
+          </View>
           {/* top-left upload action (replace) */}
           <View style={styles.coverOverlayLeft}>
             <TouchableOpacity
@@ -160,12 +204,16 @@ const Step6: React.FC<Step6Props> = () => {
           <View style={styles.coverOverlayRight}>
             <TouchableOpacity
               onPress={() => {
-                if (activeIndex === 0) {
+                if (!allUris.length) return;
+                // if cover exists and we're on index 0 => remove cover
+                if (coverImage && activeIndex === 0) {
                   setCoverImage(null);
                   setActiveIndex(0);
-                } else if (activeIndex > 0) {
-                  removeImage(activeIndex - 1);
+                  return;
                 }
+                // otherwise remove from images list
+                const imageIdx = coverImage ? activeIndex - 1 : activeIndex;
+                if (imageIdx >= 0) removeImage(imageIdx);
               }}
               style={styles.coverRemove}
               activeOpacity={0.8}
@@ -178,7 +226,7 @@ const Step6: React.FC<Step6Props> = () => {
             {Array.from({ length: totalImages }).map((_, i) => (
               <TouchableOpacity
                 key={`dot-${i}`}
-                onPress={() => setActiveIndex(i)}
+                onPress={() => scrollToIndex(i)}
                 activeOpacity={0.8}
               >
                 <View
@@ -190,7 +238,7 @@ const Step6: React.FC<Step6Props> = () => {
           {/* bottom-right count */}
           <View style={styles.carouselIndicators}>
             <Text style={styles.carouselCount}>
-              {Math.max(1, Math.min(activeIndex + 1, MAX_IMAGES))}/{MAX_IMAGES}
+              {Math.max(1, activeIndex + 1)}/{totalImages}
             </Text>
           </View>
         </View>

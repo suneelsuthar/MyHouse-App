@@ -24,7 +24,9 @@ const RENTAL_ACTIONS = [
   "Edit",
   "Manage Calendar",
   "Assign to agent",
+  "Assign to Secondary Agent",
   "Assign to FM",
+
   // "Register Tenant",
   // "Generate work request",
   // "Create Visitor request",
@@ -32,7 +34,7 @@ const RENTAL_ACTIONS = [
 
 const ACTIONS_MANAGE = [
   "View",
-  "Assign to FM",
+  // "Assign to FM",
   "Add Resident",
   "Generate work request",
 ];

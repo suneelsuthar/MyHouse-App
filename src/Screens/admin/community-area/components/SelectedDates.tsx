@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   footerRow: {
     flexDirection: "row",
     gap: spacing.md,
-    marginTop: adjustSize(20),
+    marginVertical: adjustSize(20),
     // marginBottom: adjustSize(10),
   },
   backBtn: {

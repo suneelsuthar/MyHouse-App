@@ -39,6 +39,8 @@ const DEFAULT_DAYS = [
   "Friday",
   "Saturday",
   "Sunday",
+  "Everyday",
+
 ];
 
 const Step4: React.FC<Step4Props> = ({
@@ -53,7 +55,7 @@ const Step4: React.FC<Step4Props> = ({
   // Restrictions
   const [restrictionOptions] = useState<string[]>(initialRestrictions);
   const [selectedRestrictions, setSelectedRestrictions] = useState<Set<string>>(
-    new Set(["No Smoking", "No Parties"]) // as per screenshots demo
+    new Set([]) // as per screenshots demo
   );
   // Time selection modal state
   const [timeModalVisible, setTimeModalVisible] = useState(false);
@@ -105,7 +107,13 @@ const Step4: React.FC<Step4Props> = ({
                 styles.restrictionChip,
                 active && styles.restrictionActive,
               ]}
-              onPress={() => setTimeModalVisible(true)}
+              onPress={() =>{
+                setSelectedRestrictions(new Set([r]))
+                 setTimeModalVisible(true)
+                //  if(r === "Everyday"){
+                //   setSchedule("Everyday")
+                //  }
+                }}
               activeOpacity={0.8}
             >
               <Text
@@ -127,6 +135,7 @@ const Step4: React.FC<Step4Props> = ({
         onClose={() => setTimeModalVisible(false)}
         onDone={(s) => setSchedule(s)}
         title="Choose time of the day"
+        // showEveryDay={sele}
         selectedDays={Array.from(selectedRestrictions) as any}
       />
     </View>
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
     gap: adjustSize(8),
     marginBottom: adjustSize(16),
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
   },
 
   restrictionChip: {

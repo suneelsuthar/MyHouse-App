@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   timeBox: {
     height: adjustSize(40),
     borderRadius: adjustSize(20),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

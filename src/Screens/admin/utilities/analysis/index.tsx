@@ -37,6 +37,12 @@ export const Analysis: React.FC = (props: any) => {
   const [chartData, setChartData] = useState<number[]>([
     300, 170, 130, 200, 150, 217, 50,
   ]);
+
+  // Refresh chart whenever active tab changes using current selectedPeriod
+  useEffect(() => {
+    updateChartByPeriod(selectedPeriod);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
   const [chartLabels, setChartLabels] = useState<string[]>([
     "Sat",
     "Sun",
@@ -80,35 +86,68 @@ export const Analysis: React.FC = (props: any) => {
   // 🔹 Update chart by selected period
   const updateChartByPeriod = (period: string) => {
     setSelectedPeriod(period);
-    switch (period) {
-      case "This Week":
-        setChartLabels(["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]);
-        setChartData([300, 170, 130, 200, 150, 217, 50]);
-        break;
-      case "This Month":
-        setChartLabels(["Week 1", "Week 2", "Week 3", "Week 4"]);
-        setChartData([1200, 1500, 1000, 1700]);
-        break;
-      case "This Year":
-        setChartLabels([
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ]);
-        setChartData([
-          5000, 4200, 6000, 5500, 4800, 5000, 6200, 5900, 5700, 6000, 6300,
-          6500,
-        ]);
-        break;
+    if (activeTab === "Power Consumption") {
+      switch (period) {
+        case "This Week":
+          setChartLabels(["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]);
+          setChartData([300, 170, 130, 200, 150, 217, 50]);
+          break;
+        case "This Month":
+          setChartLabels(["Week 1", "Week 2", "Week 3", "Week 4"]);
+          setChartData([1200, 1500, 1000, 1700]);
+          break;
+        case "This Year":
+          setChartLabels([
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ]);
+          setChartData([
+            5000, 4200, 6000, 5500, 4800, 5000, 6200, 5900, 5700, 6000, 6300,
+            6500,
+          ]);
+          break;
+      }
+    } else {
+      // Vending History datasets
+      switch (period) {
+        case "This Week":
+          setChartLabels(["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]);
+          setChartData([20, 35, 18, 42, 26, 30, 22]);
+          break;
+        case "This Month":
+          setChartLabels(["Week 1", "Week 2", "Week 3", "Week 4"]);
+          setChartData([140, 160, 120, 180]);
+          break;
+        case "This Year":
+          setChartLabels([
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ]);
+          setChartData([
+            820, 760, 910, 980, 870, 920, 1050, 990, 940, 1010, 970, 1100,
+          ]);
+          break;
+      }
     }
   };
 
@@ -134,49 +173,61 @@ export const Analysis: React.FC = (props: any) => {
           },
         ]}
         activeTab={activeTab}
-        onTabChange={(label: string) => setActiveTab(label)}
+        onTabChange={(label: string) => {
+          setActiveTab(label);
+          console.log(label);
+          setSelectBy("");
+
+          // Reset all filters when switching tabs
+          setSelectedProperties([]);
+          setStartDate(null);
+          setEndDate(null);
+        }}
       >
         <ScrollView>
           {/* First Dropdown */}
-          <Text style={styles.title}>Select by</Text>
+          <Text style={styles.title}>Search by</Text>
           <DropdownComponent
             data={[
               { label: "Property", value: "Property" },
-              { label: "Property Group", value: "Property Group" },
+              { label: "Estate", value: "Estate" },
             ]}
             label="Property"
             placeholder="Property"
             value={selectBy}
             onChangeValue={(v: string) => {
               setSelectBy(v);
-              setSelectedProperties([]);
-              setStartDate(null);
-              setEndDate(null);
             }}
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
             rightIconColor={colors.primary}
           />
-
+          {/* {console.log(selectBy)} */}
           {selectBy && (
-            <View style={styles.multiSelectContainer}>
-              <Text style={styles.label}>
-                Select {selectBy}
-                <Text style={styles.required}>*</Text>
-              </Text>
-              <MultiSelectDropdown
-                data={[
-                  { label: "Property 1", value: "1" },
-                  { label: "Property 2", value: "2" },
-                  { label: "Property 3", value: "3" },
-                  { label: "Property 4", value: "4" },
-                ]}
-                placeholder={`Select ${selectBy}...`}
-                selectedValues={selectedProperties}
-                onChangeSelected={setSelectedProperties}
-                showSelectedChips={!true}
-                containerStyle={styles.multiSelect}
+            <View>
+              <Text style={styles.title}>Select {selectBy}</Text>
+              <DropdownComponent
+                data={
+                  selectBy === "Estate"
+                    ? [
+                        { label: "Estate 1", value: "1" },
+                        { label: "Estate 2", value: "1" },
+                        { label: "Estate 3", value: "1" },
+                      ]
+                    : [
+                        { label: "Property 1", value: "1" },
+                        { label: "Property 2", value: "2" },
+                        { label: "Property 3", value: "3" },
+                      ]
+                }
+                placeholder={`${selectBy}/Estate`}
+                label={`Select ${selectBy}/Estate`}
+                value={selectedProperties[0]}
+                selectedTextStyle={styles.dropdownSelected}
+                onChangeValue={(v: string) => setSelectedProperties([v])}
+                dropdownStyle={styles.dropdown}
+                placeholderStyle={styles.dropdownPlaceholder}
               />
             </View>
           )}
@@ -190,7 +241,7 @@ export const Analysis: React.FC = (props: any) => {
               <View style={styles.section}>
                 <View style={styles._seciton_row}>
                   <Text weight="semiBold" style={styles.sectionTitle}>
-                    Power Consumption
+                    {activeTab}
                   </Text>
                   <View style={styles.dropdownContainer}>
                     <DropdownComponent
@@ -242,7 +293,9 @@ export const Analysis: React.FC = (props: any) => {
               </View> */}
 
               {/* Units */}
-              <Text style={styles.units}>300 units</Text>
+              <Text style={styles.units}>
+                {activeTab === "Power Consumption" ? "300kwh" : "300 vendings"}
+              </Text>
 
               {/* Chart */}
               <AnalysisChart
@@ -277,14 +330,13 @@ const styles = StyleSheet.create({
   },
   multiSelectContainer: {
     marginTop: 16,
-    marginHorizontal: adjustSize(10),
   },
   multiSelect: {
     marginTop: 8,
-    padding:0,
+    padding: 0,
     // height:adjustSize(50),
-    borderRadius:15,
-     shadowColor: "#000000",
+    borderRadius: 15,
+    shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
@@ -384,7 +436,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   units: {
-    color: "#6369A4",
+    color: colors.primary,
     fontSize: adjustSize(24),
     fontFamily: typography.fonts.poppins.semiBold,
     marginHorizontal: adjustSize(10),

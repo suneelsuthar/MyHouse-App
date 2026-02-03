@@ -342,7 +342,7 @@ export const AdminManageVendingHistory = ({
               { label: "104", value: "104" },
             ]}
             label="Select Period"
-            placeholder="Sort by"
+            placeholder="Select Estate"
             dropdownStyle={{ backgroundColor: colors.primary }}
           />
         </View>
@@ -465,9 +465,9 @@ export const AdminManageVendingHistory = ({
               onPress={handleCloseModal}
             >
               <Ionicons
-                name="close-circle"
-                size={adjustSize(40)}
-                color={colors.error}
+                name="close"
+                size={adjustSize(25)}
+                color={"#D62828"}
               />
             </TouchableOpacity>
             <Text style={styles.modalText}>
@@ -502,7 +502,7 @@ export const AdminManageVendingHistory = ({
             </View>
 
             <View style={styles._row}>
-              <Text text="Tenant:" style={styles._rowlabel} />
+              <Text text="Resident:" style={styles._rowlabel} />
               <Text text="John Doe" style={styles._rowvalue} />
             </View>
 
@@ -778,8 +778,15 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    right: 10,
-    top: 10,
+    right: 15,
+    top: 15,
+    borderWidth:1,
+    borderColor:"#D62828",
+    height:34,
+    width:34,
+    borderRadius:100,
+    justifyContent:"center",
+    alignItems:"center"
   },
   modalText: {
     textAlign: "center",
@@ -849,7 +856,7 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: 10,
+    right: 30,
     top: 0,
     backgroundColor: colors.white,
     borderRadius: 8,
@@ -860,20 +867,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     zIndex: 1000,
-    minWidth: 180,
+    minWidth: 140,
     alignSelf: "flex-end",
   },
   menuItem: {
-    paddingVertical: 5,
-    paddingHorizontal: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
     borderBottomColor: colors.border,
   },
   menuItemLast: {
     borderBottomWidth: 0,
   },
   menuText: {
-    fontSize: adjustSize(14),
-    color: colors.text,
+    fontSize: adjustSize(12),
+    color: colors.primary,
   },
   _subtitle: {
     color: "#4CAF50",
@@ -883,7 +890,7 @@ const styles = StyleSheet.create({
   _divider: {
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
-    marginVertical: adjustSize(20),
+    marginVertical: adjustSize(10),
   },
   _label: {
     color: "#7E7E7E",
@@ -894,6 +901,7 @@ const styles = StyleSheet.create({
   amount: {
     textAlign: "center",
     fontSize: adjustSize(20),
+    color:colors.primary
   },
   _row: {
     flexDirection: "row",
@@ -908,7 +916,7 @@ const styles = StyleSheet.create({
     paddingVertical: adjustSize(5),
   },
   _rowvalue: {
-    color: "#7E7E7E",
+    color:"#7E7E7E",
     fontSize: adjustSize(12),
     textAlign: "center",
     paddingVertical: adjustSize(5),

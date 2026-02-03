@@ -11,7 +11,7 @@ export default function ReservationStep1({ control, errors, onPress }: any) {
     <View style={styles.container}>
       <View>
         {/* Property Group */}
-        <Text style={styles.title}>Select Property Group</Text>
+        <Text style={styles.title}>Select Estate</Text>
         <Controller
           control={control}
           name="propertyGroup"

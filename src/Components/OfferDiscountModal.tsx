@@ -234,7 +234,7 @@ const OfferDiscountModal: React.FC<Props> = ({
           )}
         </View>
 
-        <View style={{ marginTop: adjustSize(10) }}>
+        <View>
           <RowWithAction
             label="Monthly Discount"
             placeholder="For 29 Nights"
@@ -374,7 +374,7 @@ const OfferDiscountModal: React.FC<Props> = ({
 
         {/* Expanded rows with inline detail cards */}
         {showMoreRows && (
-          <View style={{borderWidth:1,borderBottomColor:"#B0B0B0",marginTop:-95,
+          <View style={{borderWidth:1,borderBottomColor:"#B0B0B0",marginTop:-60,
             paddingTop:86,
             borderRadius:8,
             borderColor:"#A1A1A1",
@@ -731,18 +731,18 @@ const RowWithAction = ({
   actionMode?: "plusMinus" | "none";
   editable?: boolean;
 }) => (
-  <View style={{ marginBottom: adjustSize(10) }}>
+  <View style={{ marginBottom: adjustSize(0) }}>
     <Text weight="normal" style={styles.inputLabel}>
       {label}
     </Text>
     <View style={styles.row}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1}}>
         <TextField
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
           editable={false}
-          inputWrapperStyle={{ backgroundColor: "white" }}
+          inputWrapperStyle={{ backgroundColor: "white",marginBottom:0 }}
           style={{
             color: colors.primary,
             fontSize: adjustSize(12),
@@ -887,7 +887,7 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.fill,
     borderRadius: adjustSize(12),
     padding: adjustSize(14),
-    marginTop: adjustSize(-85),
+    marginTop: adjustSize(-60),
     borderWidth: 1,
     borderColor: colors.grey,
     paddingTop: 80,

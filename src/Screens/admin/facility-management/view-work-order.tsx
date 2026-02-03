@@ -12,7 +12,7 @@ import { Screen, Text, Button, Header } from "../../../Components";
 import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { Ionicons } from "@expo/vector-icons";
-
+import { useNavigation } from "@react-navigation/native";
 type TabKey = "summary" | "updates";
 
 export const FMViewWorkOrder = () => {
@@ -22,7 +22,7 @@ export const FMViewWorkOrder = () => {
   const slides = [Images.slide1, Images.slide2, Images.slide3];
   const [activeSlide, setActiveSlide] = useState(0);
   const gallery = slides; // could be dynamic later
-
+  const navigation: any = useNavigation();
   const details: Array<[string, string]> = useMemo(
     () => [
       ["Title:", "Toilet leakage"],
@@ -33,7 +33,7 @@ export const FMViewWorkOrder = () => {
       ["Category:", "Plumbing"],
       ["Status:", "Ongoing"],
     ],
-    []
+    [],
   );
 
   const updates = useMemo(
@@ -45,7 +45,7 @@ export const FMViewWorkOrder = () => {
         date: "24 feb , 2025",
         img: slides[i % slides.length],
       })),
-    []
+    [],
   );
 
   return (
@@ -66,8 +66,7 @@ export const FMViewWorkOrder = () => {
           <Image
             source={Images.ordersummary}
             style={{
-              tintColor:
-                activeTab === "summary" ? colors.white : colors.white,
+              tintColor: activeTab === "summary" ? colors.white : colors.white,
               height: 23,
               width: 18,
             }}
@@ -91,8 +90,7 @@ export const FMViewWorkOrder = () => {
           <Image
             source={Images.orderUpdates}
             style={{
-              tintColor:
-                activeTab === "updates" ? colors.white : colors.white,
+              tintColor: activeTab === "updates" ? colors.white : colors.white,
               height: 23,
               width: 23,
             }}
@@ -176,9 +174,15 @@ export const FMViewWorkOrder = () => {
             </View>
 
             {/* Description */}
-            <Text weight="semiBold" style={[styles.sectionTitle,{
-              fontSize:adjustSize(12)
-            }]}>
+            <Text
+              weight="semiBold"
+              style={[
+                styles.sectionTitle,
+                {
+                  fontSize: adjustSize(12),
+                },
+              ]}
+            >
               Description
             </Text>
             <Text style={styles.desc}>
@@ -199,11 +203,10 @@ export const FMViewWorkOrder = () => {
             textStyle={styles.primaryBtnText}
             onPress={() => {
               Linking.openURL(
-                "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d"
+                "https://firebasestorage.googleapis.com/v0/b/cityportal-84540.appspot.com/o/WorkOrder_WO294841.pdf?alt=media&token=7e9a5838-6133-4aa2-8527-550aa0d6939d",
               );
             }}
           />
-          
         </ScrollView>
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -246,7 +249,9 @@ export const FMViewWorkOrder = () => {
             preset="reversed"
             style={[styles.primaryBtn, { marginTop: spacing.none }]}
             textStyle={styles.primaryBtnText}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("FMOrderUpdate");
+            }}
           />
         </ScrollView>
       )}
@@ -272,19 +277,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: colors.primary ,
+    backgroundColor: colors.primary,
   },
   tabBtn: {
     alignItems: "center",
     justifyContent: "center",
     height: adjustSize(56),
     flex: 1,
-    opacity:0.6
+    opacity: 0.6,
   },
   tabActive: {
     borderBottomWidth: 2,
     borderBottomColor: colors.white,
-    opacity:1
+    opacity: 1,
   },
   tabText: {
     marginTop: spacing.xs,

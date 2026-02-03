@@ -114,10 +114,12 @@ export const AdminVisitorDetails: React.FC<Props> = ({
       safeAreaEdges={["top"]}
       contentContainerStyle={styles.container}
     >
-       
-      
       {/* Header */}
-      <Header title={type === "requests" ? "Visitor Request Details" : "Visitor Details"} />
+      <Header
+        title={
+          type === "requests" ? "Visitor Request Details" : "Visitor Details"
+        }
+      />
       {type === "requests" && (
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           {/* QR Code Section */}
@@ -131,10 +133,13 @@ export const AdminVisitorDetails: React.FC<Props> = ({
             {/* <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
               <Text style={styles.shareText}>Share</Text>
             </TouchableOpacity> */}
-             <TouchableOpacity
-              style={[styles.revokeButton,{
-                width:"100%"
-              }]}
+            <TouchableOpacity
+              style={[
+                styles.revokeButton,
+                {
+                  width: "100%",
+                },
+              ]}
               // onPress={handleRevoke}
               onPress={handleShare}
             >
@@ -145,10 +150,10 @@ export const AdminVisitorDetails: React.FC<Props> = ({
           {/* Visitor Information */}
           <View style={styles.section}>
             <InfoRow label="Name" value={visitorData.name} />
-            <InfoRow label="Access Code" value={visitorData.accessCode} />
             <InfoRow label="Property" value={visitorData.property} />
-            <InfoRow label="Property Group" value={visitorData.propertyGroup} />
             <InfoRow label="Type" value={visitorData.type} />
+            <InfoRow label="Property Group" value={visitorData.propertyGroup} />
+            <InfoRow label="Access Code" value={visitorData.accessCode} />
           </View>
 
           <View style={styles.section}>
@@ -169,25 +174,26 @@ export const AdminVisitorDetails: React.FC<Props> = ({
           {/* Action Buttons */}
           <View style={styles.actionButtons}>
             <TouchableOpacity
-              style={styles.alertButton}
-              onPress={handleAlertSecurity}
-            >
-              <Text style={styles.alertButtonText}>Alert Security</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
               style={styles.revokeButton}
-              onPress={handleRevoke}
+              // onPress={handleRevoke}
             >
-              <Text style={styles.revokeButtonText}>Revoke</Text>
+              <Text style={styles.revokeButtonText}>Approve</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.alertButton}
+              // onPress={handleAlertSecurity}
+            >
+              <Text style={styles.alertButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
       )}
-     
 
-       {type === "visitors" && (
-        <ScrollView style={[styles.content,{paddingTop:30}]} showsVerticalScrollIndicator={false}>
+      {type === "visitors" && (
+        <ScrollView
+          style={[styles.content, { paddingTop: 30 }]}
+          showsVerticalScrollIndicator={false}
+        >
           {/* QR Code Section */}
 
           {/* Visitor Information */}
@@ -212,7 +218,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({
         </View> */}
 
           {/* Action Buttons */}
-          <View style={styles.actionButtons}>
+          {/* <View style={styles.actionButtons}>
             <TouchableOpacity
               style={styles.alertButton}
               onPress={handleAlertSecurity}
@@ -226,7 +232,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({
             >
               <Text style={styles.revokeButtonText}>Revoke</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       )}
 
@@ -322,6 +328,7 @@ export const AdminVisitorDetails: React.FC<Props> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.fill,
   },
   header: {
     flexDirection: "row",
@@ -405,6 +412,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: spacing.lg,
+    gap:20
     // paddingHorizontal: spacing.sm,
   },
   alertButton: {
@@ -412,7 +420,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: adjustSize(10),
-    marginRight: spacing.sm,
     alignItems: "center",
     height: adjustSize(47),
     justifyContent: "center",

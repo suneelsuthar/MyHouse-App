@@ -57,11 +57,15 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
         return "Assign Property to a Facility Manager";
       case "tenant":
         return "Assign Property to a Registered tenant";
+         case "secondary-agent":
+        return "Assign Property to a Secondary Agent";
       case "agent":
       default:
-        return "Assign Property to a Primary Agent";
+        return "Assign Property to a Agent";
     }
   }, [assignType]);
+
+  {console.log(assignType)}
   const searchPlaceholder = useMemo(() => {
     console.log(assignType);
     switch (assignType) {
@@ -71,6 +75,8 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
         return "Search tenant";
       case "primary-agent":
         return "Search Primary Agent";
+        case "secondary-agent":
+        return "Search Secondary Agent";
       case "agent":
       default:
         return "Search";
@@ -153,7 +159,7 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
               )}
             </Pressable>
           </View>
-          {isChecked && assignType === "primary-agent" && (
+          {isChecked && (assignType === "primary-agent" || assignType === "agent" )&& (
             <View style={styles.commissionRow}>
               <Text style={styles.commissionLabel}>Commission %:</Text>
               <View

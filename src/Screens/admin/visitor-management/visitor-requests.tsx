@@ -114,10 +114,6 @@ export const VisitorRequests: React.FC = () => {
   });
   const confirmAlertSecurity = () => {
     setAlertModalVisible(false);
-    Alert.alert(
-      "Security Alerted",
-      "Security has been cancelled about this visitor.",
-    );
   };
 
   const handleRevoke = (visitorId: number) => {
@@ -126,7 +122,6 @@ export const VisitorRequests: React.FC = () => {
 
   const confirmRevoke = () => {
     setRevokeModalVisible(false);
-    Alert.alert("Access Revoked", "Visitor access has been revoked.");
     navigation.goBack();
   };
 
@@ -268,9 +263,11 @@ export const VisitorRequests: React.FC = () => {
             </View>
 
             <View style={styles.visitorInfo}>
-              <Text style={styles.visitorName} weight="semiBold">
-                {visitor.name}
-              </Text>
+              <Text
+                style={styles.visitorName}
+                weight="semiBold"
+                text={visitor.name}
+              />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.visitorProperty} weight="medium">
                   <Text style={styles.propLabel}>Property:</Text>
@@ -284,9 +281,7 @@ export const VisitorRequests: React.FC = () => {
 
             <View style={styles.rightCol}>
               <TouchableOpacity
-                onPress={() =>
-                 setMenuOpenId(visitor.id)
-                }
+                onPress={() => setMenuOpenId(visitor.id)}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 style={styles.moreBtn}
               >
@@ -398,10 +393,6 @@ export const VisitorRequests: React.FC = () => {
                 style={styles.cancelButton}
                 onPress={() => {
                   setAlertModalVisible(false);
-                  Alert.alert(
-                    "Security Alerted",
-                    "Security has been alerted about this visitor.",
-                  );
                 }}
               >
                 <Text style={styles.alertCancelButtonText}>Alert</Text>

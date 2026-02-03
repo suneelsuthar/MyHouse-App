@@ -171,14 +171,14 @@ export function AdminPropertyManagement({
                   } as never,
                 );
               } else if (action === "Assign to Secondary Agent") {
-                alert("Assign to Secondary Agent")(navigation as any).navigate(
+                (navigation as any).navigate(
                   "AdminAssignProperties" as never,
                   {
                     propertyId: property.propertyId,
-                    type: "agent",
-                    title: "Assign Agent",
+                    type: "secondary-agent",
+                    title: "Assign Secondary Agent",
                   } as never,
-                );
+              )
               } else if (action === "Assign to FM") {
                 (navigation as any).navigate(
                   "AdminAssignProperties" as never,

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Button, Screen, Text, TextField } from "../../../Components";
 import { AuthStackParamList } from "../../../utils/interfaces";
-import { adjustSize, colors, spacing } from "../../../theme";
+import { adjustSize, colors, spacing, typography } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
@@ -135,9 +135,9 @@ export function LoginScreen(props: LoginScreenProps) {
             />
           </Text>
 
-          <View style={styles._dropdownview}>
+          {/* <View style={styles._dropdownview}> */}
             
-            <View style={styles._roleDropdown}>
+            {/* <View style={styles._roleDropdown}>
               <Dropdown
                 dropdownStyle={styles._dropdownInner}
                 placeholderStyle={styles._placeholderStyle}
@@ -150,8 +150,8 @@ export function LoginScreen(props: LoginScreenProps) {
                   setSelectedRole(val);
                 }}
               />
-            </View>
-          </View>
+            </View> */}
+          {/* </View> */}
 
           <Controller
             control={control}
@@ -223,13 +223,13 @@ export function LoginScreen(props: LoginScreenProps) {
 
           <TouchableOpacity
           // onPress={() => props.navigation.navigate("ForgotPassword")}
-          // style={{ alignSelf: "center" }}
+          style={{ paddingLeft:15,marginTop:-10 }}
           >
             <Text
               text="Forgot Password?"
               preset="formHelper"
-              weight="medium"
-              style={styles.enterDetails}
+              weight="normal"
+              style={[styles.enterDetails,{color:"#B0B0B0",fontSize:adjustSize(14)}]}
             />
           </TouchableOpacity>
 
@@ -284,12 +284,12 @@ export function LoginScreen(props: LoginScreenProps) {
             disabled={!isFormValid || isLoading}
             onPress={handleSubmit(login)}
             text={"Continue with Google"}
-            textStyle={{ color: "#292766A3",paddingLeft:20 }}
+            textStyle={{ color: colors.primaryLight,paddingLeft:20,fontFamily:typography.fonts.poppins.normal }}
             LeftAccessory={() => <WithLocalSvg asset={Images.googleicon} />}
             style={[
               !isFormValid && styles.disabledButton,
               {
-                backgroundColor: isFormValid ? colors.white : colors.border,
+                backgroundColor: isFormValid ? colors.fill : colors.border,
                 marginVertical: 10,
                 marginBottom: 30,
                 justifyContent: "flex-start",
@@ -302,12 +302,12 @@ export function LoginScreen(props: LoginScreenProps) {
             disabled={!isFormValid || isLoading}
             onPress={handleSubmit(login)}
             text={"Continue with Facebook"}
-            textStyle={{ color: "#292766A3" ,paddingLeft:20}}
+            textStyle={{ color: colors.primaryLight ,paddingLeft:20,fontFamily:typography.fonts.poppins.normal}}
             LeftAccessory={() => <WithLocalSvg asset={Images.facebook} />}
             style={[
               !isFormValid && styles.disabledButton,
               {
-                backgroundColor: isFormValid ? colors.white : colors.border,
+                backgroundColor: isFormValid ? colors.fill : colors.border,
                 marginBottom: 50,
                 justifyContent: "flex-start",
               },

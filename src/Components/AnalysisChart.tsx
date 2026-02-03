@@ -25,20 +25,33 @@ const AnalysisChart: React.FC<BookingsChartProps> = ({
       <BarChart
         data={{
           labels: labels,
-          datasets: [{ data: data }],
+          datasets: [
+            {
+              data: data,
+              colors: data.map(() => () => "#7979a3"),
+            },
+          ],
+          // data: [colors.primary, colors.primary, colors.primary],
         }}
         width={screenWidth - adjustSize(20)}
         height={260} // Increase height for yearly data to accommodate vertical labels
         fromZero
         showValuesOnTopOfBars={false}
-        withInnerLines={false}
         withHorizontalLabels={true}
+        withCustomBarColorFromData
+        flatColor
         chartConfig={{
           backgroundGradientFrom: colors.fill,
           backgroundGradientTo: colors.fill,
+          // backgroundGradientToOpacity: 0.1,
+          style: {
+            borderRadius: 106,
+          },
           decimalPlaces: 0,
-          color: () => chartColor,
-          labelColor: () => chartColor,
+
+          // color: () => "red",
+          labelColor: () => colors.primary,
+          color: (opacity = 1) => `rgb(41, 39, 102)`,
           propsForBackgroundLines: { strokeWidth: 0 },
           propsForLabels: {
             fontSize: adjustSize(10),
@@ -50,6 +63,8 @@ const AnalysisChart: React.FC<BookingsChartProps> = ({
         }}
         style={styles.chart}
         verticalLabelRotation={isYearlyData ? -90 : 0}
+        showBarTops={false}
+        
       />
     </View>
   );

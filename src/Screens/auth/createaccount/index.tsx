@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Button, Text, TextField, Screen } from "../../../Components";
 import { AuthStackParamList } from "../../../utils/interfaces";
-import { adjustSize, colors, spacing } from "../../../theme";
+import { adjustSize, colors, spacing, typography } from "../../../theme";
 import Toast from "react-native-toast-message";
 import { Images } from "../../../assets/Images";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -387,12 +387,12 @@ export function CreateAccount(props: CreateAccountProps) {
           disabled={!isFormValid || loading}
           onPress={handleSubmit(signup)}
           text={"Continue with Google"}
-          textStyle={{ color: "#292766A3", paddingLeft: 20 }}
+          textStyle={{ color: colors.primaryLight, paddingLeft: 20, fontFamily: typography.fonts.poppins.normal }}
           LeftAccessory={() => <WithLocalSvg asset={Images.googleicon} />}
           style={[
             !isFormValid && styles.disabledButton,
             {
-              backgroundColor: isFormValid ? colors.white : colors.border,
+              backgroundColor: isFormValid ? colors.fill : colors.border,
               marginVertical: 10,
               marginBottom: 30,
               justifyContent: "flex-start",
@@ -405,12 +405,12 @@ export function CreateAccount(props: CreateAccountProps) {
           disabled={!isFormValid || loading}
           onPress={handleSubmit(signup)}
           text={"Continue with Facebook"}
-          textStyle={{ color: "#292766A3", paddingLeft: 20 }}
+          textStyle={{ color: colors.primaryLight, paddingLeft: 20,fontFamily:typography.fonts.poppins.normal }}
           LeftAccessory={() => <WithLocalSvg asset={Images.facebook} />}
           style={[
             !isFormValid && styles.disabledButton,
             {
-              backgroundColor: isFormValid ? colors.white : colors.border,
+              backgroundColor: isFormValid ? colors.fill : colors.border,
               marginBottom: 50,
               justifyContent: "flex-start",
             },

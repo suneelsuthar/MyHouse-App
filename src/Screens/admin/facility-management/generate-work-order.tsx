@@ -187,17 +187,17 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       >
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
           <View style={{ padding: adjustSize(10) }}>
-            <Text weight="semiBold" style={styles.sectionHeading}>Create work order</Text>
+            {/* <Text weight="semiBold" style={styles.sectionHeading}>Create work order</Text> */}
 
             {/* Work Req No. (disabled) */}
             <Text style={styles.label} weight="semiBold">Work Req No.</Text>
             <TextField
               placeholder="123456"
               value={workReqNo}
-              editable={false}
-              inputWrapperStyle={[styles.inputWrapper, styles.disabledField]}
-              style={[styles.input, { color: colors.white }]}
-              placeholderTextColor={colors.white}
+              editable={true}
+              inputWrapperStyle={[styles.inputWrapper]}
+              style={[styles.input]}
+              // placeholderTextColor={colors.white}
             />
 
             {/* Property* */}
@@ -225,7 +225,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             />
 
             {/* Category */}
-            <Text style={styles.label} weight="semiBold">Category</Text>
+            <Text style={[styles.label,{marginTop:0}]} weight="semiBold">Category</Text>
             <DropdownComponent
               data={categoryOptions}
               placeholder="Select"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
-import { Screen, Text, Header2 } from "../../../Components";
+import { Screen, Text, Header2,TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
 import SearchDropdown from "../../../Components/SearchDropdown";
 import DropdownComponent from "../../../Components/DropDown";
@@ -123,7 +123,20 @@ export function Tenants() {
       contentContainerStyle={styles.container}
     >
       <Header2 title="Residents" onNotificationPress={() => {}} />
-      <SearchDropdown />
+      {/* <SearchDropdown /> */}
+      <View
+        style={{
+          marginHorizontal: adjustSize(10),
+          marginTop:20
+          //   flexDirection: "row",
+        }}
+      >
+        <TextField
+          placeholderTextColor={colors.primaryLight}
+          inputWrapperStyle={{ backgroundColor: colors.white }}
+          placeholder="Search"
+        />
+      </View>
       <View style={styles.section}>
         <View style={styles._seciton_row}>
           <Text weight="semiBold" style={styles.sectionTitle}>
@@ -249,7 +262,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginHorizontal: adjustSize(10),
-    marginTop: adjustSize(8),
+    // marginTop: adjustSize(8),
   },
   sectionTitle: {
     fontSize: adjustSize(15),
@@ -260,8 +273,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: adjustSize(10),
-    marginBottom: adjustSize(20),
+    // marginTop: adjustSize(10),
+    marginBottom: adjustSize(10),
   },
   dropdownContainer: {
     width: adjustSize(120),
@@ -292,7 +305,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginHorizontal: adjustSize(10),
     marginVertical: adjustSize(5),
-    minHeight: adjustSize(89),
+    minHeight: adjustSize(76),
     position: "relative",
   },
   cardRowTop: {
@@ -350,13 +363,16 @@ const styles = StyleSheet.create({
     top: adjustSize(36),
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),
-    elevation: 4,
+    elevation: 3,
     width: adjustSize(70),
     paddingVertical: adjustSize(2),
     zIndex: 10,
-    borderWidth:1,
-    justifyContent:"center",
-    alignItems:"center"
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   menuItem: {
     paddingVertical: adjustSize(5),

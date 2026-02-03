@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   menuItem: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 16,
   },
   menuText: {

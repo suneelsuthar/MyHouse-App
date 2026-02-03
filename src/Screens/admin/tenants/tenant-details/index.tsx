@@ -34,7 +34,7 @@ export function TenantDetails({ navigation }: any) {
               <Text style={styles.listVal}>lorem ipsum</Text>
             </View>
             <View style={styles.list}>
-              <Text style={styles.listTitle}>Tenant Code/ID</Text>
+              <Text style={styles.listTitle}>Resident Code/ID</Text>
               <Text style={styles.listVal}>lorem ipsum</Text>
             </View>
             <View style={styles.list}>
@@ -42,7 +42,7 @@ export function TenantDetails({ navigation }: any) {
               <Text style={styles.listVal}>lorem ipsum</Text>
             </View>
             <View style={styles.list}>
-              <Text style={styles.listTitle}>Property Group</Text>
+              <Text style={styles.listTitle}>Estate</Text>
               <Text style={styles.listVal}>lorem ipsum</Text>
             </View>
           </View>

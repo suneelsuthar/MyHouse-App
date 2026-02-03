@@ -233,9 +233,9 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       >
         <View style={[styles._searchrow, { marginTop: adjustSize(15) }]}>
           <View style={styles._inputview}>
-            {activeTab === "Amenities" ? (
+            {/* {activeTab === "Amenities" ? ( */}
               <GroupDropdown placeholder="Select Estate" />
-            ) : (
+            {/* ) : (
               <TextField
                 placeholderTextColor={colors.primaryLight}
                 inputWrapperStyle={{ backgroundColor: colors.fill }}
@@ -244,7 +244,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
                 value={search}
                 onChangeText={setSearch}
               />
-            )}
+            )} */}
           </View>
 
           {user?.role === "tenant" ? (
@@ -283,7 +283,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-              {activeTab === "Amenities" ? "Manage Amenities" : "Reservations"}
+              {activeTab === "Amenities" ? "Manage Amenities" : "Manage Reservations"}
             </Text>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
