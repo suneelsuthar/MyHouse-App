@@ -7,7 +7,6 @@ import {
   PowerConsumptionIcon,
 } from "../../../../assets/svg";
 import DropdownComponent from "../../../../Components/DropDown";
-import MultiSelectDropdown from "../../../../Components/MultiSelectDropdown";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import AnalysisChart from "../../../../Components/AnalysisChart";
@@ -15,7 +14,8 @@ import { CustomDateTimePicker } from "../../../../Components/CustomDateTimePicke
 export const Analysis: React.FC = (props: any) => {
   const [activeTab, setActiveTab] = useState("Power Consumption");
   const [selectBy, setSelectBy] = useState<string | undefined>();
-  const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
+  const [selectedEstate, setSelectedEstate] = useState<string | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
 
   useEffect(() => {
     if (props?.route?.params?.tab === "power_consumption") {
@@ -151,6 +151,155 @@ export const Analysis: React.FC = (props: any) => {
     }
   };
 
+  const renderContent = () => {
+    return (
+      <ScrollView>
+        {/* First Dropdown */}
+        <Text style={styles.title}>Search by</Text>
+        <DropdownComponent
+          data={[
+            { label: "Property", value: "Property" },
+            { label: "Estate", value: "Estate" },
+          ]}
+          label="Property"
+          placeholder="Property"
+          value={selectBy}
+          onChangeValue={(v: string) => {
+            setSelectBy(v);
+            setSelectedEstate(null);
+            setSelectedProperty(null);
+          }}
+          dropdownStyle={styles.dropdown}
+          placeholderStyle={styles.dropdownPlaceholder}
+          selectedTextStyle={styles.dropdownSelected}
+          rightIconColor={colors.primary}
+        />
+
+        {/* If Estate selected: show Estate dropdown */}
+        {selectBy === "Estate" && (
+          <View>
+            <Text style={styles.title}>Select Estate</Text>
+            <DropdownComponent
+              data={[
+                { label: "Estate 1", value: "estate_1" },
+                { label: "Estate 2", value: "estate_2" },
+                { label: "Estate 3", value: "estate_3" },
+              ]}
+              placeholder="Select Estate"
+              label="Select Estate"
+              value={selectedEstate ?? undefined}
+              selectedTextStyle={styles.dropdownSelected}
+              onChangeValue={(v: string) => {
+                setSelectedEstate(v);
+                setSelectedProperty(null);
+              }}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+            />
+          </View>
+        )}
+
+        {/* If Property selected: show Property dropdown */}
+        {selectBy === "Property" && (
+          <View>
+            <Text style={styles.title}>Select Property</Text>
+            <DropdownComponent
+              data={[
+                { label: "Property 1", value: "property_1" },
+                { label: "Property 2", value: "property_2" },
+                { label: "Property 3", value: "property_3" },
+              ]}
+              placeholder="Select Property"
+              label="Select Property"
+              value={selectedProperty ?? undefined}
+              selectedTextStyle={styles.dropdownSelected}
+              onChangeValue={(v: string) => setSelectedProperty(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+            />
+          </View>
+        )}
+
+        {/* If Estate selected and estate chosen: show third dropdown for properties */}
+        {selectBy === "Estate" && selectedEstate && (
+          <View>
+            <Text style={styles.title}>Select Property</Text>
+            <DropdownComponent
+              data={[
+                { label: "Property A", value: "property_a" },
+                { label: "Property B", value: "property_b" },
+                { label: "Property C", value: "property_c" },
+              ]}
+              placeholder="Select Property"
+              label="Select Property"
+              value={selectedProperty ?? undefined}
+              selectedTextStyle={styles.dropdownSelected}
+              onChangeValue={(v: string) => setSelectedProperty(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+            />
+          </View>
+        )}
+
+        {((selectBy === "Property" && !!selectedProperty) ||
+          (selectBy === "Estate" &&
+            !!selectedEstate &&
+            !!selectedProperty)) && (
+          <>
+            <View style={styles.line} />
+            <View style={styles.section}>
+              <View style={styles._seciton_row}>
+                <Text weight="semiBold" style={styles.sectionTitle}>
+                  {activeTab}
+                </Text>
+                <View style={styles.dropdownContainer}>
+                  <DropdownComponent
+                    data={[
+                      { label: "This Week", value: "This Week" },
+                      { label: "This Month", value: "This Month" },
+                      { label: "This Year", value: "This Year" },
+                    ]}
+                    label="Select Period"
+                    placeholder="Sort by"
+                    value={selectedPeriod}
+                    onChangeValue={updateChartByPeriod}
+                    dropdownStyle={styles.customDropdownStyle}
+                    placeholderStyle={styles.customPlaceholderStyle}
+                    selectedTextStyle={styles.customSelectedTextStyle}
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* Units */}
+            <Text style={styles.units}>
+              {activeTab === "Power Consumption" ? "300kwh" : "300 vendings"}
+            </Text>
+
+            {/* Chart */}
+            <AnalysisChart
+              data={chartData}
+              labels={chartLabels}
+              period={selectedPeriod}
+            />
+
+            {/* Custom Date Picker */}
+            {showPicker && (
+              <CustomDateTimePicker
+                mode="date"
+                value={tempDate}
+                visible={showPicker}
+                onChange={onChange}
+                onCancel={() => setShowPicker(false)}
+                onConfirm={() => setShowPicker(false)}
+              />
+            )}
+          </>
+        )}
+      </ScrollView>
+    );
+  };
+
   return (
     <Screen
       preset="auto"
@@ -176,148 +325,16 @@ export const Analysis: React.FC = (props: any) => {
         onTabChange={(label: string) => {
           setActiveTab(label);
           console.log(label);
-          setSelectBy("");
+          setSelectBy(undefined);
 
           // Reset all filters when switching tabs
-          setSelectedProperties([]);
+          setSelectedEstate(null);
+          setSelectedProperty(null);
           setStartDate(null);
           setEndDate(null);
         }}
       >
-        <ScrollView>
-          {/* First Dropdown */}
-          <Text style={styles.title}>Search by</Text>
-          <DropdownComponent
-            data={[
-              { label: "Property", value: "Property" },
-              { label: "Estate", value: "Estate" },
-            ]}
-            label="Property"
-            placeholder="Property"
-            value={selectBy}
-            onChangeValue={(v: string) => {
-              setSelectBy(v);
-            }}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
-          />
-          {/* {console.log(selectBy)} */}
-          {selectBy && (
-            <View>
-              <Text style={styles.title}>Select {selectBy}</Text>
-              <DropdownComponent
-                data={
-                  selectBy === "Estate"
-                    ? [
-                        { label: "Estate 1", value: "1" },
-                        { label: "Estate 2", value: "1" },
-                        { label: "Estate 3", value: "1" },
-                      ]
-                    : [
-                        { label: "Property 1", value: "1" },
-                        { label: "Property 2", value: "2" },
-                        { label: "Property 3", value: "3" },
-                      ]
-                }
-                placeholder={`${selectBy}/Estate`}
-                label={`Select ${selectBy}/Estate`}
-                value={selectedProperties[0]}
-                selectedTextStyle={styles.dropdownSelected}
-                onChangeValue={(v: string) => setSelectedProperties([v])}
-                dropdownStyle={styles.dropdown}
-                placeholderStyle={styles.dropdownPlaceholder}
-              />
-            </View>
-          )}
-
-          {/* Date Range Picker */}
-
-          {/* Power Consumption Section */}
-          {selectedProperties.length > 0 && (
-            <>
-              <View style={styles.line} />
-              <View style={styles.section}>
-                <View style={styles._seciton_row}>
-                  <Text weight="semiBold" style={styles.sectionTitle}>
-                    {activeTab}
-                  </Text>
-                  <View style={styles.dropdownContainer}>
-                    <DropdownComponent
-                      data={[
-                        { label: "This Week", value: "This Week" },
-                        { label: "This Month", value: "This Month" },
-                        { label: "This Year", value: "This Year" },
-                      ]}
-                      label="Select Period"
-                      placeholder="Sort by"
-                      value={selectedPeriod}
-                      onChangeValue={updateChartByPeriod}
-                      dropdownStyle={styles.customDropdownStyle}
-                      placeholderStyle={styles.customPlaceholderStyle}
-                      selectedTextStyle={styles.customSelectedTextStyle}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {/* Date Pickers */}
-              {/* <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginHorizontal: adjustSize(10),
-                }}
-              >
-                <Pressable
-                  style={[styles.dtButton, { width: "48%" }]}
-                  onPress={() => openPicker("start")}
-                >
-                  <Text style={styles.dtText}>
-                    {startDate ? formatDate(startDate) : "Start Date"}
-                  </Text>
-                  <WithLocalSvg asset={Images.calendar} />
-                </Pressable>
-
-                <Pressable
-                  style={[styles.dtButton, { width: "48%" }]}
-                  onPress={() => openPicker("end")}
-                >
-                  <Text style={styles.dtText}>
-                    {endDate ? formatDate(endDate) : "End Date"}
-                  </Text>
-                  <WithLocalSvg asset={Images.calendar} />
-                </Pressable>
-              </View> */}
-
-              {/* Units */}
-              <Text style={styles.units}>
-                {activeTab === "Power Consumption" ? "300kwh" : "300 vendings"}
-              </Text>
-
-              {/* Chart */}
-              <AnalysisChart
-                data={chartData}
-                labels={chartLabels}
-                period={selectedPeriod} // e.g., "This Year"
-              />
-
-              {/* Custom Date Picker */}
-              {showPicker && (
-                <CustomDateTimePicker
-                  mode="date"
-                  value={tempDate}
-                  visible={showPicker}
-                  onChange={onChange}
-                  onCancel={() => setShowPicker(false)}
-                  onConfirm={() => setShowPicker(false)}
-                />
-              )}
-            </>
-          )}
-        </ScrollView>
+        {[renderContent(), renderContent()]}
       </CustomTabs>
     </Screen>
   );

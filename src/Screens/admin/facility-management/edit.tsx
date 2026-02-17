@@ -161,7 +161,7 @@ export function FMEdit({ navigation }: Props) {
       safeAreaEdges={["top"]}
     >
       <Header title="Edit Work Requests" />
-      <CustomTabs
+      {/* <CustomTabs
               tabs={[
                 {
                   label: "Work Requests",
@@ -181,7 +181,7 @@ export function FMEdit({ navigation }: Props) {
               ]}
               activeTab={"Work Requests"}
               onTabChange={(label) => console.log(label)}
-            >
+            > */}
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -359,7 +359,7 @@ export function FMEdit({ navigation }: Props) {
           />
         </View>
       </ScrollView>
-      </CustomTabs>
+      {/* </CustomTabs> */}
 
       {/* Date Picker Modal */}
       {/* <Modal

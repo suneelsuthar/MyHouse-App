@@ -146,6 +146,7 @@ export function AdminPropertyManagement({
             property={item}
             type={propertyType === "rental" ? "rental" : "manage"}
             onAction={(action, property) => {
+              console.log("=======>", action);
               if (action === "View Details" || action === "View") {
                 (navigation as any).navigate(
                   "PropertyDetails" as never,
@@ -161,7 +162,10 @@ export function AdminPropertyManagement({
                   "AdminManageCalendar" as never,
                   { propertyId: property.propertyId } as never,
                 );
-              } else if (action === "Assign to agent") {
+              } else if (
+                action === "Assign to agent" ||
+                action === "Add Resident"
+              ) {
                 (navigation as any).navigate(
                   "AdminAssignProperties" as never,
                   {
@@ -178,7 +182,7 @@ export function AdminPropertyManagement({
                     type: "secondary-agent",
                     title: "Assign Secondary Agent",
                   } as never,
-              )
+                );
               } else if (action === "Assign to FM") {
                 (navigation as any).navigate(
                   "AdminAssignProperties" as never,

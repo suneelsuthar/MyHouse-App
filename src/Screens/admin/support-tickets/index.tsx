@@ -33,7 +33,8 @@ interface CommuicationProps extends NativeStackScreenProps<
 
 export function Commuication(props: CommuicationProps) {
   const navigation = useNavigation();
-
+   
+  console.log(props.route.params.tab)
   /** ---------- STATES ---------- */
   const [activeTab, setActiveTab] = useState<
     "New message" | "History" | "Archive"
@@ -45,6 +46,8 @@ export function Commuication(props: CommuicationProps) {
 
   // Initialize messages with dummy data
   React.useEffect(() => {
+    setActiveTab(props.route.params.tab)
+    console.log("wooo")
     const dummyData = Array.from({ length: 20 }, (_, i) => ({
       id: i + 1,
       name: `Amelia Greene`,
@@ -54,7 +57,7 @@ export function Commuication(props: CommuicationProps) {
       date: "24 June, 2024",
     }));
     setMessages(dummyData);
-  }, []);
+  }, [props.route.params.tab]);
 
   // form fields
   const [fromEmail, setFromEmail] = useState("facilitymanager@gmail.com");
@@ -223,7 +226,7 @@ export function Commuication(props: CommuicationProps) {
     >
       {activeTab === "History" ? (
         <View style={styles.header}>
-          <Text style={styles.headerHeading}>Chat</Text>
+          <Text style={styles.headerHeading}>Communication</Text>
         </View>
       ) : (
         <View style={styles.header}>

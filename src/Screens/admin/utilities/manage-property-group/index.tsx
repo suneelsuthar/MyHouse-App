@@ -49,6 +49,7 @@ const groupsData = [
     noOfTenents: "3",
     noOfMeters: "5",
     date: "22 feb , 2025",
+    status:"Pending"
   },
   {
     id: "2",
@@ -58,6 +59,7 @@ const groupsData = [
     noOfTenents: "3",
     noOfMeters: "5",
     date: "22 feb , 2025",
+    status:"Approved"
   },
   {
     id: "3",
@@ -67,6 +69,7 @@ const groupsData = [
     noOfTenents: "3",
     noOfMeters: "5",
     date: "22 feb , 2025",
+    status:"Approved"
   },
   {
     id: "4",
@@ -76,6 +79,8 @@ const groupsData = [
     noOfTenents: "3",
     noOfMeters: "5",
     date: "22 feb , 2025",
+    status:"Approved"
+
   },
   {
     id: "5",
@@ -85,6 +90,8 @@ const groupsData = [
     noOfTenents: "3",
     noOfMeters: "5",
     date: "22 feb , 2025",
+    status:"Approved"
+
   },
 ];
 
@@ -298,9 +305,12 @@ export const AdminManagePropertyGroup = ({
                     {item.noOfProp}
                   </Text>
                 </Text>
+                {console.log(item.status)}
 
-                <View style={styles.statusPill}>
-                  <Text text="Pending" style={styles.statusPillText} />
+                <View style={[styles.statusPill,{
+                  backgroundColor:item.status === "Approved" ? "#0AD029":"#F26938"
+                }]}>
+                  <Text text={item.status} style={styles.statusPillText} />
                 </View>
               </View>
 
@@ -753,7 +763,6 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   statusPill: {
-    backgroundColor: "#F26938",
     borderRadius: adjustSize(100),
     paddingHorizontal: spacing.md,
     paddingVertical: 2,

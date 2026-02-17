@@ -30,6 +30,12 @@ type Props = {
   route: { params?: { mode?: Mode; charge?: ChargePayload } };
 };
 
+
+const statusOptions = [
+  { label: "Pending", value: "pending" },
+  { label: "Paid", value: "paid" },
+  { label: "Partially paid", value: "partially_paid" },
+];
 const chargeTypeOptions = [
   { label: "Electricity", value: "electricity" },
   { label: "Water", value: "water" },
@@ -188,13 +194,27 @@ const AdminAddEditCharges: React.FC<Props> = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             <View style={styles.fieldContainer}>
-              <Text style={styles.label}>Status</Text>
+              {/* <Text style={styles.label}>Status</Text>
               <TextField
                 placeholder="Partially paid"
                 value={form.status}
                 onChangeText={(t) => onChange("status", t)}
                 inputWrapperStyle={styles.textInput}
-              />
+              /> */}
+              {/* <View style={[styles.fieldContainer, { marginTop: 0 }]}> */}
+                        <Text style={styles.label}>Status</Text>
+                        <DropdownComponent
+                          data={statusOptions}
+                          value={form.status}
+                          onChangeValue={(value) =>  onChange("status", value)}
+                          placeholder="Select Status"
+                          dropdownStyle={styles.dropdown}
+                          placeholderStyle={styles.dropdownPlaceholder}
+                          selectedTextStyle={styles.dropdownSelected}
+                          rightIconColor={colors.primary}
+                        />
+                      {/* </View> */}
+                    
             </View>
             <View style={styles.fieldContainer}>
               <Text style={styles.label}>Comment</Text>
@@ -391,12 +411,13 @@ const styles = StyleSheet.create({
     paddingTop: adjustSize(30),
   },
   scrollContent: { paddingBottom: spacing.xl },
-  fieldContainer: { marginBottom: spacing.lg },
+  fieldContainer: { marginBottom: spacing.sm },
   label: {
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.medium,
     marginBottom: spacing.xs,
+    marginTop:0
   },
   textInput: {
     borderRadius: adjustSize(12),
@@ -412,6 +433,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     paddingHorizontal: spacing.md,
     height: adjustSize(50),
+    marginBottom:spacing.md
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(14),
@@ -419,8 +441,8 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   dropdownSelected: {
-    fontSize: adjustSize(14),
-    color: colors.primary,
+    fontSize: adjustSize(13),
+    color: colors.text,
     fontFamily: typography.fonts.poppins.normal,
   },
   pickerBackdrop: {

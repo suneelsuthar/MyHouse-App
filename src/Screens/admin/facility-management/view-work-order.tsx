@@ -257,7 +257,15 @@ export const FMViewWorkOrder = () => {
       )}
 
       {/* Floating chat button */}
-      <Pressable style={styles.fab} onPress={() => {}}>
+      <Pressable
+        style={styles.fab}
+        onPress={() => {
+          navigation.navigate("Chat", {
+            type: "Work Order",
+            id: "1",
+          });
+        }}
+      >
         <Ionicons
           name="chatbubble-ellipses-outline"
           size={22}

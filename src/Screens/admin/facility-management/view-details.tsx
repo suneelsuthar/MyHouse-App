@@ -63,7 +63,7 @@ export const FMViewDetails = () => {
     >
       <Header title="View Work Requests" />
 
-      <CustomTabs
+      {/* <CustomTabs
         tabs={[
           {
             label: "Work Requests",
@@ -83,7 +83,7 @@ export const FMViewDetails = () => {
         ]}
         activeTab={"Work Requests"}
         onTabChange={(label) => console.log(label)}
-      >
+      > */}
       {/* Header */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -196,7 +196,7 @@ export const FMViewDetails = () => {
 
         <View style={{ height: spacing.xl }} />
       </ScrollView>
-      </CustomTabs>
+      {/* </CustomTabs> */}
     </Screen>
   );
 };

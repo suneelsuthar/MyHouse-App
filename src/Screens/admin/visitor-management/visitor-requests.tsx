@@ -23,7 +23,7 @@ type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
-  { label: "All Properties", value: "all" },
+  { label: "Select Estate", value: "all" },
   { label: "Farm House", value: "farm_house" },
   { label: "Town House", value: "town_house" },
   { label: "Villa", value: "villa" },
@@ -53,26 +53,26 @@ export const VisitorRequests: React.FC = () => {
       property: "Farm House",
       status: "Pending",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
+      backgroundColor: "#F26938",
+      textColor: "#fff",
     },
     {
       id: 2,
       name: "Brume Djbah",
       property: "Farm House",
-      status: "Pending",
+      status: "Validated",
       avatar: "B",
-      backgroundColor: "#292766",
+      backgroundColor: "#0AD029",
       textColor: "#FFF",
     },
     {
       id: 3,
       name: "Ethan Baker",
       property: "Farm House",
-      status: "Pending",
+      status: "Revoked",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
+      backgroundColor: "#D62828",
+      textColor: "#fff",
     },
     {
       id: 4,
@@ -80,8 +80,8 @@ export const VisitorRequests: React.FC = () => {
       property: "Farm House",
       status: "Pending",
       avatar: "B",
-      backgroundColor: "#292766",
-      textColor: "#FFF",
+      backgroundColor: "#F26938",
+      textColor: "#fff",
     },
     {
       id: 5,
@@ -89,8 +89,8 @@ export const VisitorRequests: React.FC = () => {
       property: "Farm House",
       status: "Pending",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
+      backgroundColor: "#F26938",
+      textColor: "#fff",
     },
     {
       id: 6,
@@ -98,8 +98,8 @@ export const VisitorRequests: React.FC = () => {
       property: "Farm House",
       status: "Pending",
       avatar: "B",
-      backgroundColor: "#292766",
-      textColor: "#FFF",
+     backgroundColor: "#F26938",
+      textColor: "#fff",
     },
   ]);
   const handleVisitorPress = (visitorId: number) => {
@@ -197,7 +197,7 @@ export const VisitorRequests: React.FC = () => {
             dropdownStyle={styles.searchDropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
+            rightIconColor={colors.white}
           />
         </View>
         {/* 
@@ -273,7 +273,9 @@ export const VisitorRequests: React.FC = () => {
                   <Text style={styles.propLabel}>Property:</Text>
                   <Text style={styles.propValue}> {visitor.property}</Text>
                 </Text>
-                <View style={styles.statusPill}>
+                <View style={[styles.statusPill,{
+                  backgroundColor:visitor.backgroundColor
+                }]}>
                   <Text style={styles.statusPillText}>{visitor.status}</Text>
                 </View>
               </View>
@@ -483,7 +485,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -498,7 +500,7 @@ const styles = StyleSheet.create({
   },
   dropdownSelected: {
     fontSize: adjustSize(12),
-    color: colors.primary,
+    color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
   },
   addButton: {

@@ -224,9 +224,11 @@ const Step2: React.FC<Step2Props> = ({ mode, nestedStep }) => {
           placeholder="Enter Description"
           value={landmark}
           onChangeText={setLandmark}
-          // multiline
+          multiline
+          numberOfLines={5}
           inputMode="text"
-          inputWrapperStyle={{ backgroundColor: "white" }}
+          style={{height:130}}
+          inputWrapperStyle={{ backgroundColor: "white" ,height:150}}
           placeholderTextColor={colors.grey}
         />
       </View>

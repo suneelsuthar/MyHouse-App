@@ -53,29 +53,36 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Manage Properties",
       type: "dropdown",
       icon: Images.manageprop,
+      // onPress: () =>
+      //   closeMenusAndNavigate("Admin", {
+      //     screen: "Properties",
+      //     params: {
+      //       screen: "AdminPropertyManagement",
+      //       params: { propertyType: "managed" },
+      //     },
+      //   }),
       menueItems: [
         {
           id: 0,
           title: "Rental Properties",
-          // onPress: () => console.log(""),
           onPress: () =>
             closeMenusAndNavigate("Admin", {
               screen: "Properties",
               params: { screen: "AdminPropertyManagement" },
             }),
         },
-        {
-          id: 1,
-          title: "Managed Properties",
-          onPress: () =>
-            closeMenusAndNavigate("Admin", {
-              screen: "Properties",
-              params: {
-                screen: "AdminPropertyManagement",
-                params: { propertyType: "managed" },
-              },
-            }),
-        },
+        // {
+        //   id: 1,
+        //   title: "Managed Properties",
+        //   onPress: () =>
+        //     closeMenusAndNavigate("Admin", {
+        //       screen: "Properties",
+        //       params: {
+        //         screen: "AdminPropertyManagement",
+        //         params: { propertyType: "managed" },
+        //       },
+        //     }),
+        // },
         {
           id: 2,
           title: "Property Requests",
@@ -138,6 +145,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Manage Bookings",
       type: "dropdown",
       icon: Images.managebooking,
+      // onPress: () =>
+      //   closeMenusAndNavigate("Admin", {
+      //     screen: "Booking",
+      //     params: { screen: "AdminManageBookings" },
+      //   }),
+
       menueItems: [
         {
           id: 0,
@@ -187,6 +200,14 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Facility Management",
       type: "dropdown",
       icon: Images.facilitymanag,
+      // onPress: () =>
+      //   closeMenusAndNavigate("Admin", {
+      //     screen: "Home",
+      //     params: {
+      //       screen: "FacilityManagement",
+      //       params: { status: "work_requests" },
+      //     },
+      //   }),
       menueItems: [
         {
           id: 0,
@@ -295,6 +316,14 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Community Area",
       type: "dropdown",
       icon: Images.community,
+      // onPress: () =>
+      //   closeMenusAndNavigate("Admin", {
+      //     screen: "Home",
+      //     params: {
+      //       screen: "CommunityArea",
+      //       params: { tab: "amenities" },
+      //     },
+      //   }),
       nestedItems: [
         {
           id: 0,
@@ -326,9 +355,47 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     {
       id: 7,
       title: "Communications",
-      type: "item",
+      type: "dropdown",
       icon: Images.communication,
-      onPress: () => closeMenusAndNavigate("Commuication"),
+      // onPress: () => closeMenusAndNavigate("Commuication"),
+      nestedItems: [
+        {
+          id: 0,
+          title: "New Message",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "Commuication",
+                params: { tab: "New message" },
+              },
+            }),
+        },
+        {
+          id: 1,
+          title: "Message History",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "Commuication",
+                params: { tab: "History" },
+              },
+            }),
+        },
+        {
+          id: 2,
+          title: "Archive",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Home",
+              params: {
+                screen: "Commuication",
+                params: { tab: "Archive" },
+              },
+            }),
+        },
+      ],
     },
 
     {
@@ -395,7 +462,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
     {
       id: 11,
       title: "Manage Properties",
-      type: "item",
+      type: "dropdown",
       icon: Images.manageprop,
       onPress: () =>
         closeMenusAndNavigate("Admin", {
@@ -405,85 +472,31 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             params: { propertyType: "managed" },
           },
         }),
-      // menueItems: [
-      //   {
-      //     id: 0,
-      //     title: "Rental Properties",
-      //     // onPress: () => console.log(""),
-      // onPress: () =>
-      //   closeMenusAndNavigate("Admin", {
-      //     screen: "Properties",
-      //     params: { screen: "AdminPropertyManagement" },
-      //   }),
-      //   },
-      //   {
-      //     id: 1,
-      //     title: "Managed Properties",
-      // onPress: () =>
-      //   closeMenusAndNavigate("Admin", {
-      //     screen: "Properties",
-      //     params: {
-      //       screen: "AdminPropertyManagement",
-      //       params: { propertyType: "managed" },
-      //     },
-      //   }),
-      //   },
-      //   {
-      //     id: 2,
-      //     title: "Property Requests",
-      //     onPress: () =>
-      //       closeMenusAndNavigate("Admin", {
-      //         screen: "Home",
-      //         params: {
-      //           screen: "AdminPropertyRequests",
-      //         },
-      //       }),
-      //   },
-      //   {
-      //     id: 3,
-      //     title: "Services",
-      //     onPress: () =>
-      //       closeMenusAndNavigate("Admin", {
-      //         screen: "Properties",
-      //         params: {
-      //           screen: "AdminPropertyServices",
-      //         },
-      //       }),
-      //   },
-      //   {
-      //     id: 4,
-      //     title: "Features",
-      //     onPress: () =>
-      //       closeMenusAndNavigate("Admin", {
-      //         screen: "Properties",
-      //         params: {
-      //           screen: "AdminPropertyFeatures",
-      //         },
-      //       }),
-      //   },
-      //   {
-      //     id: 5,
-      //     title: "Restrictions",
-      //     onPress: () =>
-      //       closeMenusAndNavigate("Admin", {
-      //         screen: "Properties",
-      //         params: {
-      //           screen: "AdminPropertyRestriction",
-      //         },
-      //       }),
-      //   },
-      //   {
-      //     id: 6,
-      //     title: "Manage Inspections",
-      //     onPress: () =>
-      //       closeMenusAndNavigate("Admin", {
-      //         screen: "Properties",
-      //         params: {
-      //           screen: "AdminManageInspections",
-      //         },
-      //       }),
-      //   },
-      // ],
+      menueItems: [
+        {
+          id: 0,
+          title: "Add Estates",
+          // onPress: () => console.log(""),
+          onPress: () => closeMenusAndNavigate("AddGroup"),
+        },
+        {
+          id: 1,
+          title: "Estates",
+          onPress: () => closeMenusAndNavigate("AdminManagePropertyGroup"),
+        },
+        {
+          id: 2,
+          title: "Property List",
+          onPress: () =>
+            closeMenusAndNavigate("Admin", {
+              screen: "Properties",
+              params: {
+                screen: "AdminPropertyManagement",
+                params: { propertyType: "managed" },
+              },
+            }),
+        },
+      ],
     },
     {
       id: 2,
@@ -558,6 +571,14 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       title: "Analysis",
       type: "dropdown",
       icon: Images.analysis,
+      onPress: () =>
+        closeMenusAndNavigate("Admin", {
+          screen: "Home",
+          params: {
+            screen: "Analysis",
+            params: { tab: "power_consumption" },
+          },
+        }),
       menueItems: [
         {
           id: 1,

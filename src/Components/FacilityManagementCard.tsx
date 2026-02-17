@@ -52,6 +52,40 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
     ACTIONS = CompletedAction;
   }
 
+    const statusColor = (status: any) => {
+      console.log("=====__==+>",status)
+      switch (status) {
+        case "pending":
+          return { backgroundColor: "#F26938", color: "#fff" };
+        case "approved":
+          return { backgroundColor: "#0AD029", color: "#fff" };
+        case "rejected":
+          return { backgroundColor: "#D62828", color: "#fff" };
+
+          case "late":
+          return { backgroundColor: "#D62828", color: "#fff" };
+         
+            case "In progress":
+          return { backgroundColor: "#F26938", color: "#fff" };
+            case "medium":
+          return { backgroundColor: "#F26938", color: "#fff" };
+             case "Completed":
+          return { backgroundColor: "#0AD029", color: "#fff" };
+  
+  
+        case "new":
+          return { color: colors.primary };
+        case "responding":
+          return { color: "#DEB446" };
+        case "acknowledged":
+          return { color: colors.primaryLight };
+        case "resolved":
+          return { color: "#0AD029" };
+        case "escalated":
+          return { color: "#D80027" };
+      }
+    };
+
   return (
     <View style={{ position: "relative" }}>
       <View style={[styles.card, style]}>
@@ -59,11 +93,9 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
         <View style={styles.imageWrap}>
           <Image source={{ uri: thumb }} style={styles.image} />
           {/* Status chip */}
-          <View style={[styles.chip, styles.statusChip]}>
+          <View style={[styles.chip, styles.statusChip,statusColor(property?.status)]}>
             <Text style={styles.chipText} weight="medium">
-              {property?.status === "Work requests"
-                ? "In progress"
-                : property?.status}
+              {property?.status}
             </Text>
           </View>
           {/* Menu 
@@ -76,7 +108,7 @@ export const FacilityManagementCard: React.FC<FacilityManagementCardProps> = ({
             <Entypo name="dots-three-vertical" size={16} color={colors.white} />
           </TouchableOpacity>
           {/* Priority chip */}
-          <View style={[styles.chip, styles.priorityChip]}>
+          <View style={[styles.chip, styles.priorityChip,statusColor(property.priority)]}>
             <Text
               style={[styles.chipText, { color: colors.white }]}
               weight="medium"
@@ -202,7 +234,7 @@ const styles = StyleSheet.create({
   statusChip: {
     left: adjustSize(14),
     top: adjustSize(12),
-    backgroundColor: "#0AD029",
+    // backgroundColor: "#0AD029",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -216,6 +248,8 @@ const styles = StyleSheet.create({
   chipText: {
     color: colors.white,
     fontSize: adjustSize(10),
+    textTransform:"capitalize",
+    flex:1
     // lineHeight:adjustSize(10)
   },
   moreBtn: {

@@ -10,27 +10,50 @@ interface FacilityManagementCardProps {
   property: any;
   onPress?: () => void;
   onAction?: (action: string, property: IFacilityManagement) => void;
-  style?: object; 
+  style?: object;
 }
 export const ReservationsCard: React.FC<FacilityManagementCardProps> = ({
   activeTab,
   property,
   onPress,
   onAction,
+  status,
   style,
+  item
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const thumb = property?.images?.[0];
+  const statusLabelColor = (status: string) => {
+    switch (status) {
+      case "Rejected":
+        return { backgroundColor: "#D51E1E", color: "#fff" };
+      case "Approved":
+        return { backgroundColor: "#0AD029", color: "#fff" };
+      case "Cancelled":
+        return { backgroundColor: "#A1A1A1", color: "#fff" };
+      case "Pending":
+        return { backgroundColor: "#F26938", color: "#fff" };
+         case "Reserved":
+        return { backgroundColor: "#D51E1E", color: "#fff" };
+    }
+    console.log(property)
+  };
   return (
     <View style={{ position: "relative" }}>
       <View style={[styles.container, style]}>
         <View style={styles.header}>
           <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-            <Text style={styles.swimmingPool} numberOfLines={1}>
+            <Text
+              style={[
+                styles.swimmingPool,
+               
+              ]}
+              numberOfLines={1}
+            >
               {property?.title || "Swimming Pool"}
             </Text>
-            <View style={styles.statusPill}>
-              <Text style={styles.statusText}>Reserved</Text>
+            <View style={[styles.statusPill,statusLabelColor(property.status)]}>
+              <Text style={styles.statusText}>{property.status}</Text>
             </View>
           </View>
           <TouchableOpacity

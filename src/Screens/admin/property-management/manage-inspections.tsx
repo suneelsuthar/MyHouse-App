@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
-  Alert,
 } from "react-native";
 import { Screen, Text, Header, Button } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
@@ -24,13 +23,18 @@ export default function AdminManageInspections() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(
-    null
+    null,
   );
 
   const statusLabelColor = (status: any) => {
     switch (status) {
       case "pending":
-        return { color: "#F26938" };
+        return { backgroundColor: "#F26938", color: "#fff" };
+      case "approved":
+        return { backgroundColor: "#0AD029", color: "#fff" };
+      case "rejected":
+        return { backgroundColor: "#D62828", color: "#fff" };
+
       case "new":
         return { color: colors.primary };
       case "responding":
@@ -50,22 +54,14 @@ export default function AdminManageInspections() {
       visitor.id === selectedItem
         ? {
             ...visitor,
-            status: actionType === "approve" ? "responding" : "resolved",
+            status: actionType === "approve" ? "approved" : "rejected",
           }
-        : visitor
+        : visitor,
     );
 
     setVisitorList(updatedList);
     setShowConfirmationModal(false);
     setDropdownVisible(null);
-
-    Alert.alert(
-      "Success",
-      `Inspection has been ${
-        actionType === "approve" ? "approved" : "rejected"
-      } successfully.`,
-      [{ text: "OK" }]
-    );
   };
 
   return (
@@ -117,18 +113,29 @@ export default function AdminManageInspections() {
             style={[
               styles.card,
               dropdownVisible === item.id && styles.cardWithDropdown,
-              {
-                backgroundColor: index % 2 === 0 ? colors.white : "#f2f2f2",
-              },
             ]}
             activeOpacity={0.8}
           >
-            <Text
-              weight="medium"
-              style={[styles.statusText, statusLabelColor(item.status)]}
+            <View
+              style={[
+                statusLabelColor(item.status),
+                {
+                  alignSelf: "flex-start",
+                  borderRadius: 100,
+                  paddingHorizontal: 10,
+                  overflow: "hidden",
+                  marginBottom: 5,
+                },
+              ]}
             >
-              {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-            </Text>
+              <Text
+                weight="medium"
+                style={[styles.statusText, statusLabelColor(item.status)]}
+              >
+                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+              </Text>
+            </View>
+
             <View style={styles.cardHeaderRow}>
               <View style={styles.cardHeaderRow}>
                 <Text weight="semiBold" style={styles.cardTitle}>
@@ -136,7 +143,16 @@ export default function AdminManageInspections() {
                 </Text>
 
                 {item.property ? (
-                  <Text style={styles.subtitle}>{"  (P001)"}</Text>
+                  <Text
+                    style={[
+                      styles.subtitle,
+                      {
+                        color: "#737373",
+                      },
+                    ]}
+                  >
+                    {"  (P001)"}
+                  </Text>
                 ) : null}
               </View>
 
@@ -144,7 +160,7 @@ export default function AdminManageInspections() {
                 activeOpacity={0.5}
                 onPress={() =>
                   setDropdownVisible(
-                    dropdownVisible === item.id ? null : item.id
+                    dropdownVisible === item.id ? null : item.id,
                   )
                 }
               >
@@ -189,7 +205,7 @@ export default function AdminManageInspections() {
                       setShowConfirmationModal(true);
                     }}
                   >
-                    <Text style={styles.dropdownText}>Reject</Text>
+                    <Text style={styles.dropdownText}>Rejected</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
@@ -250,7 +266,7 @@ export default function AdminManageInspections() {
                 style={[styles.modalButtons, styles.cancelButton]}
               />
               <Button
-                text={actionType === "approve" ? "Approve" : "Cancel"}
+                text={actionType === "approve" ? "Approve" : "Reject"}
                 onPress={handleStatusChange}
                 preset="reversed"
                 style={[styles.modalButtons, styles.confirmButton]}
@@ -266,7 +282,6 @@ export default function AdminManageInspections() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.fill,
   },
   header: {
     flexDirection: "row",
@@ -377,14 +392,22 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     padding: adjustSize(10),
     minHeight: adjustSize(96),
     zIndex: 1,
-    shadowColor: "#000",
-    borderBottomWidth: 0.4,
-    borderColor: colors.grey,
     paddingVertical: adjustSize(15),
+    shadowColor: "#29276680",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
+    margin: 5,
+    borderRadius: 10,
+    marginHorizontal: 10,
   },
   cardWithDropdown: {
     zIndex: 9999,

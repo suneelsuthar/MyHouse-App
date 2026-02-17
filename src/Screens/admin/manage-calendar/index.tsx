@@ -22,7 +22,7 @@ export function AdminManageCalendar({
   route,
   navigation,
 }: NativeStackScreenProps<AdminStackParamList, "AdminManageCalendar">) {
-  const [mode, setMode] = useState<Mode>("range");
+  const [mode, setMode] = useState<Mode>("single");
   const [monthCursor, setMonthCursor] = useState(() => {
     const d = new Date();
     d.setDate(1);

@@ -542,12 +542,10 @@ const AdminHomeStackNavigator = () => (
       name="AdminUtilitiesCharges"
       component={AdminUtilitiesCharges}
     />
-     <AdminHomeStack.Screen
+    <AdminHomeStack.Screen
       name="AdminAddEditCharges"
       component={AdminAddEditCharges}
     />
-
-    
 
     {/* Register cross-section Admin screens here for global access */}
     <AdminHomeStack.Screen name="PropertyDetails" component={PropertyDetails} />
@@ -1510,7 +1508,7 @@ const AdminTabs = () => (
           getFocusedRouteNameFromRoute(route) ?? "AdminManageBookings";
         const baseTabBarStyle = {
           backgroundColor: "#292766",
-          height: 55,
+          // height: 55,
         } as const;
         if (routeName === "AdminBookingDetails") {
           return {
@@ -1538,7 +1536,7 @@ const AdminTabs = () => (
         // Base tab bar style for Admin tabs
         const baseTabBarStyle = {
           backgroundColor: "#292766",
-          height: 55,
+          // height: 55,
         } as const;
         // Hide tab bar on Add Property and other full-screen property flows
         if (
@@ -1563,7 +1561,20 @@ const AdminTabs = () => (
       }}
     />
     <Tab.Screen name="Wallet" component={AdminWalletStackNavigator} />
-    <Tab.Screen name="Chat" component={Chat} />
+    <Tab.Screen
+      name="Chat"
+      component={Chat}
+      listeners={({ navigation }) => ({
+        tabPress: (e) => {
+          e.preventDefault(); // stop default tab behavior
+
+          navigation.navigate("Chat", {
+            userId: 123,
+            fromTab: true,
+          });
+        },
+      })}
+    />
   </Tab.Navigator>
 );
 

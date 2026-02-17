@@ -103,7 +103,7 @@ export const FMOrderExport = (props: any) => {
 
         <View style={{ paddingHorizontal: spacing.lg }}>
           <Text weight="semiBold" style={styles.sectionTitle}>
-           Work Order(Id):
+            Work Order(Id):
           </Text>
 
           {/* Details */}
@@ -152,8 +152,14 @@ export const FMOrderExport = (props: any) => {
       {/* Floating chat button */}
       <Pressable
         style={styles.fab}
+        // onPress={() => {
+        //   props.navigation.navigate("Chat");
+        // }}
         onPress={() => {
-          props.navigation.navigate("Chat");
+          props.navigation.navigate("Chat", {
+            type: "Work Order",
+            id: "1",
+          });
         }}
       >
         <Ionicons

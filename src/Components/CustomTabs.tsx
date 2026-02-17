@@ -51,7 +51,6 @@ export function CustomTabs({
                   style={[
                     styles.tabButtonScrollable,
                     isActive && styles.activeTab,
-                   
                   ]}
                 >
                   <View style={styles.iconWrapper}>
@@ -108,6 +107,7 @@ export function CustomTabs({
           </View>
         )}
       </ImageBackground>
+      {console.log(children[activeIndex])}
 
       {/* Render children by active index */}
       <View style={styles.page}>{children}</View>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: adjustSize(2),
     borderColor: "transparent",
-    opacity:0.6
+    opacity: 0.6,
   },
   tabButtonScrollable: {
     // minWidth: adjustSize(100), // fixed width so they don’t shrink
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderColor: colors.white,
-    opacity:1
+    opacity: 1,
   },
   iconWrapper: { marginBottom: adjustSize(3) },
   label: { fontSize: adjustSize(12) },

@@ -20,7 +20,7 @@ import { WebView } from "react-native-webview";
 
 type TabKey = "summary" | "updates";
 
-export const FMOrderView = () => {
+export const FMOrderView = (props:any) => {
   const [activeTab, setActiveTab] = useState<TabKey>("summary");
   // gallery for banner
   const slides = [Images.slide1, Images.slide2, Images.slide3];
@@ -317,7 +317,16 @@ export const FMOrderView = () => {
       )}
 
       {/* Floating chat button */}
-      <Pressable style={styles.fab}>
+      <Pressable style={styles.fab}
+        onPress={()=>{
+          props.navigation.navigate("Chat",{
+            params:{
+              type:"Work Order",
+              id:"1"
+            }
+          })
+        }}
+      >
         <Ionicons
           name="chatbubble-ellipses-outline"
           size={22}

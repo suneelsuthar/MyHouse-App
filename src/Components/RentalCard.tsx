@@ -35,7 +35,7 @@ const RENTAL_ACTIONS = [
 const ACTIONS_MANAGE = [
   "View",
   // "Assign to FM",
-  "Add Resident",
+  "Register Tenant",
   "Generate work request",
 ];
 

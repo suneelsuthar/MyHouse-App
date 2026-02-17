@@ -36,7 +36,7 @@ type ChargeItem = {
   title: string;
   user: string;
   amount?: string; // formatted string for list right side
-  status: "Paid" | "Pending";
+  status: "Paid" | "Partially paid" | "Pending" | "Overdue";
   totalAmount: number;
   amountPaid: number;
   createdDate: string; // ISO
@@ -46,9 +46,21 @@ type ChargeItem = {
 
 const sampleCharges: ChargeItem[] = Array.from({ length: 8 }, (_, i) => {
   const totalAmount = 1500000 - i * 25000;
-  const status: "Paid" | "Pending" = i % 2 === 0 ? "Paid" : "Pending";
+  const statuses: ("Paid" | "Partially paid" | "Pending" | "Overdue")[] = [
+    "Paid",
+    "Partially paid",
+    "Pending",
+    "Overdue",
+  ];
+  const status = statuses[i % 4];
   const amountPaid =
-    status === "Paid" ? totalAmount : Math.floor(totalAmount * 0.3);
+    status === "Paid"
+      ? totalAmount
+      : status === "Partially paid"
+        ? Math.floor(totalAmount * 0.6)
+        : status === "Pending"
+          ? 0
+          : Math.floor(totalAmount * 0.3);
   const titles = [
     "Utility Overuse",
     "Maintenance Fee",
@@ -109,7 +121,7 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
 
   return (
     <Screen
-      preset="fiexed"
+      preset="fixed"
       contentContainerStyle={styles.screenContentContainer}
       statusBarStyle="dark"
       safeAreaEdges={["top"]}
@@ -187,7 +199,20 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
         {/* List */}
         <View style={{ paddingHorizontal: adjustSize(10) }}>
           {sampleCharges.map((item, idx) => {
-            const isPending = item.status === "Pending";
+            const getStatusStyle = () => {
+              switch (item.status) {
+                case "Paid":
+                  return { backgroundColor: "#0AD029" };
+                case "Partially paid":
+                  return { backgroundColor: "#292766" };
+                case "Pending":
+                  return { backgroundColor: "#F26938" };
+                case "Overdue":
+                  return { backgroundColor: "#D62828" };
+                default:
+                  return { backgroundColor: "#F26938" };
+              }
+            };
             return (
               <View key={idx} style={styles.card}>
                 <View style={styles.cardHeaderRow}>
@@ -198,12 +223,7 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
                   >
                     {item.title}
                   </Text>
-                  <View
-                    style={[
-                      styles.statusPill,
-                      isPending ? styles.statusPending : styles.statusPaid,
-                    ]}
-                  >
+                  <View style={[styles.statusPill, getStatusStyle()]}>
                     <Text style={styles.statusText}>{item.status}</Text>
                   </View>
                   <TouchableOpacity
@@ -217,7 +237,12 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
 
                       const anchor = menuAnchorsRef.current[idx];
                       anchor?.measureInWindow?.(
-                        (x: number, y: number, width: number, height: number) => {
+                        (
+                          x: number,
+                          y: number,
+                          width: number,
+                          height: number,
+                        ) => {
                           setMenuAnchor({ x, y, width, height });
                           setMenuIndex(idx);
                         },
@@ -242,13 +267,15 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
 
                 <View style={styles.cardFooterRow}>
                   <Text style={styles.subtitle}>John Doe</Text>
-                  {!!item.amount && (
+                  {/* {!!item.amount && (
                     <Text style={styles.amount} numberOfLines={1}>
                       {item.amount}
                     </Text>
-                  )}
+                  )} */}
+                  <Text style={styles.amount} numberOfLines={1}>
+                    ₦ {formatAmount(item.totalAmount)}
+                  </Text>
                 </View>
-
               </View>
             );
           })}
@@ -295,7 +322,12 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
                       Math.min(y + h + 6, screenH - MENU_H - safePad),
                     );
 
-                    return { position: "absolute" as const, top, left, width: MENU_W };
+                    return {
+                      position: "absolute" as const,
+                      top,
+                      left,
+                      width: MENU_W,
+                    };
                   })(),
                 ]}
               >
@@ -353,7 +385,15 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
             <Text
               style={{
                 color:
-                  selectedData?.status === "Pending" ? "#F26938" : "#4CAF50",
+                  selectedData?.status === "Paid"
+                    ? "#0AD029"
+                    : selectedData?.status === "Partially paid"
+                      ? "#292766"
+                      : selectedData?.status === "Pending"
+                        ? "#F26938"
+                        : selectedData?.status === "Overdue"
+                          ? "#D62828"
+                          : "#F26938",
               }}
             >
               {selectedData?.status}
@@ -397,7 +437,15 @@ export const AdminUtilitiesCharges: React.FC = ({ navigation }: any) => {
                   styles.doneProgress,
                   {
                     backgroundColor:
-                      selectedData.status === "Paid" ? "#4CAF50" : "#D51E1E",
+                      selectedData?.status === "Paid"
+                        ? "#0AD029"
+                        : selectedData?.status === "Partially paid"
+                          ? "#292766"
+                          : selectedData?.status === "Pending"
+                            ? "#F26938"
+                            : selectedData?.status === "Overdue"
+                              ? "#D62828"
+                              : "#F26938",
                     width: `${Math.round(((selectedData.amountPaid ?? 0) / (selectedData.totalAmount || 1)) * 100)}%`,
                   },
                 ]}
@@ -594,8 +642,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  statusPaid: { backgroundColor: "#25D366" },
+  statusPaid: { backgroundColor: "#0AD029" },
+  statusPartiallyPaid: { backgroundColor: "#292766" },
   statusPending: { backgroundColor: "#F26938" },
+  statusOverdue: { backgroundColor: "#D62828" },
   statusText: {
     color: colors.white,
     fontSize: adjustSize(10),

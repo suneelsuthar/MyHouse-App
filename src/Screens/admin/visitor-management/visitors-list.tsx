@@ -349,7 +349,7 @@
 //     borderBottomWidth: 3,
 //     borderColor: colors.primary,
 //     backgroundColor: "#dedfef",
-    
+
 //   },
 //   tabText: {
 //     fontSize: adjustSize(12),
@@ -518,7 +518,7 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-  Alert
+  Alert,
 } from "react-native";
 import { Screen, Text, Header2, TextField } from "../../../Components";
 import { colors, spacing, typography, adjustSize } from "../../../theme";
@@ -535,7 +535,7 @@ type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
 
 const propertyGroupOptions = [
-  { label: "All Properties", value: "all" },
+  { label: "Select Estate", value: "all" },
   { label: "Farm House", value: "farm_house" },
   { label: "Town House", value: "town_house" },
   { label: "Villa", value: "villa" },
@@ -549,48 +549,48 @@ const sortOptions = [
 ];
 
 export const AdminVisitorsList: React.FC = () => {
-  const navigation:any = useNavigation<NavigationProp>();
+  const navigation: any = useNavigation<NavigationProp>();
   const [activeTab, setActiveTab] = useState<TabType>("Active");
   const [propertyGroup, setPropertyGroup] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name_asc");
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
-    const [revokeModalVisible, setRevokeModalVisible] = useState(false);
-    const [alertModalVisible, setAlertModalVisible] = useState(false);
-  
+  const [revokeModalVisible, setRevokeModalVisible] = useState(false);
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+
   const [visitorData, setvisitorData] = useState([
     {
       id: 1,
       name: "Ethan Baker",
       property: "Farm House",
-      status: "Pending",
+      status: "Revoked",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
+      backgroundColor: "#D62828",
+      textColor: "#fff",
     },
     {
       id: 2,
       name: "Brume Djbah",
       property: "Farm House",
-      status: "Pending",
+      status: "Expired",
       avatar: "B",
-      backgroundColor: "#292766",
+      backgroundColor: "#A1A1A1",
       textColor: "#FFF",
     },
     {
       id: 3,
       name: "Ethan Baker",
       property: "Farm House",
-      status: "Pending",
+      status: "Arrived",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
+      backgroundColor: "#0AD029",
+      textColor: "#fff",
     },
     {
       id: 4,
       name: "Brume Djbah",
       property: "Farm House",
-      status: "Pending",
+      status: "Departed",
       avatar: "B",
       backgroundColor: "#292766",
       textColor: "#FFF",
@@ -599,32 +599,23 @@ export const AdminVisitorsList: React.FC = () => {
       id: 5,
       name: "Ethan Baker",
       property: "Farm House",
-      status: "Pending",
+      status: "Revoked",
       avatar: "E",
-      backgroundColor: "#E8E8E8",
-      textColor: "#333",
-    },
-    {
-      id: 6,
-      name: "Brume Djbah",
-      property: "Farm House",
-      status: "Pending",
-      avatar: "B",
-      backgroundColor: "#292766",
-      textColor: "#FFF",
+      backgroundColor: "#D62828",
+      textColor: "#fff",
     },
   ]);
   const handleVisitorPress = (visitorId: number) => {
     navigation.navigate("AdminVisitorDetails", {
       visitorId: visitorId.toString(),
-      type:"visitors"
+      type: "visitors",
     });
   };
 
   const filterData = visitorData.filter((item) => {
     return item.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
-const confirmAlertSecurity = () => {
+  const confirmAlertSecurity = () => {
     setAlertModalVisible(false);
     Alert.alert(
       "Security Alerted",
@@ -714,7 +705,7 @@ const confirmAlertSecurity = () => {
             dropdownStyle={styles.searchDropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.primary}
+            rightIconColor={colors.white}
           />
         </View>
         {/* 
@@ -788,7 +779,9 @@ const confirmAlertSecurity = () => {
                   <Text style={styles.propLabel}>Property:</Text>
                   <Text style={styles.propValue}> {visitor.property}</Text>
                 </Text>
-                <View style={styles.statusPill}>
+                <View style={[styles.statusPill,{
+                  backgroundColor:visitor.backgroundColor
+                }]}>
                   <Text style={styles.statusPillText}>{visitor.status}</Text>
                 </View>
               </View>
@@ -837,16 +830,14 @@ const confirmAlertSecurity = () => {
                     setMenuOpenId(null);
                   }}
                 >
-                  <Text style={[styles.menuText]}>
-                    Alert Security
-                  </Text>
+                  <Text style={[styles.menuText]}>Alert Security</Text>
                 </TouchableOpacity>
               </View>
             )}
           </View>
         ))}
       </ScrollView>
-        {/* Revoke Modal */}
+      {/* Revoke Modal */}
       <Modal
         visible={revokeModalVisible}
         transparent={true}
@@ -1006,7 +997,7 @@ const styles = StyleSheet.create({
   searchDropdown: {
     height: adjustSize(48),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -1021,7 +1012,7 @@ const styles = StyleSheet.create({
   },
   dropdownSelected: {
     fontSize: adjustSize(12),
-    color: colors.primary,
+    color: colors.white,
     fontFamily: typography.fonts.poppins.medium,
   },
   addButton: {

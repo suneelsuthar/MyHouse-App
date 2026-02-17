@@ -58,6 +58,8 @@ export function AdminAmenityEdit({ route, navigation }: any) {
   const [currentDay, setCurrentDay] = useState<string | null>(null);
   const [slotStep, setSlotStep] = useState<"start" | "end">("start");
   const [tempStart, setTempStart] = useState<string>("");
+
+  const dayLabel = (d: string) => d.charAt(0).toUpperCase() + d.slice(1);
   const openDayPicker = (day: string, step: "start" | "end") => {
     setCurrentDay(day);
     setPickerMode(step); // start or end
@@ -73,29 +75,22 @@ export function AdminAmenityEdit({ route, navigation }: any) {
         if (pickerMode === "start") setStartTime(formatted);
         else setEndTime(formatted);
       } else if (selectedTime === "Different time for each day") {
-        if (slotStep === "start") {
-          setTempStart(formatted); // save start
-
-          // Auto open end picker after a tiny delay
-          setShowPicker(false); // close current first
-          setTimeout(() => {
-            setSlotStep("end");
-            setPickerMode("end");
-            setTempDate(new Date());
-            setShowPicker(true); // reopen for end
-          }, 100); // 100ms delay ensures modal closes then opens
+        if (!currentDay) {
           return;
-        } else if (slotStep === "end" && currentDay) {
-          // save slot
-          setDayTimeSlots((prev) => [
-            ...prev,
-            { day: currentDay, start: tempStart, end: formatted },
-          ]);
         }
+        setDayTimeSlots((prev) => {
+          const existing = prev.find((s) => s.day === currentDay);
+          const rest = prev.filter((s) => s.day !== currentDay);
+          const next = {
+            day: currentDay,
+            start: slotStep === "start" ? formatted : (existing?.start ?? ""),
+            end: slotStep === "end" ? formatted : (existing?.end ?? ""),
+          };
+          return [...rest, next];
+        });
       }
     }
-
-    if (Platform.OS === "android") setShowPicker(false);
+    setShowPicker(false);
   };
 
   const openPicker = (mode: "start" | "end") => {
@@ -126,32 +121,26 @@ export function AdminAmenityEdit({ route, navigation }: any) {
   };
 
   const handleChange = (next: string[]) => {
-    // If "Everyday" is selected, replace with all weekdays
-    if (next.includes("everyday")) {
-      setSelectedDays([
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-      ]);
-    } else {
-      setSelectedDays(next);
-    }
+    setSelectedDays(next);
+    setDayTimeSlots((prev) => prev.filter((s) => next.includes(s.day)));
   };
+
+  const hasAllDayTimes =
+    selectedDays.length > 0 &&
+    selectedDays.every((d) => {
+      const slot = dayTimeSlots.find((s) => s.day === d);
+      return !!slot?.start && !!slot?.end;
+    });
 
   const isFormValid =
     propertyGroup.trim() !== "" &&
     amenityName.trim() !== "" &&
     capacity.trim() !== "" &&
     maxDuration.trim() !== "" &&
-    selectedDays.length > 0 &&
     (selectedTime
       ? selectedTime === "Same time everyday"
         ? startTime.trim() !== "" && endTime.trim() !== ""
-        : true // if "Different time for each day", skip for now or handle individually
+        : selectedDays.length > 0 && hasAllDayTimes
       : false);
 
   //
@@ -219,132 +208,138 @@ export function AdminAmenityEdit({ route, navigation }: any) {
             inputWrapperStyle={{ backgroundColor: colors.white }}
           />
 
-          <Text style={styles.title}>Choose days of the week</Text>
-          <Pressable
-            style={styles.dtButton}
-            onPress={() => setShowDays(!showDays)}
-          >
-            <Text style={[styles.dtText]}>Choose</Text>
-            <WithLocalSvg asset={Images.downIcon} />
-          </Pressable>
-          {showDays && (
-            <MultiSelect
-              data={[
-                { label: "Monday", value: "monday" },
-                { label: "Tuesday", value: "tuesday" },
-                { label: "Wednesday", value: "wednesday" },
-                { label: "Thursday", value: "thursday" },
-                { label: "Friday", value: "friday" },
-                { label: "Saturday", value: "saturday" },
-                { label: "Sunday", value: "sunday" },
-                { label: "Everyday", value: "Everyday" },
-              ]}
-              selectedValues={selectedDays}
-              onChangeSelected={handleChange}
-            />
+          <Text style={styles.title}>Choose time of the day</Text>
+          <DropdownComponent
+            data={[
+              { label: "Same time everyday", value: "Same time everyday" },
+              {
+                label: "Different time for each day",
+                value: "Different time for each day",
+              },
+            ]}
+            label="Choose type"
+            placeholder="Choose"
+            value={selectedTime}
+            onChangeValue={(v: any) => {
+              setSelectedTime(v);
+              setSelectedDays([]);
+              setDayTimeSlots([]);
+              setStartTime("");
+              setEndTime("");
+            }}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={styles.dropdownPlaceholder}
+            selectedTextStyle={styles.dropdownSelected}
+            rightIconColor={colors.primary}
+          />
+
+          {selectedTime === "Different time for each day" && (
+            <>
+              <Text style={styles.title}>Choose days of the week</Text>
+              <Pressable
+                style={styles.dtButton}
+                onPress={() => setShowDays(!showDays)}
+              >
+                <Text style={[styles.dtText]}>Choose</Text>
+                <WithLocalSvg asset={Images.downIcon} />
+              </Pressable>
+              {showDays && (
+                <MultiSelect
+                  data={[
+                    { label: "Monday", value: "monday" },
+                    { label: "Tuesday", value: "tuesday" },
+                    { label: "Wednesday", value: "wednesday" },
+                    { label: "Thursday", value: "thursday" },
+                    { label: "Friday", value: "friday" },
+                    { label: "Saturday", value: "saturday" },
+                    { label: "Sunday", value: "sunday" },
+                    { label: "Everyday", value: "everyday" },
+                  ]}
+                  selectedValues={selectedDays}
+                  onChangeSelected={handleChange}
+                />
+              )}
+            </>
           )}
-          {selectedDays.length !== 0 && (
+
+          {selectedTime === "Same time everyday" && (
             <View>
-              <Text style={styles.title}>Choose time of the day</Text>
-              <DropdownComponent
-                data={[
-                  { label: "Same time everyday", value: "Same time everyday" },
-                  {
-                    label: "Different time for each day",
-                    value: "Different time for each day",
-                  },
-                ]}
-                label="Choose type"
-                placeholder="Choose"
-                value={selectedTime}
-                onChangeValue={(v: any) => setSelectedTime(v)}
-                dropdownStyle={styles.dropdown}
-                placeholderStyle={styles.dropdownPlaceholder}
-                selectedTextStyle={styles.dropdownSelected}
-                rightIconColor={colors.primary}
-              />
-              {selectedTime === "Same time everyday" && (
-                <View>
-                  <Text style={styles.title}>Availability time:</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Pressable
-                      style={[styles.dtButton, { width: "48%" }]}
-                      onPress={() => openPicker("start")}
-                    >
-                      <Text style={[styles.dtText]}>
-                        {startTime || "Select"}
-                      </Text>
-                      <WithLocalSvg asset={Images.clock} />
-                    </Pressable>
-                    <Pressable
-                      style={[styles.dtButton, { width: "48%" }]}
-                      onPress={() => openPicker("end")}
-                    >
-                      <Text style={[styles.dtText]}>{endTime || "Select"}</Text>
-                      <WithLocalSvg asset={Images.clock} />
-                    </Pressable>
-                  </View>
-                </View>
-              )}
-
-              {selectedTime === "Different time for each day" && (
-                <View>
-                  {selectedDays.map((val, index) => {
-                    const slotsForDay = dayTimeSlots.filter(
-                      (slot) => slot.day === val,
-                    );
-                    return (
-                      <View key={index}>
-                        <View
-                          style={[
-                            styles.daysHeader,
-                            {
-                              marginBottom:
-                                index === selectedDays.length - 1
-                                  ? adjustSize(10)
-                                  : 0,
-                            },
-                          ]}
-                        >
-                          <Text style={styles.daysName}>{val}</Text>
-                          <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => openDayPicker(val, "start")}
-                          >
-                            <WithLocalSvg asset={Images.clockWhiteIcon} />
-                          </TouchableOpacity>
-                          <Text style={styles.toTxt}>To</Text>
-                          <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => openDayPicker(val, "end")}
-                          >
-                            <WithLocalSvg asset={Images.clockWhiteIcon} />
-                          </TouchableOpacity>
-                        </View>
-
-                        {/* Show added slots */}
-                        <View style={styles.timeBoxMain}>
-                          {slotsForDay.map((slot, idx) => (
-                            <View key={idx} style={styles.timeBox}>
-                              <Text style={styles.timeBoxVal}>
-                                {slot.start} - {slot.end}
-                              </Text>
-                            </View>
-                          ))}
-                        </View>
-                      </View>
-                    );
-                  })}
-                </View>
-              )}
+              <Text style={styles.title}>Availability time:</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Pressable
+                  style={[styles.dtButton, { width: "48%" }]}
+                  onPress={() => openPicker("start")}
+                >
+                  <Text style={[styles.dtText]}>{startTime || "Select"}</Text>
+                  <WithLocalSvg asset={Images.clock} />
+                </Pressable>
+                <Pressable
+                  style={[styles.dtButton, { width: "48%" }]}
+                  onPress={() => openPicker("end")}
+                >
+                  <Text style={[styles.dtText]}>{endTime || "Select"}</Text>
+                  <WithLocalSvg asset={Images.clock} />
+                </Pressable>
+              </View>
             </View>
           )}
+
+          {selectedTime === "Different time for each day" &&
+            selectedDays.length !== 0 && (
+              <View>
+                {selectedDays.map((val, index) => {
+                  const slotForDay = dayTimeSlots.find(
+                    (slot) => slot.day === val,
+                  );
+                  return (
+                    <View key={index}>
+                      <View
+                        style={[
+                          styles.daysHeader,
+                          {
+                            marginBottom:
+                              index === selectedDays.length - 1
+                                ? adjustSize(10)
+                                : 0,
+                          },
+                        ]}
+                      >
+                        <Text style={styles.daysName}>{dayLabel(val)}</Text>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => openDayPicker(val, "start")}
+                        >
+                          <WithLocalSvg asset={Images.clockWhiteIcon} />
+                        </TouchableOpacity>
+                        <Text style={styles.toTxt}>To</Text>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => openDayPicker(val, "end")}
+                        >
+                          <WithLocalSvg asset={Images.clockWhiteIcon} />
+                        </TouchableOpacity>
+                      </View>
+
+                      <View style={styles.timeBoxMain}>
+                        {!!slotForDay?.start && !!slotForDay?.end && (
+                          <View style={styles.timeBoxFull}>
+                            <Text style={styles.timeBoxVal}>
+                              {slotForDay.start} - {slotForDay.end}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
 
           <Text style={styles.title}>Upload Images</Text>
           <Pressable style={styles.dtButton} onPress={pickImage}>
@@ -561,6 +556,22 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
     width: "48%",
+    marginTop: adjustSize(10),
+    marginHorizontal: adjustSize(1),
+  },
+  timeBoxFull: {
+    height: adjustSize(40),
+    borderRadius: adjustSize(20),
+    backgroundColor: colors.white,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+    width: "100%",
     marginTop: adjustSize(10),
     marginHorizontal: adjustSize(1),
   },

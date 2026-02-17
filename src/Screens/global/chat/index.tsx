@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Images } from "../../../assets/Images";
  
 
-export function Chat() {
+export function Chat(props:any) {
   const navigation: any = useNavigation();
 
   /** ---------- STATES ---------- */
@@ -109,11 +109,18 @@ export function Chat() {
       </View>
     );
   };
+  console.log("===__==>",props?.route?.params?.fromTab)
 
   const renderItem = ({ item, index }: { item: any; index: number }) => (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => navigation.navigate("Message")}
+      onPress={() => navigation.navigate("Message",{
+        params:{
+          type:props?.route?.params?.type,
+          id:item.id,
+          fromTab:props?.route?.params?.fromTab
+        }
+      })}
       style={styles.chatCard}
     >
       <Image source={{ uri: item.avatar }} style={styles.avatar} />
@@ -134,6 +141,8 @@ export function Chat() {
     </TouchableOpacity>
   );
 
+
+  // console.log("=====__====+>",props.route.params)
   return (
     <Screen
       preset="auto"

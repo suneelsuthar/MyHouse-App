@@ -30,17 +30,17 @@ const visitorData = [
     id: 1,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "pending",
+    status: "Arrived",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#0AD029",
+    textColor: "#fff",
   },
   {
     id: 2,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "new",
+    status: "Departed",
     alert: "Kidnap",
     avatar: "B",
     backgroundColor: "#292766",
@@ -50,40 +50,40 @@ const visitorData = [
     id: 3,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "responding",
+    status: "Revoked",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#D62828",
+    textColor: "#fff",
   },
   {
     id: 4,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "Acknowledged",
-    alert: "Kidnap",
+    status: "Expired",
+    alert: "Expired",
     avatar: "B",
-    backgroundColor: "#292766",
+    backgroundColor: "#A1A1A1",
     textColor: "#FFF",
   },
   {
     id: 5,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "resolved",
+    status: "Expired",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#A1A1A1",
+    textColor: "#FFF",
   },
   {
     id: 6,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "escalated",
+    status: "Expired",
     alert: "Kidnap",
     avatar: "B",
-    backgroundColor: "#292766",
+   backgroundColor: "#A1A1A1",
     textColor: "#FFF",
   },
 ];
@@ -216,8 +216,10 @@ export const AdminAccessAlerts: React.FC = () => {
                   </Text>
 
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View style={styles.statusPill}>
-                      <Text style={styles.statusPillText}>Pending</Text>
+                    <View style={[styles.statusPill,{
+                      backgroundColor:item.backgroundColor
+                    }]}>
+                      <Text style={styles.statusPillText}>{item.status}</Text>
                     </View>
                   </View>
                 </View>

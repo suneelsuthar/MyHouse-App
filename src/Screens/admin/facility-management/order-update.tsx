@@ -138,7 +138,7 @@ export function FMOrderUpdate({ navigation }: Props) {
       safeAreaEdges={["top"]}
     >
       <Header title="Update Work Order" />
-      <CustomTabs
+      {/* <CustomTabs
         tabs={[
           {
             label: "Work Requests",
@@ -158,7 +158,7 @@ export function FMOrderUpdate({ navigation }: Props) {
         ]}
         activeTab={"Orders"}
         onTabChange={(label) => console.log(label)}
-      >
+      > */}
         <ScrollView
           contentContainerStyle={styles.container}
           showsVerticalScrollIndicator={false}
@@ -268,7 +268,7 @@ export function FMOrderUpdate({ navigation }: Props) {
             />
           </View>
         </ScrollView>
-      </CustomTabs>
+      {/* </CustomTabs> */}
       {/* Custom Date Picker */}
       <CustomDateTimePicker
         mode="date"

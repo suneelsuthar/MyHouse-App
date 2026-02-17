@@ -39,60 +39,60 @@ const visitorData = [
     id: 1,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "pending",
+    status: "Pending",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#F26938",
+    textColor: "#fff",
   },
   {
     id: 2,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "new",
+    status: "Acknowledged",
     alert: "Kidnap",
     avatar: "B",
-    backgroundColor: "#292766",
+    backgroundColor: "#A1A1A1",
     textColor: "#FFF",
   },
   {
     id: 3,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "responding",
+    status: "Responding",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#292766",
+    textColor: "#fff",
   },
   {
     id: 4,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "Acknowledged",
+    status: "Escalate",
     alert: "Kidnap",
     avatar: "B",
-    backgroundColor: "#292766",
+    backgroundColor: "#D62828",
     textColor: "#FFF",
   },
   {
     id: 5,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "resolved",
+    status: "Mark as resolved",
     alert: "Kidnap",
     avatar: "E",
-    backgroundColor: "#E8E8E8",
-    textColor: "#333",
+    backgroundColor: "#0AD029",
+    textColor: "#fff",
   },
   {
     id: 6,
     name: "Jane Smith",
     property: "Greenwood Apartments",
-    status: "escalated",
+    status: "Pending",
     alert: "Kidnap",
     avatar: "B",
-    backgroundColor: "#292766",
+    backgroundColor: "#F26938",
     textColor: "#FFF",
   },
 ];
@@ -250,8 +250,10 @@ export const AdminPanicAlerts: React.FC = () => {
                 </Text>
               </View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View style={styles.statusPill}>
-                  <Text style={styles.statusPillText}>Pending</Text>
+                <View style={[styles.statusPill,{
+                  backgroundColor:item.backgroundColor
+                }]}>
+                  <Text style={styles.statusPillText}>{item.status}</Text>
                 </View>
                 <TouchableOpacity
                   activeOpacity={0.5}
@@ -606,13 +608,14 @@ const styles = StyleSheet.create({
   statusPill: {
     backgroundColor: "#F26938",
     borderRadius: adjustSize(100),
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: 10,
     paddingVertical: 4,
   },
   statusPillText: {
     color: colors.white,
     fontSize: adjustSize(11),
     fontFamily: typography.fonts.poppins.medium,
+    textTransform:"capitalize",
   },
   cardRowTop: {
     flexDirection: "row",

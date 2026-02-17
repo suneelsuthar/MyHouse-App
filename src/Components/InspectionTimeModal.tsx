@@ -150,16 +150,25 @@ const InspectionTimeModal: React.FC<Props> = ({
   const showSame = mode === "same";
   const showDifferent = mode === "different";
   console.log("======>", selectedDays);
+
+  const daysToShow = useMemo(() => {
+    if (!selectedDays || selectedDays.length === 0) return DAY_LIST;
+    if ((selectedDays as any).includes("Everyday")) return DAY_LIST;
+    return selectedDays;
+  }, [selectedDays]);
+
   // Close the picker if the parent modal is hidden
   useEffect(() => {
     if (!visible && pickerOpen) setPickerOpen(null);
 
-    if (selectedDays?.includes("Everyday" as any)) {
-      setMode("different");
-    } else {
-      setMode("same");
+    if (visible) {
+      // For Step4 behavior: always show per-day blocks for whatever user selected.
+      // If Everyday selected, show all days.
+      if (selectedDays && selectedDays.length > 0) {
+        setMode("different");
+      }
     }
-  }, [visible, pickerOpen]);
+  }, [visible, pickerOpen, selectedDays]);
 
   return (
     <>
@@ -203,7 +212,7 @@ const InspectionTimeModal: React.FC<Props> = ({
                 Set different time for each day
               </Text>
 
-              {DAY_LIST.map((day) => (
+              {daysToShow.map((day) => (
                 <View key={day} style={{ marginBottom: adjustSize(12) }}>
                   {/* Header row: day + + button */}
                   <View style={styles.dayRow}>

@@ -605,7 +605,7 @@ export function AdminAddProperty(props: AdminAddPropertyProps) {
             // onPress={goNext}
             textStyle={{
               fontSize: adjustSize(15),
-              lineHeight: adjustSize(16),
+              // lineHeight: adjustSize(15),
               color: colors.primary,
             }}
           />

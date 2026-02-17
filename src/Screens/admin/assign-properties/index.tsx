@@ -59,9 +59,11 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
         return "Assign Property to a Registered tenant";
          case "secondary-agent":
         return "Assign Property to a Secondary Agent";
+         case "primary-agent":
+        return "Assign Property to a Primary Agent";
       case "agent":
       default:
-        return "Assign Property to a Agent";
+        return "Assign Property to an Agent";
     }
   }, [assignType]);
 
@@ -159,7 +161,7 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
               )}
             </Pressable>
           </View>
-          {isChecked && (assignType === "primary-agent" || assignType === "agent" )&& (
+          {isChecked && ( assignType === "agent" || assignType === "secondary-agent" || assignType === "primary-agent" )&& (
             <View style={styles.commissionRow}>
               <Text style={styles.commissionLabel}>Commission %:</Text>
               <View

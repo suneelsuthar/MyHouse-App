@@ -164,7 +164,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
       safeAreaEdges={["top"]}
     >
       <Header title="Generate Work Order" />
-      <CustomTabs
+      {/* <CustomTabs
         tabs={[
           {
             label: "Work Requests",
@@ -184,7 +184,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
         ]}
         activeTab={"Work Requests"}
         onTabChange={(label) => console.log(label)}
-      >
+      > */}
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
           <View style={{ padding: adjustSize(10) }}>
             {/* <Text weight="semiBold" style={styles.sectionHeading}>Create work order</Text> */}
@@ -307,7 +307,7 @@ export function FMGenerateWorkOrder({ navigation }: Props) {
             />
           </View>
         </ScrollView>
-      </CustomTabs>
+      {/* </CustomTabs> */}
       <CustomDateTimePicker
         mode="date"
         value={issueDate}

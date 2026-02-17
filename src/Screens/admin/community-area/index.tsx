@@ -66,6 +66,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       amenity: "lorem ipsum",
       capacity: "Apartment",
       dateAdded: "15, Sep 2024",
+      status: "Rejected",
     },
     {
       id: "2",
@@ -83,6 +84,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       amenity: "lorem ipsum",
       capacity: "Apartment",
       dateAdded: "15, Sep 2024",
+      status: "Approved",
     },
     {
       id: "3",
@@ -100,6 +102,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       amenity: "lorem ipsum",
       capacity: "Apartment",
       dateAdded: "15, Sep 2024",
+      status: "Approved",
     },
   ]);
 
@@ -119,6 +122,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
+      status:"Rejected"
     },
     {
       name: "John Doe",
@@ -135,6 +139,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
+      status: "Rejected",
     },
     {
       name: "John Doe",
@@ -151,6 +156,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
+      status: "Approved",
     },
     {
       name: "John Doe",
@@ -167,6 +173,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
+      status: "Cancelled",
     },
     {
       name: "John Doe",
@@ -183,6 +190,41 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
       ],
+      status: "Pending",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      status: "Rejected",
+    },
+    {
+      name: "John Doe",
+      swimmingPool: "Shortlet",
+      reservationID: "RES123456",
+      amenity: "lorem ipsum",
+      reservationDate: "15, Sep 2024",
+      dateCreated: "15, Sep 2024",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOTPx6TYdaoXzzjyDEf-ewcFcp5jSDci_UKA&s",
+        "https://s3-blog.homelane.com/design-ideas-pre/wp-content/uploads/2022/11/bungalow-interiors.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzVqHZTNS6QQZP8BbaSMAdFQWJSX-WFKy_5w&s",
+      ],
+      status: "Reserved",
     },
   ]);
   useEffect(() => {
@@ -234,7 +276,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         <View style={[styles._searchrow, { marginTop: adjustSize(15) }]}>
           <View style={styles._inputview}>
             {/* {activeTab === "Amenities" ? ( */}
-              <GroupDropdown placeholder="Select Estate" />
+            <GroupDropdown placeholder="Select Estate" />
             {/* ) : (
               <TextField
                 placeholderTextColor={colors.primaryLight}
@@ -283,7 +325,9 @@ export function CommunityArea({ route }: CommunityAreaProps) {
         <View style={styles.section}>
           <View style={styles._seciton_row}>
             <Text weight="semiBold" style={styles.sectionTitle}>
-              {activeTab === "Amenities" ? "Manage Amenities" : "Manage Reservations"}
+              {activeTab === "Amenities"
+                ? "Manage Amenities"
+                : "Manage Reservations"}
             </Text>
             <View style={styles.dropdownContainer}>
               <DropdownComponent
@@ -374,7 +418,7 @@ export function CommunityArea({ route }: CommunityAreaProps) {
       <SmallCustomModal
         visible={amenityDeleteModal}
         heading="Are you Sure?"
-        text={`Are you sure You want to delete this \ Amenity?`}
+        text={`Are you sure You want to delete this Amenity?`}
         modalType={1}
         onClose={() => setAmenityDeleteModal(false)}
         leftOnPress={() => setAmenityDeleteModal(false)}

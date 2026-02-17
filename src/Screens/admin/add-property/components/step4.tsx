@@ -40,7 +40,6 @@ const DEFAULT_DAYS = [
   "Saturday",
   "Sunday",
   "Everyday",
-
 ];
 
 const Step4: React.FC<Step4Props> = ({
@@ -50,17 +49,41 @@ const Step4: React.FC<Step4Props> = ({
 }) => {
   // Services
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    initialSelectedServices
+    initialSelectedServices,
   );
   // Restrictions
   const [restrictionOptions] = useState<string[]>(initialRestrictions);
   const [selectedRestrictions, setSelectedRestrictions] = useState<Set<string>>(
-    new Set([]) // as per screenshots demo
+    new Set([]), // as per screenshots demo
   );
   // Time selection modal state
   const [timeModalVisible, setTimeModalVisible] = useState(false);
   const [schedule, setSchedule] = useState<any>(null);
-  console.log("schedule", schedule);
+
+  const toggleDay = (day: string) => {
+    setSelectedRestrictions((prev) => {
+      const next = new Set(prev);
+      if (day === "Everyday") {
+        if (next.has("Everyday")) {
+          next.delete("Everyday");
+        } else {
+          next.clear();
+          next.add("Everyday");
+        }
+        return next;
+      }
+
+      // Normal day: toggle
+      if (next.has(day)) {
+        next.delete(day);
+      } else {
+        next.add(day);
+      }
+      // If selecting specific days, ensure Everyday isn't selected
+      if (next.has("Everyday")) next.delete("Everyday");
+      return next;
+    });
+  };
   return (
     <View style={{ flex: 1 }}>
       {/* Services */}
@@ -107,13 +130,10 @@ const Step4: React.FC<Step4Props> = ({
                 styles.restrictionChip,
                 active && styles.restrictionActive,
               ]}
-              onPress={() =>{
-                setSelectedRestrictions(new Set([r]))
-                 setTimeModalVisible(true)
-                //  if(r === "Everyday"){
-                //   setSchedule("Everyday")
-                //  }
-                }}
+              onPress={() => {
+                toggleDay(r);
+                setTimeModalVisible(true);
+              }}
               activeOpacity={0.8}
             >
               <Text
@@ -194,9 +214,8 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.greylight,
     width: adjustSize(105),
-    backgroundColor:colors.white,
-    height:adjustSize(40)
-
+    backgroundColor: colors.white,
+    height: adjustSize(40),
   } as ViewStyle,
   restrictionActive: {
     backgroundColor: colors.primary,

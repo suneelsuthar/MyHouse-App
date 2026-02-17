@@ -54,6 +54,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
     estate: "",
     property: "",
     property2: "",
+    phaseNum:""
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -226,8 +227,8 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
         </View>
 
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Property</Text>
-          <DropdownComponent
+          <Text style={styles.label}>Phase Number</Text>
+          {/* <DropdownComponent
             data={propertyOptions}
             value={formData.property2}
             onChangeValue={(value) => handleInputChange("property2", value)}
@@ -236,6 +237,12 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
             rightIconColor={colors.primary}
+          /> */}
+          <TextField
+            placeholder="Phase Number"
+            value={formData.phaseNum}
+            onChangeText={(text) => handleInputChange("phaseNum", text)}
+            inputWrapperStyle={styles.textInput}
           />
         </View>
 

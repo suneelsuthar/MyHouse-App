@@ -26,7 +26,7 @@ const visitorData = [
     id: 1,
     name: "Ethan Baker",
     property: "Greenwood Apartments",
-    status: "rejected",
+    status: "Revoked",
     avatar: "E",
     backgroundColor: "#E8E8E8",
     textColor: "#333",
@@ -35,7 +35,7 @@ const visitorData = [
     id: 2,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "validated",
+    status: "Revoked",
     avatar: "B",
     backgroundColor: "#292766",
     textColor: "#FFF",
@@ -44,7 +44,7 @@ const visitorData = [
     id: 3,
     name: "Ethan Baker",
     property: "Greenwood Apartments",
-    status: "pending",
+    status: "Revoked",
     avatar: "E",
     backgroundColor: "#E8E8E8",
     textColor: "#333",
@@ -53,7 +53,7 @@ const visitorData = [
     id: 4,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "rejected",
+    status: "Revoked",
     avatar: "B",
     backgroundColor: "#292766",
     textColor: "#FFF",
@@ -62,7 +62,7 @@ const visitorData = [
     id: 5,
     name: "Ethan Baker",
     property: "Greenwood Apartments",
-    status: "rejected",
+    status: "Revoked",
     avatar: "E",
     backgroundColor: "#E8E8E8",
     textColor: "#333",
@@ -71,7 +71,7 @@ const visitorData = [
     id: 6,
     name: "Brume Djbah",
     property: "Greenwood Apartments",
-    status: "rejected",
+    status: "Revoked",
     avatar: "B",
     backgroundColor: "#292766",
     textColor: "#FFF",
@@ -239,7 +239,7 @@ export const RevokedInvitations: React.FC = () => {
                   {visitor.name}
                 </Text>
                 <View style={styles.statusPill}>
-                  <Text style={styles.statusPillText}>Pending</Text>
+                  <Text style={styles.statusPillText}>{visitor.status}</Text>
                 </View>
               </View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
   },
   propValue: { color: colors.primary, fontSize: adjustSize(10) },
   statusPill: {
-    backgroundColor: "#F26938",
+    backgroundColor: "#D62828",
     borderRadius: adjustSize(100),
     paddingHorizontal: spacing.md,
     paddingVertical: 3,

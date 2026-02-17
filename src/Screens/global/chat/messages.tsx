@@ -24,7 +24,7 @@ interface IMessage {
   avatar: string; // 👈 added avatar
 }
 
-export const Message = (props:any) => {
+export const Message = (props: any) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<IMessage[]>([
     {
@@ -88,6 +88,7 @@ export const Message = (props:any) => {
       setMessage("");
     }
   };
+  console.log("=====>", props?.route?.params?.params);
 
   const renderMessage = ({ item }: { item: IMessage }) => (
     <View
@@ -117,12 +118,13 @@ export const Message = (props:any) => {
     >
       {/* Header */}
 
-      
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <TouchableOpacity activeOpacity={0.5} onPress={() =>props.navigation.goBack()}
-            style={{marginRight:5}}
-            >
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => props.navigation.goBack()}
+            style={{ marginRight: 5 }}
+          >
             <Ionicons name="arrow-back" size={20} color={colors.primary} />
           </TouchableOpacity>
           <View style={styles.avatar}>
@@ -135,13 +137,15 @@ export const Message = (props:any) => {
         </View>
       </View>
 
-      <View style={styles._orderview}>
-        <Text
-          text="Work Order: 123456"
-          weight="semiBold"
-          style={styles._ordernum}
-        />
-      </View>
+      {!props?.route?.params?.params?.fromTab && (
+        <View style={styles._orderview}>
+          <Text
+            text="Work Order: 123456"
+            weight="semiBold"
+            style={styles._ordernum}
+          />
+        </View>
+      )}
 
       {/* Chat List */}
       <FlatList
@@ -177,7 +181,7 @@ export const Message = (props:any) => {
           <Feather
             name="send"
             size={24}
-            color={message.trim() ? colors.white : colors.primary}
+            color={message.trim() ? colors.white : colors.white}
           />
         </TouchableOpacity>
       </View>
@@ -251,7 +255,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(5),
     paddingHorizontal: adjustSize(10),
     marginRight: 12,
@@ -264,13 +268,14 @@ const styles = StyleSheet.create({
     maxHeight: 100,
     color: colors.text,
     fontSize: 14,
+    backgroundColor:colors.white
   },
   attachButton: {
     padding: 4,
     marginLeft: 8,
   },
   sendButton: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.primary,
     width: adjustSize(40),
     height: adjustSize(40),
     borderRadius: adjustSize(5),
@@ -281,7 +286,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   _orderview: {
-    backgroundColor: "#29276633",
+    backgroundColor: colors.primary,
     padding: adjustSize(10),
   },
   _ordernum: {

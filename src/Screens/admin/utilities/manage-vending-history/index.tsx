@@ -418,7 +418,7 @@ export const AdminManageVendingHistory = ({
                 />
                 <Text
                   weight="semiBold"
-                  text="15,00,000"
+                  text="₦ 15,00,000"
                   style={styles._price}
                 />
               </TouchableOpacity>
@@ -528,7 +528,7 @@ export const AdminManageVendingHistory = ({
               <Text text="MTR34556" style={styles._rowvalue} />
             </View>
 
-            {type === "download" && (
+            {/* {type === "download" && ( */}
               <View
                 style={{
                   flexDirection: "row",
@@ -554,7 +554,7 @@ export const AdminManageVendingHistory = ({
                   disabled={isSharing}
                 /> */}
               </View>
-            )}
+            {/* )} */}
           </View>
         </View>
       </Modal>

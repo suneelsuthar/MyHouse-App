@@ -10,7 +10,7 @@ import {
   Image,
   ImageSourcePropType,
 } from "react-native";
-import { Text } from "../../../../Components";
+import { Button, Text } from "../../../../Components";
 import DropdownComponent from "../../../../Components/DropDown";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -244,7 +244,15 @@ const Step3: React.FC<Step3Props> = ({
         Agents
       </Text>
       <View style={styles.toggleRow}>
-        <Text weight="normal" style={styles.toggleLabel}>
+        <Text
+          weight="normal"
+          style={[
+            styles.toggleLabel,
+            {
+              textDecorationLine: "underline",
+            },
+          ]}
+        >
           Assign Primary Agent
         </Text>
         <Switch
@@ -252,16 +260,32 @@ const Step3: React.FC<Step3Props> = ({
           onValueChange={setAssignPrimaryAgent}
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
-          onChange={() =>
-            !assignPrimaryAgent &&
+          // onChange={() =>
+          //   !assignPrimaryAgent &&
+          //   navigation.navigate("AdminAssignProperties", {
+          //     type: "primary-agent",
+          //     title: "Assign Agent",
+          //   } as never)
+          // }
+          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
+        />
+      </View>
+      {assignPrimaryAgent && (
+        <Button
+          text="View Assigned Agents"
+          preset="reversed"
+          style={[styles.navBtn, { marginBottom: 20 }]}
+          onPress={() =>
             navigation.navigate("AdminAssignProperties", {
               type: "primary-agent",
               title: "Assign Agent",
             } as never)
           }
-          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
+          textStyle={{
+            fontSize: adjustSize(13),
+          }}
         />
-      </View>
+      )}
       <View style={styles.toggleRow}>
         <Text weight="normal" style={styles.toggleLabel}>
           Allow Primary Agent Request
@@ -286,7 +310,15 @@ const Step3: React.FC<Step3Props> = ({
       </Text>
 
       <View style={styles.toggleRow}>
-        <Text weight="normal" style={styles.toggleLabel}>
+        <Text
+          weight="normal"
+          style={[
+            styles.toggleLabel,
+            {
+              textDecorationLine: "underline",
+            },
+          ]}
+        >
           Assign Facility Manager
         </Text>
         <Switch
@@ -295,15 +327,31 @@ const Step3: React.FC<Step3Props> = ({
           trackColor={{ false: colors.greylight, true: colors.primary }}
           thumbColor={colors.white}
           style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
-          onChange={() =>
-            !allowFacilityManagerRequest &&
+          // onChange={() =>
+          //   !allowFacilityManagerRequest &&
+          //   navigation.navigate("AdminAssignProperties", {
+          //     type: "fm",
+          //     title: "Assign Facility Manager",
+          //   } as never)
+          // }
+        />
+      </View>
+      {assignFacilityManager && (
+        <Button
+          text="View Assigned Facility Managers"
+          preset="reversed"
+          style={[styles.navBtn, { marginBottom: 20 }]}
+          onPress={() =>
             navigation.navigate("AdminAssignProperties", {
               type: "fm",
               title: "Assign Facility Manager",
             } as never)
           }
+          textStyle={{
+            fontSize: adjustSize(13),
+          }}
         />
-      </View>
+      )}
 
       <View style={styles.toggleRow}>
         <Text weight="normal" style={styles.toggleLabel}>
@@ -422,6 +470,15 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     flexShrink: 1,
     paddingRight: adjustSize(10),
+  },
+  navBtn: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: colors.primary,
+    height: adjustSize(41),
+    borderRadius: adjustSize(10),
+    minHeight: adjustSize(41),
+    marginTop: 10,
   },
 });
 
