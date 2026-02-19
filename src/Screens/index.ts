@@ -99,6 +99,8 @@ import { AdminAnalytics } from "./admin/analytics";
 import { AdminAuditLogs } from "./admin/audit-logs";
 import { AdminBackupRestore } from "./admin/backup-restore";
 import { Commuication } from "./admin/support-tickets";
+import { TicketDetials } from "./admin/support-tickets/ticket-detials";
+
 import { PropertyDetails } from "./admin/property-details";
 import { AdminAddProperty } from "./admin/add-property";
 import { AdminManageCalendar } from "./admin/manage-calendar";

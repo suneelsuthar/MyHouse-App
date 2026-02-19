@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextStyle,
   Switch,
+  TextInput,
 } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 import {
@@ -154,11 +155,33 @@ const ToggleRow = ({
 };
 
 export const AdminUtilitiesSettings: React.FC = () => {
-  // dropdown states
+  // new dropdown states
+  const [selectedEstate, setSelectedEstate] = useState<string | undefined>();
+  const [selectedSetting, setSelectedSetting] = useState<string | undefined>();
+  const [alternateGenerator, setAlternateGenerator] = useState<
+    string | undefined
+  >();
+  const [disableEnableUtility, setDisableEnableUtility] =
+    useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [propertyToggles, setPropertyToggles] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  // existing dropdown states
   const [propertyGroup, setPropertyGroup] = useState<string | undefined>();
   const [unitOfMeasurement, setUnitOfMeasurement] = useState<string>("₦");
   const [grandPeriodBasis, setGrandPeriodBasis] =
     useState<string>("Calendar Day");
+
+  // Mock property data for the list
+  const properties = [
+    { id: "1", name: "Property 1" },
+    { id: "2", name: "Property 2" },
+    { id: "3", name: "Property 3" },
+    { id: "4", name: "Property 4" },
+    { id: "5", name: "Property 5" },
+  ];
 
   // counters
   const [ratePerUnit, setRatePerUnit] = useState(0);
@@ -204,22 +227,137 @@ export const AdminUtilitiesSettings: React.FC = () => {
           Utility Settings
         </Text>
 
-        {/* Property Group (Required First) */}
-        <Text style={styles.title}>Select by property group</Text>
+        {/* First Dropdown: Select Estate */}
+        <Text style={styles.title}>Select Estate</Text>
         <DropdownComponent
           data={[
-            { label: "Property Group 1", value: "Property Group 1" },
-            { label: "Property Group 2", value: "Property Group 2" },
+            { label: "Estate 1 - ID12344", value: "Estate 1 - ID12344" },
+            { label: "Estate 2 - ID12344", value: "Estate 2 - ID12344" },
+            { label: "Estate 3 - ID12344", value: "Estate 4 - ID12344" },
+            { label: "Estate 4 - ID12344", value: "Estate 6 - ID12344" },
+            { label: "Estate 5 - ID12344", value: "Estate 8 - ID12344" },
+            { label: "Estate 6 - ID12344", value: "Estate 5 - ID12344" },
+            { label: "Estate 8 - ID12344", value: "Estate 8 - ID12344" },
           ]}
-          label="Choose type"
-          placeholder="Select "
-          value={propertyGroup}
-          onChangeValue={setPropertyGroup}
+          label="Choose estate"
+          placeholder="Select estate"
+          value={selectedEstate}
+          onChangeValue={(value) => {
+            setSelectedEstate(value);
+            setSelectedSetting(undefined); // Reset second dropdown when estate changes
+            setPropertyGroup(undefined); // Reset third dropdown when estate changes
+          }}
           dropdownStyle={styles.dropdown}
           placeholderStyle={styles.dropdownPlaceholder}
           selectedTextStyle={styles.dropdownSelected}
           rightIconColor={colors.primary}
         />
+
+        {/* Second Section: Shows only when estate is selected */}
+        {selectedEstate && (
+          <>
+            {/* Show dropdown for Utility configuration */}
+            <Text style={styles.title}>Select Setting*</Text>
+            <DropdownComponent
+              data={[
+                {
+                  label: "Utility configuration",
+                  value: "Utility configuration",
+                },
+                {
+                  label: "Disable/Enable Utility Purchase",
+                  value: "Disable/Enable Utility Purchase",
+                },
+              ]}
+              label="Choose setting"
+              placeholder="Select setting"
+              value={selectedSetting}
+              onChangeValue={(value) => {
+                setSelectedSetting(value);
+                setPropertyGroup(undefined); // Reset third dropdown when setting changes
+              }}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
+            />
+
+            {/* Show toggle for Disable/Enable Utility Purchase when selected */}
+            {selectedSetting === "Disable/Enable Utility Purchase" && (
+              <>
+                {/* Search Bar */}
+                <View style={styles.searchContainer}>
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search properties..."
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    placeholderTextColor={colors.primaryLight}
+                  />
+                </View>
+
+                {/* Property List with Toggles */}
+                <View style={styles.propertyList}>
+                  {properties
+                    .filter((property) =>
+                      property.name
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()),
+                    )
+                    .map((property) => (
+                      <View key={property.id} style={styles.propertyItem}>
+                        <Text style={styles.propertyName}>{property.name}</Text>
+                        <Switch
+                          value={propertyToggles[property.id] || false}
+                          onValueChange={(value) =>
+                            setPropertyToggles((prev) => ({
+                              ...prev,
+                              [property.id]: value,
+                            }))
+                          }
+                          trackColor={{
+                            false: colors.greylight,
+                            true: colors.primary,
+                          }}
+                          thumbColor={colors.white}
+                          style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
+                        />
+                      </View>
+                    ))}
+                </View>
+              </>
+            )}
+          </>
+        )}
+
+        {/* Third Dropdown: Utility Type - Shows only when both estate and setting are selected, but NOT when Disable/Enable Utility Purchase */}
+        {selectedEstate &&
+          selectedSetting &&
+          selectedSetting !== "Disable/Enable Utility Purchase" && (
+            <>
+              <Text style={styles.title}>Utility type</Text>
+              <DropdownComponent
+                data={[
+                  {
+                    label: "Single tarrif electricity",
+                    value: "Single tarrif electricity",
+                  },
+                  {
+                    label: "Dual tarrif electricity",
+                    value: "Dual tarrif electricity",
+                  },
+                ]}
+                label="Select Utility Type"
+                placeholder="Select Utility Type"
+                value={propertyGroup}
+                onChangeValue={setPropertyGroup}
+                dropdownStyle={styles.dropdown}
+                placeholderStyle={styles.dropdownPlaceholder}
+                selectedTextStyle={styles.dropdownSelected}
+                rightIconColor={colors.primary}
+              />
+            </>
+          )}
 
         {/* Show everything else only if property group selected */}
         {propertyGroup && (
@@ -238,7 +376,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
               rightIconColor={colors.primary}
             /> */}
 
-            <View style={{ marginTop: adjustSize(20) }}>
+            <View>
               <CounterRow
                 label="Rate Per Unit"
                 value={ratePerUnit}
@@ -263,6 +401,22 @@ export const AdminUtilitiesSettings: React.FC = () => {
               selectedTextStyle={styles.dropdownSelected}
               rightIconColor={colors.primary}
             />
+
+            {/* Alternate/Generator Input - Shows only when Single tariff electricity is selected */}
+            {propertyGroup === "Single tarrif electricity" && (
+              <>
+                <Text style={styles.title}>Alternate/Generator</Text>
+                <TextField
+                  placeholder="Enter value"
+                  value={alternateGenerator}
+                  onChangeText={setAlternateGenerator}
+                  placeholderTextColor={colors.primaryLight}
+                  keyboardType="numeric"
+                  style={styles.input}
+                  inputWrapperStyle={{ backgroundColor: colors.white }}
+                />
+              </>
+            )}
 
             {/* Period Threshold */}
             <ToggleRow
@@ -848,14 +1002,43 @@ export const AdminUtilitiesSettings: React.FC = () => {
           </>
         )}
       </ScrollView>
-      <Button
-        text="Save"
-        preset="reversed"
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={{ width: "95%", alignSelf: "center", marginBottom: 30 }}
-      />
+
+      {/* Conditional Button Rendering */}
+      {selectedSetting === "Disable/Enable Utility Purchase" ? (
+        <View style={styles.bottomButtonContainer}>
+          <TouchableOpacity
+            style={[styles.bottomActionButton, styles.bottomConfirmButton]}
+            onPress={() => {
+              // Handle confirm action
+              console.log("Confirmed toggles:", propertyToggles);
+              // TODO: Save to API
+              navigation.goBack();
+            }}
+          >
+            <Text style={styles.bottomConfirmButtonText}>Confirm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.bottomActionButton, styles.bottomCancelButton]}
+            onPress={() => {
+              // Reset all toggles to false
+              setPropertyToggles({});
+              setSearchQuery("");
+            }}
+          >
+            <Text style={styles.bottomCancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        // Show Save button for normal flow
+        <Button
+          text="Save"
+          preset="reversed"
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{ width: "95%", alignSelf: "center", marginBottom: 30 }}
+        />
+      )}
     </Screen>
   );
 };
@@ -888,18 +1071,140 @@ const styles = StyleSheet.create({
   dropdownPlaceholder: {
     fontSize: adjustSize(12),
     color: colors.primaryLight,
-    fontFamily: typography.fonts.poppins.normal,
+    fontFamily: typography.fonts.poppins.medium,
   },
   dropdownSelected: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  toggleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.white,
+    paddingHorizontal: adjustSize(15),
+    paddingVertical: adjustSize(12),
+    borderRadius: adjustSize(10),
+    marginBottom: adjustSize(20),
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  toggleLabel: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.primary,
+    flex: 1,
+  },
+  // Search and Property List Styles
+  searchContainer: {
+    paddingHorizontal: adjustSize(15),
+    paddingVertical: adjustSize(12),
+    marginBottom: adjustSize(20),
+    shadowRadius: 3,
+    elevation: 3,
+    marginTop: 20,
+    height: adjustSize(49),
+    borderRadius: adjustSize(10),
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    // alignItems:"center",
+    justifyContent: "center",
+  },
+  searchInput: {
     fontSize: adjustSize(12),
     color: colors.primary,
-    fontFamily: typography.fonts.poppins.normal,
+    fontFamily: typography.fonts.poppins.medium,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  propertyList: {
+    marginBottom: adjustSize(80),
+  },
+  propertyItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: adjustSize(15),
+    paddingVertical: adjustSize(12),
+    borderRadius: adjustSize(8),
+    // marginBottom: adjustSize(10),
+  },
+  propertyName: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.primary,
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    paddingHorizontal: adjustSize(20),
+    paddingBottom: adjustSize(20),
+    gap: adjustSize(10),
+  },
+  actionButton: {
+    flex: 1,
+    paddingVertical: adjustSize(12),
+    borderRadius: adjustSize(8),
+    alignItems: "center",
+  },
+  cancelButton: {
+    backgroundColor: colors.greylight,
+  },
+  confirmButton: {
+    backgroundColor: colors.primary,
+  },
+  cancelButtonText: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.primary,
+  },
+  confirmButtonText: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.white,
+  },
+  // Bottom Button Styles (for the main bottom buttons)
+  bottomButtonContainer: {
+    flexDirection: "row",
+    paddingHorizontal: adjustSize(20),
+    paddingBottom: adjustSize(30),
+    gap: adjustSize(10),
+  },
+  bottomActionButton: {
+    flex: 1,
+    paddingVertical: adjustSize(15),
+    borderRadius: adjustSize(8),
+    alignItems: "center",
+  },
+  bottomCancelButton: {
+    backgroundColor: "#D62828",
+    height: adjustSize(49),
+  },
+  bottomConfirmButton: {
+    backgroundColor: colors.primary,
+    height: adjustSize(49),
+  },
+  bottomCancelButtonText: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.white,
+  },
+  bottomConfirmButtonText: {
+    fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.medium,
+    color: colors.white,
   },
   title: {
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
-    // marginTop: adjustSize(20),
+    marginTop: adjustSize(10),
     marginBottom: adjustSize(3),
   },
   row: {

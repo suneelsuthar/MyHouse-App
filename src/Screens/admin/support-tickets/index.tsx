@@ -16,7 +16,9 @@ import {
   Button,
   CustomTabs,
   TextField,
+  CustomDateTimePicker,
 } from "../../../Components";
+import DropdownComponent from "../../../Components/DropDown";
 import { AppStackScreenProps } from "../../../utils/interfaces";
 import { colors, spacing, adjustSize, typography } from "../../../theme";
 import { NewMessageIcon, HistoryIcon2 } from "../../../assets/svg";
@@ -33,8 +35,8 @@ interface CommuicationProps extends NativeStackScreenProps<
 
 export function Commuication(props: CommuicationProps) {
   const navigation = useNavigation();
-   
-  console.log(props.route.params.tab)
+
+  console.log(props.route.params.tab);
   /** ---------- STATES ---------- */
   const [activeTab, setActiveTab] = useState<
     "New message" | "History" | "Archive"
@@ -46,8 +48,8 @@ export function Commuication(props: CommuicationProps) {
 
   // Initialize messages with dummy data
   React.useEffect(() => {
-    setActiveTab(props.route.params.tab)
-    console.log("wooo")
+    setActiveTab(props.route.params.tab);
+    console.log("wooo");
     const dummyData = Array.from({ length: 20 }, (_, i) => ({
       id: i + 1,
       name: `Amelia Greene`,
@@ -68,6 +70,14 @@ export function Commuication(props: CommuicationProps) {
   // toggles
   const [sendEmail, setSendEmail] = useState(false);
   const [sendMessage, setSendMessage] = useState(false);
+  const [enableRepeat, setenableRepeat] = useState(false);
+
+  // repeat message fields
+  const [startPeriod, setStartPeriod] = useState<Date | null>(null);
+  const [endPeriod, setEndPeriod] = useState<Date | null>(null);
+  const [repeatInterval, setRepeatInterval] = useState<string>("");
+  const [startPickerVisible, setStartPickerVisible] = useState(false);
+  const [endPickerVisible, setEndPickerVisible] = useState(false);
 
   // Recipient selection
   const [isRecipientModalVisible, setIsRecipientModalVisible] = useState(false);
@@ -182,7 +192,24 @@ export function Commuication(props: CommuicationProps) {
   const renderItem = ({ item, index }: { item: any; index: number }) => (
     <TouchableOpacity
       activeOpacity={0.9}
-      onPress={() => handleMessagePress(item)}
+      //  onPress={ () =>
+      //     navigation.navigate("Admin", {
+      //       screen: "Home",
+      //       params: {
+      //         screen: "Commuication",
+      //         params: { tab: "Archive" },
+      //       }
+      //     }
+      // },
+      onPress={() => 
+        navigation.navigate("Home", {
+          screen: "TicketDetails",
+          params: {
+            screen: "TicketDetails",
+          },
+        })
+      }
+      // onPress={() => navigation.navigate("TicketDetails")}
       style={[
         styles.chatItem,
         {
@@ -212,6 +239,10 @@ export function Commuication(props: CommuicationProps) {
       messageBody,
       sendEmail,
       sendMessage,
+      enableRepeat,
+      startPeriod,
+      endPeriod,
+      repeatInterval,
     });
     // TODO: API integration here
   };
@@ -368,10 +399,86 @@ export function Commuication(props: CommuicationProps) {
                 onChange={setSendEmail}
               />
               <ToggleRow
-                label="Send Message:"
+                label="Send SMS:"
                 value={sendMessage}
                 onChange={setSendMessage}
               />
+
+              <ToggleRow
+                label="Enable Repreat Message:"
+                value={enableRepeat}
+                onChange={setenableRepeat}
+              />
+
+              {enableRepeat && (
+                <View style={styles.repeatFieldsContainer}>
+                  <View style={styles.dateFieldContainer}>
+                    <Text style={styles.fieldLabel}>Start Period:</Text>
+                    <TouchableOpacity
+                      style={styles.datePickerButton}
+                      onPress={() => setStartPickerVisible(true)}
+                    >
+                      <Text
+                        style={[
+                          styles.dateText,
+                          {
+                            color: startPeriod
+                              ? colors.black
+                              : colors.primaryLight,
+                          },
+                        ]}
+                      >
+                        {startPeriod
+                          ? startPeriod.toLocaleDateString()
+                          : "Select Start Date"}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.dateFieldContainer}>
+                    <Text style={styles.fieldLabel}>End Period:</Text>
+                    <TouchableOpacity
+                      style={styles.datePickerButton}
+                      onPress={() => setEndPickerVisible(true)}
+                    >
+                      <Text
+                        style={[
+                          styles.dateText,
+                          {
+                            color: endPeriod
+                              ? colors.black
+                              : colors.primaryLight,
+                          },
+                        ]}
+                      >
+                        {endPeriod
+                          ? endPeriod.toLocaleDateString()
+                          : "Select End Date"}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.intervalFieldContainer}>
+                    <Text style={styles.fieldLabel}>Repeat Interval:</Text>
+                    <DropdownComponent
+                      data={[
+                        { label: "Daily", value: "Daily" },
+                        { label: "Weekly", value: "Weekly" },
+                        { label: "Monthly", value: "Monthly" },
+                        { label: "Annually", value: "Annually" },
+                      ]}
+                      label="Choose interval"
+                      placeholder="Select interval"
+                      value={repeatInterval}
+                      onChangeValue={(v: any) => setRepeatInterval(v)}
+                      dropdownStyle={styles.dropdown}
+                      placeholderStyle={styles.dropdownPlaceholder}
+                      selectedTextStyle={styles.dropdownSelected}
+                      rightIconColor={colors.primary}
+                    />
+                  </View>
+                </View>
+              )}
 
               <Button
                 text={"Send"}
@@ -397,6 +504,36 @@ export function Commuication(props: CommuicationProps) {
             />
           )}
         </CustomTabs>
+
+        {/* Start Period Date Picker Modal */}
+        <CustomDateTimePicker
+          mode="date"
+          value={startPeriod}
+          visible={startPickerVisible}
+          onChange={setStartPeriod}
+          onCancel={() => setStartPickerVisible(false)}
+          onConfirm={() => setStartPickerVisible(false)}
+        />
+
+        {/* Start Period Date Picker Modal */}
+        <CustomDateTimePicker
+          mode="date"
+          value={startPeriod}
+          visible={startPickerVisible}
+          onChange={setStartPeriod}
+          onCancel={() => setStartPickerVisible(false)}
+          onConfirm={() => setStartPickerVisible(false)}
+        />
+
+        {/* End Period Date Picker Modal */}
+        <CustomDateTimePicker
+          mode="date"
+          value={endPeriod}
+          visible={endPickerVisible}
+          onChange={setEndPeriod}
+          onCancel={() => setEndPickerVisible(false)}
+          onConfirm={() => setEndPickerVisible(false)}
+        />
 
         {activeTab === "History" && (
           <TouchableOpacity activeOpacity={0.6} style={styles.messageBtn}>
@@ -807,7 +944,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: adjustSize(10),
+    paddingBottom: adjustSize(10),
   },
   toggleLabel: {
     color: colors.primary,
@@ -816,6 +953,91 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginVertical: adjustSize(25),
+  },
+  // Repeat Message Fields Styles
+  repeatFieldsContainer: {
+    marginTop: 15,
+    // backgroundColor: colors.white,
+    // marginHorizontal: adjustSize(10),
+    // padding: adjustSize(15),
+    // borderRadius: adjustSize(10),
+    // marginBottom: adjustSize(20),
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 3.84,
+    // elevation: 2,
+  },
+  dateFieldContainer: {
+    marginBottom: adjustSize(15),
+  },
+  fieldLabel: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.semiBold,
+    marginBottom: adjustSize(8),
+  },
+  datePickerButton: {
+    backgroundColor: colors.white,
+    // borderWidth: 1,
+    // borderColor: colors.greylight,
+    // borderRadius: adjustSize(8),
+    paddingHorizontal: adjustSize(12),
+    // paddingVertical: adjustSize(10),
+    // justifyContent: "center",
+    // alignItems: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 10,
+    height: adjustSize(49),
+    borderColor: "#F0F0F0",
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+    // marginHorizontal: 3,
+    marginBottom: spacing.md,
+    borderWidth: 0.5,
+  },
+  dateText: {
+    flex: 1,
+    alignSelf: "center",
+    fontFamily: "medium",
+    color: colors.black,
+    // marginHorizontal: spacing.sm,
+    fontSize: adjustSize(12),
+  },
+  intervalFieldContainer: {
+    marginBottom: adjustSize(15),
+  },
+  intervalInput: {
+    backgroundColor: colors.white,
+  },
+  // Dropdown Styles
+  dropdown: {
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(8),
+    paddingHorizontal: adjustSize(12),
+    paddingVertical: adjustSize(10),
+    marginBottom: adjustSize(10),
+    height: adjustSize(49),
+    borderColor: "#F0F0F0",
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  dropdownPlaceholder: {
+    color: colors.primaryLight,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  dropdownSelected: {
+    color: colors.primary,
+    fontSize: adjustSize(12),
+    fontFamily: typography.fonts.poppins.medium,
   },
   // Modal Styles
   modalOverlay: {
@@ -917,10 +1139,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   inputView: {
-    borderWidth: 1,
-    borderColor: colors.greylight,
+    // borderWidth: 1,
+    // borderColor: colors.greylight,
     borderRadius: 8,
-    height: adjustSize(47),
+    // height: adjustSize(47),
     flex: 1,
     // padding: 10,
     justifyContent: "center",
@@ -928,6 +1150,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 5,
     backgroundColor: colors.white,
+    height: adjustSize(49),
+    borderColor: "#F0F0F0",
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+    paddingHorizontal: 10,
   },
   chipsContainer: {
     flexDirection: "row",

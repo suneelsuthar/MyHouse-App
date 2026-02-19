@@ -244,15 +244,7 @@ const Step3: React.FC<Step3Props> = ({
         Agents
       </Text>
       <View style={styles.toggleRow}>
-        <Text
-          weight="normal"
-          style={[
-            styles.toggleLabel,
-            {
-              textDecorationLine: "underline",
-            },
-          ]}
-        >
+        <Text weight="normal" style={[styles.toggleLabel]}>
           Assign Primary Agent
         </Text>
         <Switch
@@ -310,15 +302,7 @@ const Step3: React.FC<Step3Props> = ({
       </Text>
 
       <View style={styles.toggleRow}>
-        <Text
-          weight="normal"
-          style={[
-            styles.toggleLabel,
-            {
-              textDecorationLine: "underline",
-            },
-          ]}
-        >
+        <Text weight="normal" style={[styles.toggleLabel]}>
           Assign Facility Manager
         </Text>
         <Switch

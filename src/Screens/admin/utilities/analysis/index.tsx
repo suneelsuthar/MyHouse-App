@@ -175,18 +175,18 @@ export const Analysis: React.FC = (props: any) => {
           rightIconColor={colors.primary}
         />
 
-        {/* If Estate selected: show Estate dropdown */}
+        {/* If Estate selected: show Property/Estate dropdown */}
         {selectBy === "Estate" && (
           <View>
-            <Text style={styles.title}>Select Estate</Text>
+            <Text style={styles.title}>Select Property/Estate</Text>
             <DropdownComponent
               data={[
                 { label: "Estate 1", value: "estate_1" },
                 { label: "Estate 2", value: "estate_2" },
                 { label: "Estate 3", value: "estate_3" },
               ]}
-              placeholder="Select Estate"
-              label="Select Estate"
+              placeholder="Select Property/Estate"
+              label="Select Property/Estate"
               value={selectedEstate ?? undefined}
               selectedTextStyle={styles.dropdownSelected}
               onChangeValue={(v: string) => {
@@ -220,31 +220,8 @@ export const Analysis: React.FC = (props: any) => {
           </View>
         )}
 
-        {/* If Estate selected and estate chosen: show third dropdown for properties */}
-        {selectBy === "Estate" && selectedEstate && (
-          <View>
-            <Text style={styles.title}>Select Property</Text>
-            <DropdownComponent
-              data={[
-                { label: "Property A", value: "property_a" },
-                { label: "Property B", value: "property_b" },
-                { label: "Property C", value: "property_c" },
-              ]}
-              placeholder="Select Property"
-              label="Select Property"
-              value={selectedProperty ?? undefined}
-              selectedTextStyle={styles.dropdownSelected}
-              onChangeValue={(v: string) => setSelectedProperty(v)}
-              dropdownStyle={styles.dropdown}
-              placeholderStyle={styles.dropdownPlaceholder}
-            />
-          </View>
-        )}
-
         {((selectBy === "Property" && !!selectedProperty) ||
-          (selectBy === "Estate" &&
-            !!selectedEstate &&
-            !!selectedProperty)) && (
+          (selectBy === "Estate" && !!selectedEstate)) && (
           <>
             <View style={styles.line} />
             <View style={styles.section}>
@@ -334,7 +311,7 @@ export const Analysis: React.FC = (props: any) => {
           setEndDate(null);
         }}
       >
-        {[renderContent(), renderContent()]}
+        {[renderContent()]}
       </CustomTabs>
     </Screen>
   );

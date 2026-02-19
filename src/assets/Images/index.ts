@@ -125,6 +125,7 @@ export const Images = {
   tra:require("./tra.svg"),
   est:require("./est.svg"),
   star:require("./star.svg"),
+  archive:require("./archive.svg"),
 
 
 

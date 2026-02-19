@@ -671,6 +671,7 @@ const AdminHomeStackNavigator = () => (
     <AdminHomeStack.Screen name="EditGroup" component={EditGroup} />
     <AdminHomeStack.Screen name="AddGroup" component={AddGroup} />
     <AdminHomeStack.Screen name="Commuication" component={Commuication} />
+    <AdminHomeStack.Screen name="TicketDetails" component={TicketDetials} />
   </AdminHomeStack.Navigator>
 );
 
@@ -1579,6 +1580,7 @@ const AdminTabs = () => (
 );
 
 import { Route } from "@react-navigation/native";
+import { TicketDetials } from "../Screens/admin/support-tickets/ticket-detials";
 
 const getTabBarVisibility = (route: Route<string, object | undefined>) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? "AdminDashboard";

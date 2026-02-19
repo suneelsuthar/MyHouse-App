@@ -41,11 +41,10 @@ export function Chat(props:any) {
     const types = ["property", "support", "all"];
     const type = types[i % types.length];
     const names = [
-      "Amelia Greene",
-      "John Doe",
-      "Jane Smith",
-      "Robert Johnson",
-      "Sarah Wilson",
+      "Booking #1234",
+      "Work Order #124",
+      "Booking #1349",
+      "Work Order #11224",
     ];
     const messages = [
       "Hello! I want to talk about 2 bedroom apartments",

@@ -36,7 +36,8 @@ const ACTIONS_MANAGE = [
   "View",
   // "Assign to FM",
   "Register Tenant",
-  "Generate work request",
+  "Remove Resident",
+  // "Generate work request",
 ];
 
 const ACTIONS_GROUP = [
@@ -89,6 +90,9 @@ export const RentalCard: React.FC<RentalCardProps> = ({
 
   return (
     <View style={{ position: "relative" }}>
+      <View style={[styles.status, statusLabelColor(property.status)]}>
+        <Text text={property.status} style={styles.statusText} />
+      </View>
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={onPress}
@@ -187,14 +191,20 @@ export const RentalCard: React.FC<RentalCardProps> = ({
   );
 };
 
-const statusColor = (status: IRentalProperty["status"]) => ({
-  color:
-    status === "Approved"
-      ? "#0AD029"
-      : status === "Pending"
-        ? "#F5A524"
-        : "#D62828",
-});
+const statusLabelColor = (status: string) => {
+  switch (status) {
+    case "Rejected":
+      return { backgroundColor: "#D51E1E", color: "#fff" };
+    case "Approved":
+      return { backgroundColor: "#0AD029", color: "#fff" };
+    case "Cancelled":
+      return { backgroundColor: "#A1A1A1", color: "#fff" };
+    case "Pending":
+      return { backgroundColor: "#F26938", color: "#fff" };
+    case "Reserved":
+      return { backgroundColor: "#D51E1E", color: "#fff" };
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -305,5 +315,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 100,
     padding: 5,
+  },
+  status: {
+    backgroundColor: "#D51E1E",
+    paddingHorizontal: adjustSize(12),
+    height: adjustSize(26),
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: adjustSize(10),
+    position: "absolute",
+    margin: 10,
+  },
+
+  statusText: {
+    color: colors.white,
+    fontSize: adjustSize(10),
+    fontFamily: typography.fonts.poppins.medium,
   },
 });

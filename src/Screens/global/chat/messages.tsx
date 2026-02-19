@@ -131,13 +131,13 @@ export const Message = (props: any) => {
             <Ionicons name="person" size={20} color={colors.white} />
           </View>
           <View>
-            <Text style={styles.headerTitle}>Amelia Greene</Text>
-            <Text style={styles.headerSubtitle}>Online</Text>
+            <Text style={styles.headerTitle}>Work Order# 1234</Text>
+            {/* <Text style={styles.headerSubtitle}>Online</Text> */}
           </View>
         </View>
       </View>
 
-      {!props?.route?.params?.params?.fromTab && (
+      {/* {!props?.route?.params?.params?.fromTab && ( */}
         <View style={styles._orderview}>
           <Text
             text="Work Order: 123456"
@@ -145,7 +145,7 @@ export const Message = (props: any) => {
             style={styles._ordernum}
           />
         </View>
-      )}
+      {/* )} */}
 
       {/* Chat List */}
       <FlatList
