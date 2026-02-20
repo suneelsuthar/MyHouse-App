@@ -56,10 +56,10 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
       case "fm":
         return "Assign Property to a Facility Manager";
       case "tenant":
-        return "Assign Property to a Registered tenant";
-         case "secondary-agent":
+        return "Assign Property to a Registered Resident";
+      case "secondary-agent":
         return "Assign Property to a Secondary Agent";
-         case "primary-agent":
+      case "primary-agent":
         return "Assign Property to a Primary Agent";
       case "agent":
       default:
@@ -67,7 +67,9 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
     }
   }, [assignType]);
 
-  {console.log(assignType)}
+  {
+    console.log(assignType);
+  }
   const searchPlaceholder = useMemo(() => {
     console.log(assignType);
     switch (assignType) {
@@ -77,7 +79,7 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
         return "Search tenant";
       case "primary-agent":
         return "Search Primary Agent";
-        case "secondary-agent":
+      case "secondary-agent":
         return "Search Secondary Agent";
       case "agent":
       default:
@@ -161,28 +163,37 @@ export function AdminAssignProperties({ route, navigation, action }: any) {
               )}
             </Pressable>
           </View>
-          {isChecked && ( assignType === "agent" || assignType === "secondary-agent" || assignType === "primary-agent" )&& (
-            <View style={styles.commissionRow}>
-              <Text style={styles.commissionLabel}>Commission %:</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: spacing.sm,
-                }}
-              >
-                <Pressable style={styles.stepBtn} onPress={() => dec(item.id)}>
-                  <Text style={styles.stepBtnText}>-</Text>
-                </Pressable>
-                <View style={styles.commInputBox}>
-                  <Text style={styles.commValue}>{comm}</Text>
+          {isChecked &&
+            (assignType === "agent" ||
+              assignType === "secondary-agent" ||
+              assignType === "primary-agent") && (
+              <View style={styles.commissionRow}>
+                <Text style={styles.commissionLabel}>Commission %:</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: spacing.sm,
+                  }}
+                >
+                  <Pressable
+                    style={styles.stepBtn}
+                    onPress={() => dec(item.id)}
+                  >
+                    <Text style={styles.stepBtnText}>-</Text>
+                  </Pressable>
+                  <View style={styles.commInputBox}>
+                    <Text style={styles.commValue}>{comm}</Text>
+                  </View>
+                  <Pressable
+                    style={styles.stepBtn}
+                    onPress={() => inc(item.id)}
+                  >
+                    <Text style={styles.stepBtnText}>+</Text>
+                  </Pressable>
                 </View>
-                <Pressable style={styles.stepBtn} onPress={() => inc(item.id)}>
-                  <Text style={styles.stepBtnText}>+</Text>
-                </Pressable>
               </View>
-            </View>
-          )}
+            )}
         </View>
       </View>
     );

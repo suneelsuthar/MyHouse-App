@@ -12,6 +12,7 @@ import { Text } from "./Text";
 import { IRentalProperty } from "../utils/data";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
+import SmallCustomModal from "./SmallCustomModal";
 interface RentalCardProps {
   property: IRentalProperty;
   onPress?: () => void;
@@ -35,7 +36,7 @@ const RENTAL_ACTIONS = [
 const ACTIONS_MANAGE = [
   "View",
   // "Assign to FM",
-  "Register Tenant",
+  "Register Resident",
   "Remove Resident",
   // "Generate work request",
 ];
@@ -60,6 +61,7 @@ export const RentalCard: React.FC<RentalCardProps> = ({
   const [menuAnchor, setMenuAnchor] = useState<{ x: number; y: number } | null>(
     null,
   );
+  const [removeResidentModal, setRemoveResidentModal] = useState(false);
   const thumb = property.images?.[0];
   const ACTIONS =
     type === "rental"
@@ -177,6 +179,10 @@ export const RentalCard: React.FC<RentalCardProps> = ({
               key={a}
               onPress={() => {
                 setMenuVisible(false);
+                if (a === "Remove Resident") {
+                  setRemoveResidentModal(true);
+                  return;
+                }
                 onAction?.(a, property);
               }}
               style={styles.menuItem}
@@ -187,6 +193,20 @@ export const RentalCard: React.FC<RentalCardProps> = ({
           ))}
         </View>
       </Modal>
+      <SmallCustomModal
+        visible={removeResidentModal}
+        heading="Are you Sure?"
+        text="Are you sure you want to remove this Resident?"
+        modalType={1}
+        leftBtnTitle="Cancel"
+        rightBtnTitle="Remove"
+        onClose={() => setRemoveResidentModal(false)}
+        leftOnPress={() => setRemoveResidentModal(false)}
+        rightOnPress={() => {
+          setRemoveResidentModal(false);
+          onAction?.("Remove Resident", property);
+        }}
+      />
     </View>
   );
 };

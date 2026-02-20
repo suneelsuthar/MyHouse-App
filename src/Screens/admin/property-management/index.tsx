@@ -192,13 +192,14 @@ export function AdminPropertyManagement({
                     title: "Assign Facility Manager",
                   } as never,
                 );
-              } else if (action === "Register Tenant") {
+              } else if (action === "Register Resident") {
+                // TODO: navigate to register resident screen with property details
                 (navigation as any).navigate(
                   "AdminAssignProperties" as never,
                   {
                     propertyId: property.propertyId,
                     type: "tenant",
-                    title: "Register Tenant",
+                    title: "Register Resident",
                   } as never,
                 );
               } else if (action === "Generate work request") {
