@@ -229,7 +229,7 @@ export const AdminManagePropertyGroup = ({
           </View>
         </View>
       </Modal>
-        }
+        
        
       {/* Search Bar */}
       <View style={styles._searchrow}>
@@ -305,7 +305,6 @@ export const AdminManagePropertyGroup = ({
                     {item.noOfProp}
                   </Text>
                 </Text>
-                {console.log(item.status)}
 
                 <View style={[styles.statusPill,{
                   backgroundColor:item.status === "Approved" ? "#0AD029":"#F26938"
