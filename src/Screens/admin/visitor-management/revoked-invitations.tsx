@@ -8,10 +8,10 @@ import { Images } from "../../../assets/Images";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const propertyGroupOptions = [
-  { label: "All Properties", value: "all" },
-  { label: "Farm House", value: "farm_house" },
-  { label: "Town House", value: "town_house" },
-  { label: "Villa", value: "villa" },
+  { label: "Estate 1", value: "al" },
+  { label: "Estate 2", value: "farm_house" },
+  { label: "Estate 2", value: "town_house" },
+  { label: "Estate 2", value: "villa" },
 ];
 
 const sortOptions = [
@@ -135,7 +135,7 @@ export const RevokedInvitations: React.FC = () => {
             data={propertyGroupOptions}
             value={propertyGroup}
             onChangeValue={setPropertyGroup}
-            placeholder="Search Property Group"
+            placeholder="Select Estate"
             dropdownStyle={styles.searchDropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}

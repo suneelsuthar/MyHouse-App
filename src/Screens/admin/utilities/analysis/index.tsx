@@ -154,15 +154,15 @@ export const Analysis: React.FC = (props: any) => {
   const renderContent = () => {
     return (
       <ScrollView>
-        {/* First Dropdown */}
+        {/* Search By dropdown */}
         <Text style={styles.title}>Search by</Text>
         <DropdownComponent
           data={[
             { label: "Property", value: "Property" },
             { label: "Estate", value: "Estate" },
           ]}
-          label="Property"
-          placeholder="Property"
+          label="Search by"
+          placeholder="Search by"
           value={selectBy}
           onChangeValue={(v: string) => {
             setSelectBy(v);
@@ -175,18 +175,18 @@ export const Analysis: React.FC = (props: any) => {
           rightIconColor={colors.primary}
         />
 
-        {/* If Estate selected: show Property/Estate dropdown */}
-        {selectBy === "Estate" && (
+        {/* Both flows: select estate first */}
+        {!!selectBy && (
           <View>
-            <Text style={styles.title}>Select Property/Estate</Text>
+            <Text style={styles.title}>Select Estate</Text>
             <DropdownComponent
               data={[
                 { label: "Estate 1", value: "estate_1" },
                 { label: "Estate 2", value: "estate_2" },
                 { label: "Estate 3", value: "estate_3" },
               ]}
-              placeholder="Select Property/Estate"
-              label="Select Property/Estate"
+              placeholder="Select Estate"
+              label="Select Estate"
               value={selectedEstate ?? undefined}
               selectedTextStyle={styles.dropdownSelected}
               onChangeValue={(v: string) => {
@@ -199,8 +199,8 @@ export const Analysis: React.FC = (props: any) => {
           </View>
         )}
 
-        {/* If Property selected: show Property dropdown */}
-        {selectBy === "Property" && (
+        {/* Property flow: after estate is chosen, pick specific property */}
+        {selectBy === "Property" && !!selectedEstate && (
           <View>
             <Text style={styles.title}>Select Property</Text>
             <DropdownComponent
@@ -220,8 +220,11 @@ export const Analysis: React.FC = (props: any) => {
           </View>
         )}
 
-        {((selectBy === "Property" && !!selectedProperty) ||
-          (selectBy === "Estate" && !!selectedEstate)) && (
+        {/* Show chart when:
+            - Estate flow: estate selected (cumulative)
+            - Property flow: both estate and property selected */}
+        {((selectBy === "Estate" && !!selectedEstate) ||
+          (selectBy === "Property" && !!selectedProperty)) && (
           <>
             <View style={styles.line} />
             <View style={styles.section}>
@@ -250,7 +253,13 @@ export const Analysis: React.FC = (props: any) => {
 
             {/* Units */}
             <Text style={styles.units}>
-              {activeTab === "Power Consumption" ? "300kwh" : "300 vendings"}
+              {activeTab === "Power Consumption"
+                ? selectBy === "Estate"
+                  ? "1,200kwh (Cumulative)"
+                  : "300kwh"
+                : selectBy === "Estate"
+                  ? "1,200 vendings (Cumulative)"
+                  : "300 vendings"}
             </Text>
 
             {/* Chart */}

@@ -201,7 +201,7 @@ export function Commuication(props: CommuicationProps) {
       //       }
       //     }
       // },
-      onPress={() => 
+      onPress={() =>
         navigation.navigate("Home", {
           screen: "TicketDetails",
           params: {
@@ -405,7 +405,7 @@ export function Commuication(props: CommuicationProps) {
               />
 
               <ToggleRow
-                label="Enable Repreat Message:"
+                label="Enable Repeat Message:"
                 value={enableRepeat}
                 onChange={setenableRepeat}
               />

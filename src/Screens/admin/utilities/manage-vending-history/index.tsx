@@ -191,9 +191,9 @@ export const AdminManageVendingHistory = ({
             <div class="title">Vending Receipt</div>
             <div>${new Date().toLocaleDateString()}</div>
           </div>
-          
+
           <div class="divider"></div>
-          
+
           <div class="details">
             <div class="row">
               <span class="label">Transaction ID:</span>
@@ -216,14 +216,14 @@ export const AdminManageVendingHistory = ({
               <span class="value">${transaction.units}</span>
             </div>
           </div>
-          
+
           <div class="divider"></div>
-          
+
           <div class="total">
             <span>Total Amount: </span>
             <span>${transaction.amount}</span>
           </div>
-          
+
           <div class="footer">
             Thank you for using our service!<br>
             For any inquiries, please contact support@example.com
@@ -464,11 +464,7 @@ export const AdminManageVendingHistory = ({
               style={styles.closeButton}
               onPress={handleCloseModal}
             >
-              <Ionicons
-                name="close"
-                size={adjustSize(25)}
-                color={"#D62828"}
-              />
+              <Ionicons name="close" size={adjustSize(25)} color={"#D62828"} />
             </TouchableOpacity>
             <Text style={styles.modalText}>
               {type === "view" ? "Vending Information" : "Vending Receipt"}
@@ -508,7 +504,7 @@ export const AdminManageVendingHistory = ({
 
             <View style={styles._row}>
               <Text text="Property Group:" style={styles._rowlabel} />
-              <Text text="Apartment" style={styles._rowvalue} />
+              <Text text="Estate" style={styles._rowvalue} />
             </View>
 
             <View style={styles._row}>
@@ -529,31 +525,31 @@ export const AdminManageVendingHistory = ({
             </View>
 
             {/* {type === "download" && ( */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: 10,
-                  gap: 10,
-                }}
-              >
-                <Button
-                  text={isDownloading ? "Processing..." : "Download Receipt"}
-                  preset="reversed"
-                  style={{ flex: 1 }}
-                  onPress={handleDownloadReceipt}
-                  disabled={isDownloading}
-                />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 10,
+                gap: 10,
+              }}
+            >
+              <Button
+                text={isDownloading ? "Processing..." : "Download Receipt"}
+                preset="reversed"
+                style={{ flex: 1 }}
+                onPress={handleDownloadReceipt}
+                disabled={isDownloading}
+              />
 
-                {/* <Button
+              {/* <Button
                   text={isSharing ? "Sharing..." : "Share"}
                   preset="reversed"
                   style={{ flex: 1 }}
                   onPress={handleShareReceipt}
                   disabled={isSharing}
                 /> */}
-              </View>
+            </View>
             {/* )} */}
           </View>
         </View>
@@ -780,13 +776,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 15,
     top: 15,
-    borderWidth:1,
-    borderColor:"#D62828",
-    height:34,
-    width:34,
-    borderRadius:100,
-    justifyContent:"center",
-    alignItems:"center"
+    borderWidth: 1,
+    borderColor: "#D62828",
+    height: 34,
+    width: 34,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalText: {
     textAlign: "center",
@@ -901,7 +897,7 @@ const styles = StyleSheet.create({
   amount: {
     textAlign: "center",
     fontSize: adjustSize(20),
-    color:colors.primary
+    color: colors.primary,
   },
   _row: {
     flexDirection: "row",
@@ -916,7 +912,7 @@ const styles = StyleSheet.create({
     paddingVertical: adjustSize(5),
   },
   _rowvalue: {
-    color:"#7E7E7E",
+    color: "#7E7E7E",
     fontSize: adjustSize(12),
     textAlign: "center",
     paddingVertical: adjustSize(5),
