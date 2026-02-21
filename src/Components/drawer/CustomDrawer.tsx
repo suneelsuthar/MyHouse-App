@@ -732,6 +732,19 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         },
       ],
     },
+    {
+      id: 7,
+      title: "Communications",
+      type: "dropdown",
+      icon: Images.communication,
+      menueItems: [
+        {
+          id: 0,
+          title: "Message History",
+          onPress: () => closeMenusAndNavigate("MessageHistory"),
+        },
+      ],
+    },
 
     {
       id: 5,
@@ -838,20 +851,24 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         },
       ],
     },
-    {
-      id: 7,
-      title: "Communications",
-      type: "dropdown",
-      icon: Images.communication,
-      menueItems: [
-        {
-          id: 0,
-          title: "Message History",
-          onPress: () => closeMenusAndNavigate("MessageHistory"),
-        },
-      ],
-    },
 
+    {
+      id: 9,
+      title: "Wallet",
+      type: "item",
+      icon: Images.wallet,
+      onPress: () =>
+        closeMenusAndNavigate("Tenant", {
+          screen: "Wallet",
+        }),
+    },
+     {
+      id: 10,
+      title: "Payments",
+      type: "item",
+      icon: Images.wallet,
+      onPress: () => closeMenusAndNavigate("RentPayment"),
+    },
     {
       id: 8,
       title: "Emergency",
@@ -863,24 +880,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           params: { screen: "Emergency" },
         }),
     },
-    {
-      id: 9,
-      title: "Wallet",
-      type: "item",
-      icon: Images.wallet,
-      onPress: () =>
-        closeMenusAndNavigate("Tenant", {
-          screen: "Wallet",
-        }),
-    },
 
-    {
-      id: 10,
-      title: "Payments",
-      type: "item",
-      icon: Images.wallet,
-      onPress: () => closeMenusAndNavigate("RentPayment"),
-    },
+   
     {
       id: 11,
       title: "Chat",

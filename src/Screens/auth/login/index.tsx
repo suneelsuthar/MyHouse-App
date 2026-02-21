@@ -74,7 +74,7 @@ export function LoginScreen(props: LoginScreenProps) {
         loginUser({
           email: formData.email,
           password: formData.password,
-          role: selectedRole, // Pass selected role to login
+          role: "tenant", // Pass selected role to login
         })
       );
 

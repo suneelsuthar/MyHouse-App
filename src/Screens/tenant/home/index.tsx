@@ -116,7 +116,7 @@ export const TenantHome = () => {
           <Text weight="semiBold" style={styles.username}>
             Brume Djbah
           </Text>
-          <Text style={styles.role}>Tenant</Text>
+          <Text style={styles.role}>Resident</Text>
         </View>
         <TouchableOpacity style={styles.headerIcons} activeOpacity={0.6}>
           <WithLocalSvg asset={Images.notofication} />
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     lineHeight: adjustSize(14),
   },
   _card: {
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     height: adjustSize(102),
     borderRadius: adjustSize(10),
     alignItems: "center",
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: adjustSize(10),
-    color: colors.primaryLight,
+    color: colors.primary,
   },
 
   change: {

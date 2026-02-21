@@ -27,6 +27,8 @@ import { RentPayment } from "./tenant/rent-payment";
 import { TenantNotifications } from "./tenant/notifications";
 import { TenantHome } from "./tenant/home";
 import { TenantAssignedProp } from "./tenant/assignemd-properties";
+import TenantViewRequests from './tenant/assignemd-properties/view-requests';
+import { TenantNewRequests } from "./tenant/assignemd-properties/new-requests";
 
 import { Agent } from "./agent";
 import { AgentDashboard } from "./agent/dashboard";
@@ -185,6 +187,8 @@ export {
   TenantNotifications,
   TenantHome,
   TenantAssignedProp,
+  TenantViewRequests,
+  TenantNewRequests,
   Agent,
   AgentHome,
   AgentDashboard,

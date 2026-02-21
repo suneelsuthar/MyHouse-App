@@ -13,6 +13,8 @@ import { Screen, Header2, Text } from "../../../Components";
 import { DrawerActions } from "@react-navigation/native";
 import DropdownComponent from "../../../Components/DropDown";
 import { useNavigation } from "@react-navigation/native";
+import { WithLocalSvg } from "react-native-svg/css";
+import { Images } from "../../../assets/Images";
 
 export const TenantAssignedProp = () => {
   const [selected, setselected] = useState("");
@@ -30,30 +32,47 @@ export const TenantAssignedProp = () => {
       />
       <View style={styles._content}>
         <Text
-          text="Select Property"
-          weight="semiBold"
+          text="Please select a property to view the details or create a new request."
+          // weight="regular"
           style={styles._heading}
         />
-        <DropdownComponent
-          placeholder="Select Property"
-          data={[
-            { label: "Property 1", value: "property1" },
-            { label: "Property 2", value: "property2" },
-            { label: "Property 3", value: "property3" },
-          ]}
-          label="Select Property"
-          value={selected}
-          onChangeValue={(v: string) => setselected(v)}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.primary}
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <DropdownComponent
+              placeholder="Select Property"
+              data={[
+                { label: "Property 1", value: "property1" },
+                { label: "Property 2", value: "property2" },
+                { label: "Property 3", value: "property3" },
+              ]}
+              label="Select Property"
+              value={selected}
+              onChangeValue={(v: string) => setselected(v)}
+              dropdownStyle={styles.dropdown}
+              placeholderStyle={styles.dropdownPlaceholder}
+              selectedTextStyle={styles.dropdownSelected}
+              rightIconColor={colors.primary}
 
-          // onSelect={(value) => console.log(value)}
-        />
+              // onSelect={(value) => console.log(value)}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.addbtn}
+          onPress={()=>navigation.navigate("TenantNewRequests")}
+          >
+            <WithLocalSvg asset={Images.addprop} />
+          </TouchableOpacity>
+        </View>
 
         {selected && (
-          <>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() =>
+              navigation.navigate("TenantViewRequests", {
+                propertyId: 0,
+              })
+            }
+          >
             <Text
               text="My Property"
               weight="semiBold"
@@ -120,7 +139,7 @@ export const TenantAssignedProp = () => {
               <Text text="Price:" style={styles._lable} />
               <Text text="lorem ipsum" style={styles._lablevalue} />
             </View>
-          </>
+          </TouchableOpacity>
         )}
       </View>
     </Screen>
@@ -135,7 +154,7 @@ const styles = StyleSheet.create({
     padding: adjustSize(10),
   },
   dropdown: {
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     borderRadius: adjustSize(8),
     borderColor: colors.grey,
     borderWidth: adjustSize(0.4),
@@ -143,17 +162,18 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   dropdownPlaceholder: {
-    color: colors.textDim,
-    fontSize: adjustSize(14),
+    color: "#A1A1A1",
+    fontSize: adjustSize(12),
   },
   dropdownSelected: {
     color: colors.text,
     fontSize: adjustSize(14),
   },
   _heading: {
-    fontSize: adjustSize(14),
+    fontSize: adjustSize(12),
     color: colors.primary,
     paddingVertical: adjustSize(5),
+    marginBottom: 10,
   },
   _row: {
     flexDirection: "row",
@@ -173,5 +193,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: adjustSize(10),
+  },
+  addbtn: {
+    backgroundColor: colors.primary,
+    padding: adjustSize(10),
+    borderRadius: adjustSize(8),
+    height: adjustSize(47),
+    width: adjustSize(47),
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
   },
 });

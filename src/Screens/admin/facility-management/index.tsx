@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
 import {
   Screen,
@@ -32,6 +33,8 @@ import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
+import { Ionicons } from "@expo/vector-icons";
+import { current } from "@reduxjs/toolkit";
 export type FacilityManagementProps =
   | NativeStackScreenProps<AdminStackParamList, "FacilityManagement">
   | NativeStackScreenProps<TenantStackParamList, "FacilityManagement">;
@@ -273,9 +276,21 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
     },
   ];
 
-  const filteredData = data?.filter(
-    (item) => item?.type?.toLowerCase() === activeTab?.toLowerCase(),
-  );
+  const filteredData = data
+    ?.filter((item) => item?.type?.toLowerCase() === activeTab?.toLowerCase())
+    ?.filter((item) => {
+      if (!search.trim()) return true;
+
+      const keyword = search.toLowerCase();
+
+      return (
+        item.title?.toLowerCase().includes(keyword) ||
+        item.text?.toLowerCase().includes(keyword) ||
+        item.workReqNo?.toLowerCase().includes(keyword) ||
+        item.category?.toLowerCase().includes(keyword) ||
+        item.requestedBy?.toLowerCase().includes(keyword)
+      );
+    });
   const priorityRank: Record<string, number> = { high: 3, medium: 2, low: 1 };
   const parseDate = (s?: string) => (s ? new Date(s) : new Date(0));
   const sortedData = React.useMemo(() => {
@@ -336,24 +351,6 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
         activeTab={activeTab}
         onTabChange={(label) => setActiveTab(label)}
       >
-        {user?.role === "admin" && (
-          <SearchBar
-            value={search}
-            onChangeText={setSearch}
-            placeholder="Search"
-            hideBtn={
-              user?.role === "admin" && activeTab === "Completed" // Hide for admin on "Completed" tab
-                ? true
-                : false
-
-              // Hide for non-admin unless on "Work Requests" tab
-            }
-            onAddPress={() =>
-              (navigation as any).navigate("FMGenerateWorkOrder" as never)
-            }
-          />
-        )}
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.section}>
             {user?.role !== "admin" && activeTab === "Work Requests" && (
@@ -370,8 +367,10 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                     dropdownStyle={styles.customDropdownStyle}
                     placeholderStyle={styles.customPlaceholderStyle}
                     selectedTextStyle={styles.customSelectedTextStyle}
+                    rightIconColor={colors.primary}
                   />
                 </View>
+
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.addBtn}
@@ -385,6 +384,7 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
                 </TouchableOpacity>
               </View>
             )}
+
             <View style={styles._seciton_row}>
               <Text weight="semiBold" style={styles.sectionTitle}>
                 {activeTab === "Completed"
@@ -451,6 +451,21 @@ export function FacilityManagement({ route }: FacilityManagementProps) {
               />
             )} */}
             </View>
+
+
+            {user?.role === "tenant" && (
+              <View style={styles.searchContainer}>
+                <View style={styles.searchInputWrapper}>
+                  <TextInput
+                    placeholder="Search"
+                    value={search}
+                    onChangeText={setSearch}
+                    placeholderTextColor="#A1A1A1"
+                    style={styles.searchInput}
+                  />
+                </View>
+              </View>
+            )}
             {/* ÷÷ */}
           </View>
 
@@ -526,7 +541,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: adjustSize(10),
-    marginBottom: adjustSize(20),
+    marginBottom: adjustSize(10),
   },
   sortBtn: {
     backgroundColor: colors.primary,
@@ -573,17 +588,17 @@ const styles = StyleSheet.create({
   },
   customDropdownStyle: {
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.white,
     // marginTop: adjustSize(20),
     // marginHorizontal: adjustSize(10),
   },
   customPlaceholderStyle: {
-    color: colors.white,
+    color: "#A1A1A1",
     fontFamily: typography.fonts.poppins.normal,
   },
   customSelectedTextStyle: {
     fontSize: adjustSize(12),
-    color: colors.white,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
   },
   listContent: {
@@ -601,5 +616,32 @@ const styles = StyleSheet.create({
     borderRadius: adjustSize(10),
     justifyContent: "center",
     alignItems: "center",
+  },
+  searchContainer: {
+    marginBottom: adjustSize(20),
+  },
+
+  searchInputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(12),
+    paddingHorizontal: adjustSize(12),
+    height: adjustSize(47),
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
+  },
+
+  searchIcon: {
+    marginRight: adjustSize(8),
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: adjustSize(13),
+    color: colors.black,
   },
 });

@@ -10,9 +10,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { adjustSize, colors, typography } from "../theme";
 import { StyleSheet } from "react-native";
 // Import all screens
+
 import {
   RentPayment,
   TenantAssignedProp,
+  
   // Agent screens
   AgentDashboard,
   AgentSettings,
@@ -110,6 +112,8 @@ import {
   SelectSubscriptionplans,
   AdminSignAgreement,
   AdminUtilitiesCharges,
+  TenantViewRequests,
+  TenantNewRequests
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -937,6 +941,13 @@ export const TenantTabNavigator = () => (
   >
     <Drawer.Screen name="Tenant" component={TenantTabs} />
     <Drawer.Screen name="TenantAssignedProp" component={TenantAssignedProp} />
+    <Drawer.Screen name="TenantViewRequests" component={TenantViewRequests} />
+    <Drawer.Screen name="TenantNewRequests" component={TenantNewRequests} />
+
+
+
+
+
     <Drawer.Screen name="AdminVisitorDetails" component={AdminVisitorDetails} />
     <Drawer.Screen
       name="AdminGenerateVisitorRequest"
@@ -1237,7 +1248,6 @@ const FacilityManagerTabs = () => (
         const baseTabBarStyle = {
           backgroundColor: "#292766",
         } as const;
-        // Hide tab bar on Add Property and other full-screen property flows
         if (
           routeName === "AdminAddProperty" ||
           routeName === "AdminManageCalendar" ||
