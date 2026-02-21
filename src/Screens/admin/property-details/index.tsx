@@ -37,7 +37,7 @@ export function PropertyDetails() {
     "approve" | "reject"
   >("approve");
   const [tab, setTab] = useState<
-    "details" | "inspection" | "agents" | "fm" | "media"
+    "details" | "inspection" | "residents" | "fm" | "media"
   >("details");
   const [selectedImgIdx, setSelectedImgIdx] = useState(0);
   const [descExpanded, setDescExpanded] = useState(false);
@@ -235,7 +235,7 @@ export function PropertyDetails() {
                   {[
                     { k: "details", label: "Property Overview" },
                     { k: "inspection", label: "Inspection Details" },
-                    { k: "agents", label: "Agents" },
+                    { k: "residents", label: "Residents" },
                     { k: "fm", label: "Facility Managers" },
                   ].map((t) => (
                     <TouchableOpacity
@@ -493,9 +493,9 @@ export function PropertyDetails() {
                   </ScrollView>
                 )}
 
-                {tab === "agents" && (
+                {tab === "residents" && (
                   <ScrollView style={styles.content}>
-                    {property.agents.map((a) => (
+                    {property.residents.map((a) => (
                       <View key={a.id} style={styles.personRow}>
                         <Image
                           source={{ uri: a.avatar }}
@@ -1148,9 +1148,8 @@ const styles = StyleSheet.create({
     // paddingVertical: adjustSize(12),
     borderRadius: adjustSize(10),
     alignItems: "center",
-     height:adjustSize(47),
-    justifyContent:"center"
-
+    height: adjustSize(47),
+    justifyContent: "center",
   },
   rejectText: {
     color: colors.primary,
@@ -1162,8 +1161,8 @@ const styles = StyleSheet.create({
     // paddingVertical: adjustSize(12),
     borderRadius: adjustSize(10),
     alignItems: "center",
-    height:adjustSize(47),
-    justifyContent:"center"
+    height: adjustSize(47),
+    justifyContent: "center",
   },
   approveText: {
     color: colors.white,

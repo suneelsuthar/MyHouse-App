@@ -207,8 +207,8 @@ export const rentalProperties: IRentalProperty[] = Array.from({
   const images = Array.from({ length: 5 }).map(
     (__, i) =>
       `https://picsum.photos/seed/${encodeURIComponent(
-        seedBase + "-house-" + i
-      )}/640/420`
+        seedBase + "-house-" + i,
+      )}/640/420`,
   );
 
   const name = `${faker.word.adjective()} ${faker.word.noun({
@@ -233,6 +233,19 @@ export const rentalProperties: IRentalProperty[] = Array.from({
     role: i === 0 ? ("Primary agent" as const) : ("Agent" as const),
   }));
 
+  const residents = Array.from({
+    length: faker.number.int({ min: 1, max: 4 }),
+  }).map(() => ({
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    avatar: `https://i.pravatar.cc/150?img=${faker.number.int({
+      min: 1,
+      max: 70,
+    })}`,
+    code: faker.number.int({ min: 10000, max: 99999 }).toString(),
+    role: "Resident" as const,
+  }));
+
   const facilityManagers = Array.from({
     length: faker.number.int({ min: 3, max: 6 }),
   }).map(() => ({
@@ -247,8 +260,8 @@ export const rentalProperties: IRentalProperty[] = Array.from({
   }));
 
   // Use sequential IDs starting from 1
-  const propertyId = (idx + 1).toString().padStart(6, '0');
-  
+  const propertyId = (idx + 1).toString().padStart(6, "0");
+
   return {
     id: propertyId, // Using the same ID for both id and propertyId for consistency
     name: name || `Property ${idx + 1}`,
@@ -259,6 +272,7 @@ export const rentalProperties: IRentalProperty[] = Array.from({
     propertyId: `PROP${propertyId}`,
     addedBy: faker.number.int({ min: 1200, max: 1299 }).toString(),
     images,
+
     mandate: faker.helpers.arrayElement([
       "Exclusive",
       "Non-exclusive",
@@ -282,16 +296,17 @@ export const rentalProperties: IRentalProperty[] = Array.from({
     virtualTourUrl: faker.internet.url(),
     features: faker.helpers.arrayElements(
       ["Pool", "Gym", "WiFi", "Air Conditioning", "Parking", "Kitchen"],
-      4
+      4,
     ),
     amenities: faker.helpers.arrayElements(
       ["Towels", "Toiletries", "Smart TV", "Washer", "Dryer", "Workspace"],
-      4
+      4,
     ),
     quantity: faker.number.int({ min: 1, max: 10 }),
     rating,
     reviewsCount: reviews,
     agents,
+    residents,
     facilityManagers,
     inspectionNotes: faker.lorem.sentences({ min: 2, max: 4 }),
   } as IRentalProperty;
@@ -310,7 +325,6 @@ export interface IFacilityManagement {
   dueDate: string;
 }
 
-
 const SERVICE_MOCK_DATA = [
   { id: 0, title: "Swimming pool", image: Images.pool },
   { id: 1, title: "Tennis Court", image: Images.tennis },
@@ -328,7 +342,6 @@ const SERVICE_MOCK_DATA = [
   { id: 13, title: "Playground", image: Images.playground },
   { id: 14, title: "Basketball Court", image: Images.basketball },
 ];
-
 
 const INSEPECTION_MOCK_DATA = [
   {
@@ -408,5 +421,5 @@ export {
   IRentalProperty,
   IFacilityManagement,
   SERVICE_MOCK_DATA,
-  INSEPECTION_MOCK_DATA
+  INSEPECTION_MOCK_DATA,
 };

@@ -402,8 +402,8 @@ export const AdminUtilitiesSettings: React.FC = () => {
               rightIconColor={colors.primary}
             />
 
-            {/* Alternate/Generator Input - Shows only when Single tariff electricity is selected */}
-            {propertyGroup === "Single tarrif electricity" && (
+            {/* Alternate/Generator Input - Shows only when Dual tariff electricity is selected */}
+            {propertyGroup === "Dual tarrif electricity" && (
               <>
                 <Text style={styles.title}>Alternate/Generator</Text>
                 <TextField
@@ -949,7 +949,7 @@ export const AdminUtilitiesSettings: React.FC = () => {
               <>
                 <View style={{ marginTop: adjustSize(10) }}>
                   <CounterRow
-                    label={`Set Emergency Quantity (${unitSymbol}):`}
+                    label={`Emergency Amount (${unitSymbol}):`}
                     value={Number(emergencyQty) || 0}
                     setValue={(n: number) => setEmergencyQty(String(n))}
                     min={0}

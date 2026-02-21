@@ -38,6 +38,12 @@ const utilityTypeOptions = [
   { label: "Gas", value: "gas" },
 ];
 
+const phaseNumberOptions = [
+  { label: "1 Phase", value: "1" },
+  { label: "2 Phase", value: "2" },
+  { label: "3 Phase", value: "3" },
+];
+
 const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
   const { mode } = route.params || {};
   const isEditMode = mode === "edit";
@@ -73,7 +79,7 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
       !formData.krn ||
       !formData.estate ||
       !formData.property ||
-      !formData.property2
+      !formData.phaseNum
     ) {
       Alert.alert("Error", "Please fill all fields");
       return;
@@ -228,21 +234,15 @@ const EditCreateMeter: React.FC<Props> = ({ navigation, route }) => {
 
         <View style={styles.fieldContainer}>
           <Text style={styles.label}>Phase Number</Text>
-          {/* <DropdownComponent
-            data={propertyOptions}
-            value={formData.property2}
-            onChangeValue={(value) => handleInputChange("property2", value)}
-            placeholder="Select Property"
+          <DropdownComponent
+            data={phaseNumberOptions}
+            value={formData.phaseNum}
+            onChangeValue={(value) => handleInputChange("phaseNum", value)}
+            placeholder="Select Phase Number"
             dropdownStyle={styles.dropdown}
             placeholderStyle={styles.dropdownPlaceholder}
             selectedTextStyle={styles.dropdownSelected}
             rightIconColor={colors.primary}
-          /> */}
-          <TextField
-            placeholder="Phase Number"
-            value={formData.phaseNum}
-            onChangeText={(text) => handleInputChange("phaseNum", text)}
-            inputWrapperStyle={styles.textInput}
           />
         </View>
 
