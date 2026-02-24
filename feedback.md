@@ -1,0 +1,28 @@
+- [Y] Profile picture doesn't match menu and profile after changing it (7477.mp4)
+- [Y] Username doesn't match menu and profile after changing it (7477.mp4)
+- [Y ] FiveTips search: Android shows 9 users, iOS shows 10 users, Supabase has 12
+    - Remarks: this was a bug, since users with no age were not showing up in the search
+- [Y] Search text not shown fully in Android (7697.mp4)
+- [Y ] Own profile: Buggy text on Android (4358.jpg)
+- [Y ] Could you delete Link Requests on the sliding menu (when you click your own profile) as it is now redundant
+- [ Y] Android: Can't type anything on New password after trying to change password from settings
+- [Y ] Notifications settings (e-mail and push) if it doesn’t do anything for now can we disable the toggle or remove the setting?
+- [ Y] User Fhihggu doesn't have any contact info and JohnSmith452 (that has Fhihggu as a link) can see her e-mail in Contact info (9466.png)
+    - incae of no contact info, we were displaying user email - removed that
+- [Y ] In Android when you click on someone profile, if you try to go back by using the left arrow  (top left of the screen) it doesn't work
+- [Y] It allows you to put spaces on your username, can we limit to alphanumeric?
+- [y] Small number 1 on the inbox icon on iOS is not centered (8140.png)
+
+- [ ] Android: Can't type anything on New password after trying to change password from settings
+- [ ] In Android when you click on someone profile, if you try to go back by using the left arrow  (top left of the screen) it doesn't work
+- [ ] It allows you to put spaces on your username, can we limit to alphanumeric?
+- [ ] Small number 1 on the inbox icon on iOS is not centered (8140.png)
+- [ ] Splash screen shows the icon with the black background (5617.png)
+- [ ] Password reset: Even if e-mail token is invalid it says Great your password has changed (but the password didn't change)
+- [ ] If you put the same password as before there is an alert saying your password needs to be different from previous but it also says ""Great your password has changed"", which is confusing
+- [ ] The back button on the top left of the screen of ""Your password has changed"" does not work
+- [ ] Search starts getting buggy after you change between location search, age, etc. I think it remembers the previous search term but it doesn't display it (or somethng like that) (0911.mp4)
+- [ ] Can't send link requests (7239.mp4)
+- [ ] It allows you to put spaces on your username, can we limit to alphanumeric?
+- [ ] Small number 1 on the inbox icon on iOS is not centered (8140.png)
+

@@ -1,0 +1,496 @@
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import { Screen, Text } from "../../../Components";
+import { colors, spacing, typography, adjustSize } from "../../../theme";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { AdminStackParamList } from "../../../utils/interfaces";
+import { Ionicons } from "@expo/vector-icons";
+import { Header } from "../../../Components";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import DropdownComponent from "../../../Components/DropDown";
+
+type BookingStatus = "approved" | "pending" | "rejected" | "reserved";
+
+type BookingItem = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  checkIn: string;
+  checkOut: string;
+  listPrice: string;
+  bookedPrice: string;
+  status: BookingStatus;
+};
+
+const MOCK_DATA: BookingItem[] = [
+  {
+    id: "BK-0001",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "rejected",
+  },
+  {
+    id: "BK-0002",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "approved",
+  },
+  {
+    id: "BK-0003",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "pending",
+  },
+  {
+    id: "BK-0004",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "reserved",
+  },
+  {
+    id: "BK-0005",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "rejected",
+  },
+  {
+    id: "BK-0006",
+    title: "Brume Villa",
+    subtitle: "Shortlet",
+    checkIn: "25 Sep,2024",
+    checkOut: "26 Sep,2024",
+    listPrice: "$20000",
+    bookedPrice: "$20000",
+    status: "rejected",
+  },
+];
+
+export function AdminManageBookings({ route }: { route: any }) {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AdminStackParamList>>();
+
+  // Get the booking type from route params or default to 'all'
+  const { bookingType } = route.params || {};
+
+  // Map the booking type to the appropriate status filter
+  const getStatusFromType = (type?: string): "all" | BookingStatus => {
+    switch (type) {
+      case "reserved":
+        return "reserved";
+      case "approved":
+        return "approved";
+      case "pending":
+        return "pending";
+      case "rejected":
+        return "rejected";
+
+      case "history":
+      default:
+        return "all";
+    }
+  };
+
+  console.log("=====>", route.params);
+
+  const [activeTab, setActiveTab] = React.useState<"all" | BookingStatus>(
+    getStatusFromType(bookingType),
+  );
+
+  // Update the active tab when the booking type changes
+  React.useEffect(() => {
+    setActiveTab(getStatusFromType(bookingType));
+  }, [bookingType]);
+
+  const filtered = React.useMemo(() => {
+    if (activeTab === "all") return MOCK_DATA;
+    return MOCK_DATA.filter((b) => b.status === activeTab);
+  }, [activeTab]);
+
+  const statusLabelColor = (status: BookingStatus) => {
+    switch (status) {
+      case "approved":
+        return { backgroundColor: "#292766", color: "#fff" };
+      case "pending":
+        return { backgroundColor: "#F26938", color: "#fff" };
+      case "rejected":
+        return { backgroundColor: "#E15241", color: "#fff" };
+      case "reserved":
+        return { backgroundColor: "#0AD029", color: "#fff" };
+    }
+  };
+
+  const renderItem = ({ item }: { item: BookingItem }) => (
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.8}
+      onPress={() =>
+        navigation.navigate("AdminBookingDetails", { bookingId: item.id })
+      }
+    >
+      <View style={styles.cardHeaderRow}>
+        <View style={styles.cardHeaderRow}>
+          <Text weight="semiBold" style={styles.cardTitle}>
+            {item.title}
+          </Text>
+
+          {item.subtitle ? (
+            <Text style={styles.subtitle}>
+              {"  "}({item.subtitle})
+            </Text>
+          ) : null}
+        </View>
+        <View
+          style={[
+            statusLabelColor(item.status),
+            {
+              borderRadius: 100,
+              overflow: "hidden",
+              paddingHorizontal: 10,
+            },
+          ]}
+        >
+          <Text
+            weight="medium"
+            style={[styles.statusText, statusLabelColor(item.status)]}
+          >
+            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.rowBetween}>
+        <View>
+          <Text weight="medium" style={styles.label}>
+            Check In:
+            <Text style={styles.labelValue}>
+              {"  "}
+              {item.checkIn}
+            </Text>
+          </Text>
+          <Text weight="medium" style={[styles.label]}>
+            Check Out:
+            {"  "}
+            <Text style={styles.labelValue}>{item.checkOut}</Text>
+          </Text>
+        </View>
+        <View>
+          <Text weight="medium" style={styles.label}>
+            List Price:
+            <Text style={styles.labelValue}> {item.listPrice}</Text>
+          </Text>
+          <Text weight="medium" style={[styles.label]}>
+            Booked price
+            <Text style={styles.labelValue}> {item.bookedPrice}</Text>
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <Screen
+      preset="fixed"
+      safeAreaEdges={["top"]}
+      contentContainerStyle={styles.container}
+    >
+      <Header
+        title="Bookings"
+        rightAccessory={
+          <DropdownComponent
+            data={[
+              { label: "All", value: "all" },
+              {
+                label: "Last 7 days",
+                value: "last_7_days",
+              },
+              {
+                label: "Last 14 days",
+                value: "last_14_days",
+              },
+            ]}
+            dropdownStyle={styles.dropdown}
+            placeholderStyle={{ fontSize: 14 }}
+            selectedTextStyle={{ fontSize: 14 }}
+            placeholder="Select"
+          />
+        }
+      />
+
+      {/* Tabs */}
+      <View style={styles.tabsContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity
+            style={[
+              styles.tabItem,
+              activeTab === "all" && styles.tabItemActive,
+            ]}
+            onPress={() => setActiveTab("all")}
+          >
+            <MaterialIcons
+              name="dashboard"
+              size={adjustSize(22)}
+              color={activeTab === "all" ? colors.white : colors.white}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === "all" && styles.tabLabelActive,
+              ]}
+            >
+              All
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabItem,
+              activeTab === "approved" && styles.tabItemActive,
+            ]}
+            onPress={() => setActiveTab("approved")}
+          >
+            <Ionicons
+              name="checkmark-circle-outline"
+              size={adjustSize(22)}
+              color={activeTab === "approved" ? colors.white : colors.white}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === "approved" && styles.tabLabelActive,
+              ]}
+            >
+              Approved
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabItem,
+              activeTab === "reserved" && styles.tabItemActive,
+            ]}
+            onPress={() => setActiveTab("reserved")}
+          >
+            <Ionicons
+              name="checkmark-circle-outline"
+              size={adjustSize(22)}
+              color={activeTab === "reserved" ? colors.white : colors.white}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === "reserved" && styles.tabLabelActive,
+              ]}
+            >
+              Reserved
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabItem,
+              activeTab === "pending" && styles.tabItemActive,
+            ]}
+            onPress={() => setActiveTab("pending")}
+          >
+            <Ionicons
+              name="pause-circle-outline"
+              size={adjustSize(22)}
+              color={activeTab === "pending" ? colors.white : colors.white}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === "pending" && styles.tabLabelActive,
+              ]}
+            >
+              Pending
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabItem,
+              activeTab === "rejected" && styles.tabItemActive,
+            ]}
+            onPress={() => setActiveTab("rejected")}
+          >
+            <Ionicons
+              name="close-circle-outline"
+              size={adjustSize(22)}
+              color={activeTab === "rejected" ? colors.white : colors.white}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === "rejected" && styles.tabLabelActive,
+              ]}
+            >
+              Rejected
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      {/* List */}
+      <FlatList
+        ListHeaderComponent={
+          <View>
+            <Text
+              text="Manage Bookings"
+              weight="semiBold"
+              style={{
+                color: colors.primary,
+                fontSize: adjustSize(14),
+                marginBottom: 15,
+                paddingHorizontal: 5,
+              }}
+            />
+          </View>
+        }
+        data={filtered}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={{
+          paddingVertical: spacing.md,
+          paddingHorizontal: adjustSize(5),
+        }}
+        ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
+        showsVerticalScrollIndicator={false}
+      />
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.fill,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: spacing.md,
+  },
+  backBtn: {
+    width: adjustSize(36),
+    height: adjustSize(36),
+    borderRadius: adjustSize(18),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  title: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+    fontSize: adjustSize(16),
+    marginBottom: spacing.md,
+  },
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: spacing.md,
+    height: adjustSize(34),
+    borderRadius: adjustSize(18),
+    backgroundColor: colors.primary,
+  },
+  pillText: {
+    color: colors.white,
+    marginRight: spacing.xs,
+    fontFamily: typography.fonts.poppins.medium,
+  },
+  tabsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.primary,
+    padding: spacing.sm,
+    // paddingHorizontal: spacing.sm,
+    height: adjustSize(83),
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    borderRadius: adjustSize(8),
+    minWidth: 85,
+  },
+  tabItemActive: {
+    // backgroundColor: colors.white,
+  },
+  tabLabel: {
+    marginTop: spacing.xs,
+    color: colors.white,
+    fontSize: adjustSize(12),
+  },
+  tabLabelActive: {
+    color: colors.white,
+  },
+  card: {
+    backgroundColor: colors.white,
+    padding: adjustSize(10),
+    borderRadius: adjustSize(7),
+    shadowColor: "#000",
+    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25)",
+    elevation: 2,
+    marginHorizontal: adjustSize(2),
+    minHeight: adjustSize(96),
+  },
+  cardHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  cardTitle: {
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.semiBold,
+  },
+  subtitle: {
+    color: "#737373",
+    // marginBottom: spacing.sm,
+  },
+  statusText: {
+    fontFamily: typography.fonts.poppins.medium,
+    fontSize: adjustSize(10),
+  },
+  label: {
+    color: colors.primary,
+  },
+  rowBetween: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginTop: spacing.sm,
+  },
+  labelValue: {
+    color: colors.primaryLight,
+    // fontSize: adjustSize(12),
+  },
+  dropdown: {
+    minWidth: adjustSize(120),
+    height: adjustSize(33),
+    borderRadius: 100,
+    backgroundColor: colors.primary,
+  },
+});
