@@ -74,7 +74,7 @@ export function LoginScreen(props: LoginScreenProps) {
         loginUser({
           email: formData.email,
           password: formData.password,
-          role: "tenant", // Pass selected role to login
+          role: selectedRole, // Pass selected role to login
         })
       );
 
@@ -137,7 +137,7 @@ export function LoginScreen(props: LoginScreenProps) {
 
           {/* <View style={styles._dropdownview}> */}
             
-            {/* <View style={styles._roleDropdown}>
+            <View style={styles._roleDropdown}>
               <Dropdown
                 dropdownStyle={styles._dropdownInner}
                 placeholderStyle={styles._placeholderStyle}
@@ -150,7 +150,7 @@ export function LoginScreen(props: LoginScreenProps) {
                   setSelectedRole(val);
                 }}
               />
-            </View> */}
+            </View>
           {/* </View> */}
 
           <Controller
