@@ -54,39 +54,39 @@ export const TenantUtilitiesTabs: React.FC<TenantUtilitiesTabsProps> = ({
   const tabs = [
     {
       label: "Summary",
-      activeIcon: <SummaryIcon color={colors.primary} />,
+      activeIcon: <SummaryIcon color={colors.white} />,
       inactiveIcon: <SummaryIcon color={colors.white} />,
     },
     {
       label: "Transaction",
-      activeIcon: <TransactionIcon color={colors.primary} />,
+      activeIcon: <TransactionIcon color={colors.white} />,
       inactiveIcon: <TransactionIcon color={colors.white} />,
     },
     user?.role === "facility_manager" || user?.role === "admin"
       ? {
           label: "Manage Meters",
-          activeIcon: <MyMeterIcon color={colors.primary} />,
+          activeIcon: <MyMeterIcon color={colors.white} />,
           inactiveIcon: <MyMeterIcon color={colors.white} />,
         }
       : {
           label: "My meter",
-          activeIcon: <MyMeterIcon color={colors.primary} />,
+          activeIcon: <MyMeterIcon color={colors.white} />,
           inactiveIcon: <MyMeterIcon color={colors.white} />,
         },
     {
       label: "Charges",
-      activeIcon: <ChargesIcon color={colors.primary} />,
+      activeIcon: <ChargesIcon color={colors.white} />,
       inactiveIcon: <ChargesIcon color={colors.white} />,
     },
     {
       label: "Report issue",
-      activeIcon: <ReportIssueIcon color={colors.primary} />,
+      activeIcon: <ReportIssueIcon color={colors.white} />,
       inactiveIcon: <ReportIssueIcon color={colors.white} />,
     },
     {
       label: "Vending History",
-      activeIcon: <VendingHistoryIcon color={colors.primary} />,
-      inactiveIcon: <VendingHistoryIcon color={colors.white} />,
+      activeIcon: <VendingHistoryIcon color={colors.white} />,
+      inactiveIcon: <VendingHistoryIcon color={colors.primaryLight} />,
     },
   ];
 

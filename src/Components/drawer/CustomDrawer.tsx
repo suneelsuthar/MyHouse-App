@@ -741,7 +741,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {
           id: 0,
           title: "Message History",
-          onPress: () => closeMenusAndNavigate("MessageHistory"),
+          onPress: () =>
+            closeMenusAndNavigate("Commuication", {
+              screen: "Commuication",
+              params: { tab: "history" },
+            }),
         },
       ],
     },
@@ -769,7 +773,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           icon: Images.meters,
           onPress: () =>
             closeMenusAndNavigate("Home", {
-              screen: "TenantUtilitiesMyMeter",
+              screen: "UtilitiesMyMeter",
             }),
         },
         {
@@ -862,7 +866,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           screen: "Wallet",
         }),
     },
-     {
+    {
       id: 10,
       title: "Payments",
       type: "item",
@@ -881,7 +885,6 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         }),
     },
 
-   
     {
       id: 11,
       title: "Chat",

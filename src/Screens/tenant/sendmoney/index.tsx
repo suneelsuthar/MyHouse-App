@@ -178,7 +178,7 @@ export function SendMoney(props: SendMoneyProps) {
                             color:
                               seleted === index
                                 ? colors.white
-                                : colors.primaryLight,
+                                : colors.primary,
                             fontSize: 10,
                           }}
                         />
@@ -190,7 +190,7 @@ export function SendMoney(props: SendMoneyProps) {
                             color:
                               seleted === index
                                 ? colors.white
-                                : colors.primaryLight,
+                                : colors.primary,
                           },
                         ]}
                       >
@@ -253,7 +253,7 @@ export function SendMoney(props: SendMoneyProps) {
                     style={[
                       styles.bankName,
                       {
-                        color: colors.primaryLight,
+                        color: colors.primary,
                       },
                     ]}
                   >
@@ -323,7 +323,7 @@ export function SendMoney(props: SendMoneyProps) {
                     style={[
                       styles.bankName,
                       {
-                        color: colors.primaryLight,
+                        color: colors.primary,
                       },
                     ]}
                   >
@@ -392,7 +392,7 @@ export function SendMoney(props: SendMoneyProps) {
               style={{
                 width: adjustSize(120),
                 minHeight: adjustSize(36),
-                backgroundColor: "#17a34a",
+                backgroundColor: colors.primary,
               }}
               onPress={() => setModalVisible(true)}
             />
@@ -420,7 +420,7 @@ export function SendMoney(props: SendMoneyProps) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ActivityIndicator size={adjustSize(60)} color={"#4ade80"} />
+            <ActivityIndicator size={adjustSize(60)} color={colors.primary} />
             <Text style={styles.modalText}>Processing Transaction</Text>
             <Text style={styles.modalSubText}>
               Please wait while we process your transaction...
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
   },
 
   priceBox: {
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     marginTop: adjustSize(15),
     borderRadius: adjustSize(10),
     padding: adjustSize(15),

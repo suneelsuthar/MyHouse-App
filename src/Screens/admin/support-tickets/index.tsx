@@ -48,8 +48,7 @@ export function Commuication(props: CommuicationProps) {
 
   // Initialize messages with dummy data
   React.useEffect(() => {
-    setActiveTab(props.route.params.tab);
-    console.log("wooo");
+    setActiveTab(props.route.params.tab ? props.route.params.tab : "History");
     const dummyData = Array.from({ length: 20 }, (_, i) => ({
       id: i + 1,
       name: `Amelia Greene`,

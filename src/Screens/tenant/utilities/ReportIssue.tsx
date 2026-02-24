@@ -52,7 +52,7 @@ export const TenantUtilitiesReportIssue: React.FC = ({ navigation }: any) => {
     >
       <Header2 title="Report an Issue" onNotificationPress={() => {}} />
 
-      <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}>
+      {/* <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}> */}
         <ScrollView>
           {/* First Dropdown (Property Type) */}
           <DropdownComponent
@@ -84,21 +84,21 @@ export const TenantUtilitiesReportIssue: React.FC = ({ navigation }: any) => {
             rightIconColor={colors.primaryLight}
           />
 
-          <Text style={styles.title}>Property</Text>
+          {/* <Text style={styles.title}>Property</Text>
           <View style={{ marginHorizontal: adjustSize(10) }}>
             <TextField
               placeholderTextColor={colors.primaryLight}
-              inputWrapperStyle={{ backgroundColor: colors.fill }}
+              inputWrapperStyle={{ backgroundColor: colors.white }}
               value="Brume Villa"
               editable={false}
             />
-          </View>
+          </View> */}
 
           <Text style={styles.title}>Date Created</Text>
           <View style={{ marginHorizontal: adjustSize(10) }}>
             <TextField
               placeholderTextColor={colors.primaryLight}
-              inputWrapperStyle={{ backgroundColor: colors.fill }}
+              inputWrapperStyle={{ backgroundColor: colors.white }}
               value={moment().format("MMMM DD YYYY, h:mm:ss a")}
               editable={false}
             />
@@ -111,12 +111,12 @@ export const TenantUtilitiesReportIssue: React.FC = ({ navigation }: any) => {
               placeholder="Write your issue here..."
               inputWrapperStyle={[
                 {
-                  height: adjustSize(156),
+                  height: adjustSize(158),
                   alignItems: "flex-start",
-                  backgroundColor: colors.fill,
+                  backgroundColor: colors.white,
                 },
               ]}
-              style={{ height: adjustSize(156) }}
+              style={{ height: adjustSize(155) }}
               value={issueDescription}
               onChangeText={setIssueDescription}
               multiline
@@ -127,7 +127,7 @@ export const TenantUtilitiesReportIssue: React.FC = ({ navigation }: any) => {
             <Button text="Submit" preset="reversed" onPress={handleSubmit} />
           </View>
         </ScrollView>
-      </TenantUtilitiesTabs>
+      {/* </TenantUtilitiesTabs> */}
     </Screen>
   );
 };
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(47),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     marginBottom: adjustSize(7),
     marginHorizontal: adjustSize(10),
     marginTop: adjustSize(25),
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   dropdown2: {
     height: adjustSize(49),
     borderRadius: adjustSize(10),
-    backgroundColor: colors.fill,
+    backgroundColor: colors.white,
     marginBottom: adjustSize(3),
     marginHorizontal: adjustSize(10),
     marginTop: adjustSize(2),

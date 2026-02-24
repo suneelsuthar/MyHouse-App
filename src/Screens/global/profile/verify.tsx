@@ -6,9 +6,39 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../../assets/Images";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
 
 export const Verify: React.FC = () => {
+    const { user } = useAppSelector((state: RootState) => state.auth);
+  
   const navigation = useNavigation();
+    const routeToDrawerMap: Record<string, string> = {
+    tenant: "TenantDrawer",
+    admin: "AdminDrawer",
+    agent: "AgentDrawer",
+    landlord: "LandlordDrawer",
+    subLandlord: "SubLandlordDrawer",
+    security: "SecurityDrawer",
+    facilityManager: "FacilityManagerDrawer",
+  };
+
+  const getDrawerName = () => {
+    // This is a simplified example - you should replace this with your actual role detection logic
+    // For example, you might get this from your auth context or global state
+    const path = (navigation as any).getState()?.routes?.[0]?.name || "";
+    console.log(path);
+    // Default to AdminDrawer if no match found
+    return routeToDrawerMap[user?.role as string] || "AdminDrawer";
+  };
+  const handleDrawerOpen = () => {
+    const drawerName = getDrawerName();
+
+    (navigation as any)
+      .getParent?.(drawerName)
+      ?.dispatch(DrawerActions.openDrawer());
+  };
+
   return (
     <Screen
       preset="fixed"
@@ -19,11 +49,7 @@ export const Verify: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() =>
-            (navigation as any)
-              .getParent?.("FacilityManagerDrawer")
-              ?.dispatch(DrawerActions.openDrawer())
-          }
+          onPress={() => handleDrawerOpen()}
         >
           <WithLocalSvg asset={Images.user} />
         </TouchableOpacity>
@@ -118,25 +144,27 @@ const styles = StyleSheet.create({
   },
   box: {
     marginHorizontal: adjustSize(10),
-    borderRadius: adjustSize(20),
     marginTop: adjustSize(20),
-    borderWidth: adjustSize(1),
     borderColor: "#B0B0B0",
   },
 
   btn: {
     padding: adjustSize(20),
+    backgroundColor: colors.white,
+    borderRadius: adjustSize(20),
   },
 
   title: {
     fontSize: adjustSize(14),
     marginHorizontal: adjustSize(10),
-    marginTop: adjustSize(20),
+    marginTop: adjustSize(25),
+    color: colors.primary,
   },
   _heading: {
     fontSize: adjustSize(15),
     textAlign: "center",
-    marginBottom: adjustSize(20),
+    marginBottom: adjustSize(10),
+    color: colors.primary,
   },
   _row: {
     flexDirection: "row",
@@ -174,7 +202,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   _welcomtext: {
-    color: colors.grey,
+    color: "#737373",
     fontSize: adjustSize(10),
     lineHeight: adjustSize(12),
   },

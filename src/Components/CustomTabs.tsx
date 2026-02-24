@@ -53,7 +53,14 @@ export function CustomTabs({
                     isActive && styles.activeTab,
                   ]}
                 >
-                  <View style={styles.iconWrapper}>
+                  <View
+                    style={[
+                      styles.iconWrapper,
+                      {
+                        opacity: isActive ? 1 : 0.7,
+                      },
+                    ]}
+                  >
                     {isActive ? tab.activeIcon : tab.inactiveIcon}
                   </View>
                   <Text
@@ -64,7 +71,8 @@ export function CustomTabs({
                           ? typography.fonts.poppins.semiBold
                           : typography.fonts.poppins.normal,
                         color: isActive ? colors.white : colors.white,
-                        fontSize: adjustSize(14),
+                        fontSize: adjustSize(12),
+                        opacity: isActive ? 1 : 0.7,
                       },
                     ]}
                   >
@@ -83,7 +91,7 @@ export function CustomTabs({
                   key={tab.label}
                   activeOpacity={0.6}
                   onPress={() => onTabChange(tab.label)}
-                  style={[styles.tabButton, isActive && styles.activeTab]}
+                  style={[styles.tabButton, isActive && styles.activeTab, {}]}
                 >
                   <View style={styles.iconWrapper}>
                     {isActive ? tab.activeIcon : tab.inactiveIcon}

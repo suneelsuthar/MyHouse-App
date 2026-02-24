@@ -28,7 +28,7 @@ const AnalysisChart: React.FC<BookingsChartProps> = ({
           datasets: [
             {
               data: data,
-              colors: data.map(() => () => "#7979a3"),
+              colors: data.map(() => () => colors.primary),
             },
           ],
           // data: [colors.primary, colors.primary, colors.primary],

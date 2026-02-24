@@ -18,6 +18,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdminStackParamList } from "../../../utils/interfaces";
 import { Entypo } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store";
 
 type NavigationProp = NativeStackNavigationProp<AdminStackParamList>;
 type TabType = "Active" | "History";
@@ -45,6 +47,7 @@ export const VisitorRequests: React.FC = () => {
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
   const [revokeModalVisible, setRevokeModalVisible] = useState(false);
   const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const [visitorData, setvisitorData] = useState([
     {
@@ -98,7 +101,7 @@ export const VisitorRequests: React.FC = () => {
       property: "Farm House",
       status: "Pending",
       avatar: "B",
-     backgroundColor: "#F26938",
+      backgroundColor: "#F26938",
       textColor: "#fff",
     },
   ]);
@@ -124,6 +127,10 @@ export const VisitorRequests: React.FC = () => {
     setRevokeModalVisible(false);
     navigation.goBack();
   };
+
+  {
+    console.log(user.role);
+  }
 
   return (
     <Screen
@@ -231,7 +238,9 @@ export const VisitorRequests: React.FC = () => {
         {/* Property Group Label and Sort */}
         <View style={styles.listHeader}>
           <Text style={styles.propertyGroupLabel} weight="semiBold">
-            Visitor Requests
+            {user?.role === "tenant"
+              ? "Visitor Management"
+              : " Visitor Requests"}
           </Text>
           <View style={styles.sortContainer}>
             <DropdownComponent
@@ -273,9 +282,14 @@ export const VisitorRequests: React.FC = () => {
                   <Text style={styles.propLabel}>Property:</Text>
                   <Text style={styles.propValue}> {visitor.property}</Text>
                 </Text>
-                <View style={[styles.statusPill,{
-                  backgroundColor:visitor.backgroundColor
-                }]}>
+                <View
+                  style={[
+                    styles.statusPill,
+                    {
+                      backgroundColor: visitor.backgroundColor,
+                    },
+                  ]}
+                >
                   <Text style={styles.statusPillText}>{visitor.status}</Text>
                 </View>
               </View>

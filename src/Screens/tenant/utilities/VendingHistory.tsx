@@ -36,7 +36,7 @@ export const TenantUtilitiesVendingHistory: React.FC = ({
       safeAreaEdges={["top"]}
     >
       <Header2 title="Vending History" onNotificationPress={() => {}} />
-      <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}>
+      {/* <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}> */}
         <ScrollView>
           {/* First Dropdown (Property Type) */}
           <DropdownComponent
@@ -81,7 +81,7 @@ export const TenantUtilitiesVendingHistory: React.FC = ({
           </View>
           <TenantUtilitiesHistory title="Vending Information" />
         </ScrollView>
-      </TenantUtilitiesTabs>
+      {/* </TenantUtilitiesTabs> */}
     </Screen>
   );
 };
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(47),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor:colors.primary,
     marginBottom: adjustSize(3),
     marginHorizontal: adjustSize(10),
     marginTop: adjustSize(25),

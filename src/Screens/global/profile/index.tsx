@@ -68,7 +68,6 @@ export const Profile: React.FC = () => {
         >
           <Text style={styles.btnTxt}>Profile </Text>
         </TouchableOpacity>
-        <View style={styles.line} />
         <TouchableOpacity
           style={styles.btn}
           activeOpacity={0.8}
@@ -80,6 +79,34 @@ export const Profile: React.FC = () => {
         >
           <Text style={styles.btnTxt}>Settings </Text>
         </TouchableOpacity>
+        {userRole === "tenant" && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() =>
+              (navigation as any).navigate("EditProfile", {
+                data: profileData,
+              })
+            }
+          >
+            <Text style={styles.btnTxt}>Password </Text>
+          </TouchableOpacity>
+        )}
+        {userRole === "tenant" && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() =>
+              (navigation as any).navigate("CreateNewPin", {
+                data: profileData,
+              })
+            }
+          >
+            <Text style={styles.btnTxt}>Transaction Pin </Text>
+          </TouchableOpacity>
+        )}
+        <View style={styles.line} />
+
         <View style={styles.line} />
         {userRole === "facility_manager" && (
           <TouchableOpacity
@@ -91,16 +118,15 @@ export const Profile: React.FC = () => {
           </TouchableOpacity>
         )}
         <View style={styles.line} />
-        {userRole === "tenant" ||
-          (userRole === "facility_manager" && (
-            <TouchableOpacity
-              style={styles.btn}
-              activeOpacity={0.8}
-              onPress={() => (navigation as any).navigate("Verify")}
-            >
-              <Text style={styles.btnTxt}>Verify </Text>
-            </TouchableOpacity>
-          ))}
+        {(userRole === "tenant" || userRole === "facility_manager") && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() => (navigation as any).navigate("Verify")}
+          >
+            <Text style={styles.btnTxt}>Verify </Text>
+          </TouchableOpacity>
+        )}
         <View style={styles.line} />
         {userRole === "facility_manager" && (
           <TouchableOpacity
@@ -111,13 +137,14 @@ export const Profile: React.FC = () => {
             <Text style={styles.btnTxt}>Reviews </Text>
           </TouchableOpacity>
         )}
-    
       </View>
-      <Button
-        preset="reversed"
-        text="Upgrade Subscription Plan"
-        style={styles._upgradebtn}
-      />
+      {userRole === "admin" && (
+        <Button
+          preset="reversed"
+          text="Upgrade Subscription Plan"
+          style={styles._upgradebtn}
+        />
+      )}
     </Screen>
   );
 };

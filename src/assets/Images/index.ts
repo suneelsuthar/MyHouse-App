@@ -41,6 +41,8 @@ export const Images = {
   managetrans: require("./managetrans.svg"),
   meters: require("./meters.svg"),
   settings: require("./settings.svg"),
+  setting: require("./settings.png"),
+
   simdata: require("./simdata.svg"),
   tenants: require("./simdata.svg"),
   facilitymanag: require("./facilitymanag.svg"),
@@ -121,12 +123,11 @@ export const Images = {
   amentiIcon: require("./amentiIcon.png"),
   pre: require("./pre.svg"),
   next: require("./next.svg"),
-  met:require("./met.svg"),
-  tra:require("./tra.svg"),
-  est:require("./est.svg"),
-  star:require("./star.svg"),
-  archive:require("./archive.svg"),
-
-
-
+  met: require("./met.svg"),
+  tra: require("./tra.svg"),
+  est: require("./est.svg"),
+  star: require("./star.svg"),
+  archive: require("./archive.svg"),
+  account: require("./account.png"),
+  transaction: require("./transaction.png"),
 };

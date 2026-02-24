@@ -112,7 +112,7 @@ export function RentPayment(props: RentPaymentProps) {
         <View style={styles.container}>
           <Text
             weight="semiBold"
-            text="My HomesNG Payments"
+            text="My Homes Payments"
             style={styles._label}
           />
           <FlatList

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { Screen, Header, CustomTabs } from "../../../Components";
 import { colors } from "../../../theme";
 import { ReservationsIcon } from "../../../assets/svg";
 import { UpdateProfileTab } from "./Components/UpdateProfileTab";
 import { SettingsTab } from "./Components/SettingsTab";
 import { VerifyIdentityTab } from "./Components/VerifyIdentityTab";
+import { Images } from "../../../assets/Images";
 export const TenantUtilitiesUpdateProfile: React.FC = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState("Update Profile"); // 🔹 string state
   return (
@@ -20,19 +21,19 @@ export const TenantUtilitiesUpdateProfile: React.FC = ({ navigation }: any) => {
         tabs={[
           {
             label: "Update Profile",
-            activeIcon: <ReservationsIcon color="transparent" />,
-            inactiveIcon: <ReservationsIcon color="transparent" />,
+            activeIcon: <Image style={{height:20,width:20,tintColor:colors.white}} source={Images.updates} tintColor="#fff" />,
+            inactiveIcon: <Image style={{height:20,width:20,tintColor:colors.white}} source={Images.updates} />,
           },
           {
             label: "Settings",
-            activeIcon: <ReservationsIcon color="transparent" />,
-            inactiveIcon: <ReservationsIcon color="transparent" />,
+            activeIcon: <Image style={{height:20,width:20,tintColor:"#fff"}} source={Images.setting} />,
+            inactiveIcon: <Image style={{height:20,width:20,tintColor:colors.white}} source={Images.setting} />,
           },
-          {
-            label: "Verify Identity",
-            activeIcon: <ReservationsIcon color="transparent" />,
-            inactiveIcon: <ReservationsIcon color="transparent" />,
-          },
+          // {
+          //   label: "Verify Identity",
+          //   activeIcon: <ReservationsIcon color="#fff" />,
+          //   inactiveIcon: <ReservationsIcon color="#fff" />,
+          // },
         ]}
         activeTab={activeTab}
         onTabChange={(label) => setActiveTab(label)}

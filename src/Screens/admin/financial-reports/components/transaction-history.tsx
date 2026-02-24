@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { adjustSize, colors, typography } from "../../../../theme";
 import { Text, Button } from "../../../../Components";
 import moment from "moment";
+
 import Entypo from "@expo/vector-icons/Entypo";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
@@ -10,6 +11,7 @@ import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { RootState } from "../../../../store";
+import DropdownComponent from "../../../../Components/DropDown";
 export const TransactionHistory = () => {
   const navigation = useNavigation();
   const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
@@ -140,7 +142,32 @@ export const TransactionHistory = () => {
   ];
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Transaction History</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.heading}>Transaction History</Text>
+        <View style={styles.dropdownContainer}>
+          <View>
+            <DropdownComponent
+              data={[
+                { label: "A", value: "A" },
+                { label: "B", value: "B" },
+                { label: "C", value: "C" },
+              ]}
+              label="Select Period"
+              placeholder="Sort by"
+              dropdownStyle={styles.customDropdownStyle}
+              placeholderStyle={styles.customPlaceholderStyle}
+              selectedTextStyle={styles.customSelectedTextStyle}
+            />
+          </View>
+        </View>
+      </View>
+
       {data.map((item, index) => {
         const isMenuVisible = visibleMenuIndex === index;
         return (
@@ -169,23 +196,31 @@ export const TransactionHistory = () => {
               />
             </View>
             <View style={styles.data}>
-              <Text style={styles.date} numberOfLines={1}>
-                {moment(item.date).format("DD MMM, YYYY")}
-              </Text>
               <Text style={styles.price} numberOfLines={1}>
-                ${item.price}
-              </Text>
-              <Text style={styles.paymentType} numberOfLines={1}>
                 {item.paymentType}
               </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.date} numberOfLines={1}>
+                  {moment(item.date).format("DD MMM, YYYY")}
+                </Text>
+                <Text style={styles.price} numberOfLines={1}>
+                  ₦ {item.price}
+                </Text>
+              </View>
             </View>
 
-            <View>
+            <View style={{ position: "absolute", right: 5, top: 10 }}>
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() =>
                   setVisibleMenuIndex(
-                    isMenuVisible ? null : index // toggle
+                    isMenuVisible ? null : index, // toggle
                   )
                 }
               >
@@ -263,7 +298,7 @@ export const TransactionHistory = () => {
               On {moment(selectedData?.date).format("MMMM DD, YYYY")} at{" "}
               {moment(selectedData?.date).format("h:mm a")}
             </Text>
-            <Text style={styles.modalPrice}>${selectedData?.price}</Text>
+            <Text style={styles.modalPrice}>₦{selectedData?.price}</Text>
 
             {user?.role === "admin" && (
               <>
@@ -306,16 +341,19 @@ export const TransactionHistory = () => {
                 </View>
               </>
             )}
-            <View style={styles.btnMain}>
-              <Button
-                text={"Download Receipt"}
-                preset="reversed"
-                onPress={() => {
-                  setSelectedData(null);
-                  setVisiable(false);
-                }}
-              />
-            </View>
+
+            {user?.role !== "tenant" && (
+              <View style={styles.btnMain}>
+                <Button
+                  text={"Download Receipt"}
+                  preset="reversed"
+                  onPress={() => {
+                    setSelectedData(null);
+                    setVisiable(false);
+                  }}
+                />
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -340,13 +378,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(10),
     flexDirection: "row",
     position: "relative",
-    borderTopWidth: adjustSize(0.5),
-    borderTopColor: "#B0B0B0",
+    backgroundColor: colors.white,
+    margin: 10,
+    borderRadius: 10,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
   },
 
   data: {
     flex: 1,
-    marginHorizontal: adjustSize(15),
+    // marginHorizontal: adjustSize(15),
     marginLeft: adjustSize(20),
   },
   date: {
@@ -375,14 +419,19 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: adjustSize(10),
-    top: adjustSize(36),
+    right: adjustSize(20),
+    top: adjustSize(10),
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),
-    elevation: 4,
+    // elevation: 4,
     width: adjustSize(120),
     paddingVertical: adjustSize(6),
     zIndex: 10,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 3,
   },
   menuItem: {
     paddingVertical: adjustSize(5),
@@ -469,5 +518,24 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(15),
     paddingTop: adjustSize(30),
     paddingBottom: adjustSize(15),
+  },
+  dropdownContainer: {
+    width: adjustSize(120),
+    marginRight: 20,
+  },
+  customDropdownStyle: {
+    height: adjustSize(33),
+    borderRadius: adjustSize(100),
+    backgroundColor: colors.primary,
+  },
+  customPlaceholderStyle: {
+    fontSize: adjustSize(12),
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  customSelectedTextStyle: {
+    fontSize: adjustSize(12),
+    color: colors.white,
+    fontFamily: typography.fonts.poppins.normal,
   },
 });

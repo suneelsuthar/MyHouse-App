@@ -58,7 +58,7 @@ export function AddBeneficiary(props: AddBeneficiaryProps) {
             },
           ]}
           dropdownStyle={{
-            backgroundColor: colors.fill,
+            backgroundColor: colors.white,
             boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.15)",
             elevation: 2,
           }}
@@ -75,6 +75,7 @@ export function AddBeneficiary(props: AddBeneficiaryProps) {
 
         <TextField
           placeholder="lorem ipsum"
+          inputWrapperStyle={{backgroundColor:colors.white}}
           style={{
             fontSize: adjustSize(12),
             fontFamily: typography.fonts.poppins.medium,

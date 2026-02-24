@@ -93,43 +93,64 @@ export const UtilitiesChargesList: React.FC = () => {
         return (
           <View key={index} style={styles.card}>
             <View style={styles.data}>
-              <Text
-                style={[
-                  styles.status,
-                  {
-                    color:
-                      item.status === "Pending"
-                        ? "#F26938"
-                        : item.status === "Paid"
-                        ? "#4CAF50"
-                        : "#D51E1E",
-                  },
-                ]}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.chargeType} numberOfLines={1}>
+                  {item.chargeType}
+                </Text>
+                <View
+                  style={[
+                    {
+                      borderRadius: 100,
+                      paddingHorizontal: 15,
+                      marginLeft: 10,
+                      height: adjustSize(20),
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor:
+                        item.status === "Pending"
+                          ? "#F26938"
+                          : item.status === "Paid"
+                            ? "#0AD029"
+                            : "#D51E1E",
+                    },
+                  ]}
+                >
+                  <Text style={[styles.status]}>{item.status}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
               >
-                {item.status}
-              </Text>
-              <Text style={styles.chargeType} numberOfLines={1}>
-                {item.chargeType}
-              </Text>
-              <Text style={styles.price} numberOfLines={1}>
-                ₦ {formatAmount(item.totalAmount)}
                 <Text
                   style={[
                     styles.price,
                     {
                       color: colors.greylight,
                       fontFamily: typography.fonts.poppins.medium,
+                      fontSize: adjustSize(10),
                     },
                   ]}
                 >
-                  {" "}
-                  (₦ {formatAmount(item.amountPaid)} Paid)
+                  22 feb 2025
                 </Text>
-              </Text>
+                <Text style={styles.price} numberOfLines={1}>
+                  ₦ {formatAmount(item.totalAmount)}
+                </Text>
+              </View>
             </View>
 
             {/* Menu Trigger */}
             <TouchableOpacity
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 10,
+              }}
               activeOpacity={0.6}
               onPress={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
             >
@@ -191,8 +212,8 @@ export const UtilitiesChargesList: React.FC = () => {
                 selectedData?.status === "Pending"
                   ? "#F26938"
                   : selectedData?.status === "Paid"
-                  ? "#4CAF50"
-                  : "#D51E1E",
+                    ? "#4CAF50"
+                    : "#D51E1E",
             }}
           >
             {selectedData?.status}
@@ -212,8 +233,8 @@ export const UtilitiesChargesList: React.FC = () => {
         </Text>
         <View style={styles.modalAmountMain}>
           <Text style={styles.modalTitle}>
-            Charge type:{" "}
-            <Text style={{ color: "#7E7E7E" }}>{selectedData?.chargeType}</Text>
+            Charge type
+            {/* <Text style={{ color: "#7E7E7E" }}>{selectedData?.chargeType}</Text> */}
           </Text>
           <Text style={styles.modalPrice}>
             ₦ {formatAmount(selectedData?.totalAmount || 0)}
@@ -235,7 +256,7 @@ export const UtilitiesChargesList: React.FC = () => {
                   width: `${Math.round(
                     ((selectedData.amountPaid ?? 0) /
                       (selectedData.totalAmount || 1)) *
-                      100
+                      100,
                   )}%`,
                 },
               ]}
@@ -275,11 +296,11 @@ export const UtilitiesChargesList: React.FC = () => {
         <View style={styles.outstandingHeader}>
           <Text style={styles.outstandingAmountPaid}>
             ₦ {formatAmount(selectedData?.amountPaid || 0)}{" "}
-            <Text
+            {/* <Text
               style={[styles.outstandingAmountPaid, { color: colors.grey }]}
             >
               (Paid)
-            </Text>
+            </Text> */}
           </Text>
           <TouchableOpacity activeOpacity={0.7} style={styles.fundWalletBtn}>
             <Text style={styles.fundWalletBtnTxt}>Fund Wallet</Text>
@@ -313,8 +334,8 @@ export const UtilitiesChargesList: React.FC = () => {
                 }
               }}
               placeholderTextColor={colors.primaryLight}
-              inputWrapperStyle={{ backgroundColor: colors.fill }}
-              placeholder={`Max ₦${formatAmount(outstanding)}`}
+              inputWrapperStyle={{ backgroundColor: colors.white }}
+              placeholder={`Enter Amount to Pay`}
               keyboardType="numeric"
               maxLength={outstanding.toString().length}
             />
@@ -322,7 +343,16 @@ export const UtilitiesChargesList: React.FC = () => {
         )}
 
         <Text style={styles.outstandingTxt}>Reason of Charges</Text>
-        <Text style={styles.outstandingTxt}>Common Area Charges</Text>
+        <Text
+          style={[
+            styles.outstandingTxt,
+            {
+              color: colors.primary,
+            },
+          ]}
+        >
+          Common Area Charges
+        </Text>
         <View style={styles.btnMain}>
           {outstanding > 0 ? (
             <Button
@@ -357,7 +387,7 @@ export const UtilitiesChargesList: React.FC = () => {
           <TextField
             ref={pinRef}
             placeholderTextColor={colors.primaryLight}
-            inputWrapperStyle={{ backgroundColor: colors.fill }}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
             placeholder={`Enter Pin`}
             keyboardType="numeric"
             maxLength={4}
@@ -395,7 +425,7 @@ export const UtilitiesChargesList: React.FC = () => {
             marginBottom: adjustSize(15),
           }}
         />
-        <Text style={styles.modalHeading}>Purchase Successful 🎉</Text>
+        <Text style={styles.modalHeading}>Purchase Successful</Text>
         <View style={styles.btnMain}>
           <Button
             text={"Continue"}
@@ -414,24 +444,33 @@ const styles = StyleSheet.create({
     paddingVertical: adjustSize(12),
     paddingHorizontal: adjustSize(10),
     flexDirection: "row",
-    borderBottomWidth: adjustSize(0.5),
-    borderBottomColor: "#B0B0B0",
+    margin: 10,
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 2,
+    borderRadius: 7,
+    marginTop: 0,
   },
-  data: { flex: 1, marginRight: adjustSize(15) },
+  data: { flex: 1 },
   status: {
     fontSize: adjustSize(10),
+    lineHeight: adjustSize(14),
     fontFamily: typography.fonts.poppins.normal,
+    color: colors.white,
+    paddingVertical: 0,
   },
   price: {
     color: colors.primary,
-    fontSize: adjustSize(15),
+    fontSize: adjustSize(14),
     fontFamily: typography.fonts.poppins.semiBold,
   },
   chargeType: {
-    color: colors.primary,
-    fontSize: adjustSize(14),
-    fontFamily: typography.fonts.poppins.normal,
-    opacity: 0.7,
+    color: "#292766",
+    fontSize: adjustSize(15),
+    fontFamily: typography.fonts.poppins.semiBold,
     marginVertical: adjustSize(3),
   },
   overlay: {
@@ -441,17 +480,21 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: adjustSize(10),
-    top: adjustSize(36),
+    right: adjustSize(25),
+    top: adjustSize(10),
     backgroundColor: colors.white,
     borderRadius: adjustSize(10),
-    elevation: 4,
     width: adjustSize(120),
     paddingVertical: adjustSize(6),
     zIndex: 10,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 4,
   },
   menuItem: {
-    paddingVertical: adjustSize(5),
+    paddingVertical: adjustSize(3),
     paddingHorizontal: adjustSize(12),
   },
   menuText: {
@@ -472,7 +515,7 @@ const styles = StyleSheet.create({
     paddingTop: adjustSize(15),
   },
   modalPrice: {
-    fontSize: adjustSize(36),
+    fontSize: adjustSize(28),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.bold,
     textAlign: "center",
@@ -520,11 +563,11 @@ const styles = StyleSheet.create({
   },
   fundWalletBtn: {
     backgroundColor: colors.white,
-    shadowColor: "#000000",
-    shadowOpacity: 0.15,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    elevation: 0.5,
+    // shadowColor: "#000000",
+    // shadowOpacity: 0.15,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 3,
+    // elevation: 0.5,
     borderWidth: adjustSize(0.5),
     borderColor: "#F2F3FF",
     height: adjustSize(40),
@@ -537,7 +580,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
-    opacity: 0.7,
+    // opacity: 0.7,
   },
   OutstandingAmount: {
     fontSize: adjustSize(14),
@@ -548,7 +591,7 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(10),
   },
   OutstandingRemaningPayment: {
-    fontSize: adjustSize(36),
+    fontSize: adjustSize(28),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.bold,
     textAlign: "center",

@@ -14,7 +14,7 @@ import { StyleSheet } from "react-native";
 import {
   RentPayment,
   TenantAssignedProp,
-  
+
   // Agent screens
   AgentDashboard,
   AgentSettings,
@@ -103,6 +103,7 @@ import {
   Profile,
   Verify,
   EditProfile,
+  CreateNewPin,
   ProfileSettings,
   SecurityIncidentReports,
   AgentAssignedProp,
@@ -113,7 +114,7 @@ import {
   AdminSignAgreement,
   AdminUtilitiesCharges,
   TenantViewRequests,
-  TenantNewRequests
+  TenantNewRequests,
 } from "../Screens";
 
 import { AgentDrawerParamList } from "./types/agent";
@@ -859,6 +860,8 @@ const TenantHomeStack = () => (
     <HomeStack.Screen name="AddBeneficiary" component={AddBeneficiary} />
     <HomeStack.Screen name="Profile" component={Profile} />
     <HomeStack.Screen name="EditProfile" component={EditProfile} />
+    <HomeStack.Screen name="CreateNewPin" component={CreateNewPin} />
+
     <HomeStack.Screen name="ProfileSettings" component={ProfileSettings} />
     <HomeStack.Screen name="Verify" component={Verify} />
     <HomeStack.Screen name="Commuication" component={Commuication} />
@@ -924,7 +927,53 @@ const TenantTabs = () => (
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Home" component={TenantHomeStack} />
+    <Tab.Screen
+      name="Home"
+      component={TenantHomeStack}
+      options={({ route }) => {
+        const routeName = getFocusedRouteNameFromRoute(route) ?? "TenantHome";
+
+        const baseTabBarStyle = {
+          backgroundColor: colors.primary,
+          borderTopWidth: 0,
+          elevation: 8,
+        } as const;
+
+        const screensToHideTabBar = [
+          "FMViewDetails",
+          "FMEdit",
+          "FMGenerateWorkOrder",
+          "FMViewWorkOrder",
+          "FMOrderView",
+          "FMOrderUpdate",
+          "FMOrderExport",
+          "CreateNewPin",
+          // "UtilitiesSummary",
+          "UtilitiesMyMeter",
+          "UtilitiesCharges",
+          "TenantUtilitiesTransactions",
+          "TenantUtilitiesVendingHistory",
+          "TenantUtilitiesUpdateProfile",
+          "TenantUtilitiesReportIssue",
+          "Emergency",
+          "PanicEmergency",
+          "Profile",
+          "EditProfile",
+          "ProfileSettings",
+          "Verify",
+        ];
+
+        if (screensToHideTabBar.includes(routeName)) {
+          return {
+            tabBarStyle: [{ ...baseTabBarStyle }, { display: "none" }],
+          };
+        }
+
+        return {
+          tabBarStyle: baseTabBarStyle,
+        };
+      }}
+    />
     <Tab.Screen name="Chat" component={Chat} />
     <Tab.Screen name="Wallet" component={TenantWalletStackNavigator} />
   </Tab.Navigator>
@@ -943,10 +992,6 @@ export const TenantTabNavigator = () => (
     <Drawer.Screen name="TenantAssignedProp" component={TenantAssignedProp} />
     <Drawer.Screen name="TenantViewRequests" component={TenantViewRequests} />
     <Drawer.Screen name="TenantNewRequests" component={TenantNewRequests} />
-
-
-
-
 
     <Drawer.Screen name="AdminVisitorDetails" component={AdminVisitorDetails} />
     <Drawer.Screen

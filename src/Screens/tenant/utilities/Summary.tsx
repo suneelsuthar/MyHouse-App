@@ -92,7 +92,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
   };
 
   const updateChartByPeriod = (
-    period: "This Week" | "This Month" | "This Year"
+    period: "This Week" | "This Month" | "This Year",
   ) => {
     switch (period) {
       case "This Week":
@@ -147,7 +147,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
       safeAreaEdges={["top"]}
     >
       <Header2 title="Utilities" onNotificationPress={() => {}} />
-      <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}>
+      {/* <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}> */}
         <ScrollView>
           {/* Heading */}
           <Text style={styles.heading}>Summary</Text>
@@ -219,7 +219,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
           </View>
 
           {/* Date Pickers */}
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -245,7 +245,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
               </Text>
               <WithLocalSvg asset={Images.calendar} />
             </Pressable>
-          </View>
+          </View> */}
 
           {/* Chart */}
           <AnalysisChart
@@ -270,7 +270,7 @@ export const UtilitiesSummary: React.FC = ({ navigation }: any) => {
             />
           )}
         </ScrollView>
-      </TenantUtilitiesTabs>
+      {/* </TenantUtilitiesTabs> */}
     </Screen>
   );
 };
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(47),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     marginBottom: adjustSize(3),
     marginHorizontal: adjustSize(10),
   },
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     marginBottom: adjustSize(5),
   },
   dtText: {
-    color: colors.primaryLight,
+    color: colors.primary,
     fontSize: adjustSize(12),
     fontFamily: typography.fonts.poppins.normal,
   },
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     marginTop: adjustSize(50),
   },
   summaryListIcon: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     shadowColor: "#000000",
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 2 },

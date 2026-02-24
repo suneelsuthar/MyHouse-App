@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -16,7 +16,9 @@ import { RouteProp } from "@react-navigation/native";
 import { CustomModal } from "./Components/CustomModal";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import * as Clipboard from "expo-clipboard"; // ✅ for copy
+import * as Clipboard from "expo-clipboard";
+import { Images } from "../../../assets/Images";
+import { WithLocalSvg } from "react-native-svg/css";
 
 // 🔹 Dropdown Option type
 interface Option {
@@ -37,10 +39,7 @@ type RootStackParamList = {
 };
 
 type UtilitiesMyMeterProps = {
-  navigation: NativeStackNavigationProp<
-    RootStackParamList,
-    "UtilitiesMyMeter"
-  >;
+  navigation: NativeStackNavigationProp<RootStackParamList, "UtilitiesMyMeter">;
   route: RouteProp<RootStackParamList, "UtilitiesMyMeter">;
 };
 
@@ -113,8 +112,11 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
   // 🔹 Dropdown State
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [topUpModal, setTopUpModal] = useState<boolean>(false);
-  const [fundYourAccountModal, setFundYourAccountModal] =
-    useState<boolean>(false);
+  const [previewModal, setPreviewModal] = useState<boolean>(false);
+  const [pinModal, setPinModal] = useState<boolean>(false);
+  const [successModal, setSuccessModal] = useState<boolean>(false);
+  const [topUpAmount, setTopUpAmount] = useState<string>("");
+  const pinRef = useRef(null);
   const [activateEmergencyCreditModal, setActivateEmergencyCreditModal] =
     useState<boolean>(false);
   const onShare = async () => {
@@ -147,64 +149,85 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
       safeAreaEdges={["top"]}
     >
       <Header2 title="My Meter" onNotificationPress={() => {}} />
-      <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}>
-        {/* First Dropdown (Property Type) */}
-        <DropdownComponent
-          data={typeOptions}
-          label="Choose type"
-          placeholder="Select Properties"
-          value={selectedType}
-          onChangeValue={setSelectedType}
-          dropdownStyle={styles.dropdown}
-          placeholderStyle={styles.dropdownPlaceholder}
-          selectedTextStyle={styles.dropdownSelected}
-          rightIconColor={colors.white}
-        />
-        {selectedType ? (
-          <ScrollView>
-            <Text style={styles.heading}>Meter Details - {selectedType}</Text>
-            {list.map((val, index) => (
-              <View
-                key={index}
+      {/* <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}> */}
+      {/* First Dropdown (Property Type) */}
+      <Text
+        text="Please select a property to view meter details."
+        style={{ paddingHorizontal: 20, marginTop: 20, color: colors.primary }}
+      />
+      <DropdownComponent
+        data={typeOptions}
+        label="Choose type"
+        placeholder="Select Properties"
+        value={selectedType}
+        onChangeValue={setSelectedType}
+        dropdownStyle={styles.dropdown}
+        placeholderStyle={styles.dropdownPlaceholder}
+        selectedTextStyle={styles.dropdownSelected}
+        rightIconColor={colors.white}
+      />
+      {selectedType ? (
+        <ScrollView>
+          <Text style={styles.heading}>Meter Details</Text>
+          {list.map((val, index) => (
+            <View
+              key={index}
+              style={[
+                styles.list,
+                {
+                  backgroundColor: index % 2 === 0 ? "#292766" : "transparent",
+                },
+              ]}
+            >
+              <Text
                 style={[
-                  styles.list,
+                  styles.listTitle,
                   {
-                    backgroundColor:
-                      index % 2 === 0 ? "#dedff0" : "transparent",
+                    color: index % 2 !== 0 ? "#292766" : "#fff",
                   },
                 ]}
               >
-                <Text style={styles.listTitle}>{val.title}</Text>
-                <Text style={styles.listValue}>{val.value}</Text>
-              </View>
-            ))}
-            <View
-              style={{
-                paddingHorizontal: adjustSize(10),
-                marginTop: adjustSize(35),
-              }}
-            >
-              <Button
-                text="Top Up"
-                preset="reversed"
-                onPress={() => setTopUpModal(true)}
-              />
-              <TouchableOpacity
-                style={styles.activateBtn}
-                onPress={() => setActivateEmergencyCreditModal(true)}
+                {val.title}
+              </Text>
+              <Text
+                style={[
+                  styles.listTitle,
+                  {
+                    color: index % 2 !== 0 ? "#292766" : "#fff",
+                  },
+                ]}
               >
-                <Text style={styles.activateBtnTxt}>
-                  Activate Emergency Credit
-                </Text>
-              </TouchableOpacity>
+                {val.value}
+              </Text>
             </View>
-          </ScrollView>
-        ) : (
-          <Text style={styles.message}>
-            Please select a property to view meter details.
-          </Text>
-        )}
-      </TenantUtilitiesTabs>
+          ))}
+          <View
+            style={{
+              paddingHorizontal: adjustSize(10),
+              marginTop: adjustSize(35),
+            }}
+          >
+            <Button
+              text="Top Up"
+              preset="reversed"
+              onPress={() => setTopUpModal(true)}
+            />
+            <TouchableOpacity
+              style={styles.activateBtn}
+              onPress={() => setActivateEmergencyCreditModal(true)}
+            >
+              <Text style={styles.activateBtnTxt}>
+                Activate Emergency Credit
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      ) : (
+        <Text style={styles.message}>
+          Please select a property to view meter details.
+        </Text>
+      )}
+      {/* </TenantUtilitiesTabs> */}
 
       {/* Pay Now Modal */}
       <CustomModal visible={topUpModal} onClose={() => setTopUpModal(false)}>
@@ -218,7 +241,7 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
             style={styles.fundWalletBtn}
             onPress={() => {
               setTopUpModal(false);
-              setFundYourAccountModal(true);
+              setPreviewModal(true);
             }}
           >
             <Text style={styles.fundWalletBtnTxt}>Fund Wallet</Text>
@@ -234,10 +257,12 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
         >
           <TextField
             placeholderTextColor={colors.primaryLight}
-            inputWrapperStyle={{ backgroundColor: colors.fill }}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
             placeholder={`Enter amount`}
             keyboardType="numeric"
             style={{ textAlign: "center" }}
+            value={topUpAmount}
+            onChangeText={setTopUpAmount}
           />
         </View>
         <View style={styles.btnMain}>
@@ -246,36 +271,118 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
             preset="reversed"
             onPress={() => {
               setTopUpModal(false);
-              setFundYourAccountModal(true);
+              setPreviewModal(true);
             }}
           />
         </View>
       </CustomModal>
 
-      {/* Fund Your Account Modal */}
+      {/* Preview Modal */}
       <CustomModal
-        visible={fundYourAccountModal}
-        onClose={() => setFundYourAccountModal(false)}
+        visible={previewModal}
+        onClose={() => setPreviewModal(false)}
       >
-        <Text style={styles.modalHeading}>Fund your Account</Text>
-        <Text style={styles.modalTxt}>
-          Send money to the bank details below to fund your account. Your Bank
-          limits may apply:
-        </Text>
+        <Text style={styles.modalHeading}>Preview</Text>
 
-        {/* ✅ Using local component */}
-        <AccountDetailRow title="Account number:" value="1463067827" />
-        <AccountDetailRow title="Bank Name:" value="Paga" />
-        <AccountDetailRow title="Account name:" value="John Doe" />
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>Amount:</Text>
+          <Text style={styles.previewValue}>₦{topUpAmount || "500"}</Text>
+        </View>
 
-        <View style={[styles.btnMain, { marginTop: adjustSize(35) }]}>
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>Service Charge</Text>
+          <Text style={styles.previewValue}>₦{topUpAmount || "500"}</Text>
+        </View>
+
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>VAT</Text>
+          <Text style={styles.previewValue}>₦{topUpAmount || "500"}</Text>
+        </View>
+
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>VAT Rate</Text>
+          <Text style={styles.previewValue}>7%</Text>
+        </View>
+
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>Total</Text>
+          <Text style={styles.previewValue}>₦{topUpAmount || "500"}</Text>
+        </View>
+
+        <View style={styles.previewRow}>
+          <Text style={styles.previewLabel}>Expected Units</Text>
+          <Text style={styles.previewValue}>20kwh</Text>
+        </View>
+
+        <View style={[styles.btnMain, { marginTop: adjustSize(25) }]}>
           <Button
-            text="Share Details"
+            text="Pay from wallet now"
             preset="reversed"
             onPress={() => {
-              setFundYourAccountModal(false);
-              onShare();
+              setPreviewModal(false);
+              setPinModal(true);
             }}
+          />
+        </View>
+      </CustomModal>
+
+      {/* PIN Modal */}
+      <CustomModal visible={pinModal} onClose={() => setPinModal(false)}>
+        <Text style={styles.modalHeading}>Enter your pin</Text>
+        <View
+          style={{
+            marginHorizontal: adjustSize(10),
+            marginVertical: adjustSize(15),
+            marginTop: adjustSize(20),
+          }}
+        >
+          <TextField
+            ref={pinRef}
+            placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
+            placeholder={`Enter Pin`}
+            keyboardType="numeric"
+            maxLength={4}
+            style={{ textAlign: "center" }}
+            secureTextEntry={true}
+            onChangeText={(text) => {
+              if (text.length === 4) {
+                pinRef.current?.blur();
+              }
+            }}
+          />
+        </View>
+        <View style={styles.btnMain}>
+          <Button
+            text="Continue"
+            preset="reversed"
+            onPress={() => {
+              setPinModal(false);
+              setSuccessModal(true);
+            }}
+          />
+        </View>
+      </CustomModal>
+
+      {/* Success Modal */}
+      <CustomModal
+        visible={successModal}
+        onClose={() => setSuccessModal(false)}
+      >
+        <WithLocalSvg
+          asset={Images.check}
+          style={{
+            alignSelf: "center",
+            marginTop: adjustSize(10),
+            marginBottom: adjustSize(15),
+          }}
+        />
+        <Text style={styles.modalHeading}>Purchase Successful</Text>
+        <View style={styles.btnMain}>
+          <Button
+            text="Continue"
+            preset="reversed"
+            onPress={() => setSuccessModal(false)}
           />
         </View>
       </CustomModal>
@@ -284,7 +391,7 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
         onClose={() => setActivateEmergencyCreditModal(false)}
       >
         <Text style={styles.modalHeading}>Activate Emergency Credit</Text>
-        <View
+        {/* <View
           style={{
             marginHorizontal: adjustSize(10),
             marginTop: adjustSize(20),
@@ -296,7 +403,7 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
             inputWrapperStyle={{ backgroundColor: colors.fill }}
             placeholder={`Emergency title`}
           />
-        </View>
+        </View> */}
         <View
           style={{
             marginHorizontal: adjustSize(10),
@@ -305,12 +412,12 @@ export const UtilitiesMyMeter: React.FC<UtilitiesMyMeterProps> = ({
           <Text style={styles.inputTitle}>Emergency Credit Amount</Text>
           <TextField
             placeholderTextColor={colors.primaryLight}
-            inputWrapperStyle={{ backgroundColor: colors.fill }}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
             placeholder={`Enter amount`}
             keyboardType="numeric"
           />
         </View>
-        <View style={styles.btnMain}>
+        <View style={[styles.btnMain,{marginTop:50}]}>
           <Button
             text="Activate Emergency Credit"
             preset="reversed"
@@ -333,10 +440,10 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(47),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     marginBottom: adjustSize(3),
     marginHorizontal: adjustSize(10),
-    marginTop: adjustSize(25),
+    marginTop: adjustSize(15),
   },
   dropdownPlaceholder: {
     fontSize: adjustSize(12),
@@ -411,11 +518,11 @@ const styles = StyleSheet.create({
   },
   fundWalletBtn: {
     backgroundColor: colors.white,
-    shadowColor: "#000000",
-    shadowOpacity: 0.15,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    elevation: 0.5,
+    // shadowColor: "#000000",
+    // shadowOpacity: 0.15,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 3,
+    // elevation: 0.5,
     borderWidth: adjustSize(0.5),
     borderColor: "#F2F3FF",
     height: adjustSize(40),
@@ -428,7 +535,7 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
-    opacity: 0.7,
+    // opacity: 0.7,
   },
   btnMain: {
     marginHorizontal: adjustSize(10),
@@ -471,5 +578,23 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
     marginBottom: adjustSize(4),
     marginTop: adjustSize(10),
+  },
+  // Preview Modal Styles
+  previewRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: adjustSize(15),
+    marginVertical: adjustSize(8),
+  },
+  previewLabel: {
+    fontSize: adjustSize(13),
+    color: colors.primary,
+    fontFamily: typography.fonts.poppins.normal,
+  },
+  previewValue: {
+    fontSize: adjustSize(13),
+    color: "#7E7E7E",
+    fontFamily: typography.fonts.poppins.normal,
   },
 });

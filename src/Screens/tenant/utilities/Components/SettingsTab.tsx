@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { Text, TextField } from "../../../../Components";
 import { colors, typography, adjustSize, spacing } from "../../../../theme";
 import { CustomModal } from "./CustomModal";
@@ -82,7 +88,7 @@ export const SettingsTab: React.FC = () => {
 
   const handleChange = (
     field: "current" | "new" | "confirm",
-    value: string
+    value: string,
   ) => {
     if (field === "current") setCurrentPassword(value);
     if (field === "new") setNewPassword(value);
@@ -100,7 +106,7 @@ export const SettingsTab: React.FC = () => {
       setFeedBackMessage("Please enter a reason before confirming");
     } else {
       setFeedBackMessage("");
-      setDeactivateAccConfrimModal(false)
+      setDeactivateAccConfrimModal(false);
       Toast.show({
         type: "success",
         text1: "Accont deactivitaed successfully.",
@@ -128,6 +134,7 @@ export const SettingsTab: React.FC = () => {
           autoCapitalize="none"
           status={errors.current ? "error" : undefined}
           helper={errors.current}
+          inputWrapperStyle={{ backgroundColor: colors.white }}
         />
 
         {/* New Password */}
@@ -141,6 +148,7 @@ export const SettingsTab: React.FC = () => {
           autoCapitalize="none"
           status={errors.new ? "error" : undefined}
           helper={errors.new}
+          inputWrapperStyle={{ backgroundColor: colors.white }}
         />
 
         {/* Confirm Password */}
@@ -154,6 +162,7 @@ export const SettingsTab: React.FC = () => {
           autoCapitalize="none"
           status={errors.confirm ? "error" : undefined}
           helper={errors.confirm}
+          inputWrapperStyle={{ backgroundColor: colors.white }}
         />
 
         {success && (
@@ -168,7 +177,7 @@ export const SettingsTab: React.FC = () => {
         <TouchableOpacity
           activeOpacity={0.7}
           style={[styles.btn]}
-          onPress={() => setDeactivateAccModal(true)}
+          onPress={() => Alert.alert("Account Deactivated Successfully")}
         >
           <Text style={styles.btnTxt}>Deactivate Acc</Text>
         </TouchableOpacity>
@@ -334,6 +343,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
     marginTop: adjustSize(10),
+    marginBottom: 5,
   },
   successMsg: {
     marginTop: adjustSize(15),
@@ -345,8 +355,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
     paddingHorizontal: adjustSize(10),
-    marginVertical: adjustSize(15),
+    marginVertical: adjustSize(10),
     backgroundColor: colors.fill,
+    marginBottom: 25,
   },
   btn: {
     flex: 1,
@@ -358,8 +369,8 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     color: colors.white,
-    fontSize: adjustSize(14),
-    // fontFamily: typography.fonts.poppins.medium,
+    fontSize: adjustSize(13),
+    fontFamily: typography.fonts.poppins.semiBold,
   },
   modalHeading: {
     fontSize: adjustSize(15),

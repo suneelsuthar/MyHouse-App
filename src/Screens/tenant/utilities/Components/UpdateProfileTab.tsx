@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { profileValidations } from "../../../../validations/auth";
 import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
 interface FormData {
   fullName: string;
   email: string;
@@ -25,13 +26,13 @@ interface FormData {
 
 export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
   const [image, setImage] = useState<string | null>(
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
   );
 
   // 🔹 Form states
   const [userId] = useState("ID-1235567");
   const [saving, setSaving] = useState(false);
-
+const navigation:any = useNavigation()
   // Initialize form with react-hook-form
   const {
     control,
@@ -84,7 +85,7 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{ flex: 1 }}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: adjustSize(16),
@@ -99,12 +100,16 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
           onPress={pickImage}
         >
           {image ? (
-            <Image source={{ uri: image }} style={styles.profile} />
+            <Image
+              source={{ uri: image }}
+              tintColor={"wgute"}
+              style={styles.profile}
+            />
           ) : (
             <WithLocalSvg asset={Images.cameraIcon} />
           )}
         </TouchableOpacity>
-        <Text style={styles.edit}>Edit Profile Picture</Text>
+        <Text style={styles.edit}>Edit Profile Photo</Text>
 
         {/* User ID */}
         <Text style={styles.inputTitle}>User ID</Text>
@@ -113,6 +118,7 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
           placeholder="ID-1235567"
           placeholderTextColor={colors.primaryLight}
           editable={false}
+          inputWrapperStyle={{ backgroundColor: "white" }}
         />
 
         {/* Full Name */}
@@ -128,6 +134,8 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
                 onBlur={onBlur}
                 placeholder="John Doe"
                 placeholderTextColor={colors.primaryLight}
+                inputWrapperStyle={{ backgroundColor: "white" }}
+
                 // style={errors.fullName}
               />
               {errors.fullName && (
@@ -152,6 +160,8 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
                 placeholderTextColor={colors.primaryLight}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                inputWrapperStyle={{ backgroundColor: "white" }}
+
                 // style={errors.email && styles.inputError}
               />
               {errors.email && (
@@ -175,6 +185,8 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
                 placeholder="03001234567"
                 placeholderTextColor={colors.primaryLight}
                 keyboardType="phone-pad"
+                inputWrapperStyle={{ backgroundColor: "white" }}
+                style={styles.input}
                 // style={errors.phone && styles.inputError}
               />
               {errors.phone && (
@@ -199,7 +211,7 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
                 placeholderTextColor={colors.primaryLight}
                 multiline
                 numberOfLines={3}
-                inputWrapperStyle={{ height: 100 }}
+                inputWrapperStyle={{ height: 100, backgroundColor: "white" }}
                 style={[
                   styles.textArea,
                   // errors.address && styles.inputError,
@@ -214,7 +226,7 @@ export const UpdateProfileTab: React.FC = ({ handleVerifyIdentity }: any) => {
       </ScrollView>
       {/* Footer buttons */}
       <View style={styles.footerRow}>
-        <Button onPress={handleVerifyIdentity} style={[styles.saveButton]}>
+        <Button onPress={()=>navigation.navigate("Profile")} style={[styles.saveButton]}>
           <Text style={styles.saveButtonText}>Verify Identity</Text>
         </Button>
         <Button
@@ -249,7 +261,7 @@ const styles = StyleSheet.create({
   textArea: {
     textAlignVertical: "top",
     minHeight: 100,
-    padding: adjustSize(10),
+    paddingVertical: adjustSize(10),
   },
   saveButton: {
     backgroundColor: colors.primary,
@@ -258,6 +270,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flex: 1,
     flex: 1,
+    minHeight:adjustSize(49)
   },
   saveButtonDisabled: {
     backgroundColor: colors.diabled,
@@ -266,6 +279,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: colors.white,
     fontSize: adjustSize(14),
+    fontFamily: typography.fonts.poppins.semiBold,
     // fontWeight: "bold",
   },
   profileMain: {
@@ -280,7 +294,7 @@ const styles = StyleSheet.create({
   },
   edit: {
     textAlign: "center",
-    color: colors.primaryLight,
+    color: colors.primary,
     fontFamily: typography.fonts.poppins.normal,
     marginTop: adjustSize(10),
     marginBottom: adjustSize(15),
@@ -295,12 +309,11 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(12),
     color: colors.primary,
     fontFamily: typography.fonts.poppins.semiBold,
-    marginTop: adjustSize(10),
+    // marginTop: adjustSize(10),
   },
   footerRow: {
     flexDirection: "row",
     padding: adjustSize(15),
-    backgroundColor: colors.white,
     justifyContent: "space-between",
     alignItems: "center",
     borderTopWidth: 1,
@@ -316,5 +329,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: adjustSize(15),
     fontFamily: typography.fonts.poppins.semiBold,
+  },
+  input: {
+    backgroundColor: colors.white,
   },
 });

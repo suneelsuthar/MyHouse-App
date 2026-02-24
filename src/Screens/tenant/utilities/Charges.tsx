@@ -34,52 +34,52 @@ export const UtilitiesCharges: React.FC = ({ navigation }: any) => {
       safeAreaEdges={["top"]}
     >
       <Header2 title="Charges" onNotificationPress={() => {}} />
-      <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}>
-        <ScrollView>
-          {/* First Dropdown (Property Type) */}
-          <DropdownComponent
-            data={typeOptions}
-            label="Choose type"
-            placeholder="Select Properties"
-            value={selectedType}
-            onChangeValue={setSelectedType}
-            dropdownStyle={styles.dropdown}
-            placeholderStyle={styles.dropdownPlaceholder}
-            selectedTextStyle={styles.dropdownSelected}
-            rightIconColor={colors.white}
-          />
+      {/* <TenantUtilitiesTabs activeTab={activeTab} navigation={navigation}> */}
+      <ScrollView>
+        {/* First Dropdown (Property Type) */}
+        <DropdownComponent
+          data={typeOptions}
+          label="Choose type"
+          placeholder="Select Properties"
+          value={selectedType}
+          onChangeValue={setSelectedType}
+          dropdownStyle={styles.dropdown}
+          placeholderStyle={styles.dropdownPlaceholder}
+          selectedTextStyle={styles.dropdownSelected}
+          rightIconColor={colors.white}
+        />
 
-          {/* Transaction History Section */}
+        {/* Transaction History Section */}
 
-          <View style={styles.section}>
-            <View style={styles.sectionRow}>
-              <Text weight="semiBold" style={styles.sectionTitle}>
-                Charges
-              </Text>
-              <View style={styles.dropdownContainer}>
-                <DropdownComponent
-                  data={sortOptions}
-                  label="Select Period"
-                  placeholder="Sort by"
-                  value={selectedSort}
-                  onChangeValue={setSelectedSort}
-                  dropdownStyle={styles.customDropdownStyle}
-                  placeholderStyle={styles.customPlaceholderStyle}
-                  selectedTextStyle={styles.customSelectedTextStyle}
-                />
-              </View>
+        <View style={styles.section}>
+          <View style={styles.sectionRow}>
+            <Text weight="semiBold" style={styles.sectionTitle}>
+              Charges
+            </Text>
+            <View style={styles.dropdownContainer}>
+              <DropdownComponent
+                data={sortOptions}
+                label="Select Period"
+                placeholder="Sort by"
+                value={selectedSort}
+                onChangeValue={setSelectedSort}
+                dropdownStyle={styles.customDropdownStyle}
+                placeholderStyle={styles.customPlaceholderStyle}
+                selectedTextStyle={styles.customSelectedTextStyle}
+              />
             </View>
           </View>
-          <View style={{ marginHorizontal: adjustSize(10) }}>
-            <TextField
-              placeholderTextColor={colors.primaryLight}
-              inputWrapperStyle={{ backgroundColor: colors.white }}
-              placeholder="Search"
-            />
-          </View>
-          <UtilitiesChargesList />
-        </ScrollView>
-      </TenantUtilitiesTabs>
+        </View>
+        <View style={{ marginHorizontal: adjustSize(10) }}>
+          <TextField
+            placeholderTextColor={colors.primaryLight}
+            inputWrapperStyle={{ backgroundColor: colors.white }}
+            placeholder="Search"
+          />
+        </View>
+        <UtilitiesChargesList />
+      </ScrollView>
+      {/* </TenantUtilitiesTabs> */}
     </Screen>
   );
 };
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: adjustSize(47),
     borderRadius: adjustSize(10),
-    backgroundColor: "#6369A4",
+    backgroundColor: colors.primary,
     marginBottom: adjustSize(3),
     marginHorizontal: adjustSize(10),
     marginTop: adjustSize(25),

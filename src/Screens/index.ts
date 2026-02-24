@@ -163,6 +163,10 @@ import { AddBeneficiary } from "./tenant/addbeneficiary";
 import { Profile } from "./global/profile";
 import { Verify } from "./global/profile/verify";
 import { EditProfile } from "./global/profile/edit-profile";
+import { CreateNewPin } from "./global/profile/create-newpin";
+
+
+
 import { ProfileSettings } from "./global/profile/profile-settings";
 import { MessageHistory } from "./global/message-history";
 import { Reviews } from "./global/profile/reviews";
@@ -315,6 +319,7 @@ export {
   Profile,
   Verify,
   EditProfile,
+  CreateNewPin,
   ProfileSettings,
   Reviews,
   Subscription,

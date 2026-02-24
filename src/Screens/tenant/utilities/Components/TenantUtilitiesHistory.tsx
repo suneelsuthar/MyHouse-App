@@ -4,10 +4,10 @@ import { adjustSize, colors, typography } from "../../../../theme";
 import { Text, Button } from "../../../../Components";
 import moment from "moment";
 import Entypo from "@expo/vector-icons/Entypo";
-import Feather from "@expo/vector-icons/Feather";
+// import Feather from "@expo/vector-icons/Feather";
 import { Images } from "../../../../assets/Images";
 import { WithLocalSvg } from "react-native-svg/css";
-
+import Feather from "@expo/vector-icons/Feather";
 // Define transaction type
 interface Transaction {
   type: "send" | "receive";
@@ -24,7 +24,13 @@ interface TenantUtilitiesHistoryProps {
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
   <View style={styles.modalList}>
     <Text style={styles.modalListTitle}>{label}</Text>
-    <Text style={styles.modalListVal}>{value}</Text>
+
+    <Text style={styles.modalListVal}>
+      {value}{" "}
+      {label === "Token:" && (
+        <Feather name="copy" size={18} color={colors.primary} />
+      )}
+    </Text>
   </View>
 );
 
@@ -173,20 +179,31 @@ export const TenantUtilitiesHistory: React.FC<TenantUtilitiesHistoryProps> = ({
             </View>
 
             <View style={styles.data}>
-              <Text style={styles.date} numberOfLines={1}>
-                {moment(item.date).format("DD MMM, YYYY")}
-              </Text>
               <Text style={styles.price} numberOfLines={1}>
-                ₦ {item.price}
-              </Text>
-              <Text style={styles.paymentType} numberOfLines={1}>
                 {item.paymentType}
               </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
+              >
+                <Text style={styles.date} numberOfLines={1}>
+                  {moment(item.date).format("DD MMM, YYYY")}
+                </Text>
+                <Text style={styles.price} numberOfLines={1}>
+                  ₦ {item.price}
+                </Text>
+              </View>
+              {/* <Text style={styles.paymentType} numberOfLines={1}></Text> */}
             </View>
 
             {/* Menu Trigger */}
             <TouchableOpacity
               activeOpacity={0.6}
+              style={{ position: "absolute", right: 10, top: 10 }}
               onPress={() => setVisibleMenuIndex(isMenuVisible ? null : index)}
             >
               <Entypo
@@ -279,18 +296,20 @@ export const TenantUtilitiesHistory: React.FC<TenantUtilitiesHistoryProps> = ({
               <>
                 <InfoRow label="ID:" value="T0001" />
                 <InfoRow label="Transaction Type:" value="Electric" />
-                <InfoRow label="Tenant:" value="John Doe" />
-                <InfoRow label="Property Group:" value="Apartment" />
-                <InfoRow label="Property Name:" value="B1234556" />
+                <InfoRow label="Resident:" value="John Doe" />
+                <InfoRow label="Estate:" value="Apartment" />
+                <InfoRow label="Property Name:(ID)" value="B1234556" />
+                <InfoRow label="Meter Number:" value="MTR34556" />
+                <InfoRow label="Token:" value="T0001" />
               </>
             ) : (
               <>
                 <InfoRow label="Token:" value="T0001" />
                 <InfoRow label="Units:" value="250Kwh" />
                 <InfoRow label="Utility Type:" value="Electric" />
-                <InfoRow label="Tenant:" value="John Doe" />
-                <InfoRow label="Property Group:" value="Apartment" />
-                <InfoRow label="Property Name:" value="B1234556" />
+                <InfoRow label="Resident:" value="John Doe" />
+                <InfoRow label="Estate:" value="Apartment" />
+                <InfoRow label="Property Name(ID):" value="B1234556" />
                 <InfoRow label="Meter Number:" value="MTR34556" />
               </>
             )}
@@ -298,8 +317,18 @@ export const TenantUtilitiesHistory: React.FC<TenantUtilitiesHistoryProps> = ({
             {/* Footer Button */}
             <View style={styles.btnMain}>
               <Button
+                text={"Share"}
+                preset="reversed"
+                style={{ flex: 1 }}
+                onPress={() => {
+                  setSelectedData(null);
+                  setVisible(false);
+                }}
+              />
+              <Button
                 text={"Download Receipt"}
                 preset="reversed"
+                style={{ flex: 1 }}
                 onPress={() => {
                   setSelectedData(null);
                   setVisible(false);
@@ -320,12 +349,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: adjustSize(10),
     flexDirection: "row",
     position: "relative",
-    borderBottomWidth: adjustSize(0.5),
-    borderBottomColor: "#B0B0B0",
+    margin: 10,
+    marginTop: 0,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 2,
   },
   data: {
     flex: 1,
-    marginHorizontal: adjustSize(15),
+    // marginHorizontal: adjustSize(15),
     marginLeft: adjustSize(20),
   },
   date: {
@@ -354,18 +390,22 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     position: "absolute",
-    right: adjustSize(10),
-    top: adjustSize(36),
-    backgroundColor: colors.white,
-    borderRadius: adjustSize(10),
-    elevation: 4,
+    right: adjustSize(25),
+    top: adjustSize(5),
     width: adjustSize(120),
     paddingVertical: adjustSize(6),
     zIndex: 10,
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 2,
+    backgroundColor: colors.white,
+    borderRadius: 10,
   },
   menuItem: {
-    paddingVertical: adjustSize(5),
-    paddingHorizontal: adjustSize(12),
+    paddingVertical: adjustSize(3),
+    paddingHorizontal: adjustSize(15),
   },
   menuText: {
     fontSize: adjustSize(12),
@@ -442,11 +482,14 @@ const styles = StyleSheet.create({
     fontFamily: typography.fonts.poppins.normal,
   },
   btnMain: {
-    borderTopWidth: adjustSize(0.5),
+    // borderTopWidth: adjustSize(0.5),
     borderTopColor: "#B0B0B0",
     paddingHorizontal: adjustSize(15),
-    marginTop: adjustSize(15),
+    // marginTop: adjustSize(15),
     paddingTop: adjustSize(30),
     paddingBottom: adjustSize(15),
+    flexDirection: "row",
+    alignItems: "center",
+    gap:10
   },
 });
